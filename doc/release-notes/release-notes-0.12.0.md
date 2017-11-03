@@ -17,7 +17,7 @@ How to Upgrade
 If you are running an older version, shut it down. Wait until it has completely
 shut down (which might take a few minutes for older versions), then run the
 installer (on Windows) or just copy over /Applications/Bitcoin-Qt (on Mac) or
-bitcoind/bitcoin-qt (on Linux).
+umkoind/bitcoin-qt (on Linux).
 
 Downgrade warning
 -----------------
@@ -173,7 +173,7 @@ overridden with the option `-rpccookiefile`.
 This is similar to Tor's CookieAuthentication: see
 https://www.torproject.org/docs/tor-manual.html.en
 
-This allows running bitcoind without having to do any manual configuration.
+This allows running umkoind without having to do any manual configuration.
 
 Relay: Any sequence of pushdatas in OP_RETURN outputs now allowed
 -----------------------------------------------------------------
@@ -436,7 +436,7 @@ caching. A sample config for apache2 could look like:
         # AuthType Digest
         # ...
 
-        # optional bypass bitcoind rpc basic auth
+        # optional bypass umkoind rpc basic auth
         # RequestHeader set Authorization "Basic <hash>"
         # get the <hash> from the shell with: base64 <<< bitcoinrpc:<password>
     </Location>
@@ -459,7 +459,7 @@ Other P2P Changes
 -----------------
 
 The list of banned peers is now stored on disk rather than in memory.
-Restarting bitcoind will no longer clear out the list of banned peers; instead
+Restarting umkoind will no longer clear out the list of banned peers; instead
 a new RPC call (`clearbanned`) can be used to manually clear the list.  The new
 `setban` RPC call can also be used to manually ban or unban a peer.
 
@@ -732,7 +732,7 @@ git merge commit are mentioned.
 - #6509 `bb4faee` Fix race condition on test node shutdown (Casey Rodarmor)
 - #6523 `561f8af` Add p2p-fullblocktest.py (Casey Rodarmor)
 - #6590 `981fd92` Fix stale socket rebinding and re-enable python tests for Windows (Cory Fields)
-- #6730 `cb4d6d0` build: Remove dependency of bitcoin-cli on secp256k1 (Wladimir J. van der Laan)
+- #6730 `cb4d6d0` build: Remove dependency of umkoin-cli on secp256k1 (Wladimir J. van der Laan)
 - #6616 `5ab5dca` Regression Tests: Migrated rpc-tests.sh to all Python rpc-tests.py (Peter Tschipper)
 - #6720 `d479311` Creates unittests for addrman, makes addrman more testable. (Ethan Heilman)
 - #6853 `c834f56` Added fPowNoRetargeting field to Consensus::Params (Eric Lombrozo)
@@ -764,9 +764,9 @@ git merge commit are mentioned.
 - #5975 `1fea667` Consensus: Decouple ContextualCheckBlockHeader from checkpoints (Jorge Timón)
 - #6061 `eba2f06` Separate Consensus::CheckTxInputs and GetSpendHeight in CheckInputs (Jorge Timón)
 - #5994 `786ed11` detach wallet from miner (Jonas Schnelli)
-- #6387 `11576a5` [bitcoin-cli] improve error output (Jonas Schnelli)
+- #6387 `11576a5` [umkoin-cli] improve error output (Jonas Schnelli)
 - #6401 `6db53b4` Add BITCOIND_SIGTERM_TIMEOUT to OpenRC init scripts (Florian Schmaus)
-- #6430 `b01981e` doc: add documentation for shared library libbitcoinconsensus (Braydon Fuller)
+- #6430 `b01981e` doc: add documentation for shared library libumkoinconsensus (Braydon Fuller)
 - #6372 `dcc495e` Update Linearize tool to support Windows paths; fix variable scope; update README and example configuration (Paul Georgiou)
 - #6453 `8fe5cce` Separate core memory usage computation in core_memusage.h (Pieter Wuille)
 - #6149 `633fe10` Buffer log messages and explicitly open logs (Adam Weiss)

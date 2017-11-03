@@ -13,7 +13,7 @@ export PYTHONPATH
 
 if BUILD_BITCOIN_LIBS
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libbitcoinconsensus.pc
+pkgconfig_DATA = libumkoinconsensus.pc
 endif
 
 BITCOIND_BIN=$(top_builddir)/src/$(BITCOIN_DAEMON_NAME)$(EXEEXT)
@@ -38,9 +38,9 @@ OSX_PLIST=$(top_builddir)/share/qt/Info.plist #not installed
 OSX_QT_TRANSLATIONS = da,de,es,hu,ru,uk,zh_CN,zh_TW
 
 DIST_DOCS = $(wildcard doc/*.md) $(wildcard doc/release-notes/*.md)
-DIST_CONTRIB = $(top_srcdir)/contrib/bitcoin-cli.bash-completion \
+DIST_CONTRIB = $(top_srcdir)/contrib/umkoin-cli.bash-completion \
 	       $(top_srcdir)/contrib/bitcoin-tx.bash-completion \
-	       $(top_srcdir)/contrib/bitcoind.bash-completion \
+	       $(top_srcdir)/contrib/umkoind.bash-completion \
 	       $(top_srcdir)/contrib/init \
 	       $(top_srcdir)/contrib/rpm
 DIST_SHARE = \

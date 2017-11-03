@@ -243,7 +243,7 @@ git merge commit are mentioned.
 
 ### Consensus
 - #8636 `9dfa0c8` Implement NULLDUMMY softfork (BIP147) (jl2012)
-- #8848 `7a34a46` Add NULLDUMMY verify flag in bitcoinconsensus.h (jl2012)
+- #8848 `7a34a46` Add NULLDUMMY verify flag in umkoinconsensus.h (jl2012)
 - #8937 `8b66659` Define start and end time for segwit deployment (sipa)
 
 ### RPC and other APIs
@@ -280,7 +280,7 @@ git merge commit are mentioned.
 - #8949 `0dbc48a` Be more agressive in getting connections to peers with relevant services (gmaxwell)
 
 ### Build system
-- #8293 `fa5b249` Allow building libbitcoinconsensus without any univalue (luke-jr)
+- #8293 `fa5b249` Allow building libumkoinconsensus without any univalue (luke-jr)
 - #8492 `8b0bdd3` Allow building bench_bitcoin by itself (luke-jr)
 - #8563 `147003c` Add configure check for -latomic (ajtowns)
 - #8626 `ea51b0f` Berkeley DB v6 compatibility fix (netsafe)
@@ -329,7 +329,7 @@ git merge commit are mentioned.
 - #8841 `3e4abb5` Fix nulldummy test (jl2012)
 - #8854 `624a007` Fix race condition in p2p-compactblocks test (sdaftuar)
 - #8857 `1f60d45` mininode: Only allow named args in wait_until (MarcoFalke)
-- #8860 `0bee740` util: Move wait_bitcoinds() into stop_nodes() (MarcoFalke)
+- #8860 `0bee740` util: Move wait_umkoinds() into stop_nodes() (MarcoFalke)
 - #8882 `b73f065` Fix race conditions in p2p-compactblocks.py and sendheaders.py (sdaftuar)
 - #8904 `cc6f551` Fix compact block shortids for a test case (dagurval)
 

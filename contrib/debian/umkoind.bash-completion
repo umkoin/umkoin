@@ -1,2 +1,2 @@
-contrib/bitcoind.bash-completion	bitcoind
-contrib/bitcoin-cli.bash-completion	bitcoin-cli
+contrib/umkoind.bash-completion	umkoind
+contrib/umkoin-cli.bash-completion	umkoin-cli

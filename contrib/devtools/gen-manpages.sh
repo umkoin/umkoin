@@ -4,8 +4,8 @@ TOPDIR=${TOPDIR:-$(git rev-parse --show-toplevel)}
 SRCDIR=${SRCDIR:-$TOPDIR/src}
 MANDIR=${MANDIR:-$TOPDIR/doc/man}
 
-BITCOIND=${BITCOIND:-$SRCDIR/bitcoind}
-BITCOINCLI=${BITCOINCLI:-$SRCDIR/bitcoin-cli}
+BITCOIND=${BITCOIND:-$SRCDIR/umkoind}
+BITCOINCLI=${BITCOINCLI:-$SRCDIR/umkoin-cli}
 BITCOINTX=${BITCOINTX:-$SRCDIR/bitcoin-tx}
 BITCOINQT=${BITCOINQT:-$SRCDIR/qt/bitcoin-qt}
 
@@ -15,8 +15,8 @@ BITCOINQT=${BITCOINQT:-$SRCDIR/qt/bitcoin-qt}
 BTCVER=($($BITCOINCLI --version | head -n1 | awk -F'[ -]' '{ print $6, $7 }'))
 
 # Create a footer file with copyright content.
-# This gets autodetected fine for bitcoind if --version-string is not set,
-# but has different outcomes for bitcoin-qt and bitcoin-cli.
+# This gets autodetected fine for umkoind if --version-string is not set,
+# but has different outcomes for bitcoin-qt and umkoin-cli.
 echo "[COPYRIGHT]" > footer.h2m
 $BITCOIND --version | sed -n '1!p' >> footer.h2m
 

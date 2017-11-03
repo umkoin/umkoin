@@ -208,7 +208,7 @@ def main():
 
     enable_wallet = config["components"].getboolean("ENABLE_WALLET")
     enable_utils = config["components"].getboolean("ENABLE_UTILS")
-    enable_bitcoind = config["components"].getboolean("ENABLE_BITCOIND")
+    enable_umkoind = config["components"].getboolean("ENABLE_BITCOIND")
 
     if config["environment"]["EXEEXT"] == ".exe" and not args.force:
         # https://github.com/bitcoin/bitcoin/commit/d52802551752140cf41f0d9a225a43e84404d3e9
@@ -216,8 +216,8 @@ def main():
         print("Tests currently disabled on Windows by default. Use --force option to enable")
         sys.exit(0)
 
-    if not (enable_wallet and enable_utils and enable_bitcoind):
-        print("No functional tests to run. Wallet, utils, and bitcoind must all be enabled")
+    if not (enable_wallet and enable_utils and enable_umkoind):
+        print("No functional tests to run. Wallet, utils, and umkoind must all be enabled")
         print("Rerun `configure` with -enable-wallet, -with-utils and -with-daemon and rerun make")
         sys.exit(0)
 
@@ -269,10 +269,10 @@ def main():
     run_tests(test_list, config["environment"]["SRCDIR"], config["environment"]["BUILDDIR"], config["environment"]["EXEEXT"], tmpdir, args.jobs, args.coverage, passon_args)
 
 def run_tests(test_list, src_dir, build_dir, exeext, tmpdir, jobs=1, enable_coverage=False, args=[]):
-    # Warn if bitcoind is already running (unix only)
+    # Warn if umkoind is already running (unix only)
     try:
-        if subprocess.check_output(["pidof", "bitcoind"]) is not None:
-            print("%sWARNING!%s There is already a bitcoind process running on this system. Tests may fail unexpectedly due to resource contention!" % (BOLD[1], BOLD[0]))
+        if subprocess.check_output(["pidof", "umkoind"]) is not None:
+            print("%sWARNING!%s There is already a umkoind process running on this system. Tests may fail unexpectedly due to resource contention!" % (BOLD[1], BOLD[0]))
     except (OSError, subprocess.SubprocessError):
         pass
 
@@ -283,8 +283,8 @@ def run_tests(test_list, src_dir, build_dir, exeext, tmpdir, jobs=1, enable_cove
 
     #Set env vars
     if "BITCOIND" not in os.environ:
-        os.environ["BITCOIND"] = build_dir + '/src/bitcoind' + exeext
-        os.environ["BITCOINCLI"] = build_dir + '/src/bitcoin-cli' + exeext
+        os.environ["BITCOIND"] = build_dir + '/src/umkoind' + exeext
+        os.environ["BITCOINCLI"] = build_dir + '/src/umkoin-cli' + exeext
 
     tests_dir = src_dir + '/test/functional/'
 
@@ -369,7 +369,7 @@ class TestHandler:
         self.test_list = test_list
         self.flags = flags
         self.num_running = 0
-        # In case there is a graveyard of zombie bitcoinds, we can apply a
+        # In case there is a graveyard of zombie umkoinds, we can apply a
         # pseudorandom offset to hopefully jump over them.
         # (625 is PORT_RANGE/MAX_NODES)
         self.portseed_offset = int(time.time() * 1000) % 625
@@ -467,7 +467,7 @@ class RPCCoverage():
     Coverage calculation works by having each test script subprocess write
     coverage files into a particular directory. These files contain the RPC
     commands invoked during testing, as well as a complete listing of RPC
-    commands per `bitcoin-cli help` (`rpc_interface.txt`).
+    commands per `umkoin-cli help` (`rpc_interface.txt`).
 
     After all tests complete, the commands run are combined and diff'd against
     the complete list to calculate uncovered RPC commands.
