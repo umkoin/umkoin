@@ -48,7 +48,7 @@ possible.
 Known Bugs
 ==========
 
-Since 0.14.0 the approximate transaction fee shown in Bitcoin-Qt when using coin
+Since 0.14.0 the approximate transaction fee shown in Umkoin-Qt when using coin
 control and smart fee estimation does not reflect any change in target from the
 smart fee slider. It will only present an approximate fee calculated using the
 default target. The fee calculated using the correct target is still applied to
@@ -71,7 +71,7 @@ git merge commit are mentioned.
 
 ### Build system
 - #10414 `ffb0c4b` miniupnpc 2.0.20170509 (fanquake)
-- #10228 `ae479bc` Regenerate bitcoin-config.h as necessary (theuni)
+- #10228 `ae479bc` Regenerate umkoin-config.h as necessary (theuni)
 
 ### Miscellaneous
 - #10245 `44a17f2` Minor fix in build documentation for FreeBSD 11 (shigeya)

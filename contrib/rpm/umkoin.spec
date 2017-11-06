@@ -29,11 +29,11 @@ Source10:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/contrib/
 #man pages
 Source20:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/doc/man/umkoind.1
 Source21:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/doc/man/umkoin-cli.1
-Source22:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/doc/man/bitcoin-qt.1
+Source22:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/doc/man/umkoin-qt.1
 
 #selinux
 Source30:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/contrib/rpm/bitcoin.te
-# Source31 - what about bitcoin-tx and bench_bitcoin ???
+# Source31 - what about umkoin-tx and bench_bitcoin ???
 Source31:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/contrib/rpm/bitcoin.fc
 Source32:	https://raw.githubusercontent.com/bitcoin/bitcoin/v%{version}/contrib/rpm/bitcoin.if
 
@@ -142,7 +142,7 @@ This package provides several command line utilities for interacting with a
 bitcoin-core daemon.
 
 The umkoin-cli utility allows you to communicate and control a bitcoin daemon
-over RPC, the bitcoin-tx utility allows you to create a custom transaction, and
+over RPC, the umkoin-tx utility allows you to create a custom transaction, and
 the bench_bitcoin utility can be used to perform some benchmarks.
 
 This package contains utilities needed by the bitcoin-server package.
@@ -243,7 +243,7 @@ done
 
 %if %{_buildqt}
 # qt icons
-install -D -p share/pixmaps/bitcoin.ico %{buildroot}%{_datadir}/pixmaps/bitcoin.ico
+install -D -p share/pixmaps/umkoin.ico %{buildroot}%{_datadir}/pixmaps/umkoin.ico
 install -p share/pixmaps/nsis-header.bmp %{buildroot}%{_datadir}/pixmaps/
 install -p share/pixmaps/nsis-wizard.bmp %{buildroot}%{_datadir}/pixmaps/
 install -p %{SOURCE100} %{buildroot}%{_datadir}/pixmaps/bitcoin.svg
@@ -269,7 +269,7 @@ Name=Bitcoin
 Comment=Bitcoin P2P Cryptocurrency
 Comment[fr]=Bitcoin, monnaie virtuelle cryptographique pair à pair
 Comment[tr]=Bitcoin, eşten eşe kriptografik sanal para birimi
-Exec=bitcoin-qt %u
+Exec=umkoin-qt %u
 Terminal=false
 Type=Application
 Icon=bitcoin128
@@ -284,7 +284,7 @@ touch -a -m -t 201511100546 %{buildroot}%{_datadir}/applications/bitcoin-core.de
 mkdir -p %{buildroot}%{_datadir}/kde4/services
 cat <<EOF > %{buildroot}%{_datadir}/kde4/services/bitcoin-core.protocol
 [Protocol]
-exec=bitcoin-qt '%u'
+exec=umkoin-qt '%u'
 protocol=bitcoin
 input=none
 output=none
@@ -303,7 +303,7 @@ touch -a -m -t 201511100546 %{buildroot}%{_datadir}/kde4/services/bitcoin-core.p
 install -D -p %{SOURCE20} %{buildroot}%{_mandir}/man1/umkoind.1
 install -p %{SOURCE21} %{buildroot}%{_mandir}/man1/umkoin-cli.1
 %if %{_buildqt}
-install -p %{SOURCE22} %{buildroot}%{_mandir}/man1/bitcoin-qt.1
+install -p %{SOURCE22} %{buildroot}%{_mandir}/man1/umkoin-qt.1
 %endif
 
 # nuke these, we do extensive testing of binaries in %%check before packaging
@@ -376,7 +376,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %license COPYING db-%{bdbv}.NC-LICENSE
 %doc COPYING bitcoin.conf.example doc/README.md doc/bips.md doc/files.md doc/multiwallet-qt.md doc/reduce-traffic.md doc/release-notes.md doc/tor.md
-%attr(0755,root,root) %{_bindir}/bitcoin-qt
+%attr(0755,root,root) %{_bindir}/umkoin-qt
 %attr(0644,root,root) %{_datadir}/applications/bitcoin-core.desktop
 %attr(0644,root,root) %{_datadir}/kde4/services/bitcoin-core.protocol
 %attr(0644,root,root) %{_datadir}/pixmaps/*.ico
@@ -384,7 +384,7 @@ rm -rf %{buildroot}
 %attr(0644,root,root) %{_datadir}/pixmaps/*.svg
 %attr(0644,root,root) %{_datadir}/pixmaps/*.png
 %attr(0644,root,root) %{_datadir}/pixmaps/*.xpm
-%attr(0644,root,root) %{_mandir}/man1/bitcoin-qt.1*
+%attr(0644,root,root) %{_mandir}/man1/umkoin-qt.1*
 %endif
 
 %files libs
@@ -421,7 +421,7 @@ rm -rf %{buildroot}
 %license COPYING
 %doc COPYING bitcoin.conf.example doc/README.md
 %attr(0755,root,root) %{_bindir}/umkoin-cli
-%attr(0755,root,root) %{_bindir}/bitcoin-tx
+%attr(0755,root,root) %{_bindir}/umkoin-tx
 %attr(0755,root,root) %{_bindir}/bench_bitcoin
 %attr(0644,root,root) %{_mandir}/man1/umkoin-cli.1*
 

@@ -15,12 +15,12 @@ The following are some helpful notes on how to run Bitcoin on your native platfo
 
 Unpack the files into a directory and run:
 
-- `bin/bitcoin-qt` (GUI) or
+- `bin/umkoin-qt` (GUI) or
 - `bin/umkoind` (headless)
 
 ### Windows
 
-Unpack the files into a directory, and then run bitcoin-qt.exe.
+Unpack the files into a directory, and then run umkoin-qt.exe.
 
 ### OS X
 

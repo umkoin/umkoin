@@ -5,9 +5,9 @@ if BUILD_BITCOIND
 endif
 
 if ENABLE_QT
-  dist_man1_MANS+=bitcoin-qt.1
+  dist_man1_MANS+=umkoin-qt.1
 endif
 
 if BUILD_BITCOIN_UTILS
-  dist_man1_MANS+=umkoin-cli.1 bitcoin-tx.1
+  dist_man1_MANS+=umkoin-cli.1 umkoin-tx.1
 endif

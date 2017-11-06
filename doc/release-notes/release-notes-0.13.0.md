@@ -232,7 +232,7 @@ files on disk. These two have now been split up, so that all blocks are known
 before validation starts. This was necessary to make certain optimizations that
 are available during normal synchronizations also available during reindexing.
 
-The two phases are distinct in the Bitcoin-Qt GUI. During the first one,
+The two phases are distinct in the Umkoin-Qt GUI. During the first one,
 "Reindexing blocks on disk" is shown. During the second (slower) one,
 "Processing blocks on disk" is shown.
 
@@ -338,7 +338,7 @@ Low-level RPC changes
     - RPC `decodescript`
     - REST `/rest/tx/` (JSON format)
     - REST `/rest/block/` (JSON format when including extended tx details)
-    - `bitcoin-tx -json`
+    - `umkoin-tx -json`
 
 - The sorting of the output of the `getrawmempool` output has changed.
 
@@ -540,7 +540,7 @@ git merge commit are mentioned.
 - #7604 `354b03d` build: Remove spurious dollar sign. Fixes #7189 (dooglus)
 - #7605 `7f001bd` Remove openssl info from init/log and from Qt debug window (jonasschnelli)
 - #7628 `87d6562` Add 'copy full transaction details' option (ericshawlinux)
-- #7613 `3798e5d` Add autocomplete to bitcoin-qt's console window (GamerSg)
+- #7613 `3798e5d` Add autocomplete to umkoin-qt's console window (GamerSg)
 - #7668 `b24266c` Fix history deletion bug after font size change (achow101)
 - #7680 `41d2dfa` Remove reflection from `about` icon (laanwj)
 - #7686 `f034bce` Remove 0-fee from send dialog (MarcoFalke)
@@ -559,7 +559,7 @@ git merge commit are mentioned.
 - #8129 `ee1533e` Fix RPC console auto completer (UdjinM6)
 - #7636 `fb0ac48` Add bitcoin address label to request payment QR code (makevoid)
 - #8231 `760a6c7` Fix a bug where the SplashScreen will not be hidden during startup (jonasschnelli)
-- #8256 `af2421c` BUG: bitcoin-qt crash (fsb4000)
+- #8256 `af2421c` BUG: umkoin-qt crash (fsb4000)
 - #8257 `ff03c50` Do not ask a UI question from umkoind (sipa)
 - #8288 `91abb77` Network-specific example address (laanwj)
 - #7707 `a914968` UI support for abandoned transactions (jonasschnelli)

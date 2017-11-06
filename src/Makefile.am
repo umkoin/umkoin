@@ -69,7 +69,7 @@ if BUILD_BITCOIND
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += umkoin-cli bitcoin-tx
+  bin_PROGRAMS += umkoin-cli umkoin-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
@@ -181,7 +181,7 @@ obj/build.h: FORCE
 	  "$(abs_top_srcdir)"
 libumkoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between umkoind and bitcoin-qt
+# server: shared between umkoind and umkoin-qt
 libumkoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libumkoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_server_a_SOURCES = \
@@ -235,7 +235,7 @@ libumkoin_zmq_a_SOURCES = \
 endif
 
 
-# wallet: shared between umkoind and bitcoin-qt, but only linked
+# wallet: shared between umkoind and umkoin-qt, but only linked
 # when wallet enabled
 libumkoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libumkoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -312,7 +312,7 @@ libumkoin_consensus_a_SOURCES = \
   utilstrencodings.h \
   version.h
 
-# common: shared between umkoind, and bitcoin-qt and non-server tools
+# common: shared between umkoind, and umkoin-qt and non-server tools
 libumkoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libumkoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_common_a_SOURCES = \
@@ -363,7 +363,7 @@ if GLIBC_BACK_COMPAT
 libumkoin_util_a_SOURCES += compat/glibc_compat.cpp
 endif
 
-# cli: shared between umkoin-cli and bitcoin-qt
+# cli: shared between umkoin-cli and umkoin-qt
 libumkoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libumkoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_cli_a_SOURCES = \
@@ -418,14 +418,14 @@ bitcoin_cli_LDADD = \
 bitcoin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
-# bitcoin-tx binary #
-bitcoin_tx_SOURCES = bitcoin-tx.cpp
+# umkoin-tx binary #
+bitcoin_tx_SOURCES = umkoin-tx.cpp
 bitcoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 bitcoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 bitcoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-bitcoin_tx_SOURCES += bitcoin-tx-res.rc
+bitcoin_tx_SOURCES += umkoin-tx-res.rc
 endif
 
 bitcoin_tx_LDADD = \
@@ -481,12 +481,12 @@ CLEANFILES += obj/build.h
 EXTRA_DIST = $(CTAES_DIST)
 
 
-config/bitcoin-config.h: config/stamp-h1
+config/umkoin-config.h: config/stamp-h1
 	@$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-config/stamp-h1: $(top_srcdir)/$(subdir)/config/bitcoin-config.h.in $(top_builddir)/config.status
+config/stamp-h1: $(top_srcdir)/$(subdir)/config/umkoin-config.h.in $(top_builddir)/config.status
 	$(AM_V_at)$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-$(top_srcdir)/$(subdir)/config/bitcoin-config.h.in:  $(am__configure_deps)
-	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/bitcoin-config.h.in
+$(top_srcdir)/$(subdir)/config/umkoin-config.h.in:  $(am__configure_deps)
+	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/umkoin-config.h.in
 
 clean-local:
 	-$(MAKE) -C secp256k1 clean
