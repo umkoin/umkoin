@@ -1,10 +1,10 @@
 Bitcoin Core version *0.15.0.1* is now available from:
 
-  <https://bitcoin.org/bin/bitcoin-core-0.15.0.1/>
+  <https://bitcoin.org/bin/umkoin-core-0.15.0.1/>
 
 and
 
-  <https://bitcoincore.org/bin/bitcoin-core-0.15.0.1/>
+  <https://bitcoincore.org/bin/umkoin-core-0.15.0.1/>
 
 This is a minor bug fix for 0.15.0.
 

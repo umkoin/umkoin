@@ -26,7 +26,7 @@ Contains files used to package umkoind/umkoin-qt
 for Debian-based Linux systems. If you compile umkoind/umkoin-qt yourself, there are some useful files here.
 
 ### [Gitian-descriptors](/contrib/gitian-descriptors) ###
-Files used during the gitian build process. For more information about gitian, see the [the Bitcoin Core documentation repository](https://github.com/bitcoin-core/docs).
+Files used during the gitian build process. For more information about gitian, see the [the Bitcoin Core documentation repository](https://github.com/umkoin-core/docs).
 
 ### [Gitian-keys](/contrib/gitian-keys)
 PGP keys used for signing Bitcoin Core [Gitian release](/doc/release-process.md) results.

@@ -1,6 +1,6 @@
 Bitcoin Core version 0.14.0 is now available from:
 
-  <https://bitcoin.org/bin/bitcoin-core-0.14.0/>
+  <https://bitcoin.org/bin/umkoin-core-0.14.0/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements, as well as updated translations.
@@ -626,14 +626,14 @@ and git merge commit are mentioned.
 - #8680 `666eaf0` Address Travis spurious failures (theuni)
 - #8789 `e31a43c` pull-tester: Only print output when failed (MarcoFalke)
 - #8810 `14e8f99` tests: Add exception error message for JSONRPCException (laanwj)
-- #8830 `ef0801b` test: Add option to run bitcoin-util-test.py manually (jnewbery)
-- #8881 `e66cc1d` Add some verbose logging to bitcoin-util-test.py (jnewbery)
+- #8830 `ef0801b` test: Add option to run umkoin-util-test.py manually (jnewbery)
+- #8881 `e66cc1d` Add some verbose logging to umkoin-util-test.py (jnewbery)
 - #8922 `0329511` Send segwit-encoded blocktxn messages in p2p-compactblocks (TheBlueMatt)
 - #8873 `74dc388` Add microbenchmarks to profile more code paths (ryanofsky)
 - #9032 `6a8be7b` test: Add format-dependent comparison to bctest (laanwj)
-- #9023 `774db92` Add logging to bitcoin-util-test.py (jnewbery)
+- #9023 `774db92` Add logging to umkoin-util-test.py (jnewbery)
 - #9065 `c9bdf9a` Merge `doc/unit-tests.md` into `src/test/README.md` (laanwj)
-- #9069 `ed64bce` Clean up bctest.py and bitcoin-util-test.py (jnewbery)
+- #9069 `ed64bce` Clean up bctest.py and umkoin-util-test.py (jnewbery)
 - #9095 `b8f43e3` test: Fix test\_random includes (MarcoFalke)
 - #8894 `faec09b` Testing: Include fRelay in mininode version messages (jnewbery)
 - #9097 `e536499` Rework `sync_*` and preciousblock.py (MarcoFalke)

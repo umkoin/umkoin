@@ -273,7 +273,7 @@ multi-party transactions, and many other uses. Long term, the goal is to
 deprecate and remove "pure function" RPC API calls, as those do not require a
 server round-trip to execute.
 
-Other utilities "bitcoin-key" and "bitcoin-script" have been proposed, making
+Other utilities "umkoin-key" and "umkoin-script" have been proposed, making
 key and script operations easily accessible via command line.
 
 Mining and relay policy enhancements
@@ -624,7 +624,7 @@ Tests:
 Miscellaneous:
 - `122549f` Fix incorrect checkpoint data for testnet3
 - `5bd02cf` Log used config file to debug.log on startup
-- `68ba85f` Updated Debian example bitcoin.conf with config from wiki + removed some cruft and updated comments
+- `68ba85f` Updated Debian example umkoin.conf with config from wiki + removed some cruft and updated comments
 - `e5ee8f0` Remove -beta suffix
 - `38405ac` Add comment regarding experimental-use service bits
 - `be873f6` Issue warning if collecting RandSeed data failed

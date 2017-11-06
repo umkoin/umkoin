@@ -5,94 +5,94 @@
 bin_PROGRAMS += qt/umkoin-qt
 EXTRA_LIBRARIES += qt/libumkoinqt.a
 
-# bitcoin qt core #
+# umkoin qt core #
 QT_TS = \
-  qt/locale/bitcoin_af.ts \
-  qt/locale/bitcoin_af_ZA.ts \
-  qt/locale/bitcoin_ar.ts \
-  qt/locale/bitcoin_be_BY.ts \
-  qt/locale/bitcoin_bg_BG.ts \
-  qt/locale/bitcoin_bg.ts \
-  qt/locale/bitcoin_ca_ES.ts \
-  qt/locale/bitcoin_ca.ts \
-  qt/locale/bitcoin_ca@valencia.ts \
-  qt/locale/bitcoin_cs.ts \
-  qt/locale/bitcoin_cy.ts \
-  qt/locale/bitcoin_da.ts \
-  qt/locale/bitcoin_de.ts \
-  qt/locale/bitcoin_el_GR.ts \
-  qt/locale/bitcoin_el.ts \
-  qt/locale/bitcoin_en_GB.ts \
-  qt/locale/bitcoin_en.ts \
-  qt/locale/bitcoin_eo.ts \
-  qt/locale/bitcoin_es_AR.ts \
-  qt/locale/bitcoin_es_CL.ts \
-  qt/locale/bitcoin_es_CO.ts \
-  qt/locale/bitcoin_es_DO.ts \
-  qt/locale/bitcoin_es_ES.ts \
-  qt/locale/bitcoin_es_MX.ts \
-  qt/locale/bitcoin_es.ts \
-  qt/locale/bitcoin_es_UY.ts \
-  qt/locale/bitcoin_es_VE.ts \
-  qt/locale/bitcoin_et_EE.ts \
-  qt/locale/bitcoin_et.ts \
-  qt/locale/bitcoin_eu_ES.ts \
-  qt/locale/bitcoin_fa_IR.ts \
-  qt/locale/bitcoin_fa.ts \
-  qt/locale/bitcoin_fi.ts \
-  qt/locale/bitcoin_fr_CA.ts \
-  qt/locale/bitcoin_fr_FR.ts \
-  qt/locale/bitcoin_fr.ts \
-  qt/locale/bitcoin_gl.ts \
-  qt/locale/bitcoin_he.ts \
-  qt/locale/bitcoin_hi_IN.ts \
-  qt/locale/bitcoin_hr.ts \
-  qt/locale/bitcoin_hu.ts \
-  qt/locale/bitcoin_id_ID.ts \
-  qt/locale/bitcoin_it_IT.ts \
-  qt/locale/bitcoin_it.ts \
-  qt/locale/bitcoin_ja.ts \
-  qt/locale/bitcoin_ka.ts \
-  qt/locale/bitcoin_kk_KZ.ts \
-  qt/locale/bitcoin_ko_KR.ts \
-  qt/locale/bitcoin_ku_IQ.ts \
-  qt/locale/bitcoin_ky.ts \
-  qt/locale/bitcoin_la.ts \
-  qt/locale/bitcoin_lt.ts \
-  qt/locale/bitcoin_lv_LV.ts \
-  qt/locale/bitcoin_mk_MK.ts \
-  qt/locale/bitcoin_mn.ts \
-  qt/locale/bitcoin_ms_MY.ts \
-  qt/locale/bitcoin_nb.ts \
-  qt/locale/bitcoin_ne.ts \
-  qt/locale/bitcoin_nl.ts \
-  qt/locale/bitcoin_pam.ts \
-  qt/locale/bitcoin_pl.ts \
-  qt/locale/bitcoin_pt_BR.ts \
-  qt/locale/bitcoin_pt_PT.ts \
-  qt/locale/bitcoin_ro_RO.ts \
-  qt/locale/bitcoin_ro.ts \
-  qt/locale/bitcoin_ru_RU.ts \
-  qt/locale/bitcoin_ru.ts \
-  qt/locale/bitcoin_sk.ts \
-  qt/locale/bitcoin_sl_SI.ts \
-  qt/locale/bitcoin_sq.ts \
-  qt/locale/bitcoin_sr@latin.ts \
-  qt/locale/bitcoin_sr.ts \
-  qt/locale/bitcoin_sv.ts \
-  qt/locale/bitcoin_ta.ts \
-  qt/locale/bitcoin_th_TH.ts \
-  qt/locale/bitcoin_tr_TR.ts \
-  qt/locale/bitcoin_tr.ts \
-  qt/locale/bitcoin_uk.ts \
-  qt/locale/bitcoin_ur_PK.ts \
-  qt/locale/bitcoin_uz@Cyrl.ts \
-  qt/locale/bitcoin_vi.ts \
-  qt/locale/bitcoin_vi_VN.ts \
-  qt/locale/bitcoin_zh_CN.ts \
-  qt/locale/bitcoin_zh_HK.ts \
-  qt/locale/bitcoin_zh.ts \
-  qt/locale/bitcoin_zh_TW.ts
+  qt/locale/umkoin_af.ts \
+  qt/locale/umkoin_af_ZA.ts \
+  qt/locale/umkoin_ar.ts \
+  qt/locale/umkoin_be_BY.ts \
+  qt/locale/umkoin_bg_BG.ts \
+  qt/locale/umkoin_bg.ts \
+  qt/locale/umkoin_ca_ES.ts \
+  qt/locale/umkoin_ca.ts \
+  qt/locale/umkoin_ca@valencia.ts \
+  qt/locale/umkoin_cs.ts \
+  qt/locale/umkoin_cy.ts \
+  qt/locale/umkoin_da.ts \
+  qt/locale/umkoin_de.ts \
+  qt/locale/umkoin_el_GR.ts \
+  qt/locale/umkoin_el.ts \
+  qt/locale/umkoin_en_GB.ts \
+  qt/locale/umkoin_en.ts \
+  qt/locale/umkoin_eo.ts \
+  qt/locale/umkoin_es_AR.ts \
+  qt/locale/umkoin_es_CL.ts \
+  qt/locale/umkoin_es_CO.ts \
+  qt/locale/umkoin_es_DO.ts \
+  qt/locale/umkoin_es_ES.ts \
+  qt/locale/umkoin_es_MX.ts \
+  qt/locale/umkoin_es.ts \
+  qt/locale/umkoin_es_UY.ts \
+  qt/locale/umkoin_es_VE.ts \
+  qt/locale/umkoin_et_EE.ts \
+  qt/locale/umkoin_et.ts \
+  qt/locale/umkoin_eu_ES.ts \
+  qt/locale/umkoin_fa_IR.ts \
+  qt/locale/umkoin_fa.ts \
+  qt/locale/umkoin_fi.ts \
+  qt/locale/umkoin_fr_CA.ts \
+  qt/locale/umkoin_fr_FR.ts \
+  qt/locale/umkoin_fr.ts \
+  qt/locale/umkoin_gl.ts \
+  qt/locale/umkoin_he.ts \
+  qt/locale/umkoin_hi_IN.ts \
+  qt/locale/umkoin_hr.ts \
+  qt/locale/umkoin_hu.ts \
+  qt/locale/umkoin_id_ID.ts \
+  qt/locale/umkoin_it_IT.ts \
+  qt/locale/umkoin_it.ts \
+  qt/locale/umkoin_ja.ts \
+  qt/locale/umkoin_ka.ts \
+  qt/locale/umkoin_kk_KZ.ts \
+  qt/locale/umkoin_ko_KR.ts \
+  qt/locale/umkoin_ku_IQ.ts \
+  qt/locale/umkoin_ky.ts \
+  qt/locale/umkoin_la.ts \
+  qt/locale/umkoin_lt.ts \
+  qt/locale/umkoin_lv_LV.ts \
+  qt/locale/umkoin_mk_MK.ts \
+  qt/locale/umkoin_mn.ts \
+  qt/locale/umkoin_ms_MY.ts \
+  qt/locale/umkoin_nb.ts \
+  qt/locale/umkoin_ne.ts \
+  qt/locale/umkoin_nl.ts \
+  qt/locale/umkoin_pam.ts \
+  qt/locale/umkoin_pl.ts \
+  qt/locale/umkoin_pt_BR.ts \
+  qt/locale/umkoin_pt_PT.ts \
+  qt/locale/umkoin_ro_RO.ts \
+  qt/locale/umkoin_ro.ts \
+  qt/locale/umkoin_ru_RU.ts \
+  qt/locale/umkoin_ru.ts \
+  qt/locale/umkoin_sk.ts \
+  qt/locale/umkoin_sl_SI.ts \
+  qt/locale/umkoin_sq.ts \
+  qt/locale/umkoin_sr@latin.ts \
+  qt/locale/umkoin_sr.ts \
+  qt/locale/umkoin_sv.ts \
+  qt/locale/umkoin_ta.ts \
+  qt/locale/umkoin_th_TH.ts \
+  qt/locale/umkoin_tr_TR.ts \
+  qt/locale/umkoin_tr.ts \
+  qt/locale/umkoin_uk.ts \
+  qt/locale/umkoin_ur_PK.ts \
+  qt/locale/umkoin_uz@Cyrl.ts \
+  qt/locale/umkoin_vi.ts \
+  qt/locale/umkoin_vi_VN.ts \
+  qt/locale/umkoin_zh_CN.ts \
+  qt/locale/umkoin_zh_HK.ts \
+  qt/locale/umkoin_zh.ts \
+  qt/locale/umkoin_zh_TW.ts
 
 QT_FORMS_UI = \
   qt/forms/addressbookpage.ui \
@@ -118,10 +118,10 @@ QT_MOC_CPP = \
   qt/moc_addresstablemodel.cpp \
   qt/moc_askpassphrasedialog.cpp \
   qt/moc_bantablemodel.cpp \
-  qt/moc_bitcoinaddressvalidator.cpp \
-  qt/moc_bitcoinamountfield.cpp \
-  qt/moc_bitcoingui.cpp \
-  qt/moc_bitcoinunits.cpp \
+  qt/moc_umkoinaddressvalidator.cpp \
+  qt/moc_umkoinamountfield.cpp \
+  qt/moc_umkoingui.cpp \
+  qt/moc_umkoinunits.cpp \
   qt/moc_callback.cpp \
   qt/moc_clientmodel.cpp \
   qt/moc_coincontroldialog.cpp \
@@ -166,17 +166,17 @@ BITCOIN_MM = \
   qt/macnotificationhandler.mm
 
 QT_MOC = \
-  qt/bitcoin.moc \
-  qt/bitcoinamountfield.moc \
+  qt/umkoin.moc \
+  qt/umkoinamountfield.moc \
   qt/callback.moc \
   qt/intro.moc \
   qt/overviewpage.moc \
   qt/rpcconsole.moc
 
-QT_QRC_CPP = qt/qrc_bitcoin.cpp
-QT_QRC = qt/bitcoin.qrc
-QT_QRC_LOCALE_CPP = qt/qrc_bitcoin_locale.cpp
-QT_QRC_LOCALE = qt/bitcoin_locale.qrc
+QT_QRC_CPP = qt/qrc_umkoin.cpp
+QT_QRC = qt/umkoin.qrc
+QT_QRC_LOCALE_CPP = qt/qrc_umkoin_locale.cpp
+QT_QRC_LOCALE = qt/umkoin_locale.qrc
 
 PROTOBUF_CC = qt/paymentrequest.pb.cc
 PROTOBUF_H = qt/paymentrequest.pb.h
@@ -187,10 +187,10 @@ BITCOIN_QT_H = \
   qt/addresstablemodel.h \
   qt/askpassphrasedialog.h \
   qt/bantablemodel.h \
-  qt/bitcoinaddressvalidator.h \
-  qt/bitcoinamountfield.h \
-  qt/bitcoingui.h \
-  qt/bitcoinunits.h \
+  qt/umkoinaddressvalidator.h \
+  qt/umkoinamountfield.h \
+  qt/umkoingui.h \
+  qt/umkoinunits.h \
   qt/callback.h \
   qt/clientmodel.h \
   qt/coincontroldialog.h \
@@ -243,8 +243,8 @@ RES_ICONS = \
   qt/res/icons/about.png \
   qt/res/icons/about_qt.png \
   qt/res/icons/umkoin.ico \
-  qt/res/icons/bitcoin_testnet.ico \
-  qt/res/icons/bitcoin.png \
+  qt/res/icons/umkoin_testnet.ico \
+  qt/res/icons/umkoin.png \
   qt/res/icons/chevron.png \
   qt/res/icons/clock1.png \
   qt/res/icons/clock2.png \
@@ -296,10 +296,10 @@ RES_ICONS = \
 
 BITCOIN_QT_BASE_CPP = \
   qt/bantablemodel.cpp \
-  qt/bitcoinaddressvalidator.cpp \
-  qt/bitcoinamountfield.cpp \
-  qt/bitcoingui.cpp \
-  qt/bitcoinunits.cpp \
+  qt/umkoinaddressvalidator.cpp \
+  qt/umkoinamountfield.cpp \
+  qt/umkoingui.cpp \
+  qt/umkoinunits.cpp \
   qt/clientmodel.cpp \
   qt/csvmodelwriter.cpp \
   qt/guiutil.cpp \
@@ -382,7 +382,7 @@ QT_FORMS_H=$(join $(dir $(QT_FORMS_UI)),$(addprefix ui_, $(notdir $(QT_FORMS_UI:
 # Most files will depend on the forms and moc files as includes. Generate them
 # before anything else.
 $(QT_MOC): $(QT_FORMS_H)
-$(qt_libumkoinqt_a_OBJECTS) $(qt_bitcoin_qt_OBJECTS) : | $(QT_MOC)
+$(qt_libumkoinqt_a_OBJECTS) $(qt_umkoin_qt_OBJECTS) : | $(QT_MOC)
 
 #Generating these with a half-written protobuf header leads to wacky results.
 #This makes sure it's done.
@@ -390,63 +390,63 @@ $(QT_MOC): $(PROTOBUF_H)
 $(QT_MOC_CPP): $(PROTOBUF_H)
 
 # umkoin-qt binary #
-qt_bitcoin_qt_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
+qt_umkoin_qt_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
   $(QT_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
-qt_bitcoin_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
+qt_umkoin_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_bitcoin_qt_SOURCES = qt/bitcoin.cpp
+qt_umkoin_qt_SOURCES = qt/umkoin.cpp
 if TARGET_DARWIN
-  qt_bitcoin_qt_SOURCES += $(BITCOIN_MM)
+  qt_umkoin_qt_SOURCES += $(BITCOIN_MM)
 endif
 if TARGET_WINDOWS
-  qt_bitcoin_qt_SOURCES += $(BITCOIN_RC)
+  qt_umkoin_qt_SOURCES += $(BITCOIN_RC)
 endif
-qt_bitcoin_qt_LDADD = qt/libumkoinqt.a $(LIBBITCOIN_SERVER)
+qt_umkoin_qt_LDADD = qt/libumkoinqt.a $(LIBBITCOIN_SERVER)
 if ENABLE_WALLET
-qt_bitcoin_qt_LDADD += $(LIBBITCOIN_WALLET)
+qt_umkoin_qt_LDADD += $(LIBBITCOIN_WALLET)
 endif
 if ENABLE_ZMQ
-qt_bitcoin_qt_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
+qt_umkoin_qt_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
 endif
-qt_bitcoin_qt_LDADD += $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CONSENSUS) $(LIBBITCOIN_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
+qt_umkoin_qt_LDADD += $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CONSENSUS) $(LIBBITCOIN_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) \
   $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(PROTOBUF_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(LIBSECP256K1) \
   $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
-qt_bitcoin_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-qt_bitcoin_qt_LIBTOOLFLAGS = --tag CXX
+qt_umkoin_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+qt_umkoin_qt_LIBTOOLFLAGS = --tag CXX
 
 #locale/foo.ts -> locale/foo.qm
 QT_QM=$(QT_TS:.ts=.qm)
 
 SECONDARY: $(QT_QM)
 
-$(srcdir)/qt/bitcoinstrings.cpp: $(libumkoin_server_a_SOURCES) $(libumkoin_wallet_a_SOURCES) $(libumkoin_common_a_SOURCES) $(libumkoin_zmq_a_SOURCES) $(libumkoin_consensus_a_SOURCES) $(libumkoin_util_a_SOURCES)
+$(srcdir)/qt/umkoinstrings.cpp: $(libumkoin_server_a_SOURCES) $(libumkoin_wallet_a_SOURCES) $(libumkoin_common_a_SOURCES) $(libumkoin_zmq_a_SOURCES) $(libumkoin_consensus_a_SOURCES) $(libumkoin_util_a_SOURCES)
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
 	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) PACKAGE_NAME="$(PACKAGE_NAME)" COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" COPYRIGHT_HOLDERS_SUBSTITUTION="$(COPYRIGHT_HOLDERS_SUBSTITUTION)" $(PYTHON) ../share/qt/extract_strings_qt.py $^
 
-translate: $(srcdir)/qt/bitcoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(BITCOIN_QT_BASE_CPP) qt/bitcoin.cpp $(BITCOIN_QT_WINDOWS_CPP) $(BITCOIN_QT_WALLET_CPP) $(BITCOIN_QT_H) $(BITCOIN_MM)
+translate: $(srcdir)/qt/umkoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(BITCOIN_QT_BASE_CPP) qt/umkoin.cpp $(BITCOIN_QT_WINDOWS_CPP) $(BITCOIN_QT_WALLET_CPP) $(BITCOIN_QT_H) $(BITCOIN_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/bitcoin_en.ts
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts $(srcdir)/qt/locale/umkoin_en.ts
 
 $(QT_QRC_LOCALE_CPP): $(QT_QRC_LOCALE) $(QT_QM)
 	@test -f $(RCC)
 	@cp -f $< $(@D)/temp_$(<F)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name bitcoin_locale $(@D)/temp_$(<F) | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name umkoin_locale $(@D)/temp_$(<F) | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 	@rm $(@D)/temp_$(<F)
 
 $(QT_QRC_CPP): $(QT_QRC) $(QT_FORMS_H) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES) $(PROTOBUF_H)
 	@test -f $(RCC)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name bitcoin $< | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name umkoin $< | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 
 CLEAN_QT = $(nodist_qt_libumkoinqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno
 
 CLEANFILES += $(CLEAN_QT)
 
-bitcoin_qt_clean: FORCE
-	rm -f $(CLEAN_QT) $(qt_libumkoinqt_a_OBJECTS) $(qt_bitcoin_qt_OBJECTS) qt/umkoin-qt$(EXEEXT) $(LIBBITCOINQT)
+umkoin_qt_clean: FORCE
+	rm -f $(CLEAN_QT) $(qt_libumkoinqt_a_OBJECTS) $(qt_umkoin_qt_OBJECTS) qt/umkoin-qt$(EXEEXT) $(LIBBITCOINQT)
 
-bitcoin_qt : qt/umkoin-qt$(EXEEXT)
+umkoin_qt : qt/umkoin-qt$(EXEEXT)
 
 ui_%.h: %.ui
 	@test -f $(UIC)

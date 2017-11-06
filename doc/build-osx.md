@@ -29,14 +29,14 @@ NOTE: Building with Qt4 is still supported, however, could result in a broken UI
 Build Bitcoin Core
 ------------------------
 
-1. Clone the bitcoin source code and cd into `bitcoin`
+1. Clone the umkoin source code and cd into `umkoin`
 
-        git clone https://github.com/bitcoin/bitcoin
-        cd bitcoin
+        git clone https://github.com/umkoin/umkoin
+        cd umkoin
 
-2.  Build bitcoin-core:
+2.  Build umkoin-core:
 
-    Configure and build the headless bitcoin binaries as well as the GUI (if Qt is found).
+    Configure and build the headless umkoin binaries as well as the GUI (if Qt is found).
 
     You can disable the GUI build by passing `--without-gui` to configure.
 
@@ -59,9 +59,9 @@ Bitcoin Core is now available at `./src/umkoind`
 
 Before running, it's recommended you create an RPC configuration file.
 
-    echo -e "rpcuser=bitcoinrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Bitcoin/bitcoin.conf"
+    echo -e "rpcuser=umkoinrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Bitcoin/umkoin.conf"
 
-    chmod 600 "/Users/${USER}/Library/Application Support/Bitcoin/bitcoin.conf"
+    chmod 600 "/Users/${USER}/Library/Application Support/Bitcoin/umkoin.conf"
 
 The first time you run umkoind, it will start downloading the blockchain. This process could take several hours.
 
@@ -72,13 +72,13 @@ You can monitor the download process by looking at the debug.log file:
 Other commands:
 -------
 
-    ./src/umkoind -daemon # Starts the bitcoin daemon.
+    ./src/umkoind -daemon # Starts the umkoin daemon.
     ./src/umkoin-cli --help # Outputs a list of command-line options.
     ./src/umkoin-cli help # Outputs a list of RPC commands when the daemon is running.
 
 Using Qt Creator as IDE
 ------------------------
-You can use Qt Creator as an IDE, for bitcoin development.
+You can use Qt Creator as an IDE, for umkoin development.
 Download and install the community edition of [Qt Creator](https://www.qt.io/download/).
 Uncheck everything except Qt Creator during the installation process.
 
@@ -98,4 +98,4 @@ Notes
 
 * Tested on OS X 10.8 through 10.12 on 64-bit Intel processors only.
 
-* Building with downloaded Qt binaries is not officially supported. See the notes in [#7714](https://github.com/bitcoin/bitcoin/issues/7714)
+* Building with downloaded Qt binaries is not officially supported. See the notes in [#7714](https://github.com/umkoin/umkoin/issues/7714)

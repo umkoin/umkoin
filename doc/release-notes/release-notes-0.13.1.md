@@ -1,6 +1,6 @@
 Bitcoin Core version 0.13.1 is now available from:
 
-  <https://bitcoin.org/bin/bitcoin-core-0.13.1/>
+  <https://bitcoin.org/bin/umkoin-core-0.13.1/>
 
 This is a new minor version release, including activation parameters for the
 segwit softfork, various bugfixes and performance improvements, as well as
@@ -281,7 +281,7 @@ git merge commit are mentioned.
 
 ### Build system
 - #8293 `fa5b249` Allow building libumkoinconsensus without any univalue (luke-jr)
-- #8492 `8b0bdd3` Allow building bench_bitcoin by itself (luke-jr)
+- #8492 `8b0bdd3` Allow building bench_umkoin by itself (luke-jr)
 - #8563 `147003c` Add configure check for -latomic (ajtowns)
 - #8626 `ea51b0f` Berkeley DB v6 compatibility fix (netsafe)
 - #8520 `75f2065` Remove check for `openssl/ec.h` (laanwj)
@@ -323,7 +323,7 @@ git merge commit are mentioned.
 - #8829 `2a8bca4` Add umkoin-tx JSON tests (jnewbery)
 - #8834 `1dd1783` blockstore: Switch to dumb dbm (MarcoFalke)
 - #8835 `d87227d` nulldummy.py: Don't run unused code (MarcoFalke)
-- #8836 `eb18cc1` bitcoin-util-test.py should fail if the output file is empty (jnewbery)
+- #8836 `eb18cc1` umkoin-util-test.py should fail if the output file is empty (jnewbery)
 - #8839 `31ab2f8` Avoid ConnectionResetErrors during RPC tests (laanwj)
 - #8840 `cbc3fe5` Explicitly set encoding to utf8 when opening text files (laanwj)
 - #8841 `3e4abb5` Fix nulldummy test (jl2012)

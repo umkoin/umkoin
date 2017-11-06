@@ -1,6 +1,6 @@
 Bitcoin Core version 0.14.2 is now available from:
 
-  <https://bitcoin.org/bin/bitcoin-core-0.14.2/>
+  <https://bitcoin.org/bin/umkoin-core-0.14.2/>
 
 This is a new minor version release, including various bugfixes and
 performance improvements, as well as updated translations.

@@ -1,6 +1,6 @@
 Bitcoin Core version 0.12.0 is now available from:
 
-  <https://bitcoin.org/bin/bitcoin-core-0.12.0/>
+  <https://bitcoin.org/bin/umkoin-core-0.12.0/>
 
 This is a new major version release, bringing new features and other improvements.
 
@@ -61,7 +61,7 @@ Signature validation using libsecp256k1
 ---------------------------------------
 
 ECDSA signatures inside Bitcoin transactions now use validation using
-[libsecp256k1](https://github.com/bitcoin-core/secp256k1) instead of OpenSSL.
+[libsecp256k1](https://github.com/umkoin-core/secp256k1) instead of OpenSSL.
 
 Depending on the platform, this means a significant speedup for raw signature
 validation speed. The advantage is largest on x86_64, where validation is over
@@ -320,7 +320,7 @@ However, rescans as well as the RPCs `importwallet`, `importaddress`,
 `importprivkey` are disabled.
 
 To enable block pruning set `prune=<N>` on the command line or in
-`bitcoin.conf`, where `N` is the number of MiB to allot for
+`umkoin.conf`, where `N` is the number of MiB to allot for
 raw block & undo data.
 
 A value of 0 disables pruning. The minimal value above 0 is 550. Your

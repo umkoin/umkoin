@@ -1,5 +1,5 @@
 Bitcoin version 0.7.0 is now available for download at:
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/bitcoin-0.7.0/
+  http://sourceforge.net/projects/bitcoin/files/Bitcoin/umkoin-0.7.0/
 
 We recommend that everybody running prior versions of umkoind/Umkoin-Qt
 upgrade to this release, except for users running Mac OSX 10.5.

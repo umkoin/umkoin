@@ -13,7 +13,7 @@ can be found in the contrib/init folder.
 Service User
 ---------------------------------
 
-All three Linux startup configurations assume the existence of a "bitcoin" user
+All three Linux startup configurations assume the existence of a "umkoin" user
 and group.  They must be created before attempting to use these scripts.
 The OS X configuration assumes umkoind will be set up for the current user.
 
@@ -44,7 +44,7 @@ This allows for running umkoind without having to do any manual configuration.
 relative to the data directory. `wallet` *only* supports relative paths.
 
 For an example configuration file that describes the configuration settings,
-see `contrib/debian/examples/bitcoin.conf`.
+see `contrib/debian/examples/umkoin.conf`.
 
 Paths
 ---------------------------------
@@ -54,21 +54,21 @@ Paths
 All three configurations assume several paths that might need to be adjusted.
 
 Binary:              `/usr/bin/umkoind`  
-Configuration file:  `/etc/bitcoin/bitcoin.conf`  
+Configuration file:  `/etc/umkoin/umkoin.conf`  
 Data directory:      `/var/lib/umkoind`  
 PID file:            `/var/run/umkoind/umkoind.pid` (OpenRC and Upstart) or `/var/lib/umkoind/umkoind.pid` (systemd)  
 Lock file:           `/var/lock/subsys/umkoind` (CentOS)  
 
 The configuration file, PID directory (if applicable) and data directory
-should all be owned by the bitcoin user and group.  It is advised for security
+should all be owned by the umkoin user and group.  It is advised for security
 reasons to make the configuration file and data directory only readable by the
-bitcoin user and group.  Access to umkoin-cli and other umkoind rpc clients
+umkoin user and group.  Access to umkoin-cli and other umkoind rpc clients
 can then be controlled by group membership.
 
 ### Mac OS X
 
 Binary:              `/usr/local/bin/umkoind`  
-Configuration file:  `~/Library/Application Support/Bitcoin/bitcoin.conf`  
+Configuration file:  `~/Library/Application Support/Bitcoin/umkoin.conf`  
 Data directory:      `~/Library/Application Support/Bitcoin`  
 Lock file:           `~/Library/Application Support/Bitcoin/.lock`  
 
@@ -109,14 +109,14 @@ setting the BITCOIND and FLAGS environment variables in the file
 
 ### Mac OS X
 
-Copy org.bitcoin.umkoind.plist into ~/Library/LaunchAgents. Load the launch agent by
-running `launchctl load ~/Library/LaunchAgents/org.bitcoin.umkoind.plist`.
+Copy org.umkoin.umkoind.plist into ~/Library/LaunchAgents. Load the launch agent by
+running `launchctl load ~/Library/LaunchAgents/org.umkoin.umkoind.plist`.
 
 This Launch Agent will cause umkoind to start whenever the user logs in.
 
 NOTE: This approach is intended for those wanting to run umkoind as the current user.
-You will need to modify org.bitcoin.umkoind.plist if you intend to use it as a
-Launch Daemon with a dedicated bitcoin user.
+You will need to modify org.umkoin.umkoind.plist if you intend to use it as a
+Launch Daemon with a dedicated umkoin user.
 
 Auto-respawn
 -----------------------------------

@@ -5,7 +5,7 @@ Upstart: umkoind.conf
 OpenRC:  umkoind.openrc
          umkoind.openrcconf
 CentOS:  umkoind.init
-OS X:    org.bitcoin.umkoind.plist
+OS X:    org.umkoin.umkoind.plist
 ```
 have been made available to assist packagers in creating node packages here.
 

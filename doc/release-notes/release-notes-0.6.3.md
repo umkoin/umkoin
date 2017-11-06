@@ -1,5 +1,5 @@
 Bitcoin version 0.6.3 is now available for download at:
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/bitcoin-0.6.3/
+  http://sourceforge.net/projects/bitcoin/files/Bitcoin/umkoin-0.6.3/
 
 This is a bug-fix release, with no new features.
 

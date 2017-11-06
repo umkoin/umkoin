@@ -1,6 +1,6 @@
 Bitcoin Core version 0.13.0 is now available from:
 
-  <https://bitcoin.org/bin/bitcoin-core-0.13.0/>
+  <https://bitcoin.org/bin/umkoin-core-0.13.0/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements, as well as updated translations.
@@ -48,7 +48,7 @@ For this reason the default was changed to 300 MiB in this release.
 For nodes on low-memory systems, the database cache can be changed back to
 100 MiB (or to another value) by either:
 
-- Adding `dbcache=100` in bitcoin.conf
+- Adding `dbcache=100` in umkoin.conf
 - Changing it in the GUI under `Options → Size of database cache`
 
 Note that the database cache setting has the most performance impact

@@ -1,6 +1,6 @@
 Bitcoin Core version *0.15.0* is now available from:
 
-  <https://bitcoin.org/bin/bitcoin-core-0.15.0/>
+  <https://bitcoin.org/bin/umkoin-core-0.15.0/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements, as well as updated translations.
@@ -596,7 +596,7 @@ Low-level RPC changes
 - #10152 `080d7c7` [trivial] remove unused line in Travis config (jnewbery)
 - #10159 `df1ca9e` [tests] color test results and sort alphabetically (jnewbery)
 - #10124 `88799ea` [test] Suppress test logging spam (jnewbery)
-- #10142 `ed09dd3` Run bitcoin_test-qt under minimal QPA platform (ryanofsky)
+- #10142 `ed09dd3` Run umkoin_test-qt under minimal QPA platform (ryanofsky)
 - #9949 `a27dbc5` [bench] Avoid function call arguments which are pointers to uninitialized values (practicalswift)
 - #10187 `b44adf9` tests: Fix test_runner return value in case of skipped test (laanwj)
 - #10197 `d86bb07` [tests] Functional test warnings (jnewbery)
@@ -694,7 +694,7 @@ Low-level RPC changes
 - #9734 `0c17afc` Add updating of chainTxData to release process (sipa)
 - #10063 `530fcbd` add missing spaces so that markdown recognizes headline (flack)
 - #10085 `db1ae54` Docs: remove 'noconnect' option (jlopp)
-- #10090 `8e4f7e7` Update bitcoin.conf with example for pruning (coinables)
+- #10090 `8e4f7e7` Update umkoin.conf with example for pruning (coinables)
 - #9424 `1a5aaab` Change LogAcceptCategory to use uint32_t rather than sets of strings (gmaxwell)
 - #10036 `fbf36ca` Fix init README format to render correctly on github (jlopp)
 - #10058 `a2cd0b0` No need to use OpenSSL malloc/free (tjps)

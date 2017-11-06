@@ -9,7 +9,7 @@ Group=bitcoin
 Type=forking
 PIDFile=/var/lib/umkoind/umkoind.pid
 ExecStart=/usr/bin/umkoind -daemon -pid=/var/lib/umkoind/umkoind.pid \
--conf=/etc/bitcoin/bitcoin.conf -datadir=/var/lib/umkoind -disablewallet
+-conf=/etc/umkoin/umkoin.conf -datadir=/var/lib/umkoind -disablewallet
 
 Restart=always
 PrivateTmp=true

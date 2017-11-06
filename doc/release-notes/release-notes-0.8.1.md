@@ -1,5 +1,5 @@
 Umkoin-Qt/umkoind version 0.8.1 is now available from:
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/bitcoin-0.8.1/
+  http://sourceforge.net/projects/bitcoin/files/Bitcoin/umkoin-0.8.1/
 
 This is a maintenance release that adds a new network rule to avoid
 a chain-forking incompatibility with versions 0.7.2 and earlier.

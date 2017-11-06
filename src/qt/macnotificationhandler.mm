@@ -13,7 +13,7 @@
 - (NSString *)__bundleIdentifier
 {
     if (self == [NSBundle mainBundle]) {
-        return @"org.bitcoinfoundation.Umkoin-Qt";
+        return @"org.umkoinfoundation.Umkoin-Qt";
     } else {
         return [self __bundleIdentifier];
     }

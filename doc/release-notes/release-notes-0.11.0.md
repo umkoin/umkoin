@@ -1,6 +1,6 @@
 Bitcoin Core version 0.11.0 is now available from:
 
-  <https://bitcoin.org/bin/bitcoin-core-0.11.0/>
+  <https://bitcoin.org/bin/umkoin-core-0.11.0/>
 
 This is a new major version release, bringing both new features and
 bug fixes.
@@ -67,7 +67,7 @@ free transactions (with enough priority) will be accepted. It defaults to 15.
 Reducing this number reduces the speed at which the mempool can grow due
 to free transactions.
 
-For example, add the following to `bitcoin.conf`:
+For example, add the following to `umkoin.conf`:
 
     minrelaytxfee=0.00005 
     limitfreerelay=5
@@ -192,7 +192,7 @@ transaction (re)broadcast:
 One such application is selective Tor usage, where the node runs on the normal
 internet but transactions are broadcasted over Tor.
 
-For an example script see [bitcoin-submittx](https://github.com/laanwj/bitcoin-submittx).
+For an example script see [bitcoin-submittx](https://github.com/laanwj/umkoin-submittx).
 
 Privacy: Stream isolation for Tor
 ----------------------------------

@@ -1,5 +1,5 @@
 Umkoin-Qt version 0.8.0 is now available from:
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/bitcoin-0.8.0/
+  http://sourceforge.net/projects/bitcoin/files/Bitcoin/umkoin-0.8.0/
 
 This is a major release designed to improve performance and handle the
 increasing volume of transactions on the network.
@@ -61,7 +61,7 @@ contrib/spendfrom is a python-language command-line utility that demonstrates
 how to use the "raw transactions" JSON-RPC api to send coins received from particular
 addresses (also known as "coin control").
 
-New/changed settings (command-line or bitcoin.conf file)
+New/changed settings (command-line or umkoin.conf file)
 --------------------------------------------------------
 
 dbcache : controls LevelDB memory usage.

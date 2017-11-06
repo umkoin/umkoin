@@ -4,7 +4,7 @@
 
 #include "walletframe.h"
 
-#include "bitcoingui.h"
+#include "umkoingui.h"
 #include "walletview.h"
 
 #include <cassert>
