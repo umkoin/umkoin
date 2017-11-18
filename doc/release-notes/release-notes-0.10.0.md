@@ -247,7 +247,7 @@ Standard script rules relaxed for P2SH addresses
 The IsStandard() rules have been almost completely removed for P2SH
 redemption scripts, allowing applications to make use of any valid
 script type, such as "n-of-m OR y", hash-locked oracle addresses, etc.
-While the Bitcoin protocol has always supported these types of script,
+While the Umkoin protocol has always supported these types of script,
 actually using them on mainnet has been previously inconvenient as
 standard Bitcoin Core nodes wouldn't relay them to miners, nor would
 most miners include them in blocks they mined.

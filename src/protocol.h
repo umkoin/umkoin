@@ -7,8 +7,8 @@
 #error This header can only be compiled as C++.
 #endif
 
-#ifndef BITCOIN_PROTOCOL_H
-#define BITCOIN_PROTOCOL_H
+#ifndef UMKOIN_PROTOCOL_H
+#define UMKOIN_PROTOCOL_H
 
 #include "netaddress.h"
 #include "serialize.h"
@@ -63,7 +63,7 @@ public:
 };
 
 /**
- * Bitcoin protocol message types. When adding new message types, don't forget
+ * Umkoin protocol message types. When adding new message types, don't forget
  * to update allNetMessageTypes in protocol.cpp.
  */
 namespace NetMsgType {
@@ -398,4 +398,4 @@ public:
     uint256 hash;
 };
 
-#endif // BITCOIN_PROTOCOL_H
+#endif // UMKOIN_PROTOCOL_H
