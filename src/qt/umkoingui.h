@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_BITCOINGUI_H
-#define BITCOIN_QT_BITCOINGUI_H
+#ifndef UMKOIN_QT_UMKOINGUI_H
+#define UMKOIN_QT_UMKOINGUI_H
 
 #if defined(HAVE_CONFIG_H)
 #include "config/umkoin-config.h"
@@ -272,4 +272,4 @@ private Q_SLOTS:
     void onMenuSelection(QAction* action);
 };
 
-#endif // BITCOIN_QT_BITCOINGUI_H
+#endif // UMKOIN_QT_UMKOINGUI_H

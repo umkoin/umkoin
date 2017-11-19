@@ -31,14 +31,14 @@ bench_bench_umkoin_SOURCES = \
 
 nodist_bench_bench_umkoin_SOURCES = $(GENERATED_BENCH_FILES)
 
-bench_bench_umkoin_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CLFAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
+bench_bench_umkoin_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(EVENT_CLFAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
 bench_bench_umkoin_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 bench_bench_umkoin_LDADD = \
-  $(LIBBITCOIN_SERVER) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBUMKOIN_SERVER) \
+  $(LIBUMKOIN_COMMON) \
+  $(LIBUMKOIN_UTIL) \
+  $(LIBUMKOIN_CONSENSUS) \
+  $(LIBUMKOIN_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
@@ -46,20 +46,20 @@ bench_bench_umkoin_LDADD = \
   $(LIBUNIVALUE)
 
 if ENABLE_ZMQ
-bench_bench_umkoin_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
+bench_bench_umkoin_LDADD += $(LIBUMKOIN_ZMQ) $(ZMQ_LIBS)
 endif
 
 if ENABLE_WALLET
 bench_bench_umkoin_SOURCES += bench/coin_selection.cpp
-bench_bench_umkoin_LDADD += $(LIBBITCOIN_WALLET) $(LIBBITCOIN_CRYPTO)
+bench_bench_umkoin_LDADD += $(LIBUMKOIN_WALLET) $(LIBUMKOIN_CRYPTO)
 endif
 
 bench_bench_umkoin_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
 bench_bench_umkoin_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
-CLEAN_BITCOIN_BENCH = bench/*.gcda bench/*.gcno $(GENERATED_BENCH_FILES)
+CLEAN_UMKOIN_BENCH = bench/*.gcda bench/*.gcno $(GENERATED_BENCH_FILES)
 
-CLEANFILES += $(CLEAN_BITCOIN_BENCH)
+CLEANFILES += $(CLEAN_UMKOIN_BENCH)
 
 bench/checkblock.cpp: bench/data/block413567.raw.h
 
@@ -69,7 +69,7 @@ bench: $(BENCH_BINARY) FORCE
 	$(BENCH_BINARY)
 
 umkoin_bench_clean : FORCE
-	rm -f $(CLEAN_BITCOIN_BENCH) $(bench_bench_umkoin_OBJECTS) $(BENCH_BINARY)
+	rm -f $(CLEAN_UMKOIN_BENCH) $(bench_bench_umkoin_OBJECTS) $(BENCH_BINARY)
 
 %.raw.h: %.raw
 	@$(MKDIR_P) $(@D)

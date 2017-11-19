@@ -543,7 +543,7 @@ WId BitcoinApplication::getMainWinId() const
     return window->winId();
 }
 
-#ifndef BITCOIN_QT_TEST
+#ifndef UMKOIN_QT_TEST
 int main(int argc, char *argv[])
 {
     SetupEnvironment();
@@ -627,7 +627,7 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
     try {
-        gArgs.ReadConfigFile(gArgs.GetArg("-conf", BITCOIN_CONF_FILENAME));
+        gArgs.ReadConfigFile(gArgs.GetArg("-conf", UMKOIN_CONF_FILENAME));
     } catch (const std::exception& e) {
         QMessageBox::critical(0, QObject::tr(PACKAGE_NAME),
                               QObject::tr("Error: Cannot parse configuration file: %1. Only use key=value syntax.").arg(e.what()));
@@ -728,4 +728,4 @@ int main(int argc, char *argv[])
     }
     return rv;
 }
-#endif // BITCOIN_QT_TEST
+#endif // UMKOIN_QT_TEST

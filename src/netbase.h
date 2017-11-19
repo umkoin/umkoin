@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_NETBASE_H
-#define BITCOIN_NETBASE_H
+#ifndef UMKOIN_NETBASE_H
+#define UMKOIN_NETBASE_H
 
 #if defined(HAVE_CONFIG_H)
 #include "config/umkoin-config.h"
@@ -67,4 +67,4 @@ bool SetSocketNoDelay(const SOCKET& hSocket);
 struct timeval MillisToTimeval(int64_t nTimeout);
 void InterruptSocks5(bool interrupt);
 
-#endif // BITCOIN_NETBASE_H
+#endif // UMKOIN_NETBASE_H

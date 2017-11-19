@@ -208,7 +208,7 @@ def main():
 
     enable_wallet = config["components"].getboolean("ENABLE_WALLET")
     enable_utils = config["components"].getboolean("ENABLE_UTILS")
-    enable_umkoind = config["components"].getboolean("ENABLE_BITCOIND")
+    enable_umkoind = config["components"].getboolean("ENABLE_UMKOIND")
 
     if config["environment"]["EXEEXT"] == ".exe" and not args.force:
         # https://github.com/bitcoin/bitcoin/commit/d52802551752140cf41f0d9a225a43e84404d3e9

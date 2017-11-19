@@ -18,28 +18,28 @@ else
 LIBUNIVALUE = $(UNIVALUE_LIBS)
 endif
 
-BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
+UMKOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
-BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
-BITCOIN_INCLUDES += $(UNIVALUE_CFLAGS)
+UMKOIN_INCLUDES += -I$(srcdir)/secp256k1/include
+UMKOIN_INCLUDES += $(UNIVALUE_CFLAGS)
 
-LIBBITCOIN_SERVER=libumkoin_server.a
-LIBBITCOIN_COMMON=libumkoin_common.a
-LIBBITCOIN_CONSENSUS=libumkoin_consensus.a
-LIBBITCOIN_CLI=libumkoin_cli.a
-LIBBITCOIN_UTIL=libumkoin_util.a
-LIBBITCOIN_CRYPTO=crypto/libumkoin_crypto.a
+LIBUMKOIN_SERVER=libumkoin_server.a
+LIBUMKOIN_COMMON=libumkoin_common.a
+LIBUMKOIN_CONSENSUS=libumkoin_consensus.a
+LIBUMKOIN_CLI=libumkoin_cli.a
+LIBUMKOIN_UTIL=libumkoin_util.a
+LIBUMKOIN_CRYPTO=crypto/libumkoin_crypto.a
 LIBBITCOINQT=qt/libumkoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
 if ENABLE_ZMQ
-LIBBITCOIN_ZMQ=libumkoin_zmq.a
+LIBUMKOIN_ZMQ=libumkoin_zmq.a
 endif
-if BUILD_BITCOIN_LIBS
+if BUILD_UMKOIN_LIBS
 LIBBITCOINCONSENSUS=libumkoinconsensus.la
 endif
 if ENABLE_WALLET
-LIBBITCOIN_WALLET=libumkoin_wallet.a
+LIBUMKOIN_WALLET=libumkoin_wallet.a
 endif
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
@@ -48,14 +48,14 @@ $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
-  $(LIBBITCOIN_CRYPTO) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_SERVER) \
-  $(LIBBITCOIN_CLI) \
-  $(LIBBITCOIN_WALLET) \
-  $(LIBBITCOIN_ZMQ)
+  $(LIBUMKOIN_CRYPTO) \
+  $(LIBUMKOIN_UTIL) \
+  $(LIBUMKOIN_COMMON) \
+  $(LIBUMKOIN_CONSENSUS) \
+  $(LIBUMKOIN_SERVER) \
+  $(LIBUMKOIN_CLI) \
+  $(LIBUMKOIN_WALLET) \
+  $(LIBUMKOIN_ZMQ)
 
 lib_LTLIBRARIES = $(LIBBITCOINCONSENSUS)
 
@@ -64,17 +64,17 @@ noinst_PROGRAMS =
 TESTS =
 BENCHMARKS =
 
-if BUILD_BITCOIND
+if BUILD_UMKOIND
   bin_PROGRAMS += umkoind
 endif
 
-if BUILD_BITCOIN_UTILS
+if BUILD_UMKOIN_UTILS
   bin_PROGRAMS += umkoin-cli umkoin-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
 # umkoin core #
-BITCOIN_CORE_H = \
+UMKOIN_CORE_H = \
   addrdb.h \
   addrman.h \
   base58.h \
@@ -182,7 +182,7 @@ obj/build.h: FORCE
 libumkoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
 # server: shared between umkoind and umkoin-qt
-libumkoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libumkoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libumkoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_server_a_SOURCES = \
   addrdb.cpp \
@@ -223,10 +223,10 @@ libumkoin_server_a_SOURCES = \
   validation.cpp \
   validationinterface.cpp \
   versionbits.cpp \
-  $(BITCOIN_CORE_H)
+  $(UMKOIN_CORE_H)
 
 if ENABLE_ZMQ
-libumkoin_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
+libumkoin_zmq_a_CPPFLAGS = $(UMKOIN_INCLUDES) $(ZMQ_CFLAGS)
 libumkoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
@@ -237,7 +237,7 @@ endif
 
 # wallet: shared between umkoind and umkoin-qt, but only linked
 # when wallet enabled
-libumkoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libumkoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_wallet_a_SOURCES = \
   wallet/crypter.cpp \
@@ -249,7 +249,7 @@ libumkoin_wallet_a_SOURCES = \
   wallet/rpcwallet.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
-  $(BITCOIN_CORE_H)
+  $(UMKOIN_CORE_H)
 
 # crypto primitives library
 crypto_libumkoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS)
@@ -278,7 +278,7 @@ crypto_libumkoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
 endif
 
 # consensus: shared between all executables that validate any consensus rules.
-libumkoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libumkoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_consensus_a_SOURCES = \
   amount.h \
@@ -313,7 +313,7 @@ libumkoin_consensus_a_SOURCES = \
   version.h
 
 # common: shared between umkoind, and umkoin-qt and non-server tools
-libumkoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libumkoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_common_a_SOURCES = \
   base58.cpp \
@@ -333,12 +333,12 @@ libumkoin_common_a_SOURCES = \
   script/sign.cpp \
   script/standard.cpp \
   warnings.cpp \
-  $(BITCOIN_CORE_H)
+  $(UMKOIN_CORE_H)
 
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libumkoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libumkoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_util_a_SOURCES = \
   support/lockedpool.cpp \
@@ -357,25 +357,25 @@ libumkoin_util_a_SOURCES = \
   utilmoneystr.cpp \
   utilstrencodings.cpp \
   utiltime.cpp \
-  $(BITCOIN_CORE_H)
+  $(UMKOIN_CORE_H)
 
 if GLIBC_BACK_COMPAT
 libumkoin_util_a_SOURCES += compat/glibc_compat.cpp
 endif
 
 # cli: shared between umkoin-cli and umkoin-qt
-libumkoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+libumkoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_cli_a_SOURCES = \
   rpc/client.cpp \
-  $(BITCOIN_CORE_H)
+  $(UMKOIN_CORE_H)
 
 nodist_libumkoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # umkoind binary #
 umkoind_SOURCES = umkoind.cpp
-umkoind_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+umkoind_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 umkoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 umkoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
@@ -384,14 +384,14 @@ umkoind_SOURCES += umkoind-res.rc
 endif
 
 umkoind_LDADD = \
-  $(LIBBITCOIN_SERVER) \
-  $(LIBBITCOIN_COMMON) \
+  $(LIBUMKOIN_SERVER) \
+  $(LIBUMKOIN_COMMON) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_WALLET) \
-  $(LIBBITCOIN_ZMQ) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBUMKOIN_UTIL) \
+  $(LIBUMKOIN_WALLET) \
+  $(LIBUMKOIN_ZMQ) \
+  $(LIBUMKOIN_CONSENSUS) \
+  $(LIBUMKOIN_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
@@ -401,7 +401,7 @@ umkoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNP
 
 # umkoin-cli binary #
 umkoin_cli_SOURCES = umkoin-cli.cpp
-umkoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+umkoin_cli_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(EVENT_CFLAGS)
 umkoin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 umkoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
@@ -410,17 +410,17 @@ umkoin_cli_SOURCES += umkoin-cli-res.rc
 endif
 
 umkoin_cli_LDADD = \
-  $(LIBBITCOIN_CLI) \
+  $(LIBUMKOIN_CLI) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CRYPTO)
+  $(LIBUMKOIN_UTIL) \
+  $(LIBUMKOIN_CRYPTO)
 
 umkoin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
 # umkoin-tx binary #
 umkoin_tx_SOURCES = umkoin-tx.cpp
-umkoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+umkoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 umkoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 umkoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
@@ -430,17 +430,17 @@ endif
 
 umkoin_tx_LDADD = \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBUMKOIN_COMMON) \
+  $(LIBUMKOIN_UTIL) \
+  $(LIBUMKOIN_CONSENSUS) \
+  $(LIBUMKOIN_CRYPTO) \
   $(LIBSECP256K1)
 
 umkoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
 # umkoinconsensus library #
-if BUILD_BITCOIN_LIBS
+if BUILD_UMKOIN_LIBS
 include_HEADERS = script/umkoinconsensus.h
 libumkoinconsensus_la_SOURCES = $(crypto_libumkoin_crypto_a_SOURCES) $(libumkoin_consensus_a_SOURCES)
 
@@ -450,7 +450,7 @@ endif
 
 libumkoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
 libumkoinconsensus_la_LIBADD = $(LIBSECP256K1)
-libumkoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
+libumkoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_UMKOIN_INTERNAL
 libumkoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif

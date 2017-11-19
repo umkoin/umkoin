@@ -59,7 +59,7 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler);
 /** The help message mode determines what help message to show */
 enum HelpMessageMode {
     HMM_UMKOIND,
-    HMM_BITCOIN_QT
+    HMM_UMKOIN_QT
 };
 
 /** Help for options shared between UI and daemon (for -help) */

@@ -22,7 +22,7 @@ RAW_TEST_FILES =
 GENERATED_TEST_FILES = $(JSON_TEST_FILES:.json=.json.h) $(RAW_TEST_FILES:.raw=.raw.h)
 
 # test_umkoin binary #
-BITCOIN_TESTS =\
+UMKOIN_TESTS =\
   test/arith_uint256_tests.cpp \
   test/scriptnum10.h \
   test/addrman_tests.cpp \
@@ -87,7 +87,7 @@ BITCOIN_TESTS =\
   test/util_tests.cpp
 
 if ENABLE_WALLET
-BITCOIN_TESTS += \
+UMKOIN_TESTS += \
   wallet/test/wallet_test_fixture.cpp \
   wallet/test/wallet_test_fixture.h \
   wallet/test/accounting_tests.cpp \
@@ -95,17 +95,17 @@ BITCOIN_TESTS += \
   wallet/test/crypto_tests.cpp
 endif
 
-test_test_umkoin_SOURCES = $(BITCOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
-test_test_umkoin_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) -I$(builddir)/test/ $(TESTDEFS) $(EVENT_CFLAGS)
+test_test_umkoin_SOURCES = $(UMKOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
+test_test_umkoin_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) -I$(builddir)/test/ $(TESTDEFS) $(EVENT_CFLAGS)
 test_test_umkoin_LDADD =
 if ENABLE_WALLET
-test_test_umkoin_LDADD += $(LIBBITCOIN_WALLET)
+test_test_umkoin_LDADD += $(LIBUMKOIN_WALLET)
 endif
-test_test_umkoin_LDADD += $(LIBBITCOIN_SERVER) $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CONSENSUS) $(LIBBITCOIN_CRYPTO) $(LIBUNIVALUE) \
+test_test_umkoin_LDADD += $(LIBUMKOIN_SERVER) $(LIBUMKOIN_CLI) $(LIBUMKOIN_COMMON) $(LIBUMKOIN_UTIL) $(LIBUMKOIN_CONSENSUS) $(LIBUMKOIN_CRYPTO) $(LIBUNIVALUE) \
   $(LIBLEVELDB) $(LIBLEVELDB_SSE42) $(LIBMEMENV) $(BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB) $(LIBSECP256K1) $(EVENT_LIBS) $(EVENT_PTHREADS_LIBS)
 test_test_umkoin_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
-test_test_umkoin_LDADD += $(LIBBITCOIN_CONSENSUS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
+test_test_umkoin_LDADD += $(LIBUMKOIN_CONSENSUS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
 test_test_umkoin_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) -static
 
 if ENABLE_ZMQ
@@ -115,17 +115,17 @@ endif
 
 # test_umkoin_fuzzy binary #
 test_test_umkoin_fuzzy_SOURCES = test/test_umkoin_fuzzy.cpp
-test_test_umkoin_fuzzy_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+test_test_umkoin_fuzzy_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 test_test_umkoin_fuzzy_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 test_test_umkoin_fuzzy_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 test_test_umkoin_fuzzy_LDADD = \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_SERVER) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CONSENSUS) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBUMKOIN_SERVER) \
+  $(LIBUMKOIN_COMMON) \
+  $(LIBUMKOIN_UTIL) \
+  $(LIBUMKOIN_CONSENSUS) \
+  $(LIBUMKOIN_CRYPTO) \
   $(LIBSECP256K1)
 
 test_test_umkoin_fuzzy_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
@@ -133,11 +133,11 @@ test_test_umkoin_fuzzy_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 
 nodist_test_test_umkoin_SOURCES = $(GENERATED_TEST_FILES)
 
-$(BITCOIN_TESTS): $(GENERATED_TEST_FILES)
+$(UMKOIN_TESTS): $(GENERATED_TEST_FILES)
 
-CLEAN_BITCOIN_TEST = test/*.gcda test/*.gcno $(GENERATED_TEST_FILES)
+CLEAN_UMKOIN_TEST = test/*.gcda test/*.gcno $(GENERATED_TEST_FILES)
 
-CLEANFILES += $(CLEAN_BITCOIN_TEST)
+CLEANFILES += $(CLEAN_UMKOIN_TEST)
 
 umkoin_test: $(TEST_BINARY)
 
@@ -145,7 +145,7 @@ umkoin_test_check: $(TEST_BINARY) FORCE
 	$(MAKE) check-TESTS TESTS=$^
 
 umkoin_test_clean : FORCE
-	rm -f $(CLEAN_BITCOIN_TEST) $(test_test_umkoin_OBJECTS) $(TEST_BINARY)
+	rm -f $(CLEAN_UMKOIN_TEST) $(test_test_umkoin_OBJECTS) $(TEST_BINARY)
 
 check-local:
 	@echo "Running test/util/umkoin-util-test.py..."

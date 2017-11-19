@@ -2,9 +2,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_NOUI_H
-#define BITCOIN_NOUI_H
+#ifndef UMKOIN_NOUI_H
+#define UMKOIN_NOUI_H
 
 extern void noui_connect();
 
-#endif // BITCOIN_NOUI_H
+#endif // UMKOIN_NOUI_H
