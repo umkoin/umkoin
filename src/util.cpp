@@ -87,8 +87,8 @@
 // Application startup time (used for uptime calculation)
 const int64_t nStartupTime = GetTime();
 
-const char * const BITCOIN_CONF_FILENAME = "umkoin.conf";
-const char * const BITCOIN_PID_FILENAME = "umkoind.pid";
+const char * const UMKOIN_CONF_FILENAME = "umkoin.conf";
+const char * const UMKOIN_PID_FILENAME = "umkoind.pid";
 
 ArgsManager gArgs;
 bool fPrintToConsole = false;
@@ -522,13 +522,13 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 
 fs::path GetDefaultDataDir()
 {
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Bitcoin
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Bitcoin
-    // Mac: ~/Library/Application Support/Bitcoin
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Umkoin
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Umkoin
+    // Mac: ~/Library/Application Support/Umkoin
     // Unix: ~/.umkoin
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Bitcoin";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Umkoin";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -538,7 +538,7 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/Bitcoin";
+    return pathRet / "Library/Application Support/Umkoin";
 #else
     // Unix
     return pathRet / ".umkoin";
@@ -625,7 +625,7 @@ void ArgsManager::ReadConfigFile(const std::string& confPath)
 #ifndef WIN32
 fs::path GetPidFile()
 {
-    fs::path pathPidFile(gArgs.GetArg("-pid", BITCOIN_PID_FILENAME));
+    fs::path pathPidFile(gArgs.GetArg("-pid", UMKOIN_PID_FILENAME));
     if (!pathPidFile.is_complete()) pathPidFile = GetDataDir() / pathPidFile;
     return pathPidFile;
 }

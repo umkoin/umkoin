@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CONSENSUS_VERSIONBITS
-#define BITCOIN_CONSENSUS_VERSIONBITS
+#ifndef UMKOIN_CONSENSUS_VERSIONBITS
+#define UMKOIN_CONSENSUS_VERSIONBITS
 
 #include "chain.h"
 #include <map>
@@ -77,4 +77,4 @@ BIP9Stats VersionBitsStatistics(const CBlockIndex* pindexPrev, const Consensus::
 int VersionBitsStateSinceHeight(const CBlockIndex* pindexPrev, const Consensus::Params& params, Consensus::DeploymentPos pos, VersionBitsCache& cache);
 uint32_t VersionBitsMask(const Consensus::Params& params, Consensus::DeploymentPos pos);
 
-#endif
+#endif // UMKOIN_CONSENSUS_VERSIONBITS
