@@ -10,7 +10,7 @@ fi
 
 UMKOIND_CONFIGFILE=${UMKOIND_CONFIGFILE:-/etc/umkoin/umkoin.conf}
 UMKOIND_PIDDIR=${UMKOIND_PIDDIR:-/var/run/umkoind}
-BITCOIND_PIDFILE=${BITCOIND_PIDFILE:-${UMKOIND_PIDDIR}/umkoind.pid}
+UMKOIND_PIDFILE=${UMKOIND_PIDFILE:-${UMKOIND_PIDDIR}/umkoind.pid}
 UMKOIND_DATADIR=${UMKOIND_DATADIR:-${BITCOIND_DEFAULT_DATADIR}}
 UMKOIND_USER=${UMKOIND_USER:-${UMKOIN_USER:-bitcoin}}
 UMKOIND_GROUP=${UMKOIND_GROUP:-bitcoin}
@@ -22,7 +22,7 @@ name="Bitcoin Core Daemon"
 description="Bitcoin cryptocurrency P2P network daemon"
 
 command="/usr/bin/umkoind"
-command_args="-pid=\"${BITCOIND_PIDFILE}\" \
+command_args="-pid=\"${UMKOIND_PIDFILE}\" \
 		-conf=\"${UMKOIND_CONFIGFILE}\" \
 		-datadir=\"${UMKOIND_DATADIR}\" \
 		-daemon \
@@ -31,7 +31,7 @@ command_args="-pid=\"${BITCOIND_PIDFILE}\" \
 required_files="${UMKOIND_CONFIGFILE}"
 start_stop_daemon_args="-u ${UMKOIND_USER} \
 			-N ${BITCOIND_NICE} -w 2000"
-pidfile="${BITCOIND_PIDFILE}"
+pidfile="${UMKOIND_PIDFILE}"
 
 # The retry schedule to use when stopping the daemon. Could be either
 # a timeout in seconds or multiple signal/timeout pairs (like

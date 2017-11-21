@@ -7,7 +7,7 @@
 #UMKOIND_PIDDIR="/var/run/umkoind"
 
 # What filename to give the pidfile
-#BITCOIND_PIDFILE="${UMKOIND_PIDDIR}/umkoind.pid"
+#UMKOIND_PIDFILE="${UMKOIND_PIDDIR}/umkoind.pid"
 
 # Where to write umkoind data (be mindful that the blockchain is large)
 #UMKOIND_DATADIR="/var/lib/umkoind"
