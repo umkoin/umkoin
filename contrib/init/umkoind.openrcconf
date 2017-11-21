@@ -17,7 +17,7 @@
 #UMKOIND_GROUP="umkoin"
 
 # Path to umkoind executable
-#BITCOIND_BIN="/usr/bin/umkoind"
+#UMKOIND_BIN="/usr/bin/umkoind"
 
 # Nice value to run umkoind under
 #BITCOIND_NICE=0

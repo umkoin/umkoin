@@ -22,8 +22,8 @@ prog=umkoind
 # you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/umkoind
 lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/umkoind}
 
-# umkoind defaults to /usr/bin/umkoind, override with BITCOIND_BIN
-umkoind=${BITCOIND_BIN-/usr/bin/umkoind}
+# umkoind defaults to /usr/bin/umkoind, override with UMKOIND_BIN
+umkoind=${UMKOIND_BIN-/usr/bin/umkoind}
 
 # umkoind opts default to -disablewallet, override with BITCOIND_OPTS
 umkoind_opts=${BITCOIND_OPTS--disablewallet}
