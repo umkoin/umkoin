@@ -4,13 +4,13 @@
 #UMKOIND_CONFIGFILE="/etc/umkoin/umkoin.conf"
 
 # What directory to write pidfile to?  (created and owned by $UMKOIND_USER)
-#BITCOIND_PIDDIR="/var/run/umkoind"
+#UMKOIND_PIDDIR="/var/run/umkoind"
 
 # What filename to give the pidfile
-#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/umkoind.pid"
+#BITCOIND_PIDFILE="${UMKOIND_PIDDIR}/umkoind.pid"
 
 # Where to write umkoind data (be mindful that the blockchain is large)
-#BITCOIND_DATADIR="/var/lib/umkoind"
+#UMKOIND_DATADIR="/var/lib/umkoind"
 
 # User and group to own umkoind process
 #UMKOIND_USER="umkoin"

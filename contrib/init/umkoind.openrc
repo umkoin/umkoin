@@ -9,9 +9,9 @@ else
 fi
 
 UMKOIND_CONFIGFILE=${UMKOIND_CONFIGFILE:-/etc/umkoin/umkoin.conf}
-BITCOIND_PIDDIR=${BITCOIND_PIDDIR:-/var/run/umkoind}
-BITCOIND_PIDFILE=${BITCOIND_PIDFILE:-${BITCOIND_PIDDIR}/umkoind.pid}
-BITCOIND_DATADIR=${BITCOIND_DATADIR:-${BITCOIND_DEFAULT_DATADIR}}
+UMKOIND_PIDDIR=${UMKOIND_PIDDIR:-/var/run/umkoind}
+BITCOIND_PIDFILE=${BITCOIND_PIDFILE:-${UMKOIND_PIDDIR}/umkoind.pid}
+UMKOIND_DATADIR=${UMKOIND_DATADIR:-${BITCOIND_DEFAULT_DATADIR}}
 UMKOIND_USER=${UMKOIND_USER:-${UMKOIN_USER:-bitcoin}}
 UMKOIND_GROUP=${UMKOIND_GROUP:-bitcoin}
 UMKOIND_BIN=${UMKOIND_BIN:-/usr/bin/umkoind}
@@ -24,7 +24,7 @@ description="Bitcoin cryptocurrency P2P network daemon"
 command="/usr/bin/umkoind"
 command_args="-pid=\"${BITCOIND_PIDFILE}\" \
 		-conf=\"${UMKOIND_CONFIGFILE}\" \
-		-datadir=\"${BITCOIND_DATADIR}\" \
+		-datadir=\"${UMKOIND_DATADIR}\" \
 		-daemon \
 		${BITCOIND_OPTS}"
 
@@ -51,13 +51,13 @@ start_pre() {
 	-d \
 	--mode 0750 \
 	--owner "${UMKOIND_USER}:${UMKOIND_GROUP}" \
-	"${BITCOIND_DATADIR}"
+	"${UMKOIND_DATADIR}"
 
 	checkpath \
 	-d \
 	--mode 0755 \
 	--owner "${UMKOIND_USER}:${UMKOIND_GROUP}" \
-	"${BITCOIND_PIDDIR}"
+	"${UMKOIND_PIDDIR}"
 
 	checkpath -f \
 	-o ${UMKOIND_USER}:${UMKOIND_GROUP} \
