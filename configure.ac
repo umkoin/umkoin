@@ -707,7 +707,7 @@ AC_SUBST(LIBMEMENV)
 
 if test x$enable_wallet != xno; then
     dnl Check for libdb_cxx only if wallet enabled
-    UMKOIN_FIND_BDB48
+    UMKOIN_FIND_BDB53
 fi
 
 dnl Check for libminiupnpc (optional)
