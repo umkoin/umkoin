@@ -1,10 +1,10 @@
 [Unit]
-Description=Bitcoin's distributed currency daemon
+Description=Umkoin's distributed currency daemon
 After=network.target
 
 [Service]
-User=bitcoin
-Group=bitcoin
+User=umkoin
+Group=umkoin
 
 Type=forking
 PIDFile=/var/lib/umkoind/umkoind.pid

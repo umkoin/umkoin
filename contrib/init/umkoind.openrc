@@ -2,41 +2,41 @@
 
 # backward compatibility for existing gentoo layout 
 #
-if [ -d "/var/lib/umkoin/.bitcoin" ]; then
-	BITCOIND_DEFAULT_DATADIR="/var/lib/umkoin/.bitcoin"
+if [ -d "/var/lib/umkoin/.umkoin" ]; then
+	UMKOIND_DEFAULT_DATADIR="/var/lib/umkoin/.umkoin"
 else
-	BITCOIND_DEFAULT_DATADIR="/var/lib/umkoind"
+	UMKOIND_DEFAULT_DATADIR="/var/lib/umkoind"
 fi
 
 UMKOIND_CONFIGFILE=${UMKOIND_CONFIGFILE:-/etc/umkoin/umkoin.conf}
 UMKOIND_PIDDIR=${UMKOIND_PIDDIR:-/var/run/umkoind}
 UMKOIND_PIDFILE=${UMKOIND_PIDFILE:-${UMKOIND_PIDDIR}/umkoind.pid}
-UMKOIND_DATADIR=${UMKOIND_DATADIR:-${BITCOIND_DEFAULT_DATADIR}}
-UMKOIND_USER=${UMKOIND_USER:-${UMKOIN_USER:-bitcoin}}
-UMKOIND_GROUP=${UMKOIND_GROUP:-bitcoin}
+UMKOIND_DATADIR=${UMKOIND_DATADIR:-${UMKOIND_DEFAULT_DATADIR}}
+UMKOIND_USER=${UMKOIND_USER:-${UMKOIN_USER:-umkoin}}
+UMKOIND_GROUP=${UMKOIND_GROUP:-umkoin}
 UMKOIND_BIN=${UMKOIND_BIN:-/usr/bin/umkoind}
-BITCOIND_NICE=${BITCOIND_NICE:-${NICELEVEL:-0}}
-BITCOIND_OPTS="${BITCOIND_OPTS:-${UMKOIN_OPTS}}"
+UMKOIND_NICE=${UMKOIND_NICE:-${NICELEVEL:-0}}
+UMKOIND_OPTS="${UMKOIND_OPTS:-${UMKOIN_OPTS}}"
 
-name="Bitcoin Core Daemon"
-description="Bitcoin cryptocurrency P2P network daemon"
+name="Umkoin Core Daemon"
+description="Umkoin cryptocurrency P2P network daemon"
 
 command="/usr/bin/umkoind"
 command_args="-pid=\"${UMKOIND_PIDFILE}\" \
 		-conf=\"${UMKOIND_CONFIGFILE}\" \
 		-datadir=\"${UMKOIND_DATADIR}\" \
 		-daemon \
-		${BITCOIND_OPTS}"
+		${UMKOIND_OPTS}"
 
 required_files="${UMKOIND_CONFIGFILE}"
 start_stop_daemon_args="-u ${UMKOIND_USER} \
-			-N ${BITCOIND_NICE} -w 2000"
+			-N ${UMKOIND_NICE} -w 2000"
 pidfile="${UMKOIND_PIDFILE}"
 
 # The retry schedule to use when stopping the daemon. Could be either
 # a timeout in seconds or multiple signal/timeout pairs (like
 # "SIGKILL/180 SIGTERM/300")
-retry="${BITCOIND_SIGTERM_TIMEOUT}"
+retry="${UMKOIND_SIGTERM_TIMEOUT}"
 
 depend() {
 	need localmount net
@@ -84,7 +84,7 @@ checkconfig()
 		eerror "It is recommended that you also set alertnotify so you are "
 		eerror "notified of problems:"
 		eerror ""
-		eerror "ie: alertnotify=echo %%s | mail -s \"Bitcoin Alert\"" \
+		eerror "ie: alertnotify=echo %%s | mail -s \"Umkoin Alert\"" \
 			"admin@foo.com"
 		eerror ""
 		return 1

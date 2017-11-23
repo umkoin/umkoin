@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#  umkoind The bitcoin core server.
+#  umkoind The umkoin core server.
 #
 #
 # chkconfig: 345 80 20
@@ -19,14 +19,14 @@ fi
 RETVAL=0
 
 prog=umkoind
-# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/umkoind
-lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/umkoind}
+# you can override the lockfile via UMKOIND_LOCKFILE in /etc/sysconfig/umkoind
+lockfile=${UMKOIND_LOCKFILE-/var/lock/subsys/umkoind}
 
 # umkoind defaults to /usr/bin/umkoind, override with UMKOIND_BIN
 umkoind=${UMKOIND_BIN-/usr/bin/umkoind}
 
-# umkoind opts default to -disablewallet, override with BITCOIND_OPTS
-umkoind_opts=${BITCOIND_OPTS--disablewallet}
+# umkoind opts default to -disablewallet, override with UMKOIND_OPTS
+umkoind_opts=${UMKOIND_OPTS--disablewallet}
 
 start() {
     echo -n $"Starting $prog: "

@@ -1,7 +1,7 @@
-Contributing to Bitcoin Core
-============================
+Contributing to Umkoin Core
+===========================
 
-The Bitcoin Core project operates an open contributor model where anyone is
+The Umkoin Core project operates an open contributor model where anyone is
 welcome to contribute towards development in the form of peer review, testing
 and patches. This document explains the practical process and guidelines for
 contributing.
@@ -272,7 +272,7 @@ about:
 Release Policy
 --------------
 
-The project leader is the release manager for each Bitcoin Core release.
+The project leader is the release manager for each Umkoin Core release.
 
 Copyright
 ---------
