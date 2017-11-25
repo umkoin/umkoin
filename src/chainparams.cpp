@@ -45,18 +45,18 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  *     CTxIn(COutPoint(000000, -1), coinbase 04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73)
  *     CTxOut(nValue=50.00000000, scriptPubKey=0x5F1DF16B2B704C8A578D0B)
  *   vMerkleTree: 4a5e1e
+ *
+ *
+ *  CBlock(hash=00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a, ver=1, hashPrevBlock=00000000000000, hashMerkleRoot=1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55, nTime=1511563812, nBits=1d00ffff, nNonce=4263252653, vtx=1)
+ *    CTransaction(hash=1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+ *      CTxIn(COutPoint(000000, -1), coinbase 04ffff001d010420554d4b206573742e20323030362e20556d6b6f696e206573742e20323031372e)
+ *      CTxOut(nValue=50.00000000, scriptPubKey=4104880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67ac)
+ *    vMerkleTree: 1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55
  */
-
-  CBlock(hash=00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a, ver=1, hashPrevBlock=00000000000000, hashMerkleRoot=1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55, nTime=1511563812, nBits=1d00ffff, nNonce=4263252653, vtx=1)
-    CTransaction(hash=1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55, ver=1, vin.size=1, vout.size=1, nLockTime=0)
-      CTxIn(COutPoint(000000, -1), coinbase 04ffff001d010420554d4b206573742e20323030362e20556d6b6f696e206573742e20323031372e)
-      CTxOut(nValue=50.00000000, scriptPubKey=4104880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67ac)
-    vMerkleTree: 1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55
-
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
     const char* pszTimestamp = "UMK est. 2006. Umkoin est. 2017.";
-    const CScript genesisOutputScript = CScript() << ParseHex("554d4b206573742e20323030362e20556d6b6f696e206573742e20323031372e") << OP_CHECKSIG;
+    const CScript genesisOutputScript = CScript() << ParseHex("04880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
