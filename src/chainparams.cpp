@@ -46,6 +46,13 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  *     CTxOut(nValue=50.00000000, scriptPubKey=0x5F1DF16B2B704C8A578D0B)
  *   vMerkleTree: 4a5e1e
  */
+
+  CBlock(hash=00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a, ver=1, hashPrevBlock=00000000000000, hashMerkleRoot=1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55, nTime=1511563812, nBits=1d00ffff, nNonce=4263252653, vtx=1)
+    CTransaction(hash=1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55, ver=1, vin.size=1, vout.size=1, nLockTime=0)
+      CTxIn(COutPoint(000000, -1), coinbase 04ffff001d010420554d4b206573742e20323030362e20556d6b6f696e206573742e20323031372e)
+      CTxOut(nValue=50.00000000, scriptPubKey=4104880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67ac)
+    vMerkleTree: 1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55
+
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
     const char* pszTimestamp = "UMK est. 2006. Umkoin est. 2017.";
@@ -115,7 +122,7 @@ public:
         pchMessageStart[1] = 0xbe;
         pchMessageStart[2] = 0xb4;
         pchMessageStart[3] = 0xd9;
-        nDefaultPort = 8333;
+        nDefaultPort = 6333;
         nPruneAfterHeight = 100000;
 
         //genesis = CreateGenesisBlock(1511563812, 4263252653, 0x1d00ffff, 1, 50 * COIN);
@@ -146,7 +153,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             {
-                { 0, uint256S("0x5aacffb4117b3ee50751738b384530d93ede3197f2c8b21ad115720d27f5c347")},
+                { 0, uint256S("0x001")},
             }
         };
 
@@ -203,7 +210,7 @@ public:
         pchMessageStart[1] = 0x11;
         pchMessageStart[2] = 0x09;
         pchMessageStart[3] = 0x07;
-        nDefaultPort = 18333;
+        nDefaultPort = 16333;
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1511512200, 414098458, 0x1d00ffff, 1, 50 * COIN);
@@ -232,7 +239,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             {
-                {0, uint256S("0x5aacffb4117b3ee50751738b384530d93ede3197f2c8b21ad115720d27f5c347")},
+                {0, uint256S("0x001")},
             }
         };
 
@@ -285,7 +292,7 @@ public:
         pchMessageStart[1] = 0xbf;
         pchMessageStart[2] = 0xb5;
         pchMessageStart[3] = 0xda;
-        nDefaultPort = 18444;
+        nDefaultPort = 16444;
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1511512200, 4, 0x207fffff, 1, 50 * COIN);
@@ -302,7 +309,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             {
-                {0, uint256S("0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d")},
+                {0, uint256S("0x001")},
             }
         };
 

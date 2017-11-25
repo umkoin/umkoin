@@ -11,7 +11,7 @@
 
 /**
  * CBaseChainParams defines the base parameters (shared between umkoin-cli and umkoind)
- * of a given instance of the Bitcoin system.
+ * of a given instance of the Umkoin system.
  */
 class CBaseChainParams
 {
