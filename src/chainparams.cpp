@@ -32,6 +32,10 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
     genesis.vtx.push_back(MakeTransactionRef(std::move(txNew)));
     genesis.hashPrevBlock.SetNull();
     genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
+
+    printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
+    printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
+    
     return genesis;
 }
 
@@ -211,10 +215,10 @@ public:
         nDefaultPort = 16333;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1511512200, 2013110523, 0x1d00ffff, 1, 50 * COIN);
+		genesis = CreateGenesisBlock(1511512201, 2013110523, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-//printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
-//printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
+        //printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
+        //printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
         assert(consensus.hashGenesisBlock == uint256S("0xdc60256c276c62550e48c95b2bc711045031454d894e3e2188805c7fc8d8221e"));
         assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
@@ -297,6 +301,8 @@ public:
 
         genesis = CreateGenesisBlock(1511512200, 4, 0x207fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
+        //printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
+        //printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
         assert(consensus.hashGenesisBlock == uint256S("0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"));
         assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
