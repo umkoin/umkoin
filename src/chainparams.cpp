@@ -127,8 +127,24 @@ public:
 
         //genesis = CreateGenesisBlock(1511563812, 4263252653, 0x1d00ffff, 1, 50 * COIN);
 		genesis = CreateGenesisBlock(1511512200, 2083236893, 0x1d00ffff, 1, 50 * COIN);
+// to be removed later
+hashGenesisBlock = uint256("0x01")
+if (true && genesis.GetHash() != hashGenesisBlock)
+        {
+            Logprintf("recalculating params for mainnet.\n");
+            Logprintf("old mainnet genesis nonce: %s\n", genesis.nNonce.ToString().c_str());
+            Logprintf("old mainnet genesis hash:  %s\n", hashGenesisBlock.ToString().c_str());
+            // deliberately empty for loop finds nonce value.
+            for(genesis.nNonce == 0; genesis.GetHash() > bnProofOfWorkLimit; genesis.nNonce++){ } 
+            Logprintf("new mainnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+            Logprintf("new mainnet genesis nonce: %s\n", genesis.nNonce.ToString().c_str());
+            Logprintf("new mainnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
+        }
+
         consensus.hashGenesisBlock = genesis.GetHash();
 
+        printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
+        
 		//assert(consensus.hashGenesisBlock == uint256S("00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"));
 		//assert(genesis.hashMerkleRoot == uint256S("1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55"));
 		assert(consensus.hashGenesisBlock == uint256S("0x5aacffb4117b3ee50751738b384530d93ede3197f2c8b21ad115720d27f5c347"));
@@ -214,6 +230,20 @@ public:
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1511512200, 414098458, 0x1d00ffff, 1, 50 * COIN);
+// to be removed later
+hashGenesisBlock = uint256("0x01")
+if (true && genesis.GetHash() != hashGenesisBlock)
+        {
+            Logprintf("recalculating params for testnet.\n");
+            Logprintf("old testnet genesis nonce: %s\n", genesis.nNonce.ToString().c_str());
+            Logprintf("old testnet genesis hash:  %s\n", hashGenesisBlock.ToString().c_str());
+            // deliberately empty for loop finds nonce value.
+            for(genesis.nNonce == 0; genesis.GetHash() > bnProofOfWorkLimit; genesis.nNonce++){ } 
+            Logprintf("new testnet genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+            Logprintf("new testnet genesis nonce: %s\n", genesis.nNonce.ToString().c_str());
+            Logprintf("new testnet genesis hash: %s\n", genesis.GetHash().ToString().c_str());
+        }
+
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S("0x5aacffb4117b3ee50751738b384530d93ede3197f2c8b21ad115720d27f5c347"));
         assert(genesis.hashMerkleRoot == uint256S("0x8796bd57764c21a460d02b2f17fce9f41b213113212d02a47f1465995273e6b0"));
@@ -296,6 +326,20 @@ public:
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1511512200, 4, 0x207fffff, 1, 50 * COIN);
+// to be removed later
+hashGenesisBlock = uint256("0x01")
+if (true && genesis.GetHash() != hashGenesisBlock)
+        {
+            Logprintf("recalculating params for regtest.\n");
+            Logprintf("old regtest genesis nonce: %s\n", genesis.nNonce.ToString().c_str());
+            Logprintf("old regtest genesis hash:  %s\n", hashGenesisBlock.ToString().c_str());
+            // deliberately empty for loop finds nonce value.
+            for(genesis.nNonce == 0; genesis.GetHash() > bnProofOfWorkLimit; genesis.nNonce++){ } 
+            Logprintf("new regtest genesis merkle root: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+            Logprintf("new regtest genesis nonce: %s\n", genesis.nNonce.ToString().c_str());
+            Logprintf("new regtest genesis hash: %s\n", genesis.GetHash().ToString().c_str());
+        }
+
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S("0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"));
         assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
