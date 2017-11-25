@@ -83,7 +83,7 @@ public:
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
+        consensus.BIP34Hash = uint256S("0xdc60256c276c62550e48c95b2bc711045031454d894e3e2188805c7fc8d8221e");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -108,10 +108,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1510704000; // November 15th, 2017.
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
+        consensus.nMinimumChainWork = uint256S("0xdc60256c276c62550e48c95b2bc711045031454d894e3e2188805c7fc8d8221e");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"); //0
+        consensus.defaultAssumeValid = uint256S("0xdc60256c276c62550e48c95b2bc711045031454d894e3e2188805c7fc8d8221e"); //0
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -127,10 +127,10 @@ public:
 
 		genesis = CreateGenesisBlock(1511512200, 2013110523, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
-printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
-		assert(consensus.hashGenesisBlock == uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"));
-        assert(genesis.hashMerkleRoot == uint256S("1d94e2f2469bda186b6de9ab038bac825117a07350cd8c3f6cb78cf292cf0c55"));
+        //printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
+        //printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
+		assert(consensus.hashGenesisBlock == uint256S("0xdc60256c276c62550e48c95b2bc711045031454d894e3e2188805c7fc8d8221e"));
+        assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
         // Note that of those with the service bits flag, most only support a subset of possible options
         vSeeds.emplace_back("seed.bitcoin.sipa.be", true); // Pieter Wuille, only supports x1, x5, x9, and xd
@@ -151,13 +151,13 @@ printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str(
 
         checkpointData = (CCheckpointData) {
             {
-                { 0, uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a")},
+                { 0, uint256S("0xdc60256c276c62550e48c95b2bc711045031454d894e3e2188805c7fc8d8221e")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 000000000000000000d97e53664d17967bd4ee50b23abb92e54a34eb222d15ae (height 478913).
-            1511563812, // * UNIX timestamp of last known number of transactions
+            // Data as of block 0xdc60256c276c62550e48c95b2bc711045031454d894e3e2188805c7fc8d8221e (height 0).
+            1511512200, // * UNIX timestamp of last known number of transactions
             0,          // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             1           // * estimated number of transactions per second after that timestamp
@@ -211,10 +211,10 @@ public:
         nDefaultPort = 16333;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1511512200, 414098458, 0x1d00ffff, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1511512200, 2013110523, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-//printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
-//printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
+printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
+printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
         assert(consensus.hashGenesisBlock == uint256S("0xc82ff2ce95f3574a79f93e1f4621dfe66c87a8018285bcd9c1fc949b809da59b"));
         assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
@@ -244,7 +244,7 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 0xc82ff2ce95f3574a79f93e1f4621dfe66c87a8018285bcd9c1fc949b809da59b (height 0)
+            // Data as of block 0xc82ff2ce95f3574a79f93e1f4621dfe66c87a8018285bcd9c1fc949b809da59b (height 0).
             1515512200,
             0,
             0.15
@@ -314,6 +314,7 @@ public:
         };
 
         chainTxData = ChainTxData{
+            // Data as of block 0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d (height 0).                        
             1511512200,
             0,
             0.15
