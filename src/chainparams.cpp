@@ -176,7 +176,7 @@ public:
         strNetworkID = "test";
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x00000000dab0c9e54ad262f3474e7dc2949fe18256617e1cc7ea9ddec597fe02");
+        consensus.BIP34Hash = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -201,10 +201,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1493596800; // May 1st 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000dab0c9e54ad262f3474e7dc2949fe18256617e1cc7ea9ddec597fe02");
+        consensus.nMinimumChainWork = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000dab0c9e54ad262f3474e7dc2949fe18256617e1cc7ea9ddec597fe02"); //0
+        consensus.defaultAssumeValid = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"); //0
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -213,9 +213,9 @@ public:
         nDefaultPort = 16333;
         nPruneAfterHeight = 1000;
 
-		genesis = CreateGenesisBlock(1511656749, 1440137419, 0x1d00ffff, 1, 50 * COIN);
+		genesis = CreateGenesisBlock(1511678228, 1037567534, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000000dab0c9e54ad262f3474e7dc2949fe18256617e1cc7ea9ddec597fe02"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"));
         assert(genesis.hashMerkleRoot == uint256S("0xcab303e02c21e758c1dc13419cb72f9ec4ee05efaffaa3fd05c6d9b9a4506cb6"));
 
         vFixedSeeds.clear();
@@ -239,13 +239,13 @@ public:
 
         checkpointData = (CCheckpointData) {
             {
-                {0, uint256S("0x00000000dab0c9e54ad262f3474e7dc2949fe18256617e1cc7ea9ddec597fe02")},
+                {0, uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 0x00000000dab0c9e54ad262f3474e7dc2949fe18256617e1cc7ea9ddec597fe02 (height 0).
-            1511656749,
+            // Data as of block 0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429 (height 0).
+            1511678228,
             0,
             0.15
         };
