@@ -129,7 +129,7 @@ public:
         nDefaultPort = 6333;
         nPruneAfterHeight = 100000;
 
-		genesis = CreateGenesisBlock(1511512200, 2013110523, 0x1d00ffff, 1, 50 * COIN);
+		genesis = CreateGenesisBlock(1511512200, 486604799, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
         //printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
         //printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
@@ -215,7 +215,7 @@ public:
         nDefaultPort = 16333;
         nPruneAfterHeight = 1000;
 
-		genesis = CreateGenesisBlock(1511512201, 2013110523, 0x1d00ffff, 1, 50 * COIN);
+		genesis = CreateGenesisBlock(1511512201, 486604799, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
         //printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
         //printf("genesis.hashMerkleRoot = %s\n", genesis.hashMerkleRoot.ToString().c_str());
