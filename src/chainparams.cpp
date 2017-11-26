@@ -86,10 +86,10 @@ public:
     CMainParams() {
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP34Height = 1;
-        consensus.BIP34Hash = uint256S("0x0a85b332985245b6616dbb038b54f935d9bd6b2e884eb1327b7264c290d7efb9");
-        consensus.BIP65Height = 2;
-        consensus.BIP66Height = 3;
+        consensus.BIP34Height = 0;
+        consensus.BIP34Hash = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
+        consensus.BIP65Height = 0;
+        consensus.BIP66Height = 0;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
@@ -112,10 +112,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1510704000; // November 15th, 2017.
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0a85b332985245b6616dbb038b54f935d9bd6b2e884eb1327b7264c290d7efb9");
+        consensus.nMinimumChainWork = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x0a85b332985245b6616dbb038b54f935d9bd6b2e884eb1327b7264c290d7efb9"); //0
+        consensus.defaultAssumeValid = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"); //0
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -129,9 +129,9 @@ public:
         nDefaultPort = 6333;
         nPruneAfterHeight = 100000;
 
-		genesis = CreateGenesisBlock(1511512200, 486604799, 0x1d00ffff, 1, 50 * COIN);
+		genesis = CreateGenesisBlock(1511563812, 4263252653, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-		assert(consensus.hashGenesisBlock == uint256S("0x0a85b332985245b6616dbb038b54f935d9bd6b2e884eb1327b7264c290d7efb9"));
+		assert(consensus.hashGenesisBlock == uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"));
         assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
         // Note that of those with the service bits flag, most only support a subset of possible options
@@ -153,13 +153,13 @@ public:
 
         checkpointData = (CCheckpointData) {
             {
-                { 0, uint256S("0x0a85b332985245b6616dbb038b54f935d9bd6b2e884eb1327b7264c290d7efb9")},
+                { 0, uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 0x0a85b332985245b6616dbb038b54f935d9bd6b2e884eb1327b7264c290d7efb9 (height 0).
-            1511512200, // * UNIX timestamp of last known number of transactions
+            // Data as of block 0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a (height 0).
+            1511563812, // * UNIX timestamp of last known number of transactions
             0,          // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             1           // * estimated number of transactions per second after that timestamp
