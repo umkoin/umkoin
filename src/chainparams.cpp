@@ -88,8 +88,8 @@ public:
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
-        consensus.BIP65Height = 0;
-        consensus.BIP66Height = 0;
+        consensus.BIP65Height = 10;
+        consensus.BIP66Height = 20;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
@@ -99,17 +99,17 @@ public:
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1511563812; // November 24, 2017
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1511563812; // November 24, 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1514155812; // December 24, 2017
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1511563812; // November 24, 2017
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1511563812; // November 24, 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1514155812; // December 24, 2017
 
         // Deployment of SegWit (BIP141, BIP143, and BIP147)
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1511563812; // November 24, 2017
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1511563812; // November 24, 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514155812; // December 24, 2017
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
@@ -179,8 +179,8 @@ public:
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
-        consensus.BIP65Height = 0;
-        consensus.BIP66Height = 0;
+        consensus.BIP65Height = 10;
+        consensus.BIP66Height = 20;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
@@ -190,17 +190,17 @@ public:
         consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1511678228; // November 26, 2017
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1511678228; // November 26, 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1514155812; // December 24, 2017
 
         // Deployment of BIP68, BIP112, and BIP113.
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1511678228; // November 26, 2017
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1511678228; // November 26, 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1514155812; // December 24, 2017
 
         // Deployment of SegWit (BIP141, BIP143, and BIP147)
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1511678228; // November 26, 2017
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1511678228; // November 26, 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514155812; // December 24, 2017
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
@@ -265,8 +265,8 @@ public:
         consensus.nSubsidyHalvingInterval = 150;
         consensus.BIP34Height = 100000000; // BIP34 has not activated on regtest (far in the future so block v1 are not rejected in tests)
         consensus.BIP34Hash = uint256S("0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d");
-        consensus.BIP65Height = 0; // BIP65 activated on regtest (Used in rpc activation tests)
-        consensus.BIP66Height = 0; // BIP66 activated on regtest (Used in rpc activation tests)
+        consensus.BIP65Height = 10; // BIP65 activated on regtest (Used in rpc activation tests)
+        consensus.BIP66Height = 20; // BIP66 activated on regtest (Used in rpc activation tests)
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
