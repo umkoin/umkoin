@@ -80,7 +80,7 @@ Examples tests are `p2p-accept-block.py`, `p2p-compactblocks.py`.
 - Comptool is a Testing framework for writing tests that compare the block/tx acceptance
 behavior of a umkoind against 1 or more other umkoind instances. It should not be used
 to write static tests with known outcomes, since that type of test is easier to write and
-maintain using the standard BitcoinTestFramework.
+maintain using the standard UmkoinTestFramework.
 
 - Set the `num_nodes` variable (defined in `ComparisonTestFramework`) to start up
 1 or more nodes.  If using 1 node, then `--testbinary` can be used as a command line

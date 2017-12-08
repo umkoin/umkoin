@@ -5,10 +5,10 @@
 """Test the -alertnotify, -blocknotify and -walletnotify options."""
 import os
 
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import assert_equal, wait_until, connect_nodes_bi
 
-class NotificationsTest(BitcoinTestFramework):
+class NotificationsTest(UmkoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.setup_clean_chain = True

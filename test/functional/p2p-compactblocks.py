@@ -9,7 +9,7 @@ Version 2 compact blocks are post-segwit (wtxids)
 """
 
 from test_framework.mininode import *
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import *
 from test_framework.blocktools import create_block, create_coinbase, add_witness_commitment
 from test_framework.script import CScript, OP_TRUE
@@ -88,7 +88,7 @@ class TestNode(NodeConnCB):
         self.send_message(message)
         wait_until(lambda: not self.connected, timeout=timeout, lock=mininode_lock)
 
-class CompactBlocksTest(BitcoinTestFramework):
+class CompactBlocksTest(UmkoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         # Node0 = pre-segwit, node1 = segwit-aware

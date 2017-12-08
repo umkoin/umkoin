@@ -3,10 +3,10 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test umkoin-cli"""
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import assert_equal, assert_raises_process_error, get_auth_cookie
 
-class TestBitcoinCli(BitcoinTestFramework):
+class TestBitcoinCli(UmkoinTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True

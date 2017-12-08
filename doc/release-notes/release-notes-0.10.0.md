@@ -172,7 +172,7 @@ improved by making the signatures constant time and deterministic.
 
 This change is a result of switching signing to use libsecp256k1
 instead of OpenSSL. Libsecp256k1 is a cryptographic library
-optimized for the curve Bitcoin uses which was created by Bitcoin
+optimized for the curve Umkoin uses which was created by Bitcoin
 Core developer Pieter Wuille.
 
 There exist attacks[1] against most ECC implementations where an
@@ -187,7 +187,7 @@ long time, but this functionality has still not made its
 way into a released version of OpenSSL. Libsecp256k1 achieves
 significantly stronger protection: As far as we're aware this is
 the only deployed implementation of constant time signing for
-the curve Bitcoin uses and we have reason to believe that
+the curve Umkoin uses and we have reason to believe that
 libsecp256k1 is better tested and more thoroughly reviewed
 than the implementation in OpenSSL.
 

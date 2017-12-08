@@ -84,7 +84,7 @@ operate with no central authority or banks; managing transactions and the
 issuing of umkoins is carried out collectively by the network.
 
 This package contains the Qt based graphical client and node. If you are looking
-to run a Bitcoin wallet, this is probably the package you want.
+to run a Umkoin wallet, this is probably the package you want.
 %endif
 
 
@@ -322,7 +322,7 @@ test/functional/test_runner.py --extended
 getent group umkoin >/dev/null || groupadd -r umkoin
 getent passwd umkoin >/dev/null ||
 	useradd -r -g umkoin -d /var/lib/umkoin -s /sbin/nologin \
-	-c "Bitcoin wallet server" umkoin
+	-c "Umkoin wallet server" umkoin
 exit 0
 
 %post server

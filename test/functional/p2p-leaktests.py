@@ -15,7 +15,7 @@ and don't receive a VERACK. Unsupported service bits are currently 1 << 5 and
 1 << 7 (until August 1st 2018)."""
 
 from test_framework.mininode import *
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import *
 
 banscore = 10
@@ -91,7 +91,7 @@ class CNodeNoVerackIdle(CLazyNode):
         conn.send_message(msg_ping())
         conn.send_message(msg_getaddr())
 
-class P2PLeakTest(BitcoinTestFramework):
+class P2PLeakTest(UmkoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [['-banscore='+str(banscore)]]

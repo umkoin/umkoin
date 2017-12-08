@@ -16,7 +16,7 @@ and not sell or transfer control of the DNS seed. Any hosting services
 contracted by the operator are equally expected to uphold these expectations.
 
 1. The DNS seed results must consist exclusively of fairly selected and
-functioning Bitcoin nodes from the public network to the best of the
+functioning Umkoin nodes from the public network to the best of the
 operator's understanding and capability.
 
 2. For the avoidance of doubt, the results may be randomized but must not

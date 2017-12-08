@@ -137,7 +137,7 @@ public:
 };
 
 /**
- * Bitcoin RPC command dispatcher.
+ * Umkoin RPC command dispatcher.
  */
 class CRPCTable
 {

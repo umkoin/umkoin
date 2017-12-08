@@ -346,7 +346,7 @@ git merge commit are mentioned.
 - #5626 `ab0d798` Fix icon sizes and column width
 - #5683 `c7b22aa` add new osx dmg background picture
 - #5620 `7823598` Payment request expiration bug fix
-- #5729 `9c4a5a5` Allow unit changes for read-only BitcoinAmountField
+- #5729 `9c4a5a5` Allow unit changes for read-only UmkoinAmountField
 - #5753 `0f44672` Add bitcoin logo to about screen
 - #5629 `a956586` Prevent amount overflow problem with payment requests
 - #5830 `215475a` Don't save geometry for options and about/help window

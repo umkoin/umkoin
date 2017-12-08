@@ -22,13 +22,13 @@ from test_framework.mininode import (
     msg_getheaders,
     wait_until,
 )
-from test_framework.test_framework import BitcoinTestFramework
+from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import (
     assert_equal,
     p2p_port,
 )
 
-class P2PFingerprintTest(BitcoinTestFramework):
+class P2PFingerprintTest(UmkoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
