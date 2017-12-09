@@ -50,7 +50,7 @@ endif
 
 nodist_qt_test_test_umkoin_qt_SOURCES = $(TEST_QT_MOC_CPP)
 
-qt_test_test_umkoin_qt_LDADD = $(LIBBITCOINQT) $(LIBUMKOIN_SERVER)
+qt_test_test_umkoin_qt_LDADD = $(LIBUMKOINQT) $(LIBUMKOIN_SERVER)
 if ENABLE_WALLET
 qt_test_test_umkoin_qt_LDADD += $(LIBUMKOIN_WALLET)
 endif

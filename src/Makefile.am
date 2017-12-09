@@ -29,14 +29,14 @@ LIBUMKOIN_CONSENSUS=libumkoin_consensus.a
 LIBUMKOIN_CLI=libumkoin_cli.a
 LIBUMKOIN_UTIL=libumkoin_util.a
 LIBUMKOIN_CRYPTO=crypto/libumkoin_crypto.a
-LIBBITCOINQT=qt/libumkoinqt.a
+LIBUMKOINQT=qt/libumkoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
 if ENABLE_ZMQ
 LIBUMKOIN_ZMQ=libumkoin_zmq.a
 endif
 if BUILD_UMKOIN_LIBS
-LIBBITCOINCONSENSUS=libumkoinconsensus.la
+LIBUMKOINCONSENSUS=libumkoinconsensus.la
 endif
 if ENABLE_WALLET
 LIBUMKOIN_WALLET=libumkoin_wallet.a
@@ -57,7 +57,7 @@ EXTRA_LIBRARIES += \
   $(LIBUMKOIN_WALLET) \
   $(LIBUMKOIN_ZMQ)
 
-lib_LTLIBRARIES = $(LIBBITCOINCONSENSUS)
+lib_LTLIBRARIES = $(LIBUMKOINCONSENSUS)
 
 bin_PROGRAMS =
 noinst_PROGRAMS =

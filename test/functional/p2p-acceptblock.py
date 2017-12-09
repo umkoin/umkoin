@@ -60,7 +60,7 @@ from test_framework.blocktools import create_block, create_coinbase, create_tran
 class AcceptBlockTest(UmkoinTestFramework):
     def add_options(self, parser):
         parser.add_option("--testbinary", dest="testbinary",
-                          default=os.getenv("BITCOIND", "umkoind"),
+                          default=os.getenv("UMKOIND", "umkoind"),
                           help="umkoind binary to test")
 
     def set_test_params(self):

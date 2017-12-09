@@ -125,5 +125,5 @@ int umkoinconsensus_verify_script(const unsigned char *scriptPubKey, unsigned in
 unsigned int umkoinconsensus_version()
 {
     // Just use the API version for now
-    return BITCOINCONSENSUS_API_VER;
+    return UMKOINCONSENSUS_API_VER;
 }

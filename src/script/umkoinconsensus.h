@@ -21,7 +21,7 @@
   #elif defined(HAVE_FUNC_ATTRIBUTE_VISIBILITY)
     #define EXPORT_SYMBOL __attribute__ ((visibility ("default")))
   #endif
-#elif defined(MSC_VER) && !defined(STATIC_LIBBITCOINCONSENSUS)
+#elif defined(MSC_VER) && !defined(STATIC_LIBUMKOINCONSENSUS)
   #define EXPORT_SYMBOL __declspec(dllimport)
 #endif
 
@@ -33,7 +33,7 @@
 extern "C" {
 #endif
 
-#define BITCOINCONSENSUS_API_VER 1
+#define UMKOINCONSENSUS_API_VER 1
 
 typedef enum umkoinconsensus_error_t
 {

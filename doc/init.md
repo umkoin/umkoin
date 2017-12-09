@@ -104,7 +104,7 @@ use old versions of Upstart and do not supply the start-stop-daemon utility.
 Copy umkoind.init to /etc/init.d/umkoind. Test by running `service umkoind start`.
 
 Using this script, you can adjust the path and flags to the umkoind program by
-setting the BITCOIND and FLAGS environment variables in the file
+setting the UMKOIND and FLAGS environment variables in the file
 /etc/sysconfig/umkoind. You can also use the DAEMONOPTS environment variable here.
 
 ### Mac OS X

@@ -4,23 +4,23 @@ TOPDIR=${TOPDIR:-$(git rev-parse --show-toplevel)}
 SRCDIR=${SRCDIR:-$TOPDIR/src}
 MANDIR=${MANDIR:-$TOPDIR/doc/man}
 
-BITCOIND=${BITCOIND:-$SRCDIR/umkoind}
-BITCOINCLI=${BITCOINCLI:-$SRCDIR/umkoin-cli}
-BITCOINTX=${BITCOINTX:-$SRCDIR/umkoin-tx}
-BITCOINQT=${BITCOINQT:-$SRCDIR/qt/umkoin-qt}
+UMKOIND=${UMKOIND:-$SRCDIR/umkoind}
+UMKOINCLI=${UMKOINCLI:-$SRCDIR/umkoin-cli}
+UMKOINTX=${UMKOINTX:-$SRCDIR/umkoin-tx}
+UMKOINQT=${UMKOINQT:-$SRCDIR/qt/umkoin-qt}
 
-[ ! -x $BITCOIND ] && echo "$BITCOIND not found or not executable." && exit 1
+[ ! -x $UMKOIND ] && echo "$UMKOIND not found or not executable." && exit 1
 
 # The autodetected version git tag can screw up manpage output a little bit
-BTCVER=($($BITCOINCLI --version | head -n1 | awk -F'[ -]' '{ print $6, $7 }'))
+BTCVER=($($UMKOINCLI --version | head -n1 | awk -F'[ -]' '{ print $6, $7 }'))
 
 # Create a footer file with copyright content.
 # This gets autodetected fine for umkoind if --version-string is not set,
 # but has different outcomes for umkoin-qt and umkoin-cli.
 echo "[COPYRIGHT]" > footer.h2m
-$BITCOIND --version | sed -n '1!p' >> footer.h2m
+$UMKOIND --version | sed -n '1!p' >> footer.h2m
 
-for cmd in $BITCOIND $BITCOINCLI $BITCOINTX $BITCOINQT; do
+for cmd in $UMKOIND $UMKOINCLI $UMKOINTX $UMKOINQT; do
   cmdname="${cmd##*/}"
   help2man -N --version-string=${BTCVER[0]} --include=footer.h2m -o ${MANDIR}/${cmdname}.1 ${cmd}
   sed -i "s/\\\-${BTCVER[1]}//g" ${MANDIR}/${cmdname}.1
