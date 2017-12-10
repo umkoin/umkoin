@@ -17,12 +17,12 @@ osx=true
 SIGNER=
 VERSION=
 commit=false
-url=https://github.com/umkoin/umkoin
+url=https://github.com/vmta/umkoin
 proc=2
 mem=2000
 lxc=true
 osslTarUrl=http://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.7.1.tar.gz
-osslPatchUrl=https://umkoincore.org/cfields/osslsigncode-Backports-to-1.7.1.patch
+osslPatchUrl=https://www.ua-moloko.com/cfields/osslsigncode-Backports-to-1.7.1.patch
 scriptName=$(basename -- "$0")
 signProg="gpg --detach-sign"
 commitFiles=true
@@ -39,7 +39,7 @@ version		Version number, commit, or branch to build. If building a commit or bra
 
 Options:
 -c|--commit	Indicate that the version argument is for a commit or branch
--u|--url	Specify the URL of the repository. Default is https://github.com/umkoin/umkoin
+-u|--url	Specify the URL of the repository. Default is https://github.com/vmta/umkoin
 -v|--verify 	Verify the Gitian build
 -b|--build	Do a Gitian build
 -s|--sign	Make signed binaries for Windows and Mac OSX

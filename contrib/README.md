@@ -26,25 +26,25 @@ Contains files used to package umkoind/umkoin-qt
 for Debian-based Linux systems. If you compile umkoind/umkoin-qt yourself, there are some useful files here.
 
 ### [Gitian-descriptors](/contrib/gitian-descriptors) ###
-Files used during the gitian build process. For more information about gitian, see the [the Bitcoin Core documentation repository](https://github.com/umkoin-core/docs).
+Files used during the gitian build process. For more information about gitian, see the [the Umkoin Core documentation repository](https://github.com/umkoin-core/docs).
 
 ### [Gitian-keys](/contrib/gitian-keys)
-PGP keys used for signing Bitcoin Core [Gitian release](/doc/release-process.md) results.
+PGP keys used for signing Umkoin Core [Gitian release](/doc/release-process.md) results.
 
 ### [MacDeploy](/contrib/macdeploy) ###
-Scripts and notes for Mac builds. 
+Scripts and notes for Mac builds.
 
 ### [RPM](/contrib/rpm) ###
-RPM spec file for building bitcoin-core on RPM based distributions.
+RPM spec file for building umkoin-core on RPM based distributions.
 
 ### [Gitian-build](/contrib/gitian-build.sh) ###
 Script for running full Gitian builds.
 
-Test and Verify Tools 
+Test and Verify Tools
 ---------------------
 
 ### [TestGen](/contrib/testgen) ###
-Utilities to generate test vectors for the data-driven Bitcoin tests.
+Utilities to generate test vectors for the data-driven Umkoin tests.
 
 ### [Verify Binaries](/contrib/verifybinaries) ###
-This script attempts to download and verify the signature file SHA256SUMS.asc from bitcoin.org.
+This script attempts to download and verify the signature file SHA256SUMS.asc from www.ua-moloko.com.

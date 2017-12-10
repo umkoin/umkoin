@@ -68,9 +68,9 @@ can then be controlled by group membership.
 ### Mac OS X
 
 Binary:              `/usr/local/bin/umkoind`  
-Configuration file:  `~/Library/Application Support/Bitcoin/umkoin.conf`  
-Data directory:      `~/Library/Application Support/Bitcoin`  
-Lock file:           `~/Library/Application Support/Bitcoin/.lock`  
+Configuration file:  `~/Library/Application Support/Umkoin/umkoin.conf`  
+Data directory:      `~/Library/Application Support/Umkoin`  
+Lock file:           `~/Library/Application Support/Umkoin/.lock`  
 
 Installing Service Configuration
 -----------------------------------

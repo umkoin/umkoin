@@ -1,6 +1,6 @@
 UNIX BUILD NOTES
 ====================
-Some notes on how to build Bitcoin Core in Unix.
+Some notes on how to build Umkoin Core in Unix.
 
 (for OpenBSD specific instructions, see [build-openbsd.md](build-openbsd.md))
 
@@ -55,7 +55,7 @@ Memory Requirements
 --------------------
 
 C++ compilers are memory-hungry. It is recommended to have at least 1.5 GB of
-memory available when compiling Bitcoin Core. On systems with less, gcc can be
+memory available when compiling Umkoin Core. On systems with less, gcc can be
 tuned to conserve memory with additional CXXFLAGS:
 
 
@@ -186,7 +186,7 @@ cd db-4.8.30.NC/build_unix/
 ../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
 make install
 
-# Configure Bitcoin Core to use our own-built instance of BDB
+# Configure Umkoin Core to use our own-built instance of BDB
 cd $UMKOIN_ROOT
 ./autogen.sh
 ./configure LDFLAGS="-L${BDB_PREFIX}/lib/" CPPFLAGS="-I${BDB_PREFIX}/include/" # (other args...)
@@ -286,7 +286,7 @@ Note:
 Enabling wallet support requires either compiling against a Berkeley DB newer than 4.8 (package `db`) using `--with-incompatible-bdb`,
 or building and depending on a local version of Berkeley DB 4.8. The readily available Arch Linux packages are currently built using
 `--with-incompatible-bdb` according to the [PKGBUILD](https://projects.archlinux.org/svntogit/community.git/tree/umkoin/trunk/PKGBUILD).
-As mentioned above, when maintaining portability of the wallet between the standard Bitcoin Core distributions and independently built
+As mentioned above, when maintaining portability of the wallet between the standard Umkoin Core distributions and independently built
 node software is desired, Berkeley DB 4.8 must be used.
 
 
@@ -334,7 +334,7 @@ For the wallet (optional):
 This will give a warning "configure: WARNING: Found Berkeley DB other
 than 4.8; wallets opened by this build will not be portable!", but as FreeBSD never
 had a binary release, this may not matter. If backwards compatibility
-with 4.8-built Bitcoin Core is needed follow the steps under "Berkeley DB" above.
+with 4.8-built Umkoin Core is needed follow the steps under "Berkeley DB" above.
 
 Then build using:
 

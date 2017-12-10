@@ -1,6 +1,6 @@
 [Protocol]
 exec=umkoin-qt '%u'
-protocol=bitcoin
+protocol=umkoin
 input=none
 output=none
 helper=true

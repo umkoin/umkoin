@@ -54,7 +54,7 @@ Patch0:		umkoin-0.12.0-libressl.patch
 
 
 %description
-Bitcoin is a digital cryptographic currency that uses peer-to-peer technology to
+Umkoin is a digital cryptographic currency that uses peer-to-peer technology to
 operate with no central authority or banks; managing transactions and the
 issuing of umkoins is carried out collectively by the network.
 
@@ -79,7 +79,7 @@ BuildRequires:	%{_bindir}/inkscape
 BuildRequires:	%{_bindir}/convert
 
 %description core
-Bitcoin is a digital cryptographic currency that uses peer-to-peer technology to
+Umkoin is a digital cryptographic currency that uses peer-to-peer technology to
 operate with no central authority or banks; managing transactions and the
 issuing of umkoins is carried out collectively by the network.
 
@@ -89,7 +89,7 @@ to run a Umkoin wallet, this is probably the package you want.
 
 
 %package libs
-Summary:	Bitcoin shared libraries
+Summary:	Umkoin shared libraries
 Group:		System Environment/Libraries
 
 %description libs
@@ -134,7 +134,7 @@ If you use the graphical umkoin-core client then you almost certainly do not
 need this package.
 
 %package utils
-Summary:	Bitcoin utilities
+Summary:	Umkoin utilities
 Group:		Applications/System
 
 %description utils
@@ -209,7 +209,7 @@ touch -a -m -t 201504280000 %{buildroot}%{_sysconfdir}/sysconfig/umkoin
 mkdir -p %{buildroot}%{_unitdir}
 cat <<EOF > %{buildroot}%{_unitdir}/umkoin.service
 [Unit]
-Description=Bitcoin daemon
+Description=Umkoin daemon
 After=syslog.target network.target
 
 [Service]
@@ -265,10 +265,10 @@ mkdir -p %{buildroot}%{_datadir}/applications
 cat <<EOF > %{buildroot}%{_datadir}/applications/umkoin-core.desktop
 [Desktop Entry]
 Encoding=UTF-8
-Name=Bitcoin
-Comment=Bitcoin P2P Cryptocurrency
-Comment[fr]=Bitcoin, monnaie virtuelle cryptographique pair à pair
-Comment[tr]=Bitcoin, eşten eşe kriptografik sanal para birimi
+Name=Umkoin
+Comment=Umkoin P2P Cryptocurrency
+Comment[fr]=Umkoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Umkoin, eşten eşe kriptografik sanal para birimi
 Exec=umkoin-qt %u
 Terminal=false
 Type=Application

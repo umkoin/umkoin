@@ -4,7 +4,7 @@ Debian
 This directory contains files used to package umkoind/umkoin-qt
 for Debian-based Linux systems. If you compile umkoind/umkoin-qt yourself, there are some useful files here.
 
-## bitcoin: URI support ##
+## umkoin: URI support ##
 
 
 umkoin-qt.desktop  (Gnome / Open Desktop)
