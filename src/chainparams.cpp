@@ -87,10 +87,10 @@ public:
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 210000;
 //	consensus.BIP16Height = 0;
-        consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
-        consensus.BIP65Height = 10;
-        consensus.BIP66Height = 20;
+        consensus.BIP34Height = 100;
+//        consensus.BIP34Hash = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
+        consensus.BIP65Height = 110;
+        consensus.BIP66Height = 120;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
@@ -113,7 +113,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514155812; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
+        consensus.nMinimumChainWork = uint256S("0x00");
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"); //0
@@ -130,9 +130,9 @@ public:
         nDefaultPort = 6333;
         nPruneAfterHeight = 100000;
 
-	genesis = CreateGenesisBlock(1511563812, 4263252653, 0x1d00ffff, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1511563812, 4263252653, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-	assert(consensus.hashGenesisBlock == uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"));
         assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
         // Note that of those with the service bits flag, most only support a subset of possible options
@@ -145,7 +145,7 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x88, 0xB2, 0x1E};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x88, 0xAD, 0xE4};
 
-	bech32_hrp = "bc";
+        bech32_hrp = "bc";
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
@@ -178,10 +178,10 @@ public:
         strNetworkID = "test";
         consensus.nSubsidyHalvingInterval = 210000;
 //        consensus.BIP16Height = 0;
-        consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
-        consensus.BIP65Height = 10;
-        consensus.BIP66Height = 20;
+        consensus.BIP34Height = 100;
+//        consensus.BIP34Hash = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
+        consensus.BIP65Height = 110;
+        consensus.BIP66Height = 120;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
@@ -204,7 +204,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514155812; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
+        consensus.nMinimumChainWork = uint256S("0x00");
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"); //0
@@ -216,7 +216,7 @@ public:
         nDefaultPort = 16333;
         nPruneAfterHeight = 1000;
 
-	genesis = CreateGenesisBlock(1511678228, 1037567534, 0x1d00ffff, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1511678228, 1037567534, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"));
         assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
@@ -233,7 +233,7 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
-	bech32_hrp = "tb";
+        bech32_hrp = "tb";
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
 
@@ -267,7 +267,7 @@ public:
         consensus.nSubsidyHalvingInterval = 150;
 //        consensus.BIP16Height = 0; // always enforce P2SH BIP16 on regtest
         consensus.BIP34Height = 100000000; // BIP34 has not activated on regtest (far in the future so block v1 are not rejected in tests)
-        consensus.BIP34Hash = uint256S("0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d");
+//        consensus.BIP34Hash = uint256S("0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d");
         consensus.BIP65Height = 10; // BIP65 activated on regtest (Used in rpc activation tests)
         consensus.BIP66Height = 20; // BIP66 activated on regtest (Used in rpc activation tests)
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
@@ -292,7 +292,6 @@ public:
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00");
-//60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"); //0
 
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0xbf;
@@ -331,7 +330,7 @@ public:
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
-	bech32_hrp = "bcrt";
+        bech32_hrp = "bcrt";
     }
 };
 

@@ -1,4 +1,4 @@
-%define bdbv 4.8.30
+%define bdbv 5.3.21
 %global selinux_variants mls strict targeted
 
 %if 0%{?_no_gui:1}
@@ -154,19 +154,19 @@ This package contains utilities needed by the umkoin.server package.
 cp -p %{SOURCE10} ./umkoin.conf.example
 tar -zxf %{SOURCE1}
 cp -p db-%{bdbv}.NC/LICENSE ./db-%{bdbv}.NC-LICENSE
-mkdir db4 SELinux
+mkdir db5 SELinux
 cp -p %{SOURCE30} %{SOURCE31} %{SOURCE32} SELinux/
 
 
 %build
 CWD=`pwd`
 cd db-%{bdbv}.NC/build_unix/
-../dist/configure --enable-cxx --disable-shared --with-pic --prefix=${CWD}/db4
+../dist/configure --enable-cxx --disable-shared --with-pic --prefix=${CWD}/db5
 make install
 cd ../..
 
 ./autogen.sh
-%configure LDFLAGS="-L${CWD}/db4/lib/" CPPFLAGS="-I${CWD}/db4/include/" --with-miniupnpc --enable-glibc-back-compat %{buildargs}
+%configure LDFLAGS="-L${CWD}/db5/lib/" CPPFLAGS="-I${CWD}/db5/include/" --with-miniupnpc --enable-glibc-back-compat %{buildargs}
 make %{?_smp_mflags}
 
 pushd SELinux

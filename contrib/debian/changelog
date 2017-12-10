@@ -546,9 +546,9 @@ umkoin (0.3.19~dfsg-3) unstable; urgency=low
     + Bump DEP5 format hint to Subversion draft rev. 153.
     + Consistently wrap at 72 chars.
     + Refer to GPL-2 file (not GPL symlink).
-  * Link against Berkeley DB 4.8 (not 4.7):
-    + Build-depend on libdb4.8++-dev (and on on libdb4.7++-dev).
-    + Suggest libdb4.8-util and db4.7-util.
+  * Link against Berkeley DB 5.3:
+    + Build-depend on libdb5.3++-dev.
+    + Suggest libdb5.3-util.
     + Add README.Debian note on (untested) upgrade routine.
     + Add NEWS entry on changed db version, referring to README.Debian.
 
