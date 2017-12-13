@@ -2,24 +2,24 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "coincontroldialog.h"
-#include "ui_coincontroldialog.h"
+#include <qt/coincontroldialog.h>
+#include <qt/forms/ui_coincontroldialog.h>
 
-#include "addresstablemodel.h"
-#include "umkoinunits.h"
-#include "guiutil.h"
-#include "optionsmodel.h"
-#include "platformstyle.h"
-#include "txmempool.h"
-#include "walletmodel.h"
+#include <qt/addresstablemodel.h>
+#include <qt/umkoinunits.h>
+#include <qt/guiutil.h>
+#include <qt/optionsmodel.h>
+#include <qt/platformstyle.h>
+#include <txmempool.h>
+#include <qt/walletmodel.h>
 
-#include "wallet/coincontrol.h"
-#include "init.h"
-#include "policy/fees.h"
-#include "policy/policy.h"
-#include "validation.h" // For mempool
-#include "wallet/fees.h"
-#include "wallet/wallet.h"
+#include <wallet/coincontrol.h>
+#include <init.h>
+#include <policy/fees.h>
+#include <policy/policy.h>
+#include <validation.h> // For mempool
+#include <wallet/fees.h>
+#include <wallet/wallet.h>
 
 #include <QApplication>
 #include <QCheckBox>
@@ -125,7 +125,7 @@ CoinControlDialog::CoinControlDialog(const PlatformStyle *_platformStyle, QWidge
     connect(ui->pushButtonSelectAll, SIGNAL(clicked()), this, SLOT(buttonSelectAllClicked()));
 
     // change coin control first column label due Qt4 bug.
-    // see https://github.com/bitcoin/bitcoin/issues/5716
+    // see https://github.com/vmta/umkoin/issues/5716
     ui->treeWidget->headerItem()->setText(COLUMN_CHECKBOX, QString());
 
     ui->treeWidget->setColumnWidth(COLUMN_CHECKBOX, 84);
@@ -541,7 +541,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
     }
 
     // actually update labels
-    int nDisplayUnit = UmkoinUnits::BTC;
+    int nDisplayUnit = UmkoinUnits::UMK;
     if (model && model->getOptionsModel())
         nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
 
@@ -662,7 +662,7 @@ void CoinControlDialog::updateView()
             {
                 sAddress = QString::fromStdString(EncodeDestination(outputAddress));
 
-                // if listMode or change => show bitcoin address. In tree mode, address is not shown again for direct wallet address outputs
+                // if listMode or change => show umkoin address. In tree mode, address is not shown again for direct wallet address outputs
                 if (!treeMode || (!(sAddress == sWalletAddress)))
                     itemOutput->setText(COLUMN_ADDRESS, sAddress);
             }

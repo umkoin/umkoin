@@ -111,15 +111,15 @@
     </message>
     <message>
         <source>Send coins to a Umkoin address</source>
-        <translation>Enviar monedas a una dirección Bitcoin</translation>
+        <translation>Enviar monedas a una dirección Umkoin</translation>
     </message>
     <message>
         <source>Change the passphrase used for wallet encryption</source>
         <translation>Cambie la clave utilizada para el cifrado del monedero</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Umkoin</source>
+        <translation>Umkoin</translation>
     </message>
     <message>
         <source>Wallet</source>

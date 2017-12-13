@@ -5,7 +5,7 @@
 #ifndef UMKOIN_RPC_MINING_H
 #define UMKOIN_RPC_MINING_H
 
-#include "script/script.h"
+#include <script/script.h>
 
 #include <univalue.h>
 

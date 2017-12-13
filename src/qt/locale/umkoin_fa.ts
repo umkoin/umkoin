@@ -322,7 +322,7 @@
         <translation>با&amp;زبینی پیام...</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
+        <source>Umkoin</source>
         <translation>بیت‌کوین</translation>
     </message>
     <message>
@@ -852,7 +852,7 @@
         <translation>استخراج</translation>
     </message>
     <message>
-        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <source>Automatically open the Umkoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
         <translation>باز کردن خودکار درگاه شبکهٔ بیت‌کوین روی روترها. تنها زمانی کار می‌کند که روتر از پروتکل UPnP پشتیبانی کند و این پروتکل فعال باشد.</translation>
     </message>
     <message>
@@ -1702,8 +1702,8 @@
         <translation>اجرا در پشت زمینه به‌صورت یک سرویس و پذیرش دستورات</translation>
     </message>
     <message>
-        <source>Bitcoin Core</source>
-        <translation> هسته Bitcoin </translation>
+        <source>Umkoin Core</source>
+        <translation> هسته Umkoin </translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>

@@ -6,7 +6,7 @@
 #ifndef UMKOIN_RPCPROTOCOL_H
 #define UMKOIN_RPCPROTOCOL_H
 
-#include "fs.h"
+#include <fs.h>
 
 #include <list>
 #include <map>

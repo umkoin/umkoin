@@ -76,6 +76,7 @@ src/qt/test/moc*.cpp
 Makefile
 umkoin-qt
 Umkoin-Qt.app
+background.tiff*
 
 # Unit-tests
 Makefile.test

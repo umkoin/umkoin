@@ -2,24 +2,24 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "rpc/server.h"
+#include <rpc/server.h>
 
-#include "chainparams.h"
-#include "clientversion.h"
-#include "core_io.h"
-#include "validation.h"
-#include "net.h"
-#include "net_processing.h"
-#include "netbase.h"
-#include "policy/policy.h"
-#include "protocol.h"
-#include "sync.h"
-#include "timedata.h"
-#include "ui_interface.h"
-#include "util.h"
-#include "utilstrencodings.h"
-#include "version.h"
-#include "warnings.h"
+#include <chainparams.h>
+#include <clientversion.h>
+#include <core_io.h>
+#include <validation.h>
+#include <net.h>
+#include <net_processing.h>
+#include <netbase.h>
+#include <policy/policy.h>
+#include <rpc/protocol.h>
+#include <sync.h>
+#include <timedata.h>
+#include <ui_interface.h>
+#include <util.h>
+#include <utilstrencodings.h>
+#include <version.h>
+#include <warnings.h>
 
 #include <univalue.h>
 
@@ -296,7 +296,7 @@ UniValue getaddednodeinfo(const JSONRPCRequest& request)
             "    \"connected\" : true|false,          (boolean) If connected\n"
             "    \"addresses\" : [                    (list of objects) Only when connected = true\n"
             "       {\n"
-            "         \"address\" : \"192.168.0.201:6333\",  (string) The umkoin.server IP and port we're connected to\n"
+            "         \"address\" : \"192.168.0.201:6333\",  (string) The umkoin server IP and port we're connected to\n"
             "         \"connected\" : \"outbound\"           (string) connection, inbound or outbound\n"
             "       }\n"
             "     ]\n"
@@ -571,11 +571,11 @@ UniValue listbanned(const JSONRPCRequest& request)
     g_connman->GetBanned(banMap);
 
     UniValue bannedAddresses(UniValue::VARR);
-    for (banmap_t::iterator it = banMap.begin(); it != banMap.end(); it++)
+    for (const auto& entry : banMap)
     {
-        CBanEntry banEntry = (*it).second;
+        const CBanEntry& banEntry = entry.second;
         UniValue rec(UniValue::VOBJ);
-        rec.push_back(Pair("address", (*it).first.ToString()));
+        rec.push_back(Pair("address", entry.first.ToString()));
         rec.push_back(Pair("banned_until", banEntry.nBanUntil));
         rec.push_back(Pair("ban_created", banEntry.nCreateTime));
         rec.push_back(Pair("ban_reason", banEntry.banReasonToString()));

@@ -46,7 +46,7 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.umkoin.BitcoinPayment</string>
+      <string>org.umkoin.UmkoinPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
         <string>umkoin</string>
@@ -60,7 +60,7 @@
       <key>UTTypeIdentifier</key>
       <string>org.umkoin.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>Bitcoin payment request</string>
+      <string>Umkoin payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>

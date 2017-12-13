@@ -80,6 +80,7 @@ UMKOIN_TESTS =\
   test/timedata_tests.cpp \
   test/torcontrol_tests.cpp \
   test/transaction_tests.cpp \
+  test/txvalidation_tests.cpp \
   test/txvalidationcache_tests.cpp \
   test/versionbits_tests.cpp \
   test/uint256_tests.cpp \
@@ -96,7 +97,7 @@ UMKOIN_TESTS += \
 endif
 
 test_test_umkoin_SOURCES = $(UMKOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
-test_test_umkoin_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) -I$(builddir)/test/ $(TESTDEFS) $(EVENT_CFLAGS)
+test_test_umkoin_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(TESTDEFS) $(EVENT_CFLAGS)
 test_test_umkoin_LDADD =
 if ENABLE_WALLET
 test_test_umkoin_LDADD += $(LIBUMKOIN_WALLET)

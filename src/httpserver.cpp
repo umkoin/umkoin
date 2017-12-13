@@ -2,16 +2,16 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "httpserver.h"
+#include <httpserver.h>
 
-#include "chainparamsbase.h"
-#include "compat.h"
-#include "util.h"
-#include "utilstrencodings.h"
-#include "netbase.h"
-#include "rpc/protocol.h" // For HTTP status codes
-#include "sync.h"
-#include "ui_interface.h"
+#include <chainparamsbase.h>
+#include <compat.h>
+#include <util.h>
+#include <utilstrencodings.h>
+#include <netbase.h>
+#include <rpc/protocol.h> // For HTTP status codes
+#include <sync.h>
+#include <ui_interface.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,7 +28,7 @@
 #include <event2/util.h>
 #include <event2/keyvalq_struct.h>
 
-#include "support/events.h"
+#include <support/events.h>
 
 #ifdef EVENT__HAVE_NETINET_IN_H
 #include <netinet/in.h>
@@ -499,7 +499,7 @@ void StopHTTPServer()
         // at least libevent 2.0.21 and always introduced a delay. In libevent
         // master that appears to be solved, so in the future that solution
         // could be used again (if desirable).
-        // (see discussion in https://github.com/bitcoin/bitcoin/pull/6990)
+        // (see discussion in https://github.com/vmta/umkoin/pull/6990)
         if (threadResult.valid() && threadResult.wait_for(std::chrono::milliseconds(2000)) == std::future_status::timeout) {
             LogPrintf("HTTP event loop did not exit within allotted time, sending loopbreak\n");
             event_base_loopbreak(eventBase);

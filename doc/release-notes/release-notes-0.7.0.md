@@ -1,21 +1,21 @@
-Bitcoin version 0.7.0 is now available for download at:
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/umkoin-0.7.0/
+Umkoin version 0.7.0 is now available for download at:
+  http://sourceforge.net/projects/umkoin/files/Umkoin/umkoin-0.7.0/
 
 We recommend that everybody running prior versions of umkoind/Umkoin-Qt
 upgrade to this release, except for users running Mac OSX 10.5.
 
 Please report bugs using the issue tracker at github:
-  https://github.com/bitcoin/bitcoin/issues
+  https://github.com/vmta/umkoin/issues
 
 Project source code is hosted at github; you can get
 source-only tarballs/zipballs directly from there:
-  https://github.com/bitcoin/bitcoin/tarball/v0.7.0  # .tar.gz
-  https://github.com/bitcoin/bitcoin/zipball/v0.7.0  # .zip
+  https://github.com/vmta/umkoin/tarball/v0.7.0  # .tar.gz
+  https://github.com/vmta/umkoin/zipball/v0.7.0  # .zip
 
 Ubuntu Linux users can use the "Personal Package Archive" (PPA)
 maintained by Matt Corallo to automatically keep 
-bitcoin up-to-date.  Just type
-  sudo apt-add-repository ppa:bitcoin/bitcoin
+umkoin up-to-date.  Just type
+  sudo apt-add-repository ppa:vmta/umkoin
   sudo apt-get update
 in your terminal, then install the umkoin-qt package:
   sudo apt-get install umkoin-qt
@@ -45,14 +45,14 @@ Incompatible Changes
   and 'getrawmempool' commands.
 * Remove deprecated RPC 'getblocknumber'
 
-Bitcoin Improvement Proposals implemented
+Umkoin Improvement Proposals implemented
 
 BIP 22 - 'getblocktemplate', 'submitblock' RPCs
 BIP 34 - block version 2, height in coinbase
 BIP 35 - 'mempool' message, extended 'getdata' message behavior
 
 
-Core bitcoin handling and blockchain database
+Core umkoin handling and blockchain database
 
 * Reduced CPU usage, by eliminating some redundant hash calculations
 * Cache signature verifications, to eliminate redundant signature checks
@@ -109,7 +109,7 @@ Qt GUI
 * Add 2 labels to the overviewpage that display Wallet and Transaction status (obsolete or current)
 * Extend the optionsdialog (e.g. language selection) and re-work it to a tabbed UI
 * Merge sign/verify message into a single window with tabbed UI
-* Ensure a changed bitcoin unit immediately updates all GUI elements that use units
+* Ensure a changed umkoin unit immediately updates all GUI elements that use units
 * Update QR Code dialog
 * Improve error reporting at startup
 * Fine-grained UI updates for a much smoother UI during block downloads

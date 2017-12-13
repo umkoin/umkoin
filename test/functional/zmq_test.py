@@ -8,10 +8,12 @@ import os
 import struct
 
 from test_framework.test_framework import UmkoinTestFramework, SkipTest
+from test_framework.mininode import CTransaction
 from test_framework.util import (assert_equal,
                                  bytes_to_hex_str,
                                  hash256,
                                 )
+from io import BytesIO
 
 class ZMQSubscriber:
     def __init__(self, socket, topic):
@@ -43,7 +45,7 @@ class ZMQTest (UmkoinTestFramework):
         except ImportError:
             raise SkipTest("python3-zmq module not available.")
 
-        # Check that bitcoin has been built with ZMQ enabled.
+        # Check that umkoin has been built with ZMQ enabled.
         config = configparser.ConfigParser()
         if not self.options.configfile:
             self.options.configfile = os.path.abspath(os.path.join(os.path.dirname(__file__), "../config.ini"))
@@ -93,7 +95,10 @@ class ZMQTest (UmkoinTestFramework):
 
             # Should receive the coinbase raw transaction.
             hex = self.rawtx.receive()
-            assert_equal(hash256(hex), txid)
+            tx = CTransaction()
+            tx.deserialize(BytesIO(hex))
+            tx.calc_sha256()
+            assert_equal(tx.hash, bytes_to_hex_str(txid))
 
             # Should receive the generated block hash.
             hash = bytes_to_hex_str(self.hashblock.receive())

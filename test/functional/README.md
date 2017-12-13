@@ -23,7 +23,7 @@ don't have test cases for.
 - Avoid wildcard imports where possible
 - Use a module-level docstring to describe what the test is testing, and how it
   is testing it.
-- When subclassing the BitcoinTestFramwork, place overrides for the
+- When subclassing the UmkoinTestFramwork, place overrides for the
   `set_test_params()`, `add_options()` and `setup_xxxx()` methods at the top of
   the subclass, then locally-defined helper methods, then the `run_test()` method.
 
@@ -39,7 +39,7 @@ don't have test cases for.
 - Set the `self.setup_clean_chain` variable in `set_test_params()` to control whether
   or not to use the cached data directories. The cached data directories
   contain a 200-block pre-mined blockchain and wallets for four nodes. Each node
-  has 25 mature blocks (25x50=1250 BTC) in its wallet.
+  has 25 mature blocks (25x50=1250 UMK) in its wallet.
 - When calling RPCs with lots of arguments, consider using named keyword
   arguments instead of positional arguments to make the intent of the call
   clear to readers.
@@ -63,12 +63,12 @@ wrappers for them, `msg_block`, `msg_tx`, etc).
 with the umkoind(s) being tested (using python's asyncore package); the other
 implements the test logic.
 
-- `NodeConn` is the class used to connect to a umkoind.  If you implement
-a callback class that derives from `NodeConnCB` and pass that to the
-`NodeConn` object, your code will receive the appropriate callbacks when
-events of interest arrive.
+- `P2PConnection` is the class used to connect to a umkoind.  `P2PInterface`
+contains the higher level logic for processing P2P payloads and connecting to
+the Umkoin Core node application logic. For custom behaviour, subclass the
+P2PInterface object and override the callback methods.
 
-- Call `NetworkThread.start()` after all `NodeConn` objects are created to
+- Call `NetworkThread.start()` after all `P2PInterface` objects are created to
 start the networking thread.  (Continue with the test logic in your existing
 thread.)
 
@@ -124,7 +124,7 @@ Each `TestInstance` consists of:
 ### test-framework modules
 
 #### [test_framework/authproxy.py](test_framework/authproxy.py)
-Taken from the [python-bitcoinrpc repository](https://github.com/jgarzik/python-bitcoinrpc).
+Taken from the [python-umkoinrpc repository](https://github.com/jgarzik/python-umkoinrpc).
 
 #### [test_framework/test_framework.py](test_framework/test_framework.py)
 Base class for functional tests.
@@ -139,13 +139,13 @@ Basic code to support P2P connectivity to a umkoind.
 Framework for comparison-tool style, P2P tests.
 
 #### [test_framework/script.py](test_framework/script.py)
-Utilities for manipulating transaction scripts (originally from python-bitcoinlib)
+Utilities for manipulating transaction scripts (originally from python-umkoinlib)
 
 #### [test_framework/blockstore.py](test_framework/blockstore.py)
 Implements disk-backed block and tx storage.
 
 #### [test_framework/key.py](test_framework/key.py)
-Wrapper around OpenSSL EC_Key (originally from python-bitcoinlib)
+Wrapper around OpenSSL EC_Key (originally from python-umkoinlib)
 
 #### [test_framework/bignum.py](test_framework/bignum.py)
 Helpers for script.py

@@ -1,28 +1,28 @@
-Bitcoin Core version 0.13.0 is now available from:
+Umkoin Core version 0.13.0 is now available from:
 
-  <https://bitcoin.org/bin/umkoin-core-0.13.0/>
+  <https://umkoin.org/bin/umkoin-core-0.13.0/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at github:
 
-  <https://github.com/bitcoin/bitcoin/issues>
+  <https://github.com/vmta/umkoin/issues>
 
 To receive security and update notifications, please subscribe to:
 
-  <https://bitcoincore.org/en/list/announcements/join/>
+  <https://umkoincore.org/en/list/announcements/join/>
 
 Compatibility
 ==============
 
 Microsoft ended support for Windows XP on [April 8th, 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support),
 an OS initially released in 2001. This means that not even critical security
-updates will be released anymore. Without security updates, using a bitcoin
+updates will be released anymore. Without security updates, using a umkoin
 wallet on a XP machine is irresponsible at least.
 
-In addition to that, with 0.12.x there have been varied reports of Bitcoin Core
-randomly crashing on Windows XP. It is [not clear](https://github.com/bitcoin/bitcoin/issues/7681#issuecomment-217439891)
+In addition to that, with 0.12.x there have been varied reports of Umkoin Core
+randomly crashing on Windows XP. It is [not clear](https://github.com/vmta/umkoin/issues/7681#issuecomment-217439891)
 what the source of these crashes is, but it is likely that upstream
 libraries such as Qt are no longer being tested on XP.
 
@@ -76,7 +76,7 @@ table by any user on the system.
 C++11 and Python 3
 ------------------
 
-Various code modernizations have been done. The Bitcoin Core code base has
+Various code modernizations have been done. The Umkoin Core code base has
 started using C++11. This means that a C++11-capable compiler is now needed for
 building. Effectively this means GCC 4.7 or higher, or Clang 3.3 or higher.
 
@@ -95,9 +95,9 @@ executables.
 
 The following extra files can be found in the download directory or torrent:
 
-- `bitcoin-${VERSION}-arm-linux-gnueabihf.tar.gz`: Linux binaries targeting
+- `umkoin-${VERSION}-arm-linux-gnueabihf.tar.gz`: Linux binaries targeting
   the 32-bit ARMv7-A architecture.
-- `bitcoin-${VERSION}-aarch64-linux-gnu.tar.gz`: Linux binaries targeting
+- `umkoin-${VERSION}-aarch64-linux-gnu.tar.gz`: Linux binaries targeting
   the 64-bit ARMv8-A architecture.
 
 ARM builds are still experimental. If you have problems on a certain device or
@@ -122,7 +122,7 @@ in PR 8068.
 The primary goal is reducing the bandwidth spikes at relay time, though in many
 cases it also reduces propagation delay. It is automatically enabled between
 compatible peers.
-[BIP 152](https://github.com/bitcoin/bips/blob/master/bip-0152.mediawiki)
+[BIP 152](https://github.com/umkoin/bips/blob/master/bip-0152.mediawiki)
 
 As a side-effect, ordinary non-mining nodes will download and upload blocks
 faster if those blocks were produced by miners using similar transaction
@@ -156,23 +156,23 @@ You can't disable HD key generation once you have created a HD wallet.
 
 There is no distinction between internal (change) and external keys.
 
-HD wallets are incompatible with older versions of Bitcoin Core.
+HD wallets are incompatible with older versions of Umkoin Core.
 
-[Pull request](https://github.com/bitcoin/bitcoin/pull/8035/files), [BIP 32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)
+[Pull request](https://github.com/vmta/umkoin/pull/8035/files), [BIP 32](https://github.com/umkoin/bips/blob/master/bip-0032.mediawiki)
 
 
 Segregated Witness
 ------------------
 
 The code preparations for Segregated Witness ("segwit"), as described in [BIP
-141](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki), [BIP
-143](https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki), [BIP
-144](https://github.com/bitcoin/bips/blob/master/bip-0144.mediawiki), and [BIP
-145](https://github.com/bitcoin/bips/blob/master/bip-0145.mediawiki) are
+141](https://github.com/umkoin/bips/blob/master/bip-0141.mediawiki), [BIP
+143](https://github.com/umkoin/bips/blob/master/bip-0143.mediawiki), [BIP
+144](https://github.com/umkoin/bips/blob/master/bip-0144.mediawiki), and [BIP
+145](https://github.com/umkoin/bips/blob/master/bip-0145.mediawiki) are
 finished and included in this release.  However, BIP 141 does not yet specify
 activation parameters on mainnet, and so this release does not support segwit
 use on mainnet.  Testnet use is supported, and after BIP 141 is updated with
-proposed parameters, a future release of Bitcoin Core is expected that
+proposed parameters, a future release of Umkoin Core is expected that
 implements those parameters for mainnet.
 
 Furthermore, because segwit activation is not yet specified for mainnet,
@@ -199,7 +199,7 @@ The command line option `-blockmaxsize` remains an option to specify the
 maximum number of serialized bytes in a generated block.  In addition, the new
 command line option `-blockmaxweight` has been added, which specifies the
 maximum "block weight" of a generated block, as defined by [BIP 141 (Segregated
-Witness)] (https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki).
+Witness)] (https://github.com/umkoin/bips/blob/master/bip-0141.mediawiki).
 
 In preparation for Segregated Witness, the mining algorithm has been modified
 to optimize transaction selection for a given block weight, rather than a given
@@ -216,7 +216,7 @@ support `-blockmaxsize` performs additional computation to ensure that
 constraint is met.  (Note that for mainnet, in this release, the equivalent
 parameter for `-blockmaxweight` would be four times the desired
 `-blockmaxsize`.  See [BIP 141]
-(https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki) for additional
+(https://github.com/umkoin/bips/blob/master/bip-0141.mediawiki) for additional
 details.)
 
 In the future, the `-blockmaxsize` option may be removed, as block creation is
@@ -277,7 +277,7 @@ Low-level P2P changes
 - The optional new p2p message "feefilter" is implemented and the protocol
   version is bumped to 70013. Upon receiving a feefilter message from a peer,
   a node will not send invs for any transactions which do not meet the filter
-  feerate. [BIP 133](https://github.com/bitcoin/bips/blob/master/bip-0133.mediawiki)
+  feerate. [BIP 133](https://github.com/umkoin/bips/blob/master/bip-0133.mediawiki)
 
 - The P2P alert system has been removed in PR #7692 and the `alert` P2P message
   is no longer supported.
@@ -326,10 +326,10 @@ Low-level RPC changes
 - Asm script outputs replacements for OP_NOP2 and OP_NOP3
 
   - OP_NOP2 has been renamed to OP_CHECKLOCKTIMEVERIFY by [BIP 
-65](https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki)
+65](https://github.com/umkoin/bips/blob/master/bip-0065.mediawiki)
 
   - OP_NOP3 has been renamed to OP_CHECKSEQUENCEVERIFY by [BIP 
-112](https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki)
+112](https://github.com/umkoin/bips/blob/master/bip-0112.mediawiki)
 
   - The following outputs are affected by this change:
 
@@ -358,7 +358,7 @@ Low-level ZMQ changes
   listeners to detect lost notifications.
   The sequence number is always the last element in a multi-part ZMQ notification and
   therefore backward compatible. Each message type has its own counter.
-  PR [#7762](https://github.com/bitcoin/bitcoin/pull/7762).
+  PR [#7762](https://github.com/vmta/umkoin/pull/7762).
 
 
 0.13.0 Change log
@@ -395,7 +395,7 @@ git merge commit are mentioned.
 - #7967 `8c1e49b` Add feerate option to `fundrawtransaction` (jonasschnelli)
 - #8118 `9b6a48c` Reduce unnecessary hashing in `signrawtransaction` (jonasnick)
 - #7957 `79004d4` Add support for transaction sequence number (jonasschnelli)
-- #8153 `75ec320` `fundrawtransaction` feeRate: Use BTC/kB (MarcoFalke)
+- #8153 `75ec320` `fundrawtransaction` feeRate: Use UMK/kB (MarcoFalke)
 - #7292 `7ce9ac5` Expose ancestor/descendant information over RPC (sdaftuar)
 - #8171 `62fcf27` Fix createrawtx sequence number unsigned int parsing (jonasschnelli)
 - #7892 `9c3d0fa` Add full UTF-8 support to RPC (laanwj)
@@ -557,13 +557,13 @@ git merge commit are mentioned.
 - #8014 `77b49ac` Sort transactions by date (Tyler-Hardin)
 - #8073 `eb2f6f7` askpassphrasedialog: Clear pass fields on accept (rat4)
 - #8129 `ee1533e` Fix RPC console auto completer (UdjinM6)
-- #7636 `fb0ac48` Add bitcoin address label to request payment QR code (makevoid)
+- #7636 `fb0ac48` Add umkoin address label to request payment QR code (makevoid)
 - #8231 `760a6c7` Fix a bug where the SplashScreen will not be hidden during startup (jonasschnelli)
 - #8256 `af2421c` BUG: umkoin-qt crash (fsb4000)
 - #8257 `ff03c50` Do not ask a UI question from umkoind (sipa)
 - #8288 `91abb77` Network-specific example address (laanwj)
 - #7707 `a914968` UI support for abandoned transactions (jonasschnelli)
-- #8207 `f7a403b` Add a link to the Bitcoin-Core repository and website to the About Dialog (MarcoFalke)
+- #8207 `f7a403b` Add a link to the Umkoin-Core repository and website to the About Dialog (MarcoFalke)
 - #8281 `6a87eb0` Remove client name from debug window (laanwj)
 - #8407 `45eba4b` Add dbcache migration path (jonasschnelli)
 
@@ -660,7 +660,7 @@ git merge commit are mentioned.
 - #8090 `a2df115` Adding P2SH(p2pkh) script test case (Christewart)
 - #7992 `ec45cc5` Extend #7956 with one more test (TheBlueMatt)
 - #8139 `ae5575b` Fix interrupted HTTP RPC connection workaround for Python 3.5+ (sipa)
-- #8164 `0f24eaf` [Bitcoin-Tx] fix missing test fixtures, fix 32bit atoi issue (jonasschnelli)
+- #8164 `0f24eaf` [Umkoin-Tx] fix missing test fixtures, fix 32bit atoi issue (jonasschnelli)
 - #8166 `0b5279f` Src/test: Do not shadow local variables (paveljanik)
 - #8141 `44c1b1c` Continuing port of java comparison tool (mrbandrews)
 - #8201 `36b7400` fundrawtransaction: Fix race, assert amounts (MarcoFalke)
@@ -707,7 +707,7 @@ git merge commit are mentioned.
 - #7791 `e30a5b0` Change Precise to Trusty in gitian-building.md (JeremyRand)
 - #7838 `8bb5d3d` Update gitian build guide to debian 8.4.0 (fanquake)
 - #7855 `b778e59` Replace precise with trusty (MarcoFalke)
-- #7975 `fc23fee` Update bitcoin-core GitHub links (MarcoFalke)
+- #7975 `fc23fee` Update umkoin-core GitHub links (MarcoFalke)
 - #8034 `e3a8207` Add basic git squash workflow (fanquake)
 - #7813 `214ec0b` Update port in tor.md (MarcoFalke)
 - #8193 `37c9830` Use Debian 8.5 in the gitian-build guide (fanquake)
@@ -865,4 +865,4 @@ Thanks to everyone who directly contributed to this release:
 - Wladimir J. van der Laan
 - Yuri Zhykin
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/bitcoin/).
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/umkoin/).

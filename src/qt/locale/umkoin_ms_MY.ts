@@ -64,11 +64,11 @@ Alihkan fail data ke dalam tab semasa</translation>
     </message>
     <message>
         <source>These are your Umkoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Ini adalah alamat Bitcoin anda untuk pembayaran. Periksa jumlah dan alamat penerima sebelum membuat penghantaran koin sentiasa.</translation>
+        <translation>Ini adalah alamat Umkoin anda untuk pembayaran. Periksa jumlah dan alamat penerima sebelum membuat penghantaran koin sentiasa.</translation>
     </message>
     <message>
         <source>These are your Umkoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Ini adalah alamat Bitcoin anda untuk menerima pembayaraan.  Anda disyorkan untuk menguna alamat menerima untuk setiap transaksi.</translation>
+        <translation>Ini adalah alamat Umkoin anda untuk menerima pembayaraan.  Anda disyorkan untuk menguna alamat menerima untuk setiap transaksi.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -324,7 +324,7 @@ Alihkan fail data ke dalam tab semasa</translation>
     </message>
     <message>
         <source>Send coins to a Umkoin address</source>
-        <translation>Menghantar koin kepada alamat Bitcoin</translation>
+        <translation>Menghantar koin kepada alamat Umkoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>

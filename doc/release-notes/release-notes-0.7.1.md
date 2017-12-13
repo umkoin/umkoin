@@ -1,20 +1,20 @@
-Bitcoin version 0.7.1 is now available from:
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/umkoin-0.7.1/
+Umkoin version 0.7.1 is now available from:
+  http://sourceforge.net/projects/umkoin/files/Umkoin/umkoin-0.7.1/
 
 This is a bug-fix minor release.
 
 Please report bugs using the issue tracker at github:
-  https://github.com/bitcoin/bitcoin/issues
+  https://github.com/vmta/umkoin/issues
 
 Project source code is hosted at github; you can get
 source-only tarballs/zipballs directly from there:
-  https://github.com/bitcoin/bitcoin/tarball/v0.7.1  # .tar.gz
-  https://github.com/bitcoin/bitcoin/zipball/v0.7.1  # .zip
+  https://github.com/vmta/umkoin/tarball/v0.7.1  # .tar.gz
+  https://github.com/vmta/umkoin/zipball/v0.7.1  # .zip
 
 Ubuntu Linux users can use the "Personal Package Archive" (PPA)
 maintained by Matt Corallo to automatically keep 
 up-to-date.  Just type:
-  sudo apt-add-repository ppa:bitcoin/bitcoin
+  sudo apt-add-repository ppa:vmta/umkoin
   sudo apt-get update
 in your terminal, then install the umkoin-qt package:
   sudo apt-get install umkoin-qt
@@ -75,7 +75,7 @@ Dependency changes
 Bug fixes
 ---------
 
-* Clicking on a bitcoin: URI on Windows should now launch Umkoin-Qt properly.
+* Clicking on a umkoin: URI on Windows should now launch Umkoin-Qt properly.
 
 * When running -testnet, use RPC port 16332 by default.
 

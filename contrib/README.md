@@ -32,7 +32,7 @@ Files used during the gitian build process. For more information about gitian, s
 PGP keys used for signing Umkoin Core [Gitian release](/doc/release-process.md) results.
 
 ### [MacDeploy](/contrib/macdeploy) ###
-Scripts and notes for Mac builds.
+Scripts and notes for Mac builds. 
 
 ### [RPM](/contrib/rpm) ###
 RPM spec file for building umkoin-core on RPM based distributions.
@@ -40,11 +40,11 @@ RPM spec file for building umkoin-core on RPM based distributions.
 ### [Gitian-build](/contrib/gitian-build.sh) ###
 Script for running full Gitian builds.
 
-Test and Verify Tools
+Test and Verify Tools 
 ---------------------
 
 ### [TestGen](/contrib/testgen) ###
 Utilities to generate test vectors for the data-driven Umkoin tests.
 
 ### [Verify Binaries](/contrib/verifybinaries) ###
-This script attempts to download and verify the signature file SHA256SUMS.asc from www.ua-moloko.com.
+This script attempts to download and verify the signature file SHA256SUMS.asc from umkoin.org.

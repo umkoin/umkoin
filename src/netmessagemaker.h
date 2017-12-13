@@ -6,8 +6,8 @@
 #ifndef UMKOIN_NETMESSAGEMAKER_H
 #define UMKOIN_NETMESSAGEMAKER_H
 
-#include "net.h"
-#include "serialize.h"
+#include <net.h>
+#include <serialize.h>
 
 class CNetMsgMaker
 {

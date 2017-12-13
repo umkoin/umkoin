@@ -6,7 +6,7 @@
 #ifndef UMKOIN_SCRIPT_SIGN_H
 #define UMKOIN_SCRIPT_SIGN_H
 
-#include "script/interpreter.h"
+#include <script/interpreter.h>
 
 class CKeyID;
 class CKeyStore;

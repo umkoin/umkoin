@@ -6,7 +6,7 @@
 #define UMKOIN_ZMQ_ZMQCONFIG_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/umkoin-config.h"
+#include <config/umkoin-config.h>
 #endif
 
 #include <stdarg.h>
@@ -16,8 +16,8 @@
 #include <zmq.h>
 #endif
 
-#include "primitives/block.h"
-#include "primitives/transaction.h"
+#include <primitives/block.h>
+#include <primitives/transaction.h>
 
 void zmqError(const char *str);
 

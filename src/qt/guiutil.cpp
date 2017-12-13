@@ -2,21 +2,21 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "guiutil.h"
+#include <qt/guiutil.h>
 
-#include "umkoinaddressvalidator.h"
-#include "umkoinunits.h"
-#include "qvalidatedlineedit.h"
-#include "walletmodel.h"
+#include <qt/umkoinaddressvalidator.h>
+#include <qt/umkoinunits.h>
+#include <qt/qvalidatedlineedit.h>
+#include <qt/walletmodel.h>
 
-#include "fs.h"
-#include "primitives/transaction.h"
-#include "init.h"
-#include "policy/policy.h"
-#include "protocol.h"
-#include "script/script.h"
-#include "script/standard.h"
-#include "util.h"
+#include <fs.h>
+#include <primitives/transaction.h>
+#include <init.h>
+#include <policy/policy.h>
+#include <protocol.h>
+#include <script/script.h>
+#include <script/standard.h>
+#include <util.h>
 
 #ifdef WIN32
 #ifdef _WIN32_WINNT
@@ -31,9 +31,9 @@
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
-#include "shellapi.h"
-#include "shlobj.h"
-#include "shlwapi.h"
+#include <shellapi.h>
+#include <shlobj.h>
+#include <shlwapi.h>
 #endif
 
 #include <boost/scoped_array.hpp>
@@ -187,7 +187,7 @@ bool parseUmkoinURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!UmkoinUnits::parse(UmkoinUnits::BTC, i->second, &rv.amount))
+                if(!UmkoinUnits::parse(UmkoinUnits::UMK, i->second, &rv.amount))
                 {
                     return false;
                 }
@@ -226,7 +226,7 @@ QString formatUmkoinURI(const SendCoinsRecipient &info)
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(UmkoinUnits::format(UmkoinUnits::BTC, info.amount, false, UmkoinUnits::separatorNever));
+        ret += QString("?amount=%1").arg(UmkoinUnits::format(UmkoinUnits::UMK, info.amount, false, UmkoinUnits::separatorNever));
         paramCount++;
     }
 

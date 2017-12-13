@@ -9,7 +9,7 @@
 #define UNUSED
 #endif
 static const char UNUSED *umkoin_strings[] = {
-QT_TRANSLATE_NOOP("umkoin-core", "Bitcoin Core"),
+QT_TRANSLATE_NOOP("umkoin-core", "Umkoin Core"),
 QT_TRANSLATE_NOOP("umkoin-core", "The %s developers"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "(1 = keep tx meta data e.g. account owner and payment request information, 2 "

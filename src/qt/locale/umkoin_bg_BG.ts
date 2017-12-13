@@ -420,7 +420,7 @@
 <context>
     <name>umkoin-core</name>
     <message>
-        <source>Bitcoin Core</source>
+        <source>Umkoin Core</source>
         <translation>Биткойн ядро</translation>
     </message>
     </context>

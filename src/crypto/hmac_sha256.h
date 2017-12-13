@@ -5,7 +5,7 @@
 #ifndef UMKOIN_CRYPTO_HMAC_SHA256_H
 #define UMKOIN_CRYPTO_HMAC_SHA256_H
 
-#include "crypto/sha256.h"
+#include <crypto/sha256.h>
 
 #include <stdint.h>
 #include <stdlib.h>

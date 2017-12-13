@@ -12,7 +12,7 @@ AC_DEFUN([UMKOIN_FIND_BDB53],[
     bdbpath=X
     bdb53path=X
     bdbdirlist=
-    for _vn in 5 53 5.3 ''; do
+    for _vn in 5 5.3 ''; do
       for _pfx in b lib ''; do
         bdbdirlist="$bdbdirlist ${_pfx}db${_vn}"
       done

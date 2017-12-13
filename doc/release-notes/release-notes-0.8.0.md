@@ -1,11 +1,11 @@
 Umkoin-Qt version 0.8.0 is now available from:
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/umkoin-0.8.0/
+  http://sourceforge.net/projects/umkoin/files/Umkoin/umkoin-0.8.0/
 
 This is a major release designed to improve performance and handle the
 increasing volume of transactions on the network.
 
 Please report bugs using the issue tracker at github:
-  https://github.com/bitcoin/bitcoin/issues
+  https://github.com/vmta/umkoin/issues
 
 How to Upgrade
 --------------
@@ -31,7 +31,7 @@ details).
 Improvements
 ------------
 
-Mac and Windows binaries are signed with certificates owned by the Bitcoin
+Mac and Windows binaries are signed with certificates owned by the Umkoin
 Foundation, to be compatible with the new security features in OSX 10.8 and
 Windows 8.
 

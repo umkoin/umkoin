@@ -6,9 +6,9 @@
 #ifndef UMKOIN_NET_PROCESSING_H
 #define UMKOIN_NET_PROCESSING_H
 
-#include "net.h"
-#include "validationinterface.h"
-#include "consensus/params.h"
+#include <net.h>
+#include <validationinterface.h>
+#include <consensus/params.h>
 
 /** Default for -maxorphantx, maximum number of orphan transactions kept in memory */
 static const unsigned int DEFAULT_MAX_ORPHAN_TRANSACTIONS = 100;

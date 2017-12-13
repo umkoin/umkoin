@@ -2,9 +2,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "umkoinunits.h"
+#include <qt/umkoinunits.h>
 
-#include "primitives/transaction.h"
+#include <primitives/transaction.h>
 
 #include <QStringList>
 
@@ -17,9 +17,9 @@ UmkoinUnits::UmkoinUnits(QObject *parent):
 QList<UmkoinUnits::Unit> UmkoinUnits::availableUnits()
 {
     QList<UmkoinUnits::Unit> unitlist;
-    unitlist.append(BTC);
-    unitlist.append(mBTC);
-    unitlist.append(uBTC);
+    unitlist.append(UMK);
+    unitlist.append(mUMK);
+    unitlist.append(uUMK);
     return unitlist;
 }
 
@@ -27,9 +27,9 @@ bool UmkoinUnits::valid(int unit)
 {
     switch(unit)
     {
-    case BTC:
-    case mBTC:
-    case uBTC:
+    case UMK:
+    case mUMK:
+    case uUMK:
         return true;
     default:
         return false;
@@ -40,9 +40,9 @@ QString UmkoinUnits::name(int unit)
 {
     switch(unit)
     {
-    case BTC: return QString("BTC");
-    case mBTC: return QString("mBTC");
-    case uBTC: return QString::fromUtf8("μBTC");
+    case UMK: return QString("UMK");
+    case mUMK: return QString("mUMK");
+    case uUMK: return QString::fromUtf8("μUMK");
     default: return QString("???");
     }
 }
@@ -51,9 +51,9 @@ QString UmkoinUnits::description(int unit)
 {
     switch(unit)
     {
-    case BTC: return QString("Umkoins");
-    case mBTC: return QString("Milli-Umkoins (1 / 1" THIN_SP_UTF8 "000)");
-    case uBTC: return QString("Micro-Umkoins (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    case UMK: return QString("Umkoins");
+    case mUMK: return QString("Milli-Umkoins (1 / 1" THIN_SP_UTF8 "000)");
+    case uUMK: return QString("Micro-Umkoins (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     default: return QString("???");
     }
 }
@@ -62,9 +62,9 @@ qint64 UmkoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case BTC:  return 100000000;
-    case mBTC: return 100000;
-    case uBTC: return 100;
+    case UMK:  return 100000000;
+    case mUMK: return 100000;
+    case uUMK: return 100;
     default:   return 100000000;
     }
 }
@@ -73,9 +73,9 @@ int UmkoinUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case BTC: return 8;
-    case mBTC: return 5;
-    case uBTC: return 2;
+    case UMK: return 8;
+    case mUMK: return 5;
+    case uUMK: return 2;
     default: return 0;
     }
 }

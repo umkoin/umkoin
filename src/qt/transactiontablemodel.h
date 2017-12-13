@@ -5,7 +5,7 @@
 #ifndef UMKOIN_QT_TRANSACTIONTABLEMODEL_H
 #define UMKOIN_QT_TRANSACTIONTABLEMODEL_H
 
-#include "umkoinunits.h"
+#include <qt/umkoinunits.h>
 
 #include <QAbstractTableModel>
 #include <QStringList>

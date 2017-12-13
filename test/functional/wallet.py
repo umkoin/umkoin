@@ -64,7 +64,7 @@ class WalletTest(UmkoinTestFramework):
         txout = self.nodes[0].gettxout(txid=confirmed_txid, n=confirmed_index, include_mempool=True)
         assert_equal(txout['value'], 50)
         
-        # Send 21 BTC from 0 to 2 using sendtoaddress call.
+        # Send 21 UMK from 0 to 2 using sendtoaddress call.
         # Locked memory should use at least 32 bytes to sign each transaction
         self.log.info("test getmemoryinfo")
         memory_before = self.nodes[0].getmemoryinfo()
@@ -100,17 +100,25 @@ class WalletTest(UmkoinTestFramework):
         # Exercise locking of unspent outputs
         unspent_0 = self.nodes[2].listunspent()[0]
         unspent_0 = {"txid": unspent_0["txid"], "vout": unspent_0["vout"]}
+        assert_raises_rpc_error(-8, "Invalid parameter, expected locked output", self.nodes[2].lockunspent, True, [unspent_0])
         self.nodes[2].lockunspent(False, [unspent_0])
+        assert_raises_rpc_error(-8, "Invalid parameter, output already locked", self.nodes[2].lockunspent, False, [unspent_0])
         assert_raises_rpc_error(-4, "Insufficient funds", self.nodes[2].sendtoaddress, self.nodes[2].getnewaddress(), 20)
         assert_equal([unspent_0], self.nodes[2].listlockunspent())
         self.nodes[2].lockunspent(True, [unspent_0])
         assert_equal(len(self.nodes[2].listlockunspent()), 0)
+        assert_raises_rpc_error(-8, "Invalid parameter, unknown transaction",
+                              self.nodes[2].lockunspent, False,
+                              [{"txid": "0000000000000000000000000000000000", "vout": 0}])
+        assert_raises_rpc_error(-8, "Invalid parameter, vout index out of bounds",
+                              self.nodes[2].lockunspent, False,
+                              [{"txid": unspent_0["txid"], "vout": 999}])
 
         # Have node1 generate 100 blocks (so node0 can recover the fee)
         self.nodes[1].generate(100)
         self.sync_all([self.nodes[0:3]])
 
-        # node0 should end up with 100 btc in block rewards plus fees, but
+        # node0 should end up with 100 umk in block rewards plus fees, but
         # minus the 21 plus fees sent to node2
         assert_equal(self.nodes[0].getbalance(), 100-21)
         assert_equal(self.nodes[2].getbalance(), 21)
@@ -143,7 +151,11 @@ class WalletTest(UmkoinTestFramework):
         assert_equal(self.nodes[2].getbalance(), 94)
         assert_equal(self.nodes[2].getbalance("from1"), 94-21)
 
-        # Send 10 BTC normal
+        # Verify that a spent output cannot be locked anymore
+        spent_0 = {"txid": node0utxos[0]["txid"], "vout": node0utxos[0]["vout"]}
+        assert_raises_rpc_error(-8, "Invalid parameter, expected unspent output", self.nodes[0].lockunspent, False, [spent_0])
+
+        # Send 10 UMK normal
         address = self.nodes[0].getnewaddress("test")
         fee_per_byte = Decimal('0.001') / 1000
         self.nodes[2].settxfee(fee_per_byte * 1000)
@@ -153,7 +165,7 @@ class WalletTest(UmkoinTestFramework):
         node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), Decimal('84'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
         assert_equal(self.nodes[0].getbalance(), Decimal('10'))
 
-        # Send 10 BTC with subtract fee from amount
+        # Send 10 UMK with subtract fee from amount
         txid = self.nodes[2].sendtoaddress(address, 10, "", "", True)
         self.nodes[2].generate(1)
         self.sync_all([self.nodes[0:3]])
@@ -161,7 +173,7 @@ class WalletTest(UmkoinTestFramework):
         assert_equal(self.nodes[2].getbalance(), node_2_bal)
         node_0_bal = self.check_fee_amount(self.nodes[0].getbalance(), Decimal('20'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
 
-        # Sendmany 10 BTC
+        # Sendmany 10 UMK
         txid = self.nodes[2].sendmany('from1', {address: 10}, 0, "", [])
         self.nodes[2].generate(1)
         self.sync_all([self.nodes[0:3]])
@@ -169,7 +181,7 @@ class WalletTest(UmkoinTestFramework):
         node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), node_2_bal - Decimal('10'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
         assert_equal(self.nodes[0].getbalance(), node_0_bal)
 
-        # Sendmany 10 BTC with subtract fee from amount
+        # Sendmany 10 UMK with subtract fee from amount
         txid = self.nodes[2].sendmany('from1', {address: 10}, 0, "", [address])
         self.nodes[2].generate(1)
         self.sync_all([self.nodes[0:3]])
@@ -353,7 +365,7 @@ class WalletTest(UmkoinTestFramework):
             '-reindex',
             '-zapwallettxes=1',
             '-zapwallettxes=2',
-            # disabled until issue is fixed: https://github.com/bitcoin/bitcoin/issues/7463
+            # disabled until issue is fixed: https://github.com/vmta/umkoin/issues/7463
             # '-salvagewallet',
         ]
         chainlimit = 6

@@ -1,15 +1,15 @@
-Bitcoin version 0.4.4 is now available for download at:
-http://luke.dashjr.org/programs/bitcoin/files/umkoind-0.4.4/
+Umkoin version 0.4.4 is now available for download at:
+http://luke.dashjr.org/programs/umkoin/files/umkoind-0.4.4/
 
 This is a bugfix-only release based on 0.4.0.
 
-Please note that the wxBitcoin GUI client is no longer maintained nor supported. If someone would like to step up to maintain this, they should contact Luke-Jr.
+Please note that the wxUmkoin GUI client is no longer maintained nor supported. If someone would like to step up to maintain this, they should contact Luke-Jr.
 
 Please report bugs for the daemon only using the issue tracker at github:
-https://github.com/bitcoin/bitcoin/issues
+https://github.com/vmta/umkoin/issues
 
 Stable source code is hosted at Gitorious:
-http://gitorious.org.umkoin/umkoind-stable/archive-tarball/v0.4.4#.tar.gz
+http://gitorious.org/vmta/umkoind-stable/archive-tarball/v0.4.4#.tar.gz
 
 BUG FIXES
 

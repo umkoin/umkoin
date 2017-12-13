@@ -6,7 +6,7 @@
 #ifndef UMKOIN_SCRIPT_ISMINE_H
 #define UMKOIN_SCRIPT_ISMINE_H
 
-#include "script/standard.h"
+#include <script/standard.h>
 
 #include <stdint.h>
 

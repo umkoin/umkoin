@@ -20,10 +20,10 @@ EXCLUDE = [
     'src/secp256k1/include/secp256k1_ecdh.h',
     'src/secp256k1/include/secp256k1_recovery.h',
     'src/secp256k1/include/secp256k1_schnorr.h',
-    'src/secp256k1/src/java/org.umkoin_NativeSecp256k1.c',
-    'src/secp256k1/src/java/org.umkoin_NativeSecp256k1.h',
-    'src/secp256k1/src/java/org.umkoin_Secp256k1Context.c',
-    'src/secp256k1/src/java/org.umkoin_Secp256k1Context.h',
+    'src/secp256k1/src/java/org_umkoin_NativeSecp256k1.c',
+    'src/secp256k1/src/java/org_umkoin_NativeSecp256k1.h',
+    'src/secp256k1/src/java/org_umkoin_Secp256k1Context.c',
+    'src/secp256k1/src/java/org_umkoin_Secp256k1Context.h',
     # auto generated:
     'src/univalue/lib/univalue_escapes.h',
     'src/qt/umkoinstrings.cpp',
@@ -85,9 +85,9 @@ EXPECTED_HOLDER_NAMES = [
     "Satoshi Nakamoto\n",
     "The Bitcoin Core developers\n",
     "The Bitcoin Core developers \n",
-    "Bitcoin Core Developers\n",
+    "Bitcoin Core developers\n",
     "the Bitcoin Core developers\n",
-    "The Bitcoin developers\n",
+    "The Umkoin developers\n",
     "The LevelDB Authors\. All rights reserved\.\n",
     "BitPay Inc\.\n",
     "BitPay, Inc\.\n",
@@ -580,7 +580,7 @@ def insert_cmd(argv):
 ################################################################################
 
 USAGE = """
-copyright_header.py - utilities for managing copyright headers of 'The Bitcoin
+copyright_header.py - utilities for managing copyright headers of 'The Umkoin
 Core developers' in repository source files.
 
 Usage:

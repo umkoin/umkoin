@@ -2,10 +2,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "bench.h"
-#include "coins.h"
-#include "policy/policy.h"
-#include "wallet/crypter.h"
+#include <bench/bench.h>
+#include <coins.h>
+#include <policy/policy.h>
+#include <wallet/crypter.h>
 
 #include <vector>
 
@@ -52,7 +52,7 @@ SetupDummyInputs(CBasicKeyStore& keystoreRet, CCoinsViewCache& coinsRet)
 // many times micro-benchmarks of the database showed completely different
 // characteristics than e.g. reindex timings. But that's not a requirement of
 // every benchmark."
-// (https://github.com/bitcoin/bitcoin/issues/7883#issuecomment-224807484)
+// (https://github.com/vmta/umkoin/issues/7883#issuecomment-224807484)
 static void CCoinsCaching(benchmark::State& state)
 {
     CBasicKeyStore keystore;

@@ -5,7 +5,7 @@
 #ifndef UMKOIN_MEMUSAGE_H
 #define UMKOIN_MEMUSAGE_H
 
-#include "indirectmap.h"
+#include <indirectmap.h>
 
 #include <stdlib.h>
 

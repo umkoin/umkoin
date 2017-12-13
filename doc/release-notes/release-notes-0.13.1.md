@@ -1,6 +1,6 @@
-Bitcoin Core version 0.13.1 is now available from:
+Umkoin Core version 0.13.1 is now available from:
 
-  <https://bitcoin.org/bin/umkoin-core-0.13.1/>
+  <https://umkoin.org/bin/umkoin-core-0.13.1/>
 
 This is a new minor version release, including activation parameters for the
 segwit softfork, various bugfixes and performance improvements, as well as
@@ -8,22 +8,22 @@ updated translations.
 
 Please report bugs using the issue tracker at github:
 
-  <https://github.com/bitcoin/bitcoin/issues>
+  <https://github.com/vmta/umkoin/issues>
 
 To receive security and update notifications, please subscribe to:
 
-  <https://bitcoincore.org/en/list/announcements/join/>
+  <https://umkoincore.org/en/list/announcements/join/>
 
 Compatibility
 ==============
 
 Microsoft ended support for Windows XP on [April 8th, 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support),
 an OS initially released in 2001. This means that not even critical security
-updates will be released anymore. Without security updates, using a bitcoin
+updates will be released anymore. Without security updates, using a umkoin
 wallet on a XP machine is irresponsible at least.
 
-In addition to that, with 0.12.x there have been varied reports of Bitcoin Core
-randomly crashing on Windows XP. It is [not clear](https://github.com/bitcoin/bitcoin/issues/7681#issuecomment-217439891)
+In addition to that, with 0.12.x there have been varied reports of Umkoin Core
+randomly crashing on Windows XP. It is [not clear](https://github.com/vmta/umkoin/issues/7681#issuecomment-217439891)
 what the source of these crashes is, but it is likely that upstream
 libraries such as Qt are no longer being tested on XP.
 
@@ -58,7 +58,7 @@ covered by the txid. This provides several immediate benefits:
   multisig spend. This solves all known cases of unwanted transaction
   malleability, which is a problem that makes programming Umkoin wallet
   software more difficult and which seriously complicates the design of smart
-  contracts for Bitcoin.
+  contracts for Umkoin.
 
 - **Capacity increase:** Segwit transactions contain new fields that are not
   part of the data currently used to calculate the size of a block, which
@@ -72,7 +72,7 @@ covered by the txid. This provides several immediate benefits:
   following section for details).
 
 - **Weighting data based on how it affects node performance:** Some parts of
-  each Bitcoin block need to be stored by nodes in order to validate future
+  each Umkoin block need to be stored by nodes in order to validate future
   blocks; other parts of a block can be immediately forgotten (pruned) or used
   only for helping other nodes sync their copy of the block chain.  One large
   part of the immediately prunable data are transaction signatures (witnesses),
@@ -89,8 +89,8 @@ covered by the txid. This provides several immediate benefits:
   (such as hardware wallets), reduces the amount of data the signature
   generator needs to download, and allows the signature generator to operate
   more quickly.  This is made possible by having the generator sign the amount
-  of bitcoins they think they are spending, and by having full nodes refuse to
-  accept those signatures unless the amount of bitcoins being spent is exactly
+  of umkoins they think they are spending, and by having full nodes refuse to
+  accept those signatures unless the amount of umkoins being spent is exactly
   the same as was signed.  For non-segwit transactions, wallets instead had to
   download the complete previous transactions being spent for every payment
   they made, which could be a slow operation on hardware wallets and in other
@@ -115,15 +115,15 @@ covered by the txid. This provides several immediate benefits:
   Segwit allows advanced transactions to use the SHA256 hash function instead,
   which provides about 128 bits of security  (that is 281 trillion times as
   much security as 80 bits and is equivalent to the maximum bits of security
-  believed to be provided by Bitcoin's choice of parameters for its Elliptic
+  believed to be provided by Umkoin's choice of parameters for its Elliptic
   Curve Digital Security Algorithm [ECDSA].)
 
 - **More efficient almost-full-node security** Satoshi Nakamoto's original
-  Bitcoin paper describes a method for allowing newly-started full nodes to
+  Umkoin paper describes a method for allowing newly-started full nodes to
   skip downloading and validating some data from historic blocks that are
   protected by large amounts of proof of work.  Unfortunately, Nakamoto's
   method can't guarantee that a newly-started node using this method will
-  produce an accurate copy of Bitcoin's current ledger (called the UTXO set),
+  produce an accurate copy of Umkoin's current ledger (called the UTXO set),
   making the node vulnerable to falling out of consensus with other nodes.
   Although the problems with Nakamoto's method can't be fixed in a soft fork,
   Segwit accomplishes something similar to his original proposal: it makes it
@@ -131,18 +131,18 @@ covered by the txid. This provides several immediate benefits:
   (specifically, the segregated witnesses) while still ensuring that the node
   can build an accurate copy of the UTXO set for the block chain with the most
   proof of work.  Segwit enables this capability at the consensus layer, but
-  note that Bitcoin Core does not provide an option to use this capability as
+  note that Umkoin Core does not provide an option to use this capability as
   of this 0.13.1 release.
 
 - **Script versioning:** Segwit makes it easy for future soft forks to allow
-  Bitcoin users to individually opt-in to almost any change in the Bitcoin
+  Umkoin users to individually opt-in to almost any change in the Umkoin
   Script language when those users receive new transactions.  Features
-  currently being researched by Bitcoin Core contributors that may use this
+  currently being researched by Umkoin Core contributors that may use this
   capability include support for Schnorr signatures, which can improve the
   privacy and efficiency of multisig transactions (or transactions with
   multiple inputs), and Merklized Abstract Syntax Trees (MAST), which can
   improve the privacy and efficiency of scripts with two or more conditions.
-  Other Bitcoin community members are studying several other improvements
+  Other Umkoin community members are studying several other improvements
   that can be made using script versioning.
 
 Activation for the segwit soft fork is being managed using BIP9
@@ -159,13 +159,13 @@ For more information about segwit, please see the [segwit FAQ][], the
 operator, please see the [versionbits FAQ][] for information about
 signaling support for a soft fork.
 
-[Segwit FAQ]: https://bitcoincore.org/en/2016/01/26/segwit-benefits/
-[segwit wallet developers guide]: https://bitcoincore.org/en/segwit_wallet_dev/
-[BIP141]: https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki
-[BIP143]: https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki
-[BIP144]: https://github.com/bitcoin/bips/blob/master/bip-0144.mediawiki
-[BIP145]: https://github.com/bitcoin/bips/blob/master/bip-0145.mediawiki
-[versionbits FAQ]: https://bitcoincore.org/en/2016/06/08/version-bits-miners-faq/
+[Segwit FAQ]: https://umkoincore.org/en/2016/01/26/segwit-benefits/
+[segwit wallet developers guide]: https://umkoincore.org/en/segwit_wallet_dev/
+[BIP141]: https://github.com/umkoin/bips/blob/master/bip-0141.mediawiki
+[BIP143]: https://github.com/umkoin/bips/blob/master/bip-0143.mediawiki
+[BIP144]: https://github.com/umkoin/bips/blob/master/bip-0144.mediawiki
+[BIP145]: https://github.com/umkoin/bips/blob/master/bip-0145.mediawiki
+[versionbits FAQ]: https://umkoincore.org/en/2016/06/08/version-bits-miners-faq/
 
 
 Null dummy soft fork
@@ -183,7 +183,7 @@ a third-party to insert data into other people's transactions, changing
 the transaction's txid (called transaction malleability) and possibly
 causing other problems.
 
-Since Bitcoin Core 0.10.0, nodes have defaulted to only relaying and
+Since Umkoin Core 0.10.0, nodes have defaulted to only relaying and
 mining transactions whose dummy element was a null value (0x00, also
 called OP_0).  The null dummy soft fork turns this relay rule into a
 consensus rule both for non-segwit transactions and segwit transactions,
@@ -196,7 +196,7 @@ as segwit.
 
 For more information, please see [BIP147][].
 
-[BIP147]: https://github.com/bitcoin/bips/blob/master/bip-0147.mediawiki
+[BIP147]: https://github.com/umkoin/bips/blob/master/bip-0147.mediawiki
 
 Low-level RPC changes
 ---------------------
@@ -215,9 +215,9 @@ is provided below.
 
 The following extra files can be found in the download directory or torrent:
 
-- `bitcoin-${VERSION}-arm-linux-gnueabihf.tar.gz`: Linux binaries targeting
+- `umkoin-${VERSION}-arm-linux-gnueabihf.tar.gz`: Linux binaries targeting
   the 32-bit ARMv7-A architecture.
-- `bitcoin-${VERSION}-aarch64-linux-gnu.tar.gz`: Linux binaries targeting
+- `umkoin-${VERSION}-aarch64-linux-gnu.tar.gz`: Linux binaries targeting
   the 64-bit ARMv8-A architecture.
 
 ARM builds are still experimental. If you have problems on a certain device or
@@ -275,7 +275,7 @@ git merge commit are mentioned.
 - #8612 `2215c22` Check for compatibility with download in FindNextBlocksToDownload (sipa)
 - #8606 `bbf379b` Fix some locks (sipa)
 - #8594 `ab295bb` Do not add random inbound peers to addrman (gmaxwell)
-- #8940 `5b4192b` Add x9 service bit support to dnsseed.bluematt.me, seed.bitcoinstats.com (TheBlueMatt, cdecker)
+- #8940 `5b4192b` Add x9 service bit support to dnsseed.bluematt.me, seed.umkoinstats.com (TheBlueMatt, cdecker)
 - #8944 `685e4c7` Remove bogus assert on number of oubound connections. (TheBlueMatt)
 - #8949 `0dbc48a` Be more agressive in getting connections to peers with relevant services (gmaxwell)
 
@@ -337,7 +337,7 @@ git merge commit are mentioned.
 - #8754 `0e2c6bd` Target protobuf 2.6 in OS X build notes. (fanquake)
 - #8461 `b17a3f9` Document return value of networkhashps for getmininginfo RPC endpoint (jlopp)
 - #8512 `156e305` Corrected JSON typo on setban of net.cpp (sevastos)
-- #8683 `8a7d7ff` Fix incorrect file name bitcoin.qrc  (bitcoinsSG)
+- #8683 `8a7d7ff` Fix incorrect file name umkoin.qrc  (umkoinsSG)
 - #8891 `5e0dd9e` Update bips.md for Segregated Witness (fanquake)
 - #8545 `863ae74` Update git-subtree-check.sh README (MarcoFalke)
 - #8607 `486650a` Fix doxygen off-by-one comments, fix typos (MarcoFalke)
@@ -407,4 +407,4 @@ Thanks to everyone who directly contributed to this release:
 - whythat
 - Wladimir J. van der Laan
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/bitcoin/).
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/umkoin/).

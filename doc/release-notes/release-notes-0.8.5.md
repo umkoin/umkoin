@@ -1,11 +1,11 @@
 Umkoin-Qt version 0.8.5 is now available from:
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/umkoin-0.8.5/
+  http://sourceforge.net/projects/umkoin/files/Umkoin/umkoin-0.8.5/
 
 This is a maintenance release to fix a critical bug;
 we urge all users to upgrade.
 
 Please report bugs using the issue tracker at github:
-  https://github.com/bitcoin/bitcoin/issues
+  https://github.com/vmta/umkoin/issues
 
 
 How to Upgrade

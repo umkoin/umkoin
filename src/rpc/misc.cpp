@@ -3,27 +3,27 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "base58.h"
-#include "chain.h"
-#include "clientversion.h"
-#include "core_io.h"
-#include "crypto/ripemd160.h"
-#include "init.h"
-#include "validation.h"
-#include "httpserver.h"
-#include "net.h"
-#include "netbase.h"
-#include "rpc/blockchain.h"
-#include "rpc/server.h"
-#include "timedata.h"
-#include "util.h"
-#include "utilstrencodings.h"
+#include <base58.h>
+#include <chain.h>
+#include <clientversion.h>
+#include <core_io.h>
+#include <crypto/ripemd160.h>
+#include <init.h>
+#include <validation.h>
+#include <httpserver.h>
+#include <net.h>
+#include <netbase.h>
+#include <rpc/blockchain.h>
+#include <rpc/server.h>
+#include <timedata.h>
+#include <util.h>
+#include <utilstrencodings.h>
 #ifdef ENABLE_WALLET
-#include "wallet/rpcwallet.h"
-#include "wallet/wallet.h"
-#include "wallet/walletdb.h"
+#include <wallet/rpcwallet.h>
+#include <wallet/wallet.h>
+#include <wallet/walletdb.h>
 #endif
-#include "warnings.h"
+#include <warnings.h>
 
 #include <stdint.h>
 #ifdef HAVE_MALLOC_INFO
@@ -533,6 +533,9 @@ uint32_t getCategoryMask(UniValue cats) {
         if (!GetLogCategory(&flag, &cat)) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "unknown logging category " + cat);
         }
+        if (flag == BCLog::NONE) {
+            return 0;
+        }
         mask |= flag;
     }
     return mask;
@@ -542,16 +545,32 @@ UniValue logging(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 2) {
         throw std::runtime_error(
-            "logging [include,...] <exclude>\n"
+            "logging ( <include> <exclude> )\n"
             "Gets and sets the logging configuration.\n"
-            "When called without an argument, returns the list of categories that are currently being debug logged.\n"
-            "When called with arguments, adds or removes categories from debug logging.\n"
+            "When called without an argument, returns the list of categories with status that are currently being debug logged or not.\n"
+            "When called with arguments, adds or removes categories from debug logging and return the lists above.\n"
+            "The arguments are evaluated in order \"include\", \"exclude\".\n"
+            "If an item is both included and excluded, it will thus end up being excluded.\n"
             "The valid logging categories are: " + ListLogCategories() + "\n"
-            "libevent logging is configured on startup and cannot be modified by this RPC during runtime."
-            "Arguments:\n"
-            "1. \"include\" (array of strings) add debug logging for these categories.\n"
-            "2. \"exclude\" (array of strings) remove debug logging for these categories.\n"
-            "\nResult: <categories>  (string): a list of the logging categories that are active.\n"
+            "In addition, the following are available as category names with special meanings:\n"
+            "  - \"all\",  \"1\" : represent all logging categories.\n"
+            "  - \"none\", \"0\" : even if other logging categories are specified, ignore all of them.\n"
+            "\nArguments:\n"
+            "1. \"include\"        (array of strings, optional) A json array of categories to add debug logging\n"
+            "     [\n"
+            "       \"category\"   (string) the valid logging category\n"
+            "       ,...\n"
+            "     ]\n"
+            "2. \"exclude\"        (array of strings, optional) A json array of categories to remove debug logging\n"
+            "     [\n"
+            "       \"category\"   (string) the valid logging category\n"
+            "       ,...\n"
+            "     ]\n"
+            "\nResult:\n"
+            "{                   (json object where keys are the logging categories, and values indicates its status\n"
+            "  \"category\": 0|1,  (numeric) if being debug logged or not. 0:inactive, 1:active\n"
+            "  ...\n"
+            "}\n"
             "\nExamples:\n"
             + HelpExampleCli("logging", "\"[\\\"all\\\"]\" \"[\\\"http\\\"]\"")
             + HelpExampleRpc("logging", "[\"all\"], \"[libevent]\"")
@@ -608,6 +627,7 @@ static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         argNames
   //  --------------------- ------------------------  -----------------------  ----------
     { "control",            "getmemoryinfo",          &getmemoryinfo,          {"mode"} },
+    { "control",            "logging",                &logging,                {"include", "exclude"}},
     { "util",               "validateaddress",        &validateaddress,        {"address"} }, /* uses wallet if enabled */
     { "util",               "createmultisig",         &createmultisig,         {"nrequired","keys"} },
     { "util",               "verifymessage",          &verifymessage,          {"address","signature","message"} },
@@ -617,7 +637,6 @@ static const CRPCCommand commands[] =
     { "hidden",             "setmocktime",            &setmocktime,            {"timestamp"}},
     { "hidden",             "echo",                   &echo,                   {"arg0","arg1","arg2","arg3","arg4","arg5","arg6","arg7","arg8","arg9"}},
     { "hidden",             "echojson",               &echo,                   {"arg0","arg1","arg2","arg3","arg4","arg5","arg6","arg7","arg8","arg9"}},
-    { "hidden",             "logging",                &logging,                {"include", "exclude"}},
 };
 
 void RegisterMiscRPCCommands(CRPCTable &t)

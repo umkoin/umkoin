@@ -15,7 +15,7 @@ from test_framework.blocktools import create_block, create_coinbase, add_witness
 from test_framework.script import CScript, OP_TRUE
 
 # TestNode: A peer we use to send messages to umkoind, and store responses.
-class TestNode(NodeConnCB):
+class TestNode(P2PInterface):
     def __init__(self):
         super().__init__()
         self.last_sendcmpct = []
@@ -25,21 +25,21 @@ class TestNode(NodeConnCB):
         # so we can eg wait until a particular block is announced.
         self.announced_blockhashes = set()
 
-    def on_sendcmpct(self, conn, message):
+    def on_sendcmpct(self, message):
         self.last_sendcmpct.append(message)
 
-    def on_cmpctblock(self, conn, message):
+    def on_cmpctblock(self, message):
         self.block_announced = True
         self.last_message["cmpctblock"].header_and_shortids.header.calc_sha256()
         self.announced_blockhashes.add(self.last_message["cmpctblock"].header_and_shortids.header.sha256)
 
-    def on_headers(self, conn, message):
+    def on_headers(self, message):
         self.block_announced = True
         for x in self.last_message["headers"].headers:
             x.calc_sha256()
             self.announced_blockhashes.add(x.sha256)
 
-    def on_inv(self, conn, message):
+    def on_inv(self, message):
         for x in self.last_message["inv"].inv:
             if x.type == 2:
                 self.block_announced = True
@@ -60,7 +60,7 @@ class TestNode(NodeConnCB):
         msg = msg_getheaders()
         msg.locator.vHave = locator
         msg.hashstop = hashstop
-        self.connection.send_message(msg)
+        self.send_message(msg)
 
     def send_header_for_blocks(self, new_blocks):
         headers_message = msg_headers()
@@ -86,14 +86,16 @@ class TestNode(NodeConnCB):
         This is used when we want to send a message into the node that we expect
         will get us disconnected, eg an invalid block."""
         self.send_message(message)
-        wait_until(lambda: not self.connected, timeout=timeout, lock=mininode_lock)
+        wait_until(lambda: self.state != "connected", timeout=timeout, lock=mininode_lock)
 
 class CompactBlocksTest(UmkoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         # Node0 = pre-segwit, node1 = segwit-aware
         self.num_nodes = 2
-        self.extra_args = [["-vbparams=segwit:0:0"], ["-txindex"]]
+        # This test was written assuming SegWit is activated using BIP9 at height 432 (3x confirmation window).
+        # TODO: Rewrite this test to support SegWit being always active.
+        self.extra_args = [["-vbparams=segwit:0:0"], ["-vbparams=segwit:0:999999999999", "-txindex"]]
         self.utxos = []
 
     def build_block_on_tip(self, node, segwit=False):
@@ -786,23 +788,12 @@ class CompactBlocksTest(UmkoinTestFramework):
 
     def run_test(self):
         # Setup the p2p connections and start up the network thread.
-        self.test_node = TestNode()
-        self.segwit_node = TestNode()
-        self.old_node = TestNode()  # version 1 peer <--> segwit node
-
-        connections = []
-        connections.append(NodeConn('127.0.0.1', p2p_port(0), self.nodes[0], self.test_node))
-        connections.append(NodeConn('127.0.0.1', p2p_port(1), self.nodes[1],
-                    self.segwit_node, services=NODE_NETWORK|NODE_WITNESS))
-        connections.append(NodeConn('127.0.0.1', p2p_port(1), self.nodes[1],
-                    self.old_node, services=NODE_NETWORK))
-        self.test_node.add_connection(connections[0])
-        self.segwit_node.add_connection(connections[1])
-        self.old_node.add_connection(connections[2])
+        self.test_node = self.nodes[0].add_p2p_connection(TestNode())
+        self.segwit_node = self.nodes[1].add_p2p_connection(TestNode(), services=NODE_NETWORK|NODE_WITNESS)
+        self.old_node = self.nodes[1].add_p2p_connection(TestNode(), services=NODE_NETWORK)
 
         NetworkThread().start()  # Start up network handling in another thread
 
-        # Test logic begins here
         self.test_node.wait_for_verack()
 
         # We will need UTXOs to construct transactions in later tests.

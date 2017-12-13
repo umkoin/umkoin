@@ -1,5 +1,5 @@
 Contributing to Umkoin Core
-===========================
+============================
 
 The Umkoin Core project operates an open contributor model where anyone is
 welcome to contribute towards development in the form of peer review, testing
@@ -24,9 +24,9 @@ facilitates social contribution, easy testing and peer review.
 
 To contribute a patch, the workflow is as follows:
 
-  - Fork repository
-  - Create topic branch
-  - Commit patches
+  1. Fork repository
+  1. Create topic branch
+  1. Commit patches
 
 The project coding conventions in the [developer notes](doc/developer-notes.md)
 must be adhered to.
@@ -62,7 +62,7 @@ the pull request affects. Valid areas as:
   - *Net* or *P2P* for changes to the peer-to-peer network code
   - *RPC/REST/ZMQ* for changes to the RPC, REST or ZMQ APIs
   - *Scripts and tools* for changes to the scripts and tools
-  - *Tests* for changes to the umkoin  unit tests or QA tests
+  - *Tests* for changes to the umkoin unit tests or QA tests
   - *Trivial* should **only** be used for PRs that do not change generated
     executable code. Notably, refactors (change of function arguments and code
     reorganization) and changes in behavior should **not** be marked as trivial.
@@ -186,7 +186,7 @@ In general, all pull requests must:
     the project (for example refactoring for modularisation);
   - Be well peer reviewed;
   - Have unit tests and functional tests where appropriate;
-  - Follow code style guidelines;
+  - Follow code style guidelines ([C++](doc/developer-notes.md), [functional tests](test/functional/README.md));
   - Not break the existing test suite;
   - Where bugs are fixed, where possible, there should be unit tests
     demonstrating the bug and also proving the fix. This helps prevent regression.

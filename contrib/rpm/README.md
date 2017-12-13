@@ -99,7 +99,7 @@ derived from it.
 ## Systemd
 
 This spec file assumes the target distribution uses systemd. That really only
-matters for the `umkoin.server` package. At this point, most RPM based
+matters for the `umkoin-server` package. At this point, most RPM based
 distributions that still receive vendor updates do in fact use systemd.
 
 The files to control the service are created in the RPM spec file itself using
@@ -112,7 +112,7 @@ command that specifies the timestamp.
 
 ## SELinux
 
-The `umkoin.server` package should have SELinux support. How to properly do
+The `umkoin-server` package should have SELinux support. How to properly do
 that *may* vary by distribution and version of distribution.
 
 The SELinux stuff in this RPM spec file *should* be correct for CentOS, RHEL,

@@ -11,14 +11,14 @@
 #define UMKOIN_UTIL_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/umkoin-config.h"
+#include <config/umkoin-config.h>
 #endif
 
-#include "compat.h"
-#include "fs.h"
-#include "sync.h"
-#include "tinyformat.h"
-#include "utiltime.h"
+#include <compat.h>
+#include <fs.h>
+#include <sync.h>
+#include <tinyformat.h>
+#include <utiltime.h>
 
 #include <atomic>
 #include <exception>
@@ -28,6 +28,7 @@
 #include <vector>
 
 #include <boost/signals2/signal.hpp>
+#include <boost/thread/condition_variable.hpp> // for boost::thread_interrupted
 
 // Application startup time (used for uptime calculation)
 int64_t GetStartupTime();
@@ -35,6 +36,7 @@ int64_t GetStartupTime();
 static const bool DEFAULT_LOGTIMEMICROS = false;
 static const bool DEFAULT_LOGIPS        = false;
 static const bool DEFAULT_LOGTIMESTAMPS = true;
+extern const char * const DEFAULT_DEBUGLOGFILE;
 
 /** Signals for translation. */
 class CTranslationInterface
@@ -179,7 +181,8 @@ void CreatePidFile(const fs::path &path, pid_t pid);
 #ifdef WIN32
 fs::path GetSpecialFolderPath(int nFolder, bool fCreate = true);
 #endif
-void OpenDebugLog();
+fs::path GetDebugLogPath();
+bool OpenDebugLog();
 void ShrinkDebugFile();
 void runCommand(const std::string& strCommand);
 
@@ -325,5 +328,12 @@ template <typename Callable> void TraceThread(const char* name,  Callable func)
 }
 
 std::string CopyrightHolders(const std::string& strPrefix);
+
+//! Substitute for C++14 std::make_unique.
+template <typename T, typename... Args>
+std::unique_ptr<T> MakeUnique(Args&&... args)
+{
+    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
 
 #endif // UMKOIN_UTIL_H

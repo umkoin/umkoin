@@ -143,7 +143,7 @@
     </message>
     <message>
         <source>Send coins to a Umkoin address</source>
-        <translation>Trimite monedele către o adresă Bitcoin</translation>
+        <translation>Trimite monedele către o adresă Umkoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -166,8 +166,8 @@
         <translation>&amp;Verifică mesajul...</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Umkoin</source>
+        <translation>Umkoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -195,11 +195,11 @@
     </message>
     <message>
         <source>Sign messages with your Umkoin addresses to prove you own them</source>
-        <translation>Semnează mesajele cu adresa ta de Bitcoin pentru a face dovada că îți aparțin.</translation>
+        <translation>Semnează mesajele cu adresa ta de Umkoin pentru a face dovada că îți aparțin.</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Umkoin addresses</source>
-        <translation>Verifică mesajele cu scopul de a asigura faptul că au fost semnate cu adresa de Bitcoin specificată.</translation>
+        <translation>Verifică mesajele cu scopul de a asigura faptul că au fost semnate cu adresa de Umkoin specificată.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -748,8 +748,8 @@
 <context>
     <name>umkoin-core</name>
     <message>
-        <source>Bitcoin Core</source>
-        <translation>Bitcoin Core</translation>
+        <source>Umkoin Core</source>
+        <translation>Umkoin Core</translation>
     </message>
     <message>
         <source>Information</source>

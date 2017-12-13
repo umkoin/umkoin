@@ -5,7 +5,7 @@
 #ifndef UMKOIN_QT_TEST_PAYMENTSERVERTESTS_H
 #define UMKOIN_QT_TEST_PAYMENTSERVERTESTS_H
 
-#include "../paymentserver.h"
+#include <qt/paymentserver.h>
 
 #include <QObject>
 #include <QTest>

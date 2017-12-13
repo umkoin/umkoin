@@ -1,6 +1,6 @@
-Bitcoin Core version 0.9.2 is now available from:
+Umkoin Core version 0.9.2 is now available from:
 
-  https://bitcoin.org/bin/0.9.2/
+  https://umkoin.org/bin/0.9.2/
 
 This is a new minor version release, bringing mostly bug fixes and some minor
 improvements. OpenSSL has been updated because of a security issue (CVE-2014-0224).
@@ -8,7 +8,7 @@ Upgrading to this release is recommended.
 
 Please report bugs using the issue tracker at github:
 
-  https://github.com/bitcoin/bitcoin/issues
+  https://github.com/vmta/umkoin/issues
 
 How to Upgrade
 --------------
@@ -93,7 +93,7 @@ Protocol and network code:
 Wallet:
 
 - Make GetAvailableCredit run GetHash() only once per transaction (performance improvement)
-- Lower paytxfee warning threshold from 0.25 BTC to 0.01 BTC
+- Lower paytxfee warning threshold from 0.25 UMK to 0.01 UMK
 - Fix importwallet nTimeFirstKey (trigger necessary rescans)
 - Log BerkeleyDB version at startup
 - CWallet init fix
@@ -130,7 +130,7 @@ GUI:
 - Catch Windows shutdown events while client is running
 - Optionally add third party links to transaction context menu
 - Check for !pixmap() before trying to export QR code (avoids crashes when no QR code could be generated)
-- Fix "Start bitcoin on system login"
+- Fix "Start umkoin on system login"
 
 Miscellaneous:
 

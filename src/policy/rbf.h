@@ -5,7 +5,7 @@
 #ifndef UMKOIN_POLICY_RBF_H
 #define UMKOIN_POLICY_RBF_H
 
-#include "txmempool.h"
+#include <txmempool.h>
 
 static const uint32_t MAX_BIP125_RBF_SEQUENCE = 0xfffffffd;
 

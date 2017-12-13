@@ -322,7 +322,7 @@
         <translation>Праверыць паведамленне...</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
+        <source>Umkoin</source>
         <translation>Біткойн</translation>
     </message>
     <message>
@@ -1258,8 +1258,8 @@
         <translation>Запусціць у фоне як дэман і прымаць каманды</translation>
     </message>
     <message>
-        <source>Bitcoin Core</source>
-        <translation>Bitcoin Core</translation>
+        <source>Umkoin Core</source>
+        <translation>Umkoin Core</translation>
     </message>
     <message>
         <source>Do you want to rebuild the block database now?</source>

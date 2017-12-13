@@ -2,13 +2,13 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "addresstablemodel.h"
+#include <qt/addresstablemodel.h>
 
-#include "guiutil.h"
-#include "walletmodel.h"
+#include <qt/guiutil.h>
+#include <qt/walletmodel.h>
 
-#include "base58.h"
-#include "wallet/wallet.h"
+#include <base58.h>
+#include <wallet/wallet.h>
 
 
 #include <QFont>
@@ -337,7 +337,7 @@ QModelIndex AddressTableModel::index(int row, int column, const QModelIndex &par
 void AddressTableModel::updateEntry(const QString &address,
         const QString &label, bool isMine, const QString &purpose, int status)
 {
-    // Update address book model from Bitcoin core
+    // Update address book model from Umkoin core
     priv->updateEntry(address, label, isMine, purpose, status);
 }
 

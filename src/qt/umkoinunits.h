@@ -5,7 +5,7 @@
 #ifndef UMKOIN_QT_UMKOINUNITS_H
 #define UMKOIN_QT_UMKOINUNITS_H
 
-#include "amount.h"
+#include <amount.h>
 
 #include <QAbstractListModel>
 #include <QString>
@@ -52,13 +52,13 @@ public:
     explicit UmkoinUnits(QObject *parent);
 
     /** Umkoin units.
-      @note Source: https://en.bitcoin.it/wiki/Units . Please add only sensible ones
+      @note Source: https://en.umkoin.it/wiki/Units . Please add only sensible ones
      */
     enum Unit
     {
-        BTC,
-        mBTC,
-        uBTC
+        UMK,
+        mUMK,
+        uUMK
     };
 
     enum SeparatorStyle

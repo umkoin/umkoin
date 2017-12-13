@@ -3,21 +3,21 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/umkoin-config.h"
+#include <config/umkoin-config.h>
 #endif
 
-#include "splashscreen.h"
+#include <qt/splashscreen.h>
 
-#include "networkstyle.h"
+#include <qt/networkstyle.h>
 
-#include "clientversion.h"
-#include "init.h"
-#include "util.h"
-#include "ui_interface.h"
-#include "version.h"
+#include <clientversion.h>
+#include <init.h>
+#include <util.h>
+#include <ui_interface.h>
+#include <version.h>
 
 #ifdef ENABLE_WALLET
-#include "wallet/wallet.h"
+#include <wallet/wallet.h>
 #endif
 
 #include <QApplication>
@@ -68,7 +68,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     QRect rGradient(QPoint(0,0), splashSize);
     pixPaint.fillRect(rGradient, gradient);
 
-    // draw the umkoin.icon, expected size of PNG: 1024x1024
+    // draw the umkoin icon, expected size of PNG: 1024x1024
     QRect rectIcon(QPoint(-150,-122), QSize(430,430));
 
     const QSize requiredSize(1024,1024);

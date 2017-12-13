@@ -5,10 +5,10 @@
 #ifndef UMKOIN_QT_RPCCONSOLE_H
 #define UMKOIN_QT_RPCCONSOLE_H
 
-#include "guiutil.h"
-#include "peertablemodel.h"
+#include <qt/guiutil.h>
+#include <qt/peertablemodel.h>
 
-#include "net.h"
+#include <net.h>
 
 #include <QWidget>
 #include <QCompleter>

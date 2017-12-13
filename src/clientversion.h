@@ -6,7 +6,7 @@
 #define UMKOIN_CLIENTVERSION_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/umkoin-config.h"
+#include <config/umkoin-config.h>
 #endif //HAVE_CONFIG_H
 
 // Check that required client information is defined

@@ -23,7 +23,7 @@ git diff -U0 HEAD~1.. | ./contrib/devtools/clang-format-diff.py -p1 -i -v
 copyright\_header.py
 ====================
 
-Provides utilities for managing copyright headers of `The Bitcoin Core
+Provides utilities for managing copyright headers of `The Umkoin Core
 developers` in repository source files. It has three subcommands:
 
 ```
@@ -112,7 +112,7 @@ For example:
   ./github-merge.py 3077
 
 (in any git repository) will help you merge pull request #3077 for the
-umkoin/umkoin repository.
+vmta/umkoin repository.
 
 What it does:
 * Fetch master and the pull request.
@@ -132,7 +132,7 @@ Setup
 ---------
 Configuring the github-merge tool for the umkoin repository is done in the following way:
 
-    git config githubmerge.repository umkoin/umkoin
+    git config githubmerge.repository vmta/umkoin
     git config githubmerge.testcmd "make -j4 check" (adapt to whatever you want to use for testing)
     git config --global user.signingkey mykeyid (if you want to GPG sign)
 

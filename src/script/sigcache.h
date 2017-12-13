@@ -6,7 +6,7 @@
 #ifndef UMKOIN_SCRIPT_SIGCACHE_H
 #define UMKOIN_SCRIPT_SIGCACHE_H
 
-#include "script/interpreter.h"
+#include <script/interpreter.h>
 
 #include <vector>
 

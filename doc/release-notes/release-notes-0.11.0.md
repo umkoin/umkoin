@@ -1,13 +1,13 @@
-Bitcoin Core version 0.11.0 is now available from:
+Umkoin Core version 0.11.0 is now available from:
 
-  <https://bitcoin.org/bin/umkoin-core-0.11.0/>
+  <https://umkoin.org/bin/umkoin-core-0.11.0/>
 
 This is a new major version release, bringing both new features and
 bug fixes.
 
 Please report bugs using the issue tracker at github:
 
-  <https://github.com/bitcoin/bitcoin/issues>
+  <https://github.com/vmta/umkoin/issues>
 
 Upgrading and downgrading
 =========================
@@ -25,7 +25,7 @@ Downgrade warning
 
 Because release 0.10.0 and later makes use of headers-first synchronization and
 parallel block download (see further), the block files and databases are not
-backwards-compatible with pre-0.10 versions of Bitcoin Core or other software:
+backwards-compatible with pre-0.10 versions of Umkoin Core or other software:
 
 * Blocks will be stored on disk out of order (in the order they are
 received, really), which makes it incompatible with some tools or
@@ -58,7 +58,7 @@ possible to change a few configuration options to work around this. The growth
 of the mempool can be monitored with the RPC command `getmempoolinfo`.
 
 One is to increase the minimum transaction relay fee `minrelaytxfee`, which
-defaults to 0.00001. This will cause transactions with fewer BTC/kB fee to be
+defaults to 0.00001. This will cause transactions with fewer UMK/kB fee to be
 rejected, and thus fewer transactions entering the mempool.
 
 The other is to restrict the relaying of free transactions with
@@ -82,11 +82,11 @@ Block file pruning
 
 This release supports running a fully validating node without maintaining a copy 
 of the raw block and undo data on disk. To recap, there are four types of data 
-related to the blockchain in the bitcoin system: the raw blocks as received over 
+related to the blockchain in the umkoin system: the raw blocks as received over 
 the network (blk???.dat), the undo data (rev???.dat), the block index and the 
 UTXO set (both LevelDB databases). The databases are built from the raw data.
 
-Block pruning allows Bitcoin Core to delete the raw block and undo data once 
+Block pruning allows Umkoin Core to delete the raw block and undo data once 
 it's been validated and used to build the databases. At that point, the raw data 
 is used only to relay blocks to other nodes, to handle reorganizations, to look 
 up old transactions (if -txindex is enabled or via the RPC/REST interfaces), or 
@@ -95,7 +95,7 @@ all blocks in the blockchain.
 
 The user specifies how much space to allot for block & undo files. The minimum 
 allowed is 550MB. Note that this is in addition to whatever is required for the 
-block index and UTXO databases. The minimum was chosen so that Bitcoin Core will 
+block index and UTXO databases. The minimum was chosen so that Umkoin Core will 
 be able to maintain at least 288 blocks on disk (two days worth of blocks at 10 
 minutes per block). In rare instances it is possible that the amount of space 
 used will exceed the pruning target in order to keep the required last 288 
@@ -192,7 +192,7 @@ transaction (re)broadcast:
 One such application is selective Tor usage, where the node runs on the normal
 internet but transactions are broadcasted over Tor.
 
-For an example script see [bitcoin-submittx](https://github.com/laanwj/umkoin-submittx).
+For an example script see [umkoin-submittx](https://github.com/laanwj/umkoin-submittx).
 
 Privacy: Stream isolation for Tor
 ----------------------------------
@@ -309,7 +309,7 @@ git merge commit are mentioned.
 - #5149 `c7abfa5` Add script to verify all merge commits are signed
 - #6082 `7abbb7e` qt: disable qt tests when one of the checks for the gui fails
 - #6244 `0401aa2` configure: Detect (and reject) LibreSSL
-- #6269 `95aca44` gitian: Use the new bitcoin-detached-sigs git repo for OSX signatures
+- #6269 `95aca44` gitian: Use the new umkoin-detached-sigs git repo for OSX signatures
 - #6285 `ef1d506` Fix scheduler build with some boost versions.
 - #6280 `25c2216` depends: fix Boost 1.55 build on GCC 5
 - #6303 `b711599` gitian: add a gitian-win-signer descriptor
@@ -347,7 +347,7 @@ git merge commit are mentioned.
 - #5683 `c7b22aa` add new osx dmg background picture
 - #5620 `7823598` Payment request expiration bug fix
 - #5729 `9c4a5a5` Allow unit changes for read-only UmkoinAmountField
-- #5753 `0f44672` Add bitcoin logo to about screen
+- #5753 `0f44672` Add umkoin logo to about screen
 - #5629 `a956586` Prevent amount overflow problem with payment requests
 - #5830 `215475a` Don't save geometry for options and about/help window
 - #5793 `d26f0b2` Honor current network when creating autostart link
@@ -404,7 +404,7 @@ git merge commit are mentioned.
 - #6104 `3e2559c` Show an init message while activating best chain
 - #6125 `351f73e` Clean up parsing of bool command line args
 - #5964 `b4c219b` Lightweight task scheduler
-- #6116 `30dc3c1` [OSX] rename Umkoin-Qt.app to Bitcoin-Core.app
+- #6116 `30dc3c1` [OSX] rename Umkoin-Qt.app to Umkoin-Core.app
 - #6168 `b3024f0` contrib/linearize: Support linearization of testnet blocks
 - #6098 `7708fcd` Update Windows resource files (and add one for umkoin-tx)
 - #6159 `e1412d3` Catch errors on datadir lock and pidfile delete
@@ -412,7 +412,7 @@ git merge commit are mentioned.
 - #6174 `df992b9` doc: add translation strings policy
 - #6210 `dfdb6dd` build: disable optional use of gmp in internal secp256k1 build
 - #6264 `94cd705` Remove translation for -help-debug options
-- #6286 `3902c15` Remove berkeley-db4 workaround in MacOSX build docs
+- #6286 `3902c15` Remove berkeley-db5 workaround in MacOSX build docs
 - #6319 `3f8fcc9` doc: update mailing list address
 
 Credits
@@ -427,7 +427,7 @@ Thanks to everyone who directly contributed to this release:
 - azeteki
 - Ben Holden-Crowther
 - bikinibabe
-- BitcoinPRReadingGroup
+- UmkoinPRReadingGroup
 - Blake Jakopovic
 - BtcDrak
 - charlescharles
@@ -501,5 +501,5 @@ And all those who contributed additional code review and/or security research:
 
 - Sergio Demian Lerner
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/bitcoin/).
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/umkoin/).
 

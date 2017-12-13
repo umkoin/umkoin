@@ -5,7 +5,7 @@
 #ifndef UMKOIN_BLOCK_ENCODINGS_H
 #define UMKOIN_BLOCK_ENCODINGS_H
 
-#include "primitives/block.h"
+#include <primitives/block.h>
 
 #include <memory>
 

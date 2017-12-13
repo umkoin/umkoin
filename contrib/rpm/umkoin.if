@@ -24,7 +24,7 @@ interface(`umkoin_domtrans',`
 
 ########################################
 ## <summary>
-##	Execute umkoin.server in the umkoin domain.
+##	Execute umkoin server in the umkoin domain.
 ## </summary>
 ## <param name="domain">
 ##	<summary>

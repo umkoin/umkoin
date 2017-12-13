@@ -1,12 +1,12 @@
 Umkoin-Qt version 0.8.6 final is now available from:
 
-  http://sourceforge.net/projects/bitcoin/files/Bitcoin/umkoin-0.8.6/
+  http://sourceforge.net/projects/umkoin/files/Umkoin/umkoin-0.8.6/
 
 This is a maintenance release to fix a critical bug; we urge all users to upgrade.
 
 Please report bugs using the issue tracker at github:
 
-  https://github.com/bitcoin/bitcoin/issues
+  https://github.com/vmta/umkoin/issues
 
 How to Upgrade
 --------------
@@ -63,4 +63,4 @@ Warning
   Hence it is recommended to use a 64-bit executable if possible.
   A 64-bit executable for Windows is planned for 0.9.
 
-Note: Gavin Andresen's GPG signing key for SHA256SUMS.asc has been changed from  key id 1FC730C1 to sub key 7BF6E212 (see https://github.com/bitcoin/bitcoin.org/pull/279).
+Note: Gavin Andresen's GPG signing key for SHA256SUMS.asc has been changed from  key id 1FC730C1 to sub key 7BF6E212 (see https://github.com/vmta/umkoin.org/pull/279).

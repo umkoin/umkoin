@@ -157,7 +157,7 @@
     </message>
     <message>
         <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR UMKOINS&lt;/b&gt;!</source>
-        <translation>警告: 如果你將錢包加密後又忘記密碼，你就會&lt;b&gt;失去所有 Bitcoin 了&lt;/b&gt;！</translation>
+        <translation>警告: 如果你將錢包加密後又忘記密碼，你就會&lt;b&gt;失去所有 Umkoin 了&lt;/b&gt;！</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -169,7 +169,7 @@
     </message>
     <message>
         <source>%1 will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your umkoins from being stolen by malware infecting your computer.</source>
-        <translation>%1 現在要關閉來完成加密程序。請記得將錢包加密不能完全防止你的 Bitcoins 經被入侵電腦的惡意程式偷取。</translation>
+        <translation>%1 現在要關閉來完成加密程序。請記得將錢包加密不能完全防止你的 Umkoins 經被入侵電腦的惡意程式偷取。</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -311,7 +311,7 @@
     </message>
     <message>
         <source>Send coins to a Umkoin address</source>
-        <translation>付款至一個 Bitcoin 位址</translation>
+        <translation>付款至一個 Umkoin 位址</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -334,8 +334,8 @@
         <translation>驗證訊息... &amp;V</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Umkoin</source>
+        <translation>Umkoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -441,7 +441,7 @@
     <name>QObject</name>
     <message>
         <source>Enter a Umkoin address (e.g. %1)</source>
-        <translation>輸入一個 Bitcoin 位址 (例如 %1)</translation>
+        <translation>輸入一個 Umkoin 位址 (例如 %1)</translation>
     </message>
     <message>
         <source>%1 d</source>

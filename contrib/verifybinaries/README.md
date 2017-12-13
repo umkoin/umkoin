@@ -13,7 +13,7 @@ uid                  Wladimir J. van der Laan (Umkoin Core binary release signin
 
 #### Usage:
 
-This script attempts to download the signature file `SHA256SUMS.asc` from https://www.ua-moloko.com.
+This script attempts to download the signature file `SHA256SUMS.asc` from https://umkoin.org.
 
 It first checks if the signature passes, and then downloads the files specified in the file, and checks if the hashes of these files match those that are specified in the signature file.
 

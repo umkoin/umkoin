@@ -63,11 +63,11 @@
     </message>
     <message>
         <source>These are your Umkoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Estes són les vostres adreces de Bitcoin per enviar els pagaments. Sempre reviseu l'import i l'adreça del destinatari abans de transferir monedes.</translation>
+        <translation>Estes són les vostres adreces de Umkoin per enviar els pagaments. Sempre reviseu l'import i l'adreça del destinatari abans de transferir monedes.</translation>
     </message>
     <message>
         <source>These are your Umkoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Estes són les vostres adreces Bitcoin per rebre pagaments. Es recomana utilitzar una adreça nova de recepció per a cada transacció.</translation>
+        <translation>Estes són les vostres adreces Umkoin per rebre pagaments. Es recomana utilitzar una adreça nova de recepció per a cada transacció.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -299,7 +299,7 @@
     </message>
     <message>
         <source>Send coins to a Umkoin address</source>
-        <translation>Envia monedes a una adreça Bitcoin</translation>
+        <translation>Envia monedes a una adreça Umkoin</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -322,8 +322,8 @@
         <translation>&amp;Verifica el missatge...</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Umkoin</source>
+        <translation>Umkoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -351,11 +351,11 @@
     </message>
     <message>
         <source>Sign messages with your Umkoin addresses to prove you own them</source>
-        <translation>Signa el missatges amb la seua adreça de Bitcoin per provar que les poseeixes</translation>
+        <translation>Signa el missatges amb la seua adreça de Umkoin per provar que les poseeixes</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Umkoin addresses</source>
-        <translation>Verifiqueu els missatges per assegurar-vos que han estat signats amb una adreça Bitcoin específica.</translation>
+        <translation>Verifiqueu els missatges per assegurar-vos que han estat signats amb una adreça Umkoin específica.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -659,7 +659,7 @@
     </message>
     <message>
         <source>The entered address "%1" is not a valid Umkoin address.</source>
-        <translation>L'adreça introduïda «%1» no és una adreça de Bitcoin vàlida.</translation>
+        <translation>L'adreça introduïda «%1» no és una adreça de Umkoin vàlida.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -884,8 +884,8 @@
         <translation>&amp;Gasta el canvi sense confirmar</translation>
     </message>
     <message>
-        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Obri el port del client de Bitcoin al router de forma automàtica. Això només funciona quan el router implementa UPnP i l'opció està activada.</translation>
+        <source>Automatically open the Umkoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Obri el port del client de Umkoin al router de forma automàtica. Això només funciona quan el router implementa UPnP i l'opció està activada.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -893,7 +893,7 @@
     </message>
     <message>
         <source>Connect to the Umkoin network through a SOCKS5 proxy.</source>
-        <translation>Connecta a la xarxa Bitcoin a través d'un proxy SOCKS5.</translation>
+        <translation>Connecta a la xarxa Umkoin a través d'un proxy SOCKS5.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -996,7 +996,7 @@
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Umkoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>La informació mostrada pot no estar al día. El teu moneder es sincronitza automàticament amb la xarxa Bitcoin un cop s'ha establit connexió, però este proces no s'ha completat encara.</translation>
+        <translation>La informació mostrada pot no estar al día. El teu moneder es sincronitza automàticament amb la xarxa Umkoin un cop s'ha establit connexió, però este proces no s'ha completat encara.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1087,7 +1087,7 @@
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid Umkoin address or malformed URI parameters.</source>
-        <translation>L'URI no pot ser analitzat! Això pot ser a causa d'una adreça de Bitcoin no vàlida o per paràmetres URI amb mal format.</translation>
+        <translation>L'URI no pot ser analitzat! Això pot ser a causa d'una adreça de Umkoin no vàlida o per paràmetres URI amb mal format.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -1173,7 +1173,7 @@
     </message>
     <message>
         <source>Enter a Umkoin address (e.g. %1)</source>
-        <translation>Introduïu una adreça de Bitcoin (p. ex. %1)</translation>
+        <translation>Introduïu una adreça de Umkoin (p. ex. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1453,7 +1453,7 @@
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Umkoin network.</source>
-        <translation>Un missatge opcional que s'adjuntarà a la sol·licitud de pagament, que es mostrarà quan s'òbriga la sol·licitud. Nota: El missatge no s'enviarà amb el pagament per la xarxa Bitcoin.</translation>
+        <translation>Un missatge opcional que s'adjuntarà a la sol·licitud de pagament, que es mostrarà quan s'òbriga la sol·licitud. Nota: El missatge no s'enviarà amb el pagament per la xarxa Umkoin.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1814,7 +1814,7 @@
     </message>
     <message>
         <source>Warning: Invalid Umkoin address</source>
-        <translation>Avís: adreça Bitcoin no vàlida</translation>
+        <translation>Avís: adreça Umkoin no vàlida</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -1849,7 +1849,7 @@
     </message>
     <message>
         <source>The Umkoin address to send the payment to</source>
-        <translation>L'adreça Bitcoin on enviar el pagament</translation>
+        <translation>L'adreça Umkoin on enviar el pagament</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -1893,7 +1893,7 @@
     </message>
     <message>
         <source>A message that was attached to the umkoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Umkoin network.</source>
-        <translation>Un missatge que s'ha adjuntat al umkoin: URI que s'emmagatzemarà amb la transacció per a la vostra referència. Nota: el missatge no s'enviarà a través de la xarxa Bitcoin.</translation>
+        <translation>Un missatge que s'ha adjuntat al umkoin: URI que s'emmagatzemarà amb la transacció per a la vostra referència. Nota: el missatge no s'enviarà a través de la xarxa Umkoin.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -1938,7 +1938,7 @@
     </message>
     <message>
         <source>The Umkoin address to sign the message with</source>
-        <translation>L'adreça Bitcoin amb què signar el missatge</translation>
+        <translation>L'adreça Umkoin amb què signar el missatge</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -1970,7 +1970,7 @@
     </message>
     <message>
         <source>Sign the message to prove you own this Umkoin address</source>
-        <translation>Signa el missatge per provar que ets propietari d'esta adreça Bitcoin</translation>
+        <translation>Signa el missatge per provar que ets propietari d'esta adreça Umkoin</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -1994,11 +1994,11 @@
     </message>
     <message>
         <source>The Umkoin address the message was signed with</source>
-        <translation>L'adreça Bitcoin amb què va ser signat el missatge</translation>
+        <translation>L'adreça Umkoin amb què va ser signat el missatge</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Umkoin address</source>
-        <translation>Verificar el missatge per assegurar-se que ha estat signat amb una adreça Bitcoin específica</translation>
+        <translation>Verificar el missatge per assegurar-se que ha estat signat amb una adreça Umkoin específica</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -2558,8 +2558,8 @@
         <translation>Executa en segon pla com a programa dimoni i accepta ordes</translation>
     </message>
     <message>
-        <source>Bitcoin Core</source>
-        <translation>Bitcoin Core</translation>
+        <source>Umkoin Core</source>
+        <translation>Umkoin Core</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>

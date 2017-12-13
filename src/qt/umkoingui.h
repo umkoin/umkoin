@@ -6,10 +6,10 @@
 #define UMKOIN_QT_UMKOINGUI_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/umkoin-config.h"
+#include <config/umkoin-config.h>
 #endif
 
-#include "amount.h"
+#include <amount.h>
 
 #include <QLabel>
 #include <QMainWindow>
@@ -38,7 +38,7 @@ class QProgressDialog;
 QT_END_NAMESPACE
 
 /**
-  Bitcoin GUI main class. This class represents the main window of the Bitcoin UI. It communicates with both the client and
+  Umkoin GUI main class. This class represents the main window of the Umkoin UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
 */
 class UmkoinGUI : public QMainWindow

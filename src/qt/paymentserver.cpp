@@ -2,18 +2,18 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "paymentserver.h"
+#include <qt/paymentserver.h>
 
-#include "umkoinunits.h"
-#include "guiutil.h"
-#include "optionsmodel.h"
+#include <qt/umkoinunits.h>
+#include <qt/guiutil.h>
+#include <qt/optionsmodel.h>
 
-#include "base58.h"
-#include "chainparams.h"
-#include "policy/policy.h"
-#include "ui_interface.h"
-#include "util.h"
-#include "wallet/wallet.h"
+#include <base58.h>
+#include <chainparams.h>
+#include <policy/policy.h>
+#include <ui_interface.h>
+#include <util.h>
+#include <wallet/wallet.h>
 
 #include <cstdlib>
 
@@ -78,7 +78,7 @@ namespace // Anon namespace
 //
 static QString ipcServerName()
 {
-    QString name("BitcoinQt");
+    QString name("UmkoinQt");
 
     // Append a simple hash of the datadir
     // Note that GetDataDir(true) returns a different path
@@ -362,8 +362,7 @@ void PaymentServer::initNetManager()
 {
     if (!optionsModel)
         return;
-    if (netManager != nullptr)
-        delete netManager;
+    delete netManager;
 
     // netManager is used to fetch paymentrequests given in umkoin: URIs
     netManager = new QNetworkAccessManager(this);
@@ -569,7 +568,7 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
             return false;
         }
 
-        // Bitcoin amounts are stored as (optional) uint64 in the protobuf messages (see paymentrequest.proto),
+        // Umkoin amounts are stored as (optional) uint64 in the protobuf messages (see paymentrequest.proto),
         // but CAmount is defined as int64_t. Because of that we need to verify that amounts are in a valid range
         // and no overflow has happened.
         if (!verifyAmount(sendingTo.second)) {

@@ -6,9 +6,9 @@
 #ifndef UMKOIN_SCRIPT_SCRIPT_H
 #define UMKOIN_SCRIPT_SCRIPT_H
 
-#include "crypto/common.h"
-#include "prevector.h"
-#include "serialize.h"
+#include <crypto/common.h>
+#include <prevector.h>
+#include <serialize.h>
 
 #include <assert.h>
 #include <climits>
@@ -626,7 +626,7 @@ public:
     }
 
     /**
-     * Pre-version-0.6, Bitcoin always counted CHECKMULTISIGs
+     * Pre-version-0.6, Umkoin always counted CHECKMULTISIGs
      * as 20 sigops. With pay-to-script-hash, that changed:
      * CHECKMULTISIGs serialized in scriptSigs are
      * counted more accurately, assuming they are of the form

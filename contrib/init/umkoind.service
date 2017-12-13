@@ -1,22 +1,25 @@
+# It is not recommended to modify this file in-place, because it will
+# be overwritten during package upgrades. If you want to add further
+# options or overwrite existing ones then use
+# $ systemctl edit umkoind.service
+# See "man systemd.service" for details.
+
+# Note that almost all daemon options could be specified in
+# /etc/vmta/umkoin.conf
+
 [Unit]
-Description=Umkoin's distributed currency daemon
+Description=Umkoin daemon
 After=network.target
 
 [Service]
+ExecStart=/usr/bin/umkoind -daemon -conf=/etc/vmta/umkoin.conf -pid=/run/umkoind/umkoind.pid
+# Creates /run/umkoind owned by umkoin
+RuntimeDirectory=umkoind
 User=umkoin
-Group=umkoin
-
 Type=forking
-PIDFile=/var/lib/umkoind/umkoind.pid
-ExecStart=/usr/bin/umkoind -daemon -pid=/var/lib/umkoind/umkoind.pid \
--conf=/etc/umkoin/umkoin.conf -datadir=/var/lib/umkoind -disablewallet
-
-Restart=always
+PIDFile=/run/umkoind/umkoind.pid
+Restart=on-failure
 PrivateTmp=true
-TimeoutStopSec=60s
-TimeoutStartSec=2s
-StartLimitInterval=120s
-StartLimitBurst=5
 
 [Install]
 WantedBy=multi-user.target

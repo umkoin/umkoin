@@ -13,13 +13,14 @@ import os
 import subprocess
 import time
 
+from .authproxy import JSONRPCException
 from .util import (
     assert_equal,
     get_rpc_proxy,
     rpc_url,
     wait_until,
+    p2p_port,
 )
-from .authproxy import JSONRPCException
 
 UMKOIND_PROC_WAIT_TIMEOUT = 60
 
@@ -31,9 +32,11 @@ class TestNode():
     - state about the node (whether it's running, etc)
     - a Python subprocess.Popen object representing the running process
     - an RPC connection to the node
+    - one or more P2P connections to the node
 
-    To make things easier for the test writer, a bit of magic is happening under the covers.
-    Any unrecognised messages will be dispatched to the RPC connection."""
+
+    To make things easier for the test writer, any unrecognised messages will
+    be dispatched to the RPC connection."""
 
     def __init__(self, i, dirname, extra_args, rpchost, timewait, binary, stderr, mocktime, coverage_dir):
         self.index = i
@@ -63,10 +66,12 @@ class TestNode():
         self.url = None
         self.log = logging.getLogger('TestFramework.node%d' % i)
 
-    def __getattr__(self, *args, **kwargs):
+        self.p2ps = []
+
+    def __getattr__(self, name):
         """Dispatches any unrecognised messages to the RPC connection."""
         assert self.rpc_connected and self.rpc is not None, "Error: no RPC connection"
-        return self.rpc.__getattr__(*args, **kwargs)
+        return getattr(self.rpc, name)
 
     def start(self, extra_args=None, stderr=None):
         """Start the node."""
@@ -119,6 +124,7 @@ class TestNode():
             self.stop()
         except http.client.CannotSendRequest:
             self.log.exception("Unable to stop node.")
+        del self.p2ps[:]
 
     def is_node_stopped(self):
         """Checks whether the node has stopped.
@@ -150,6 +156,37 @@ class TestNode():
         care of cleaning up resources."""
         self.encryptwallet(passphrase)
         self.wait_until_stopped()
+
+    def add_p2p_connection(self, p2p_conn, *args, **kwargs):
+        """Add a p2p connection to the node.
+
+        This method adds the p2p connection to the self.p2ps list and also
+        returns the connection to the caller."""
+        if 'dstport' not in kwargs:
+            kwargs['dstport'] = p2p_port(self.index)
+        if 'dstaddr' not in kwargs:
+            kwargs['dstaddr'] = '127.0.0.1'
+
+        p2p_conn.peer_connect(*args, **kwargs)
+        self.p2ps.append(p2p_conn)
+
+        return p2p_conn
+
+    @property
+    def p2p(self):
+        """Return the first p2p connection
+
+        Convenience property - most tests only use a single p2p connection to each
+        node, so this saves having to write node.p2ps[0] many times."""
+        assert self.p2ps, "No p2p connection"
+        return self.p2ps[0]
+
+    def disconnect_p2ps(self):
+        """Close all p2p connections to the node."""
+        for p in self.p2ps:
+            p.peer_disconnect()
+        del self.p2ps[:]
+
 
 class TestNodeCLI():
     """Interface to umkoin-cli for an individual node"""

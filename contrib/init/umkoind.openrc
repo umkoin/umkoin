@@ -1,4 +1,4 @@
-#!/sbin/runscript
+#!/sbin/openrc-run
 
 # backward compatibility for existing gentoo layout 
 #
@@ -8,7 +8,7 @@ else
 	UMKOIND_DEFAULT_DATADIR="/var/lib/umkoind"
 fi
 
-UMKOIND_CONFIGFILE=${UMKOIND_CONFIGFILE:-/etc/umkoin/umkoin.conf}
+UMKOIND_CONFIGFILE=${UMKOIND_CONFIGFILE:-/etc/vmta/umkoin.conf}
 UMKOIND_PIDDIR=${UMKOIND_PIDDIR:-/var/run/umkoind}
 UMKOIND_PIDFILE=${UMKOIND_PIDFILE:-${UMKOIND_PIDDIR}/umkoind.pid}
 UMKOIND_DATADIR=${UMKOIND_DATADIR:-${UMKOIND_DEFAULT_DATADIR}}

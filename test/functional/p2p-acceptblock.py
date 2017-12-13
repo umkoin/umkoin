@@ -7,7 +7,7 @@
 Setup: two nodes, node0+node1, not connected to each other. Node1 will have
 nMinimumChainWork set to 0x10, so it won't process low-work unrequested blocks.
 
-We have one NodeConn connection to node0 called test_node, and one to node1
+We have one P2PInterface connection to node0 called test_node, and one to node1
 called min_work_node.
 
 The test:
@@ -78,14 +78,10 @@ class AcceptBlockTest(UmkoinTestFramework):
 
     def run_test(self):
         # Setup the p2p connections and start up the network thread.
-        test_node = NodeConnCB()   # connects to node0
-        min_work_node = NodeConnCB()  # connects to node1
-
-        connections = []
-        connections.append(NodeConn('127.0.0.1', p2p_port(0), self.nodes[0], test_node))
-        connections.append(NodeConn('127.0.0.1', p2p_port(1), self.nodes[1], min_work_node))
-        test_node.add_connection(connections[0])
-        min_work_node.add_connection(connections[1])
+        # test_node connects to node0 (not whitelisted)
+        test_node = self.nodes[0].add_p2p_connection(P2PInterface())
+        # min_work_node connects to node1 (whitelisted)
+        min_work_node = self.nodes[1].add_p2p_connection(P2PInterface())
 
         NetworkThread().start() # Start up network handling in another thread
 
@@ -209,12 +205,9 @@ class AcceptBlockTest(UmkoinTestFramework):
 
         # The node should have requested the blocks at some point, so
         # disconnect/reconnect first
-        connections[0].disconnect_node()
-        test_node.wait_for_disconnect()
 
-        test_node = NodeConnCB()   # connects to node (not whitelisted)
-        connections[0] = NodeConn('127.0.0.1', p2p_port(0), self.nodes[0], test_node)
-        test_node.add_connection(connections[0])
+        self.nodes[0].disconnect_p2ps()
+        test_node = self.nodes[0].add_p2p_connection(P2PInterface())
 
         test_node.wait_for_verack()
         test_node.send_message(msg_block(block_h1f))
@@ -298,9 +291,8 @@ class AcceptBlockTest(UmkoinTestFramework):
         except AssertionError:
             test_node.wait_for_disconnect()
 
-            test_node = NodeConnCB()   # connects to node (not whitelisted)
-            connections[0] = NodeConn('127.0.0.1', p2p_port(0), self.nodes[0], test_node)
-            test_node.add_connection(connections[0])
+            self.nodes[0].disconnect_p2ps()
+            test_node = self.nodes[0].add_p2p_connection(P2PInterface())
 
             NetworkThread().start() # Start up network handling in another thread
             test_node.wait_for_verack()
@@ -322,8 +314,6 @@ class AcceptBlockTest(UmkoinTestFramework):
         connect_nodes(self.nodes[0], 1)
         sync_blocks([self.nodes[0], self.nodes[1]])
         self.log.info("Successfully synced nodes 1 and 0")
-
-        [ c.disconnect_node() for c in connections ]
 
 if __name__ == '__main__':
     AcceptBlockTest().main()

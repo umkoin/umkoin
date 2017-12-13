@@ -2,11 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "umkoinamountfield.h"
+#include <qt/umkoinamountfield.h>
 
-#include "umkoinunits.h"
-#include "guiconstants.h"
-#include "qvaluecombobox.h"
+#include <qt/umkoinunits.h>
+#include <qt/guiconstants.h>
+#include <qt/qvaluecombobox.h>
 
 #include <QApplication>
 #include <QAbstractSpinBox>
@@ -24,7 +24,7 @@ class AmountSpinBox: public QAbstractSpinBox
 public:
     explicit AmountSpinBox(QWidget *parent):
         QAbstractSpinBox(parent),
-        currentUnit(UmkoinUnits::BTC),
+        currentUnit(UmkoinUnits::UMK),
         singleStep(100000) // satoshis
     {
         setAlignment(Qt::AlignRight);
@@ -99,7 +99,7 @@ public:
 
             const QFontMetrics fm(fontMetrics());
             int h = lineEdit()->minimumSizeHint().height();
-            int w = fm.width(UmkoinUnits::format(UmkoinUnits::BTC, UmkoinUnits::maxMoney(), false, UmkoinUnits::separatorAlways));
+            int w = fm.width(UmkoinUnits::format(UmkoinUnits::UMK, UmkoinUnits::maxMoney(), false, UmkoinUnits::separatorAlways));
             w += 2; // cursor blinking space
 
             QStyleOptionSpinBox opt;
@@ -188,7 +188,7 @@ Q_SIGNALS:
     void valueChanged();
 };
 
-#include "umkoinamountfield.moc"
+#include <qt/umkoinamountfield.moc>
 
 UmkoinAmountField::UmkoinAmountField(QWidget *parent) :
     QWidget(parent),

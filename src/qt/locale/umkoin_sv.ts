@@ -63,11 +63,11 @@
     </message>
     <message>
         <source>These are your Umkoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Detta är dina Bitcoin adresser för att skicka betalningar. Kolla alltid summan och den mottagande adressen innan du skickar Bitcoins.</translation>
+        <translation>Detta är dina Umkoin adresser för att skicka betalningar. Kolla alltid summan och den mottagande adressen innan du skickar Umkoins.</translation>
     </message>
     <message>
         <source>These are your Umkoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Detta är dina Bitcoin adresser för att ta emot betalningar. Det rekommenderas att använda en ny mottagningsadress för varje transaktion.</translation>
+        <translation>Detta är dina Umkoin adresser för att ta emot betalningar. Det rekommenderas att använda en ny mottagningsadress för varje transaktion.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -340,7 +340,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Send coins to a Umkoin address</source>
-        <translation>Skicka umkoins till en Bitcoin-adress</translation>
+        <translation>Skicka umkoins till en Umkoin-adress</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -363,8 +363,8 @@ Var vänlig och försök igen.</translation>
         <translation>&amp;Verifiera meddelande...</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Umkoin</source>
+        <translation>Umkoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -392,11 +392,11 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Sign messages with your Umkoin addresses to prove you own them</source>
-        <translation>Signera meddelanden med din Bitcoin-adress för att bevisa att du äger dem</translation>
+        <translation>Signera meddelanden med din Umkoin-adress för att bevisa att du äger dem</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Umkoin addresses</source>
-        <translation>Verifiera meddelanden för att vara säker på att de var signerade med specificerade Bitcoin-adresser</translation>
+        <translation>Verifiera meddelanden för att vara säker på att de var signerade med specificerade Umkoin-adresser</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -436,7 +436,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message numerus="yes">
         <source>%n active connection(s) to Umkoin network</source>
-        <translation><numerusform>%n aktiva anslutningar till Bitcoin-nätverket.</numerusform><numerusform>%n aktiva anslutningar till Bitcoin-nätverket.</numerusform></translation>
+        <translation><numerusform>%n aktiva anslutningar till Umkoin-nätverket.</numerusform><numerusform>%n aktiva anslutningar till Umkoin-nätverket.</numerusform></translation>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
@@ -479,8 +479,8 @@ Var vänlig och försök igen.</translation>
         <translation>Uppdaterad</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible Bitcoin command-line options</source>
-        <translation>Visa %1 hjälpmeddelande för att få en lista med möjliga Bitcoin kommandoradsalternativ.</translation>
+        <source>Show the %1 help message to get a list with possible Umkoin command-line options</source>
+        <translation>Visa %1 hjälpmeddelande för att få en lista med möjliga Umkoin kommandoradsalternativ.</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -549,8 +549,8 @@ Var vänlig och försök igen.</translation>
         <translation>Denna plånbok är &lt;b&gt;krypterad&lt;/b&gt; och för närvarande &lt;b&gt;låst&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>A fatal error occurred. Bitcoin can no longer continue safely and will quit.</source>
-        <translation>Ett kritiskt fel uppstod. Bitcoin kan inte fortsätta att köra säkert och kommer att avslutas.</translation>
+        <source>A fatal error occurred. Umkoin can no longer continue safely and will quit.</source>
+        <translation>Ett kritiskt fel uppstod. Umkoin kan inte fortsätta att köra säkert och kommer att avslutas.</translation>
     </message>
 </context>
 <context>
@@ -744,7 +744,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>The entered address "%1" is not a valid Umkoin address.</source>
-        <translation>Den angivna adressen "%1" är inte en giltig Bitcoin-adress.</translation>
+        <translation>Den angivna adressen "%1" är inte en giltig Umkoin-adress.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -852,8 +852,8 @@ Var vänlig och försök igen.</translation>
         <translation>Eftersom detta är första gången programmet startas får du välja var %1 skall lagra sitt data.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Bitcoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>%1 kommer att ladda ner och spara en kopia av Bitcoin blockkedjan. Åtminstone %2GB av data kommer att sparas i denna katalog, och den kommer att växa över tiden. Plånboken kommer också att sparas i denna katalog.</translation>
+        <source>%1 will download and store a copy of the Umkoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>%1 kommer att ladda ner och spara en kopia av Umkoin blockkedjan. Åtminstone %2GB av data kommer att sparas i denna katalog, och den kommer att växa över tiden. Plånboken kommer också att sparas i denna katalog.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1045,8 +1045,8 @@ Var vänlig och försök igen.</translation>
         <translation>&amp;Spendera obekräftad växel</translation>
     </message>
     <message>
-        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Öppna automatiskt Bitcoin-klientens port på routern. Detta fungerar endast om din router har UPnP aktiverat.</translation>
+        <source>Automatically open the Umkoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Öppna automatiskt Umkoin-klientens port på routern. Detta fungerar endast om din router har UPnP aktiverat.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1054,7 +1054,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Connect to the Umkoin network through a SOCKS5 proxy.</source>
-        <translation>Anslut till Bitcoin-nätverket genom en SOCKS5-proxy.</translation>
+        <translation>Anslut till Umkoin-nätverket genom en SOCKS5-proxy.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1094,7 +1094,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Connect to the Umkoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Anslut till Bitcoin-nätverket genom en separat SOCKS5-proxy för dolda tjänster i Tor.</translation>
+        <translation>Anslut till Umkoin-nätverket genom en separat SOCKS5-proxy för dolda tjänster i Tor.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</source>
@@ -1193,7 +1193,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Umkoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Den visade informationen kan vara inaktuell. Plånboken synkroniseras automatiskt med Bitcoin-nätverket efter att anslutningen är upprättad, men denna process har inte slutförts ännu.</translation>
+        <translation>Den visade informationen kan vara inaktuell. Plånboken synkroniseras automatiskt med Umkoin-nätverket efter att anslutningen är upprättad, men denna process har inte slutförts ännu.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1284,7 +1284,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid Umkoin address or malformed URI parameters.</source>
-        <translation>URI kan inte tolkas! Detta kan orsakas av en ogiltig Bitcoin-adress eller felaktiga URI parametrar.</translation>
+        <translation>URI kan inte tolkas! Detta kan orsakas av en ogiltig Umkoin-adress eller felaktiga URI parametrar.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -1374,7 +1374,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Enter a Umkoin address (e.g. %1)</source>
-        <translation>Ange en Bitcoin-adress (t.ex. %1)</translation>
+        <translation>Ange en Umkoin-adress (t.ex. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1790,7 +1790,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Umkoin network.</source>
-        <translation>Ett frivilligt meddelande att bifoga betalningsbegäran, vilket visas när begäran öppnas. NB: Meddelandet kommer inte att sändas med betalningen över Bitcoinnätverket.</translation>
+        <translation>Ett frivilligt meddelande att bifoga betalningsbegäran, vilket visas när begäran öppnas. NB: Meddelandet kommer inte att sändas med betalningen över Umkoinnätverket.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2183,7 +2183,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>Warning: Invalid Umkoin address</source>
-        <translation>Varning: Felaktig Bitcoinadress</translation>
+        <translation>Varning: Felaktig Umkoinadress</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -2226,7 +2226,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>The Umkoin address to send the payment to</source>
-        <translation>Bitcoinadress att sända betalning till</translation>
+        <translation>Umkoinadress att sända betalning till</translation>
     </message>
     <message>
         <source>Alt+A</source>
@@ -2270,7 +2270,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>A message that was attached to the umkoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Umkoin network.</source>
-        <translation>Ett meddelande som bifogades umkoin-URI, vilket lagras med transaktionen som referens. NB: Meddelandet kommer inte att sändas över Bitcoinnätverket.</translation>
+        <translation>Ett meddelande som bifogades umkoin-URI, vilket lagras med transaktionen som referens. NB: Meddelandet kommer inte att sändas över Umkoinnätverket.</translation>
     </message>
     <message>
         <source>Pay To:</source>
@@ -2319,7 +2319,7 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>The Umkoin address to sign the message with</source>
-        <translation>Bitcoinadress att signera meddelandet med</translation>
+        <translation>Umkoinadress att signera meddelandet med</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -2375,11 +2375,11 @@ Var vänlig och försök igen.</translation>
     </message>
     <message>
         <source>The Umkoin address the message was signed with</source>
-        <translation>Bitcoinadressen som meddelandet signerades med</translation>
+        <translation>Umkoinadressen som meddelandet signerades med</translation>
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Umkoin address</source>
-        <translation>Verifiera meddelandet för att vara säker på att den var signerad med den angivna Bitcoin-adressen</translation>
+        <translation>Verifiera meddelandet för att vara säker på att den var signerad med den angivna Umkoin-adressen</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -2894,7 +2894,7 @@ Var vänlig och försök igen.</translation>
     <name>WalletModel</name>
     <message>
         <source>Send Coins</source>
-        <translation>Skicka Bitcoins</translation>
+        <translation>Skicka Umkoins</translation>
     </message>
 </context>
 <context>
@@ -3003,8 +3003,8 @@ Var vänlig och försök igen.</translation>
         <translation>Kunde inte starta HTTP-server. Se avlusningsloggen för detaljer.</translation>
     </message>
     <message>
-        <source>Bitcoin Core</source>
-        <translation>Bitcoin Core</translation>
+        <source>Umkoin Core</source>
+        <translation>Umkoin Core</translation>
     </message>
     <message>
         <source>The %s developers</source>

@@ -5,7 +5,7 @@
 #ifndef UMKOIN_CONSENSUS_VERSIONBITS
 #define UMKOIN_CONSENSUS_VERSIONBITS
 
-#include "chain.h"
+#include <chain.h>
 #include <map>
 
 /** What block version to use for new blocks (pre versionbits) */
@@ -77,4 +77,4 @@ BIP9Stats VersionBitsStatistics(const CBlockIndex* pindexPrev, const Consensus::
 int VersionBitsStateSinceHeight(const CBlockIndex* pindexPrev, const Consensus::Params& params, Consensus::DeploymentPos pos, VersionBitsCache& cache);
 uint32_t VersionBitsMask(const Consensus::Params& params, Consensus::DeploymentPos pos);
 
-#endif // UMKOIN_CONSENSUS_VERSIONBITS
+#endif

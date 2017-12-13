@@ -8,7 +8,7 @@ Build-Depends: debhelper,
  automake,
  libtool,
  bash-completion,
- libdb4.8++-dev,
+ libdb5.3++-dev,
  libssl-dev,
  pkg-config,
  libevent-dev,
@@ -26,7 +26,7 @@ Build-Depends: debhelper,
  python,
  libzmq3-dev
 Standards-Version: 3.9.2
-Homepage: https://www.ua-moloko.com/
+Homepage: https://umkoincore.org/
 Vcs-Git: git://github.com/vmta/umkoin.git
 Vcs-Browser: https://github.com/vmta/umkoin
 

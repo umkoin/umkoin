@@ -24,20 +24,20 @@ URL:		https://umkoin.org/
 Source0:	https://umkoin.org/bin/umkoin-core-%{version}/umkoin-%{version}.tar.gz
 Source1:	http://download.oracle.com/berkeley-db/db-%{bdbv}.NC.tar.gz
 
-Source10:	https://raw.githubusercontent.com/umkoin/umkoin/v%{version}/contrib/debian/examples/umkoin.conf
+Source10:	https://raw.githubusercontent.com/vmta/umkoin/v%{version}/contrib/debian/examples/umkoin.conf
 
 #man pages
-Source20:	https://raw.githubusercontent.com/umkoin/umkoin/v%{version}/doc/man/umkoind.1
-Source21:	https://raw.githubusercontent.com/umkoin/umkoin/v%{version}/doc/man/umkoin-cli.1
-Source22:	https://raw.githubusercontent.com/umkoin/umkoin/v%{version}/doc/man/umkoin-qt.1
+Source20:	https://raw.githubusercontent.com/vmta/umkoin/v%{version}/doc/man/umkoind.1
+Source21:	https://raw.githubusercontent.com/vmta/umkoin/v%{version}/doc/man/umkoin-cli.1
+Source22:	https://raw.githubusercontent.com/vmta/umkoin/v%{version}/doc/man/umkoin-qt.1
 
 #selinux
-Source30:	https://raw.githubusercontent.com/umkoin/umkoin/v%{version}/contrib/rpm/umkoin.te
+Source30:	https://raw.githubusercontent.com/vmta/umkoin/v%{version}/contrib/rpm/umkoin.te
 # Source31 - what about umkoin-tx and bench_umkoin ???
-Source31:	https://raw.githubusercontent.com/umkoin/umkoin/v%{version}/contrib/rpm/umkoin.fc
-Source32:	https://raw.githubusercontent.com/umkoin/umkoin/v%{version}/contrib/rpm/umkoin.if
+Source31:	https://raw.githubusercontent.com/vmta/umkoin/v%{version}/contrib/rpm/umkoin.fc
+Source32:	https://raw.githubusercontent.com/vmta/umkoin/v%{version}/contrib/rpm/umkoin.if
 
-Source100:	https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg
+Source100:	https://upload.wikimedia.org/wikipedia/commons/4/46/Umkoin.svg
 
 %if 0%{?_use_libressl:1}
 BuildRequires:	libressl-devel
@@ -145,7 +145,7 @@ The umkoin-cli utility allows you to communicate and control a umkoin daemon
 over RPC, the umkoin-tx utility allows you to create a custom transaction, and
 the bench_umkoin utility can be used to perform some benchmarks.
 
-This package contains utilities needed by the umkoin.server package.
+This package contains utilities needed by the umkoin-server package.
 
 
 %prep
@@ -200,7 +200,7 @@ OPTIONS=""
 
 # System service defaults.
 # Don't change these unless you know what you're doing.
-CONFIG_FILE="%{_sysconfdir}/umkoin/umkoin.conf"
+CONFIG_FILE="%{_sysconfdir}/vmta/umkoin.conf"
 DATA_DIR="%{_localstatedir}/lib/umkoin"
 PID_FILE="/run/umkoind/umkoind.pid"
 EOF
@@ -338,7 +338,7 @@ done
 %{_sbindir}/semanage port -a -t umkoin_port_t -p tcp 16333
 %{_sbindir}/semanage port -a -t umkoin_port_t -p tcp 18443
 %{_sbindir}/semanage port -a -t umkoin_port_t -p tcp 18444
-%{_sbindir}/fixfiles -R umkoin.server restore &> /dev/null || :
+%{_sbindir}/fixfiles -R umkoin-server restore &> /dev/null || :
 %{_sbindir}/restorecon -R %{_localstatedir}/lib/umkoin || :
 fi
 
@@ -362,7 +362,7 @@ if [ $1 -eq 0 ]; then
 	for selinuxvariant in %{selinux_variants}; do
 		%{_sbindir}/semodule -s ${selinuxvariant} -r umkoin &> /dev/null || :
 	done
-	%{_sbindir}/fixfiles -R umkoin.server restore &> /dev/null || :
+	%{_sbindir}/fixfiles -R umkoin-server restore &> /dev/null || :
 	[ -d %{_localstatedir}/lib/umkoin ] && \
 		%{_sbindir}/restorecon -R %{_localstatedir}/lib/umkoin &> /dev/null || :
 	fi

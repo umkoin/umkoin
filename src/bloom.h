@@ -5,7 +5,7 @@
 #ifndef UMKOIN_BLOOM_H
 #define UMKOIN_BLOOM_H
 
-#include "serialize.h"
+#include <serialize.h>
 
 #include <vector>
 

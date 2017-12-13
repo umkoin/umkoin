@@ -2,11 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "dbwrapper.h"
+#include <dbwrapper.h>
 
-#include "fs.h"
-#include "util.h"
-#include "random.h"
+#include <fs.h>
+#include <util.h>
+#include <random.h>
 
 #include <leveldb/cache.h>
 #include <leveldb/env.h>
@@ -64,7 +64,7 @@ public:
 
                 assert(p <= limit);
                 base[std::min(bufsize - 1, (int)(p - base))] = '\0';
-                LogPrintStr(base);
+                LogPrintf("leveldb: %s", base);
                 if (base != buffer) {
                     delete[] base;
                 }

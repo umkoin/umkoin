@@ -1,5 +1,5 @@
 [Desktop Entry]
-Encoding=UTF-8
+Version=1.0
 Name=Umkoin Core
 Comment=Connect to the Umkoin P2P Network
 Comment[de]=Verbinde mit dem Umkoin peer-to-peer Netzwerk
@@ -11,3 +11,4 @@ Type=Application
 Icon=umkoin128
 MimeType=x-scheme-handler/umkoin;
 Categories=Office;Finance;
+StartupWMClass=Umkoin-qt

@@ -226,7 +226,7 @@
         <translation>تایید پیام</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
+        <source>Umkoin</source>
         <translation>بیت کوین</translation>
     </message>
     <message>

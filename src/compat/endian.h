@@ -6,10 +6,10 @@
 #define UMKOIN_COMPAT_ENDIAN_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/umkoin-config.h"
+#include <config/umkoin-config.h>
 #endif
 
-#include "compat/byteswap.h"
+#include <compat/byteswap.h>
 
 #include <stdint.h>
 

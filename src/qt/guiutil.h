@@ -5,8 +5,8 @@
 #ifndef UMKOIN_QT_GUIUTIL_H
 #define UMKOIN_QT_GUIUTIL_H
 
-#include "amount.h"
-#include "fs.h"
+#include <amount.h>
+#include <fs.h>
 
 #include <QEvent>
 #include <QHeaderView>
@@ -29,7 +29,7 @@ class QUrl;
 class QWidget;
 QT_END_NAMESPACE
 
-/** Utility functions used by the Bitcoin Qt UI.
+/** Utility functions used by the Umkoin Qt UI.
  */
 namespace GUIUtil
 {

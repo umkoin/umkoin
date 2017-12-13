@@ -1,14 +1,14 @@
-Bitcoin version 0.5.4 is now available for download at:
-http://sourceforge.net/projects/bitcoin/files/Bitcoin/umkoin-0.5.4/
+Umkoin version 0.5.4 is now available for download at:
+http://sourceforge.net/projects/umkoin/files/Umkoin/umkoin-0.5.4/
 NOTE: 0.5.4rc3 is being renamed to 0.5.4 final with no changes.
 
 This is a bugfix-only release in the 0.5.x series, plus a few protocol updates.
 
 Please report bugs using the issue tracker at github:
-https://github.com/bitcoin/bitcoin/issues
+https://github.com/vmta/umkoin/issues
 
 Stable source code is hosted at Gitorious:
-http://gitorious.org.umkoin/umkoind-stable/archive-tarball/v0.5.4#.tar.gz
+http://gitorious.org/vmta/umkoind-stable/archive-tarball/v0.5.4#.tar.gz
 
 PROTOCOL UPDATES
 
@@ -31,7 +31,7 @@ Print detailed wallet loading errors to debug.log when it is corrupt.
 Allocate exactly the amount of space needed for signing transactions, instead of a fixed 10k buffer.
 Workaround for improbable memory access violation.
 Check wallet's minimum version before trying to load it.
-Remove wxBitcoin properly when installing Umkoin-Qt over it. (Windows)
+Remove wxUmkoin properly when installing Umkoin-Qt over it. (Windows)
 Detail reorganization information better in debug log.
 Use a messagebox to display the error when -server is provided without configuring a RPC password.
 Testing suite build now honours provided CXXFLAGS.
