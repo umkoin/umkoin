@@ -2,11 +2,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/notificator.h>
+#include "qt/notificator.h"
 
 #include <QApplication>
 #include <QByteArray>
-#include <QIcon>
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QMetaType>

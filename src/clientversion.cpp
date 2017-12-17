@@ -2,11 +2,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <clientversion.h>
+#include "clientversion.h"
 
-#include <tinyformat.h>
-
-#include <string>
+#include "tinyformat.h"
 
 /**
  * Name of client reported in the 'version' message. Report the same name

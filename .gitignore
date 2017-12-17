@@ -110,3 +110,5 @@ test/cache/*
 
 libumkoinconsensus.pc
 contrib/devtools/split-debug.sh
+
+.vscode

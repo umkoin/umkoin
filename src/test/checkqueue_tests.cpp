@@ -2,12 +2,12 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <util.h>
-#include <utiltime.h>
-#include <validation.h>
+#include "util.h"
+#include "utiltime.h"
+#include "validation.h"
 
-#include <test/test_umkoin.h>
-#include <checkqueue.h>
+#include "test/test_umkoin.h"
+#include "checkqueue.h"
 #include <boost/test/unit_test.hpp>
 #include <boost/thread.hpp>
 #include <atomic>
@@ -24,7 +24,7 @@
 // otherwise.
 BOOST_FIXTURE_TEST_SUITE(checkqueue_tests, TestingSetup)
 
-static const int QUEUE_BATCH_SIZE = 128;
+static const unsigned int QUEUE_BATCH_SIZE = 128;
 
 struct FakeCheck {
     bool operator()()

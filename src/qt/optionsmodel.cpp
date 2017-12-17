@@ -3,25 +3,24 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/umkoin-config.h>
+#include "config/umkoin-config.h"
 #endif
 
-#include <qt/optionsmodel.h>
+#include "qt/optionsmodel.h"
 
-#include <qt/umkoinunits.h>
-#include <qt/guiutil.h>
+#include "qt/umkoinunits.h"
+#include "qt/guiutil.h"
 
-#include <amount.h>
-#include <init.h>
-#include <validation.h> // For DEFAULT_SCRIPTCHECK_THREADS
-#include <net.h>
-#include <netbase.h>
-#include <txdb.h> // for -dbcache defaults
-#include <qt/intro.h>
+#include "init.h"
+#include "validation.h" // For DEFAULT_SCRIPTCHECK_THREADS
+#include "net.h"
+#include "netbase.h"
+#include "txdb.h" // for -dbcache defaults
+#include "qt/intro.h"
 
 #ifdef ENABLE_WALLET
-#include <wallet/wallet.h>
-#include <wallet/walletdb.h>
+#include "wallet/wallet.h"
+#include "wallet/walletdb.h"
 #endif
 
 #include <QNetworkProxy>

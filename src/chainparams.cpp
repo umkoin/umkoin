@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <chainparams.h>
-#include <consensus/merkle.h>
+#include "chainparams.h"
+#include "consensus/merkle.h"
 
 #include <tinyformat.h>
 #include <util.h>
@@ -102,10 +102,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000001000000"); //16777216
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000001b001b001b");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"); //0
+        consensus.defaultAssumeValid = uint256S("0x000000000e192e3e6ae002bea596ccab365a974f03a76a0ec922f062982b1e7c"); //26
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -139,20 +139,22 @@ public:
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
-        fMineBlocksOnDemand = true;
+        fMineBlocksOnDemand = false;
 
-        checkpointData = (CCheckpointData) {
+        checkpointData = {
             {
                 { 0, uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a")},
+                { 2, uint256S("0x0000000012fa072d5ccfc5e71584120f39393cd980dff23a303dd83acfbfd6f8")},
+                { 26, uint256S("0x000000000e192e3e6ae002bea596ccab365a974f03a76a0ec922f062982b1e7c")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a (height 0).
-            1511563812, // * UNIX timestamp of last known number of transactions
-            0,          // * total number of transactions between genesis and that timestamp
+            // Data as of block 000000000e192e3e6ae002bea596ccab365a974f03a76a0ec922f062982b1e7c (height 26).
+            1513378067, // * UNIX timestamp of last known number of transactions
+            26,         // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            0.15        // * estimated number of transactions per second after that timestamp
+            0.25        // * estimated number of transactions per second after that timestamp
         };
     }
 };
@@ -192,10 +194,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000001000000"); //16777216
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000200020002");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"); //0
+        consensus.defaultAssumeValid = uint256S("0x00000000fa461ede70cfac7ac890c53143fc27c2452cb8b4fbeefcc345928d81"); //1
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -226,19 +228,20 @@ public:
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
-        fMineBlocksOnDemand = true;
+        fMineBlocksOnDemand = false;
 
-        checkpointData = (CCheckpointData) {
+        checkpointData = {
             {
                 {0, uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429")},
+                {1, uint256S("0x00000000fa461ede70cfac7ac890c53143fc27c2452cb8b4fbeefcc345928d81")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429 (height 0)
-            1511678228,
-            0,
-            0.15
+            // Data as of block 00000000fa461ede70cfac7ac890c53143fc27c2452cb8b4fbeefcc345928d81 (height 1)
+            1513339487,
+            1,
+            0.1
         };
 
     }
@@ -299,7 +302,7 @@ public:
         fRequireStandard = false;
         fMineBlocksOnDemand = true;
 
-        checkpointData = (CCheckpointData) {
+        checkpointData = {
             {
                 {0, uint256S("0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d")},
             }

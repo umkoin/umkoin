@@ -2,14 +2,14 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <bench/bench.h>
-#include <util.h>
-#include <validation.h>
-#include <checkqueue.h>
-#include <prevector.h>
+#include "bench.h"
+#include "util.h"
+#include "validation.h"
+#include "checkqueue.h"
+#include "prevector.h"
 #include <vector>
-#include <boost/thread/thread.hpp>
-#include <random.h>
+#include "boost/thread/thread.hpp"
+#include "random.h"
 
 
 // This Benchmark tests the CheckQueue with the lightest
@@ -19,7 +19,7 @@ static const int MIN_CORES = 2;
 static const size_t BATCHES = 101;
 static const size_t BATCH_SIZE = 30;
 static const int PREVECTOR_SIZE = 28;
-static const int QUEUE_BATCH_SIZE = 128;
+static const unsigned int QUEUE_BATCH_SIZE = 128;
 static void CCheckQueueSpeed(benchmark::State& state)
 {
     struct FakeJobNoWork {

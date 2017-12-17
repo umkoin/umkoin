@@ -2,22 +2,20 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <qt/receivecoinsdialog.h>
-#include <qt/forms/ui_receivecoinsdialog.h>
+#include "qt/receivecoinsdialog.h"
+#include "qt/forms/ui_receivecoinsdialog.h"
 
-#include <qt/addressbookpage.h>
-#include <qt/addresstablemodel.h>
-#include <qt/umkoinunits.h>
-#include <qt/guiutil.h>
-#include <qt/optionsmodel.h>
-#include <qt/platformstyle.h>
-#include <qt/receiverequestdialog.h>
-#include <qt/recentrequeststablemodel.h>
-#include <qt/walletmodel.h>
+#include "qt/addressbookpage.h"
+#include "qt/addresstablemodel.h"
+#include "qt/umkoinunits.h"
+#include "qt/optionsmodel.h"
+#include "qt/platformstyle.h"
+#include "qt/receiverequestdialog.h"
+#include "qt/recentrequeststablemodel.h"
+#include "qt/walletmodel.h"
 
 #include <QAction>
 #include <QCursor>
-#include <QItemSelection>
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QTextDocument>

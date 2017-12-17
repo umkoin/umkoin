@@ -2,26 +2,20 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <test/test_umkoin.h>
+#include "test/test_umkoin.h"
 
-#include <chainparams.h>
-#include <consensus/consensus.h>
-#include <consensus/validation.h>
-#include <crypto/sha256.h>
-#include <fs.h>
-#include <key.h>
-#include <validation.h>
-#include <miner.h>
-#include <net_processing.h>
-#include <pubkey.h>
-#include <random.h>
-#include <txdb.h>
-#include <txmempool.h>
-#include <ui_interface.h>
-#include <streams.h>
-#include <rpc/server.h>
-#include <rpc/register.h>
-#include <script/sigcache.h>
+#include "chainparams.h"
+#include "consensus/consensus.h"
+#include "consensus/validation.h"
+#include "crypto/sha256.h"
+#include "validation.h"
+#include "miner.h"
+#include "net_processing.h"
+#include "ui_interface.h"
+#include "streams.h"
+#include "rpc/server.h"
+#include "rpc/register.h"
+#include "script/sigcache.h"
 
 #include <memory>
 

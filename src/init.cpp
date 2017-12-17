@@ -4,19 +4,19 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include <config/umkoin-config.h>
+#include "config/umkoin-config.h"
 #endif
 
-#include <init.h>
+#include "init.h"
 
-#include <addrman.h>
-#include <amount.h>
-#include <chain.h>
-#include <chainparams.h>
-#include <checkpoints.h>
-#include <compat/sanity.h>
-#include <consensus/validation.h>
-#include <fs.h>
+#include "addrman.h"
+#include "amount.h"
+#include "chain.h"
+#include "chainparams.h"
+#include "checkpoints.h"
+#include "compat/sanity.h"
+#include "consensus/validation.h"
+#include "fs.h"
 #include <httpserver.h>
 #include <httprpc.h>
 #include <key.h>
@@ -1726,5 +1726,5 @@ bool AppInitMain(boost::thread_group& threadGroup, CScheduler& scheduler)
     StartWallets(scheduler);
 #endif
 
-    return !fRequestShutdown;
+    return true;
 }

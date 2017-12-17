@@ -12,10 +12,6 @@ Please report bugs using the issue tracker at GitHub:
 
   <https://github.com/vmta/umkoin/issues>
 
-To receive security and update notifications, please subscribe to:
-
-  <https://umkoincore.org/en/list/announcements/join/>
-
 How to Upgrade
 ==============
 
@@ -84,20 +80,16 @@ doesn't exist (i.e. on existing nodes), the current datadir root is used instead
 Low-level RPC changes
 ----------------------
 - The deprecated RPC `getinfo` was removed. It is recommended that the more specific RPCs are used:
-  * `getblockchaininfo`
-  * `getnetworkinfo`
-  * `getwalletinfo`
-  * `getmininginfo`
+  - `getblockchaininfo`
+  - `getnetworkinfo`
+  - `getwalletinfo`
+  - `getmininginfo`
 - The wallet RPC `getreceivedbyaddress` will return an error if called with an address not in the wallet.
 
 Changed command-line options
 -----------------------------
-- `-debuglogfile=<file>` can be used to specify an alternative debug logging file.
 
-Credits
-=======
-
-Thanks to everyone who directly contributed to this release:
-
-
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/umkoin/).
+Renamed script for creating JSON-RPC credentials
+-------------------------------------------------
+The `share/rpcuser/rpcuser.py` script was renamed to `share/rpcauth/rpcauth.py`. This script can be
+used to create `rpcauth` credentials for a JSON-RPC user.
