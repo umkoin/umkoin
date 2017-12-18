@@ -6,13 +6,13 @@
 #include "chainparams.h"
 #include "consensus/merkle.h"
 
-#include <tinyformat.h>
-#include <util.h>
-#include <utilstrencodings.h>
+#include "tinyformat.h"
+#include "util.h"
+#include "utilstrencodings.h"
 
 #include <assert.h>
 
-#include <chainparamsseeds.h>
+#include "chainparamsseeds.h"
 
 static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
@@ -105,7 +105,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000001b001b001b");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000000e192e3e6ae002bea596ccab365a974f03a76a0ec922f062982b1e7c"); //26
+        consensus.defaultAssumeValid = uint256S("0x0000000000009948d87fca904e29aefc01661997f6b4516c7d0231caaa6a90bc"); //1071
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -146,15 +146,17 @@ public:
                 { 0, uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a")},
                 { 2, uint256S("0x0000000012fa072d5ccfc5e71584120f39393cd980dff23a303dd83acfbfd6f8")},
                 { 26, uint256S("0x000000000e192e3e6ae002bea596ccab365a974f03a76a0ec922f062982b1e7c")},
+                { 1000, uint256S("0x0000000000460edf3b33e4d7eeb338db2acb2c48028c2ac19c05934c57278a2d")},
+                { 1071, uint256S("0x0000000000009948d87fca904e29aefc01661997f6b4516c7d0231caaa6a90bc")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 000000000e192e3e6ae002bea596ccab365a974f03a76a0ec922f062982b1e7c (height 26).
-            1513378067, // * UNIX timestamp of last known number of transactions
-            26,         // * total number of transactions between genesis and that timestamp
+            // Data as of block 0000000000009948d87fca904e29aefc01661997f6b4516c7d0231caaa6a90bc (height 1071).
+            1513553555, // * UNIX timestamp of last known number of transactions
+            1075,       // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            0.25        // * estimated number of transactions per second after that timestamp
+            0.01        // * estimated number of transactions per second after that timestamp
         };
     }
 };
