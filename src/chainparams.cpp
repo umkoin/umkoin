@@ -102,10 +102,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000b000b000b");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000002d002d002d");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000001ad14feab1237fef3edd5312b6bf539b6a6eb0e63139a59761ed8d4d"); //10
+        consensus.defaultAssumeValid = uint256S("0x000000000659cf1022f0071773143ba6d644eaca7bef03924d944d0256ffa16e"); //44
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -125,7 +125,7 @@ public:
         assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
         // Note that of those with the service bits flag, most only support a subset of possible options
-        vSeeds.emplace_back("dnsseed.umk.ua-moloko.com", true); // vmta
+        vSeeds.emplace_back("dnsseed.ua-moloko.com", true); // vmta
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
@@ -145,13 +145,15 @@ public:
             {
                 { 0, uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a")},
                 { 10, uint256S("0x000000001ad14feab1237fef3edd5312b6bf539b6a6eb0e63139a59761ed8d4d")},
+                { 40, uint256S("0x00000000000c30686a4a67198f613a64bb7f79a22708960af5aa7e9b86ec676c")},
+                { 44, uint256S("0x000000000659cf1022f0071773143ba6d644eaca7bef03924d944d0256ffa16e")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 000000001ad14feab1237fef3edd5312b6bf539b6a6eb0e63139a59761ed8d4d (height 10).
-            1513706584, // * UNIX timestamp of last known number of transactions
-            10,         // * total number of transactions between genesis and that timestamp
+            // Data as of block 000000000659cf1022f0071773143ba6d644eaca7bef03924d944d0256ffa16e (height 44).
+            1513775681, // * UNIX timestamp of last known number of transactions
+            86,         // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.01        // * estimated number of transactions per second after that timestamp
         };
@@ -193,10 +195,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000100010001");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000200020002");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"); //0
+        consensus.defaultAssumeValid = uint256S("0x000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a"); //1
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -213,7 +215,7 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("dnsseed.umk.ua-moloko.com", true); // vmta
+        vSeeds.emplace_back("dnsseed.ua-moloko.com", true); // vmta
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
@@ -227,18 +229,19 @@ public:
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
-        fMineBlocksOnDemand = true;
+        fMineBlocksOnDemand = false;
 
         checkpointData = {
             {
                 {0, uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429")},
+                {1, uint256S("0x000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429 (height 0)
-            1511678228,
-            0,
+            // Data as of block 000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a (height 1)
+            1513724950,
+            1,
             0.1
         };
 
