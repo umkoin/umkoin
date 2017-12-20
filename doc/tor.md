@@ -1,5 +1,5 @@
 TOR SUPPORT IN UMKOIN
-======================
+=====================
 
 It is possible to run Umkoin as a Tor hidden service, and connect to such services.
 
@@ -8,7 +8,7 @@ configure Tor.
 
 
 1. Run umkoin behind a Tor proxy
----------------------------------
+--------------------------------
 
 The first step is running Umkoin behind a Tor proxy. This will already make all
 outgoing connections be anonymized, but more is possible.

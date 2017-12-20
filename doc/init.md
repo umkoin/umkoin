@@ -1,5 +1,5 @@
 Sample init scripts and service configuration for umkoind
-==========================================================
+=========================================================
 
 Sample scripts and configuration files for systemd, Upstart and OpenRC
 can be found in the contrib/init folder.
