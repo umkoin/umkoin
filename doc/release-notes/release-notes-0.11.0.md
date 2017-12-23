@@ -1,6 +1,6 @@
 Umkoin Core version 0.11.0 is now available from:
 
-  <https://umkoin.org/bin/umkoin-core-0.11.0/>
+  <https://bitcoin.org/bin/umkoin-core-0.11.0/>
 
 This is a new major version release, bringing both new features and
 bug fixes.
@@ -412,7 +412,7 @@ git merge commit are mentioned.
 - #6174 `df992b9` doc: add translation strings policy
 - #6210 `dfdb6dd` build: disable optional use of gmp in internal secp256k1 build
 - #6264 `94cd705` Remove translation for -help-debug options
-- #6286 `3902c15` Remove berkeley-db5 workaround in MacOSX build docs
+- #6286 `3902c15` Remove berkeley-db4 workaround in MacOSX build docs
 - #6319 `3f8fcc9` doc: update mailing list address
 
 Credits

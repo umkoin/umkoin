@@ -9,7 +9,7 @@ https://www.transifex.net/projects/p/umkoin/
 Please report bugs using the issue tracker at github:
 https://github.com/vmta/umkoin/issues
 
-For Ubuntu users, there is a new ppa maintained by Matt Corallo which you can add to your system so that it will automatically keep umkoin up-to-date.  Just type "sudo apt-add-repository ppa:vmta/umkoin" in your terminal, then install the umkoin-qt package.
+For Ubuntu users, there is a new ppa maintained by Matt Corallo which you can add to your system so that it will automatically keep umkoin up-to-date.  Just type "sudo apt-add-repository ppa:umkoin/umkoin" in your terminal, then install the umkoin-qt package.
 
 MAJOR BUG FIX  (CVE-2011-4447)
 

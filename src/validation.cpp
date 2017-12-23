@@ -87,7 +87,7 @@ enum DisconnectResult
 };
 
 class ConnectTrace;
- 
+
 /**
  * CChainState stores and provides an API to update our local knowledge of the
  * current best chain and header tree.
@@ -230,7 +230,7 @@ CTxMemPool mempool(&feeEstimator);
 /** Constant stuff for coinbase transactions we create: */
 CScript COINBASE_FLAGS;
 
-const std::string strMessageMagic = "Bitcoin Signed Message:\n";
+const std::string strMessageMagic = "Umkoin Signed Message:\n";
 
 // Internal stuff
 namespace {
@@ -1974,7 +1974,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     if (!WriteUndoDataForBlock(blockundo, state, pindex, chainparams))
         return false;
- 
+
     if (!pindex->IsValid(BLOCK_VALID_SCRIPTS)) {
         pindex->RaiseValidity(BLOCK_VALID_SCRIPTS);
         setDirtyBlockIndex.insert(pindex);
@@ -3377,7 +3377,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
         FlushStateToDisk(chainparams, state, FLUSH_STATE_NONE); // we just allocated more disk space for block files
 
     CheckBlockIndex(chainparams.GetConsensus());
-    
+
     return true;
 }
 
@@ -4068,7 +4068,7 @@ bool CChainState::RewindBlockIndex(const CChainParams& params)
 
         CheckBlockIndex(params.GetConsensus());
     }
- 
+
     return true;
 }
 

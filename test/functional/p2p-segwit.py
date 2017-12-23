@@ -1882,7 +1882,7 @@ class SegWitTest(UmkoinTestFramework):
         # self.std_node is for testing node1 (fRequireStandard=true)
         self.std_node = self.nodes[1].add_p2p_connection(TestNode(), services=NODE_NETWORK|NODE_WITNESS)
 
-        network_thread_start() # Start up network handling in another thread
+        network_thread_start()
 
         # Keep a place to store utxo's that can be used in later tests
         self.utxo = []

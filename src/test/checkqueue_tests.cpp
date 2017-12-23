@@ -2,12 +2,12 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "util.h"
-#include "utiltime.h"
-#include "validation.h"
+#include <util.h>
+#include <utiltime.h>
+#include <validation.h>
 
-#include "test/test_umkoin.h"
-#include "checkqueue.h"
+#include <test/test_umkoin.h>
+#include <checkqueue.h>
 #include <boost/test/unit_test.hpp>
 #include <boost/thread.hpp>
 #include <atomic>

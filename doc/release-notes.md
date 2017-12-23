@@ -3,7 +3,7 @@ release-notes at release time)
 
 Umkoin Core version *version* is now available from:
 
-  <https://umkoin.org/bin/umkoin-core-*version*/>
+  <https://bitcoin.org/bin/umkoin-core-*version*/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements, as well as updated translations.
@@ -11,6 +11,10 @@ and performance improvements, as well as updated translations.
 Please report bugs using the issue tracker at GitHub:
 
   <https://github.com/vmta/umkoin/issues>
+
+To receive security and update notifications, please subscribe to:
+
+  <https://bitcoincore.org/en/list/announcements/join/>
 
 How to Upgrade
 ==============
@@ -63,12 +67,20 @@ Due to a backward-incompatible change in the wallet database, wallets created
 with version 0.16.0 will be rejected by previous versions. Also, version 0.16.0
 will only create hierarchical deterministic (HD) wallets.
 
+Replace-By-Fee by default in GUI
+--------------------------------
+The send screen now uses BIP-125 RBF by default, regardless of `-walletrbf`.
+There is a checkbox to mark the transaction as final.
+
+The RPC default remains unchanged: to use RBF, launch with `-walletrbf=1` or
+use the `replaceable` argument for individual transactions.
+
 Custom wallet directories
 ---------------------
 The ability to specify a directory other than the default data directory in which to store
 wallets has been added. An existing directory can be specified using the `-walletdir=<dir>`
 argument. Wallets loaded via `-wallet` arguments must be in this wallet directory. Care should be taken
-when choosing a wallet directory location, as if  it becomes unavailable during operation,
+when choosing a wallet directory location, as if it becomes unavailable during operation,
 funds may be lost.
 
 Default wallet directory change
@@ -80,16 +92,30 @@ doesn't exist (i.e. on existing nodes), the current datadir root is used instead
 Low-level RPC changes
 ----------------------
 - The deprecated RPC `getinfo` was removed. It is recommended that the more specific RPCs are used:
-  - `getblockchaininfo`
-  - `getnetworkinfo`
-  - `getwalletinfo`
-  - `getmininginfo`
+  * `getblockchaininfo`
+  * `getnetworkinfo`
+  * `getwalletinfo`
+  * `getmininginfo`
 - The wallet RPC `getreceivedbyaddress` will return an error if called with an address not in the wallet.
 
 Changed command-line options
 -----------------------------
+- `-debuglogfile=<file>` can be used to specify an alternative debug logging file.
 
 Renamed script for creating JSON-RPC credentials
--------------------------------------------------
+-----------------------------
 The `share/rpcuser/rpcuser.py` script was renamed to `share/rpcauth/rpcauth.py`. This script can be
 used to create `rpcauth` credentials for a JSON-RPC user.
+
+
+- `dumpwallet` now includes hex-encoded scripts from the wallet in the dumpfile, and
+  `importwallet` now imports these scripts, but corresponding addresses may not be added
+  correctly or a manual rescan may be required to find relevant transactions.
+
+Credits
+=======
+
+Thanks to everyone who directly contributed to this release:
+
+
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/umkoin/).

@@ -1,4 +1,4 @@
-%define bdbv 5.3.21
+%define bdbv 4.8.30
 %global selinux_variants mls strict targeted
 
 %if 0%{?_no_gui:1}
@@ -20,8 +20,8 @@ Summary:	Peer to Peer Cryptographic Currency
 
 Group:		Applications/System
 License:	MIT
-URL:		https://umkoin.org/
-Source0:	https://umkoin.org/bin/umkoin-core-%{version}/umkoin-%{version}.tar.gz
+URL:		https://bitcoin.org/
+Source0:	https://bitcoin.org/bin/umkoin-core-%{version}/umkoin-%{version}.tar.gz
 Source1:	http://download.oracle.com/berkeley-db/db-%{bdbv}.NC.tar.gz
 
 Source10:	https://raw.githubusercontent.com/vmta/umkoin/v%{version}/contrib/debian/examples/umkoin.conf
@@ -154,19 +154,19 @@ This package contains utilities needed by the umkoin-server package.
 cp -p %{SOURCE10} ./umkoin.conf.example
 tar -zxf %{SOURCE1}
 cp -p db-%{bdbv}.NC/LICENSE ./db-%{bdbv}.NC-LICENSE
-mkdir db5 SELinux
+mkdir db4 SELinux
 cp -p %{SOURCE30} %{SOURCE31} %{SOURCE32} SELinux/
 
 
 %build
 CWD=`pwd`
 cd db-%{bdbv}.NC/build_unix/
-../dist/configure --enable-cxx --disable-shared --with-pic --prefix=${CWD}/db5
+../dist/configure --enable-cxx --disable-shared --with-pic --prefix=${CWD}/db4
 make install
 cd ../..
 
 ./autogen.sh
-%configure LDFLAGS="-L${CWD}/db5/lib/" CPPFLAGS="-I${CWD}/db5/include/" --with-miniupnpc --enable-glibc-back-compat %{buildargs}
+%configure LDFLAGS="-L${CWD}/db4/lib/" CPPFLAGS="-I${CWD}/db4/include/" --with-miniupnpc --enable-glibc-back-compat %{buildargs}
 make %{?_smp_mflags}
 
 pushd SELinux
@@ -200,7 +200,7 @@ OPTIONS=""
 
 # System service defaults.
 # Don't change these unless you know what you're doing.
-CONFIG_FILE="%{_sysconfdir}/vmta/umkoin.conf"
+CONFIG_FILE="%{_sysconfdir}/umkoin/umkoin.conf"
 DATA_DIR="%{_localstatedir}/lib/umkoin"
 PID_FILE="/run/umkoind/umkoind.pid"
 EOF
