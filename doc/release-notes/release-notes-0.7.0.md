@@ -15,7 +15,7 @@ source-only tarballs/zipballs directly from there:
 Ubuntu Linux users can use the "Personal Package Archive" (PPA)
 maintained by Matt Corallo to automatically keep 
 umkoin up-to-date.  Just type
-  sudo apt-add-repository ppa:vmta/umkoin
+  sudo apt-add-repository ppa:umkoin/umkoin
   sudo apt-get update
 in your terminal, then install the umkoin-qt package:
   sudo apt-get install umkoin-qt

@@ -51,4 +51,4 @@ situations but should be discussed in public in advance.
 
 See also
 ----------
-- [umkoin-seeder](https://github.com/vmta/umkoin-seeder) is a reference implementation of a DNS seed.
+- [umkoin-seeder](https://github.com/sipa/umkoin-seeder) is a reference implementation of a DNS seed.

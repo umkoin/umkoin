@@ -1,6 +1,6 @@
 Umkoin Core version *0.15.0* is now available from:
 
-  <https://umkoin.org/bin/umkoin-core-0.15.0/>
+  <https://bitcoin.org/bin/umkoin-core-0.15.0/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements, as well as updated translations.
@@ -11,7 +11,7 @@ Please report bugs using the issue tracker at GitHub:
 
 To receive security and update notifications, please subscribe to:
 
-  <https://umkoincore.org/en/list/announcements/join/>
+  <https://bitcoincore.org/en/list/announcements/join/>
 
 How to Upgrade
 ==============
@@ -390,7 +390,7 @@ Low-level RPC changes
 
 ### P2P protocol and network code
 - #9726 `7639d38` netbase: Do not print an error on connection timeouts through proxy (laanwj)
-- #9805 `5b583ef` Add seed.btc.petertodd.org to mainnet DNS seeds (petertodd)
+- #9805 `5b583ef` Add seed.umk.petertodd.org to mainnet DNS seeds (petertodd)
 - #9861 `22f609f` Trivial: Debug log ambiguity fix for peer addrs (keystrike)
 - #9774 `90cb2a2` Enable host lookups for -proxy and -onion parameters (jmcorgan)
 - #9558 `7b585cf` Clarify assumptions made about when BlockCheck is called (TheBlueMatt)
@@ -740,7 +740,7 @@ Low-level RPC changes
 - #10728 `7397af9` fix typo in help text for removeprunedfunds (AkioNak)
 - #10193 `6dbcc74` scripted-diff: Remove #include <boost/foreach.hpp> (jtimon)
 - #10676 `379aed0` document script-based return fields for validateaddress (instagibbs)
-- #10651 `cef4b5c` Verify binaries from umkoincore.org and umkoin.org (TheBlueMatt)
+- #10651 `cef4b5c` Verify binaries from bitcoincore.org and bitcoin.org (TheBlueMatt)
 - #10786 `ca4c545` Add PR description to merge commit in github-merge.py (sipa)
 - #10812 `c5904e8` [utils] Allow umkoin-cli's -rpcconnect option to be used with square brackets (jnewbery)
 - #10842 `3895e25` Fix incorrect Doxygen tag (@ince → @since). Doxygen parameter name matching (practicalswift)

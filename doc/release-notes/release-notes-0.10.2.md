@@ -1,6 +1,6 @@
 Umkoin Core version 0.10.2 is now available from:
 
-  <https://umkoin.org/bin/umkoin-core-0.10.2/>
+  <https://bitcoin.org/bin/umkoin-core-0.10.2/>
 
 This is a new minor version release, bringing minor bug fixes and translation 
 updates. It is recommended to upgrade to this version.

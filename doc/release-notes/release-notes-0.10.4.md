@@ -1,6 +1,6 @@
 Umkoin Core version 0.10.4 is now available from:
 
-  <https://umkoin.org/bin/umkoin-core-0.10.4/>
+  <https://bitcoin.org/bin/umkoin-core-0.10.4/>
 
 This is a new minor version release, bringing bug fixes, the BIP65
 (CLTV) consensus change, and relay policy preparation for BIP113. It is

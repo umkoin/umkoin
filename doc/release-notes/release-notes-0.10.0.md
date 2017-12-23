@@ -1,6 +1,6 @@
 Umkoin Core version 0.10.0 is now available from:
 
-  https://umkoin.org/bin/0.10.0/
+  https://bitcoin.org/bin/0.10.0/
 
 This is a new major version release, bringing both new features and
 bug fixes.
@@ -490,7 +490,7 @@ Build system:
 - `65e8ba4` build: Switch to non-recursive make
 - `460b32d` build: fix broken boost chrono check on some platforms
 - `9ce0774` build: Fix windows configure when using --with-qt-libdir
-- `ea96475` build: Add mention of --disable-wallet to bdb53 error messages
+- `ea96475` build: Add mention of --disable-wallet to bdb48 error messages
 - `1dec09b` depends: add shared dependency builder
 - `c101c76` build: Add --with-utils (umkoin-cli and umkoin-tx, default=yes). Help string consistency tweaks. Target sanity check fix
 - `e432a5f` build: add option for reducing exports (v2)
@@ -604,7 +604,7 @@ Tests:
 - `7667850` tests: replace the old (unused since Travis) tests with new rpc test scripts
 - `f4e0aef` Do signature-s negation inside the tests
 - `1837987` Optimize -regtest setgenerate block generation
-- `2db5.3a` Fix node ranges in the test framework
+- `2db4c8a` Fix node ranges in the test framework
 - `a8b2ce5` regression test only setmocktime RPC call
 - `daf03e7` RPC tests: create initial chain with specific timestamps
 - `8656dbb` Port/fix txnmall.sh regression test

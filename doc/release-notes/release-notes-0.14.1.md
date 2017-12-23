@@ -1,6 +1,6 @@
 Umkoin Core version 0.14.1 is now available from:
 
-  <https://umkoin.org/bin/umkoin-core-0.14.1/>
+  <https://bitcoin.org/bin/umkoin-core-0.14.1/>
 
 This is a new minor version release, including various bugfixes and
 performance improvements, as well as updated translations.
@@ -11,7 +11,7 @@ Please report bugs using the issue tracker at github:
 
 To receive security and update notifications, please subscribe to:
 
-  <https://umkoincore.org/en/list/announcements/join/>
+  <https://bitcoincore.org/en/list/announcements/join/>
 
 Compatibility
 ==============

@@ -70,7 +70,7 @@ enum
     // thus rendering the script invalid; with this flag set executing
     // discouraged NOPs fails the script. This verification flag will never be
     // a mandatory flag applied to scripts in a block. NOPs that are not
-    // executed, e.g. within an unexecuted IF ENDIF block, are *not* rejected.
+    // executed, e.g.  within an unexecuted IF ENDIF block, are *not* rejected.
     // NOPs that have associated forks to give them new meaning (CLTV, CSV)
     // are not subject to this rule.
     SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_NOPS  = (1U << 7),

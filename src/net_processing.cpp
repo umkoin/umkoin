@@ -16,10 +16,10 @@
 #include <merkleblock.h>
 #include <netmessagemaker.h>
 #include <netbase.h>
-#include "policy/fees.h"
-#include "policy/policy.h"
-#include "primitives/block.h"
-#include "primitives/transaction.h"
+#include <policy/fees.h>
+#include <policy/policy.h>
+#include <primitives/block.h>
+#include <primitives/transaction.h>
 #include <random.h>
 #include <reverse_iterator.h>
 #include <scheduler.h>

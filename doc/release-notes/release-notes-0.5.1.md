@@ -20,7 +20,7 @@ https://github.com/vmta/umkoin/zipball/v0.5.1  # .zip
 For Ubuntu users, there is a new ppa maintained by Matt Corallo which
 you can add to your system so that it will automatically keep
 umkoin up-to-date.  Just type
-sudo apt-add-repository ppa:vmta/umkoin
+sudo apt-add-repository ppa:umkoin/umkoin
 in your terminal, then install the umkoin-qt package.
 
 

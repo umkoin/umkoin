@@ -1,7 +1,7 @@
 # /etc/conf.d/umkoind: config file for /etc/init.d/umkoind
 
 # Config file location
-#UMKOIND_CONFIGFILE="/etc/vmta/umkoin.conf"
+#UMKOIND_CONFIGFILE="/etc/umkoin/umkoin.conf"
 
 # What directory to write pidfile to?  (created and owned by $UMKOIND_USER)
 #UMKOIND_PIDDIR="/var/run/umkoind"

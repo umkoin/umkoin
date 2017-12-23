@@ -2,35 +2,35 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/umkoingui.h"
+#include <qt/umkoingui.h>
 
-#include "qt/umkoinunits.h"
-#include "qt/clientmodel.h"
-#include "qt/guiconstants.h"
-#include "qt/guiutil.h"
-#include "qt/modaloverlay.h"
-#include "qt/networkstyle.h"
-#include "qt/notificator.h"
-#include "qt/openuridialog.h"
-#include "qt/optionsdialog.h"
-#include "qt/optionsmodel.h"
-#include "qt/platformstyle.h"
-#include "qt/rpcconsole.h"
-#include "qt/utilitydialog.h"
+#include <qt/umkoinunits.h>
+#include <qt/clientmodel.h>
+#include <qt/guiconstants.h>
+#include <qt/guiutil.h>
+#include <qt/modaloverlay.h>
+#include <qt/networkstyle.h>
+#include <qt/notificator.h>
+#include <qt/openuridialog.h>
+#include <qt/optionsdialog.h>
+#include <qt/optionsmodel.h>
+#include <qt/platformstyle.h>
+#include <qt/rpcconsole.h>
+#include <qt/utilitydialog.h>
 
 #ifdef ENABLE_WALLET
-#include "qt/walletframe.h"
-#include "qt/walletmodel.h"
+#include <qt/walletframe.h>
+#include <qt/walletmodel.h>
 #endif // ENABLE_WALLET
 
 #ifdef Q_OS_MAC
-#include "qt/macdockiconhandler.h"
+#include <qt/macdockiconhandler.h>
 #endif
 
-#include "chainparams.h"
-#include "init.h"
-#include "ui_interface.h"
-#include "util.h"
+#include <chainparams.h>
+#include <init.h>
+#include <ui_interface.h>
+#include <util.h>
 
 #include <iostream>
 

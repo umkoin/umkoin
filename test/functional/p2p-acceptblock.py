@@ -209,10 +209,9 @@ class AcceptBlockTest(UmkoinTestFramework):
         self.nodes[0].disconnect_p2ps()
         self.nodes[1].disconnect_p2ps()
         network_thread_join()
- 
+
         test_node = self.nodes[0].add_p2p_connection(P2PInterface())
         network_thread_start()
-
         test_node.wait_for_verack()
 
         test_node.send_message(msg_block(block_h1f))
@@ -299,7 +298,7 @@ class AcceptBlockTest(UmkoinTestFramework):
             self.nodes[0].disconnect_p2ps()
             test_node = self.nodes[0].add_p2p_connection(P2PInterface())
 
-            network_thread_start() # Start up network handling in another thread
+            network_thread_start()
             test_node.wait_for_verack()
 
         # We should have failed reorg and switched back to 290 (but have block 291)

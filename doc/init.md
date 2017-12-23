@@ -1,5 +1,5 @@
 Sample init scripts and service configuration for umkoind
-=========================================================
+==========================================================
 
 Sample scripts and configuration files for systemd, Upstart and OpenRC
 can be found in the contrib/init folder.
@@ -54,7 +54,7 @@ Paths
 All three configurations assume several paths that might need to be adjusted.
 
 Binary:              `/usr/bin/umkoind`  
-Configuration file:  `/etc/vmta/umkoin.conf`  
+Configuration file:  `/etc/umkoin/umkoin.conf`  
 Data directory:      `/var/lib/umkoind`  
 PID file:            `/var/run/umkoind/umkoind.pid` (OpenRC and Upstart) or `/var/lib/umkoind/umkoind.pid` (systemd)  
 Lock file:           `/var/lock/subsys/umkoind` (CentOS)  

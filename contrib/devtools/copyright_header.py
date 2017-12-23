@@ -85,7 +85,7 @@ EXPECTED_HOLDER_NAMES = [
     "Satoshi Nakamoto\n",
     "The Bitcoin Core developers\n",
     "The Bitcoin Core developers \n",
-    "Bitcoin Core developers\n",
+    "Bitcoin Core Developers\n",
     "the Bitcoin Core developers\n",
     "The Umkoin developers\n",
     "The LevelDB Authors\. All rights reserved\.\n",

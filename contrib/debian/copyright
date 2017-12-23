@@ -5,15 +5,23 @@ Upstream-Contact: Satoshi Nakamoto <satoshin@gmx.com>
 Source: https://github.com/vmta/umkoin
 
 Files: *
-Copyright: 2009-2017, Bitcoin Core developers
+Copyright: 2009-2017, Bitcoin Core Developers
 License: Expat
-Comment: The Bitcoin Core developers encompasses the current developers listed on umkoin.org,
+Comment: The Bitcoin Core Developers encompasses the current developers listed on bitcoin.org,
          as well as the numerous contributors to the project.
 
 Files: debian/*
 Copyright: 2010-2011, Jonas Smedegaard <dr@jones.dk>
            2011, Matt Corallo <matt@bluematt.me>
 License: GPL-2+
+
+Files: src/secp256k1/build-aux/m4/ax_jni_include_dir.m4
+Copyright: 2008 Don Anderson <dda@sleepycat.com>
+License: GNU-All-permissive-License
+
+Files: src/secp256k1/build-aux/m4/ax_prog_cc_for_build.m4
+Copyright: 2008 Paolo Bonzini <bonzini@gnu.org>
+License: GNU-All-permissive-License
 
 Files: src/qt/res/icons/add.png
        src/qt/res/icons/address-book.png
@@ -83,7 +91,7 @@ Files: src/qt/res/icons/about.png
        src/qt/res/src/umkoin.svg
 Copyright: Bitboy, Jonas Schnelli
 License: public-domain
-Comment: Site: https://umkointalk.org/?topic=1756.0
+Comment: Site: https://bitcointalk.org/?topic=1756.0
 
 
 License: Expat
@@ -105,6 +113,12 @@ License: Expat
  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+License: GNU-All-permissive-License
+ Copying and distribution of this file, with or without modification, are
+ permitted in any medium without royalty provided the copyright notice
+ and this notice are preserved. This file is offered as-is, without any
+ warranty.
 
 License: GPL-2+
  This program is free software; you can redistribute it and/or modify it

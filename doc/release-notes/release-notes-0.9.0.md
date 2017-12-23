@@ -1,6 +1,6 @@
 Umkoin Core version 0.9.0 is now available from:
 
-  https://umkoin.org/bin/0.9.0/
+  https://bitcoin.org/bin/0.9.0/
 
 This is a new major version release, bringing both new features and
 bug fixes.
@@ -378,7 +378,7 @@ Thanks to everyone who contributed to this release:
 - paveljanik
 - Peter Todd
 - phantomcircuit
-- phelixbtc
+- phelixumk
 - Philip Kaufmann
 - Pieter Wuille
 - Rav3nPL

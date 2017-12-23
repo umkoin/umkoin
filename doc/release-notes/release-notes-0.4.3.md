@@ -9,7 +9,7 @@ Please report bugs for the daemon only using the issue tracker at github:
 https://github.com/vmta/umkoin/issues
 
 Stable source code is hosted at Gitorious:
-http://gitorious.org/vmta/umkoind-stable/archive-tarball/v0.4.3#.tar.gz
+http://gitorious.org/umkoin/umkoind-stable/archive-tarball/v0.4.3#.tar.gz
 
 BUG FIXES
 

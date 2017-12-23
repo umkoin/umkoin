@@ -2,13 +2,13 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/receiverequestdialog.h"
-#include "qt/forms/ui_receiverequestdialog.h"
+#include <qt/receiverequestdialog.h>
+#include <qt/forms/ui_receiverequestdialog.h>
 
-#include "qt/umkoinunits.h"
-#include "qt/guiconstants.h"
-#include "qt/guiutil.h"
-#include "qt/optionsmodel.h"
+#include <qt/umkoinunits.h>
+#include <qt/guiconstants.h>
+#include <qt/guiutil.h>
+#include <qt/optionsmodel.h>
 
 #include <QClipboard>
 #include <QDrag>
@@ -21,7 +21,7 @@
 #endif
 
 #if defined(HAVE_CONFIG_H)
-#include "config/umkoin-config.h" /* for USE_QRCODE */
+#include <config/umkoin-config.h> /* for USE_QRCODE */
 #endif
 
 #ifdef USE_QRCODE
