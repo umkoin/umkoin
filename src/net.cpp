@@ -7,7 +7,7 @@
 #include <config/umkoin-config.h>
 #endif
 
-#include "net.h"
+#include <net.h>
 
 #include <chainparams.h>
 #include <clientversion.h>
@@ -2079,7 +2079,6 @@ bool CConnman::BindListenPort(const CService &addrBind, std::string& strError, b
         LogPrintf("%s\n", strError);
         return false;
     }
-
 #ifndef WIN32
     // Allow binding if the port is still in TIME_WAIT state after
     // the program was closed and restarted.

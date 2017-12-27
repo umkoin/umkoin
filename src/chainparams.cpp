@@ -102,10 +102,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000b000b000b");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000192cffb14cd4");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000001ad14feab1237fef3edd5312b6bf539b6a6eb0e63139a59761ed8d4d"); //10
+        consensus.defaultAssumeValid = uint256S("0x0000000000104a54447f17dae345417efe08987c8707203720c09366052682c5"); //1203
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -125,7 +125,7 @@ public:
         assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
         // Note that of those with the service bits flag, most only support a subset of possible options
-        vSeeds.emplace_back("dnsseed.umk.ua-moloko.com", true); // vmta
+        vSeeds.emplace_back("dnsseed.ua-moloko.com", true); // vmta
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
@@ -143,17 +143,18 @@ public:
 
         checkpointData = {
             {
-                { 0, uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a")},
-                { 10, uint256S("0x000000001ad14feab1237fef3edd5312b6bf539b6a6eb0e63139a59761ed8d4d")},
+                { 500, uint256S("0x000000000007e02edd74dd1ac55c56c8f2c2238102b94d41caa1bbb6af1d2383")},
+                { 1000, uint256S("0x00000000001010d563cb86da8ee92e283816400f8fcf337934317fc59f2c8eec")},
+                { 1203, uint256S("0x0000000000104a54447f17dae345417efe08987c8707203720c09366052682c5")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 000000001ad14feab1237fef3edd5312b6bf539b6a6eb0e63139a59761ed8d4d (height 10).
-            1513706584, // * UNIX timestamp of last known number of transactions
-            10,         // * total number of transactions between genesis and that timestamp
+            // Data as of block 0000000000104a54447f17dae345417efe08987c8707203720c09366052682c5 (height 1203).
+            1514291822, // * UNIX timestamp of last known number of transactions
+            1310,       // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            0.01        // * estimated number of transactions per second after that timestamp
+            0.1         // * estimated number of transactions per second after that timestamp
         };
     }
 };
@@ -213,7 +214,7 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("dnsseed.umk.ua-moloko.com", true); // vmta
+        vSeeds.emplace_back("dnsseed.ua-moloko.com", true); // vmta
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);

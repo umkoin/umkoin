@@ -42,7 +42,7 @@ Optional dependencies:
  Library     | Purpose          | Description
  ------------|------------------|----------------------
  miniupnpc   | UPnP Support     | Firewall-jumping support
- libdb5.3    | Berkeley DB      | Wallet storage (only needed when wallet enabled)
+ libdb4.8    | Berkeley DB      | Wallet storage (only needed when wallet enabled)
  qt          | GUI              | GUI toolkit (only needed when GUI enabled)
  protobuf    | Payments in GUI  | Data interchange format used for payment protocol (only needed when GUI enabled)
  libqrencode | QR codes in GUI  | Optional for generating QR codes (only needed when GUI enabled)
@@ -81,13 +81,13 @@ install necessary parts of boost:
 
 BerkeleyDB is required for the wallet.
 
-**For Ubuntu only:** db5.3 packages are available [here](https://launchpad.net/~umkoin/+archive/umkoin).
+**For Ubuntu only:** db4.8 packages are available [here](https://launchpad.net/~umkoin/+archive/umkoin).
 You can add the repository and install using the following commands:
 
     sudo apt-get install software-properties-common
-    sudo add-apt-repository ppa:vmta/umkoin
+    sudo add-apt-repository ppa:umkoin/umkoin
     sudo apt-get update
-    sudo apt-get install libdb5.3-dev libdb5.3++-dev
+    sudo apt-get install libdb4.8-dev libdb4.8++-dev
 
 Ubuntu and Debian have their own libdb-dev and libdb++-dev packages, but these will install
 BerkeleyDB 5.1 or later, which break binary wallet compatibility with the distributed executables which
@@ -131,7 +131,7 @@ Dependency Build Instructions: Fedora
 -------------------------------------
 Build requirements:
 
-    sudo dnf install gcc-c++ libtool make autoconf automake openssl-devel libevent-devel boost-devel libdb5-devel libdb5-cxx-devel python3
+    sudo dnf install gcc-c++ libtool make autoconf automake openssl-devel libevent-devel boost-devel libdb4-devel libdb4-cxx-devel python3
 
 Optional:
 
@@ -166,11 +166,11 @@ turned off by default.  See the configure options for upnp behavior desired:
 Berkeley DB
 -----------
 It is recommended to use Berkeley DB 4.8. If you have to build it yourself,
-you can use [the installation script included in contrib/](contrib/install_db5.sh)
+you can use [the installation script included in contrib/](/contrib/install_db4.sh)
 like so
 
 ```shell
-./contrib/install_db5.sh `pwd`
+./contrib/install_db4.sh `pwd`
 ```
 
 from the root of the repository.
@@ -312,17 +312,13 @@ You need to use GNU make (`gmake`) instead of `make`.
 
 For the wallet (optional):
 
-    pkg install db5
-
-This will give a warning "configure: WARNING: Found Berkeley DB other
-than 4.8; wallets opened by this build will not be portable!", but as FreeBSD never
-had a binary release, this may not matter. If backwards compatibility
-with 4.8-built Umkoin Core is needed follow the steps under "Berkeley DB" above.
+    ./contrib/install_db4.sh `pwd`
+    setenv BDB_PREFIX $PWD/db4
 
 Then build using:
 
     ./autogen.sh
-    ./configure --with-incompatible-bdb BDB_CFLAGS="-I/usr/local/include/db5" BDB_LIBS="-L/usr/local/lib -ldb_cxx-5"
+    ./configure BDB_CFLAGS="-I${BDB_PREFIX}/include" BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx"
     gmake
 
 *Note on debugging*: The version of `gdb` installed by default is [ancient and considered harmful](https://wiki.freebsd.org/GdbRetirement).

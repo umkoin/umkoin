@@ -5,7 +5,7 @@ Setup
 ---------------------
 Umkoin Core is the original Umkoin client and it builds the backbone of the network. It downloads and, by default, stores the entire history of Umkoin transactions (which is currently more than 100 GBs); depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
 
-To download Umkoin Core, visit [umkoincore.org](https://umkoincore.org/en/releases/).
+To download Umkoin Core, visit [bitcoincore.org](https://bitcoincore.org/en/releases/).
 
 Running
 ---------------------
@@ -31,7 +31,7 @@ Drag Umkoin-Core to your applications folder, and then run Umkoin-Core.
 * See the documentation at the [Umkoin Wiki](https://en.umkoin.it/wiki/Main_Page)
 for help and more information.
 * Ask for help on [#umkoin](http://webchat.freenode.net?channels=umkoin) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=umkoin).
-* Ask for help on the [UmkoinTalk](https://umkointalk.org/) forums, in the [Technical Support board](https://umkointalk.org/index.php?board=4.0).
+* Ask for help on the [UmkoinTalk](https://bitcointalk.org/) forums, in the [Technical Support board](https://bitcointalk.org/index.php?board=4.0).
 
 Building
 ---------------------
@@ -62,7 +62,7 @@ The Umkoin repo's [root README](/README.md) contains relevant information on the
 - [Benchmarking](benchmarking.md)
 
 ### Resources
-* Discuss on the [UmkoinTalk](https://umkointalk.org/) forums, in the [Development & Technical Discussion board](https://umkointalk.org/index.php?board=6.0).
+* Discuss on the [UmkoinTalk](https://bitcointalk.org/) forums, in the [Development & Technical Discussion board](https://bitcointalk.org/index.php?board=6.0).
 * Discuss project-specific development on #umkoin-core-dev on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=umkoin-core-dev).
 * Discuss general Umkoin development on #umkoin-dev on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=umkoin-dev).
 

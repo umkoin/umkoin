@@ -5,14 +5,14 @@
 # See "man systemd.service" for details.
 
 # Note that almost all daemon options could be specified in
-# /etc/vmta/umkoin.conf
+# /etc/umkoin/umkoin.conf
 
 [Unit]
 Description=Umkoin daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/umkoind -daemon -conf=/etc/vmta/umkoin.conf -pid=/run/umkoind/umkoind.pid
+ExecStart=/usr/bin/umkoind -daemon -conf=/etc/umkoin/umkoin.conf -pid=/run/umkoind/umkoind.pid
 # Creates /run/umkoind owned by umkoin
 RuntimeDirectory=umkoind
 User=umkoin

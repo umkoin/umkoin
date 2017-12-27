@@ -2,10 +2,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "bench.h"
+#include <bench/bench.h>
 
-#include "validation.h"
-#include "base58.h"
+#include <validation.h>
+#include <base58.h>
 
 #include <array>
 #include <vector>
@@ -54,6 +54,6 @@ static void Base58Decode(benchmark::State& state)
 }
 
 
-BENCHMARK(Base58Encode);
-BENCHMARK(Base58CheckEncode);
-BENCHMARK(Base58Decode);
+BENCHMARK(Base58Encode, 470 * 1000);
+BENCHMARK(Base58CheckEncode, 320 * 1000);
+BENCHMARK(Base58Decode, 800 * 1000);

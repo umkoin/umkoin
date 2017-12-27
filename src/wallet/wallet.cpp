@@ -2607,6 +2607,7 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, int& nC
     for (const CTxIn& txin : tx.vin) {
         coinControl.Select(txin.prevout);
     }
+
     // Acquire the locks to prevent races to the new locked unspents between the
     // CreateTransaction call and LockCoin calls (when lockUnspents is true).
     LOCK2(cs_main, cs_wallet);
@@ -3752,7 +3753,7 @@ void CWallet::GetKeyBirthTimes(std::map<CTxDestination, int64_t> &mapKeyBirth) c
  *   the block time.
  *
  * For more information see CWalletTx::nTimeSmart,
- * https://umkointalk.org/?topic=54527, or
+ * https://bitcointalk.org/?topic=54527, or
  * https://github.com/vmta/umkoin/pull/1393.
  */
 unsigned int CWallet::ComputeTimeSmart(const CWalletTx& wtx) const

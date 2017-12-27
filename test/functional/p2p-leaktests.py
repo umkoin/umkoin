@@ -103,7 +103,7 @@ class P2PLeakTest(UmkoinTestFramework):
         unsupported_service_bit5_node = self.nodes[0].add_p2p_connection(CLazyNode(), services=NODE_NETWORK|NODE_UNSUPPORTED_SERVICE_BIT_5)
         unsupported_service_bit7_node = self.nodes[0].add_p2p_connection(CLazyNode(), services=NODE_NETWORK|NODE_UNSUPPORTED_SERVICE_BIT_7)
 
-        network_thread_start()  # Start up network handling in another thread
+        network_thread_start()
 
         wait_until(lambda: no_version_bannode.ever_connected, timeout=10, lock=mininode_lock)
         wait_until(lambda: no_version_idlenode.ever_connected, timeout=10, lock=mininode_lock)
