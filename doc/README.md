@@ -5,7 +5,7 @@ Setup
 ---------------------
 Umkoin Core is the original Umkoin client and it builds the backbone of the network. It downloads and, by default, stores the entire history of Umkoin transactions (which is currently more than 100 GBs); depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
 
-To download Umkoin Core, visit [bitcoincore.org](https://bitcoincore.org/en/releases/).
+To download Umkoin Core, visit [ua-moloko.com](http://ua-moloko.com/releases/).
 
 Running
 ---------------------
@@ -26,13 +26,6 @@ Unpack the files into a directory, and then run umkoin-qt.exe.
 
 Drag Umkoin-Core to your applications folder, and then run Umkoin-Core.
 
-### Need Help?
-
-* See the documentation at the [Umkoin Wiki](https://en.umkoin.it/wiki/Main_Page)
-for help and more information.
-* Ask for help on [#umkoin](http://webchat.freenode.net?channels=umkoin) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=umkoin).
-* Ask for help on the [UmkoinTalk](https://bitcointalk.org/) forums, in the [Technical Support board](https://bitcointalk.org/index.php?board=4.0).
-
 Building
 ---------------------
 The following are developer notes on how to build Umkoin on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
@@ -51,7 +44,6 @@ The Umkoin repo's [root README](/README.md) contains relevant information on the
 - [Developer Notes](developer-notes.md)
 - [Release Notes](release-notes.md)
 - [Release Process](release-process.md)
-- [Source Code Documentation (External Link)](https://dev.visucore.com/umkoin/doxygen/)
 - [Translation Process](translation_process.md)
 - [Translation Strings Policy](translation_strings_policy.md)
 - [Travis CI](travis-ci.md)
@@ -60,11 +52,6 @@ The Umkoin repo's [root README](/README.md) contains relevant information on the
 - [BIPS](bips.md)
 - [Dnsseed Policy](dnsseed-policy.md)
 - [Benchmarking](benchmarking.md)
-
-### Resources
-* Discuss on the [UmkoinTalk](https://bitcointalk.org/) forums, in the [Development & Technical Discussion board](https://bitcointalk.org/index.php?board=6.0).
-* Discuss project-specific development on #umkoin-core-dev on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=umkoin-core-dev).
-* Discuss general Umkoin development on #umkoin-dev on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=umkoin-dev).
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)

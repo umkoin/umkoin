@@ -42,13 +42,11 @@ details of their operating practices.
 related to the DNS seed operation.
 
 If these expectations cannot be satisfied the operator should
-discontinue providing services and contact the active Umkoin
-Core development team as well as posting on
-[umkoin-dev](https://lists.linuxfoundation.org/mailman/listinfo/umkoin-dev).
+discontinue providing services.
 
 Behavior outside of these expectations may be reasonable in some
 situations but should be discussed in public in advance.
 
 See also
 ----------
-- [umkoin-seeder](https://github.com/sipa/umkoin-seeder) is a reference implementation of a DNS seed.
+- [umkoin-seeder](https://github.com/vmta/umkoin-seeder) is a reference implementation of a DNS seed.

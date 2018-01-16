@@ -149,37 +149,22 @@ A patch for Boost: https://github.com/boostorg/asio/pull/23/files
 
 ## ZeroMQ
 
-At this time, this RPM spec file does not support the ZeroMQ build options. A
-suitable version of ZeroMQ is not available for the platform this spec file was
-developed on (CentOS 7).
+At this time, this RPM spec file does not support the ZeroMQ build options. A suitable version of ZeroMQ is not available for the platform this spec file was developed on (CentOS 7).
 
 ## Legacy Credit
 
 This RPM spec file is largely based upon the work of Michael Hampton at
-[Ringing Liberty](https://www.ringingliberty.com/umkoin/). He has been
-packaging Umkoin for Fedora at least since 2012.
+[Ringing Liberty](https://www.ringingliberty.com/bitcoin/). He has been
+packaging Bitcoin for Fedora at least since 2012.
 
-Most of the differences between his packaging and this package are stylistic in
-nature. The major differences:
+Most of the differences between his packaging and this package are stylistic in nature. The major differences:
 
-1. He builds from a github tagged release rather than a release tarball. This
-should not result in different source code.
+1. He builds from a github tagged release rather than a release tarball. This should not result in different source code.
 
-2. He does not build BerkeleyDB but instead uses the BerkeleyDB provided by the
-Linux distribution. For the distributions he packages for, they currently all
-use the same version of BerkeleyDB so that difference is *probably* just
-academic.
+2. He does not build BerkeleyDB but instead uses the BerkeleyDB provided by the Linux distribution. For the distributions he packages for, they currently all use the same version of BerkeleyDB so that difference is *probably* just academic.
 
-3. As of his 10.11.2 package he did not allow for building against LibreSSL,
-specifying a build without the Qt GUI, or specifying which version of the Qt
-libraries to use.
+3. As of his 10.11.2 package he did not allow for building against LibreSSL, specifying a build without the Qt GUI, or specifying which version of the Qt libraries to use.
 
-4. I renamed the `umkoin` package that contains the Qt GUI to `umkoin-core` as
-that appears to be how the general population refers to it, in contrast to
-`umkoin-xt` or `umkoin-classic`. I wanted to make sure the general population
-knows what they are getting when installing the GUI package.
+4. I renamed the `umkoin` package that contains the Qt GUI to `umkoin-core` as that appears to be how the general population refers to it, in contrast to `umkoin-xt` or `umkoin-classic`. I wanted to make sure the general population knows what they are getting when installing the GUI package.
 
-As far as minor differences, I generally prefer to assign the file permissions
-in the `%files` portion of an RPM spec file rather than specifying the
-permissions of a file during `%install` and other minor things like that
-are largely just cosmetic.
+As far as minor differences, I generally prefer to assign the file permissions in the `%files` portion of an RPM spec file rather than specifying the permissions of a file during `%install` and other minor things like that are largely just cosmetic.

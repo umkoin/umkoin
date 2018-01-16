@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2016 The Bitcoin Core developers
+// Copyright (c) 2009-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -102,10 +102,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000192cffb14cd4");
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000148ad0acb40ef5"); //3234
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x0000000000104a54447f17dae345417efe08987c8707203720c09366052682c5"); //1203
+        consensus.defaultAssumeValid = uint256S("0x00000000003fafca184c2dba0fbc738a70c3a2918a7b199b2e05e248952b9ed5"); //3234
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -146,13 +146,15 @@ public:
                 { 500, uint256S("0x000000000007e02edd74dd1ac55c56c8f2c2238102b94d41caa1bbb6af1d2383")},
                 { 1000, uint256S("0x00000000001010d563cb86da8ee92e283816400f8fcf337934317fc59f2c8eec")},
                 { 1203, uint256S("0x0000000000104a54447f17dae345417efe08987c8707203720c09366052682c5")},
+                { 2758, uint256S("0x00000000003d8f354dd81d264f75806ed8e48edad8e32edbe519835bcc0eebba")},
+                { 3234, uint256S("0x00000000003fafca184c2dba0fbc738a70c3a2918a7b199b2e05e248952b9ed5")}
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 0000000000104a54447f17dae345417efe08987c8707203720c09366052682c5 (height 1203).
-            1514291822, // * UNIX timestamp of last known number of transactions
-            1310,       // * total number of transactions between genesis and that timestamp
+            // Data as of block 00000000003fafca184c2dba0fbc738a70c3a2918a7b199b2e05e248952b9ed5 (height 3234).
+            1515448772, // * UNIX timestamp of last known number of transactions
+            4539,       // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.1         // * estimated number of transactions per second after that timestamp
         };

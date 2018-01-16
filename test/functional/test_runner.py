@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Bitcoin Core developers
+# Copyright (c) 2014-2017 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Run regression test suite.
@@ -78,6 +78,7 @@ BASE_SCRIPTS= [
     'abandonconflict.py',
     'bip68-112-113-p2p.py',
     'rawtransactions.py',
+    'address_types.py',
     'reindex.py',
     # vv Tests less than 30s vv
     'keypool-topup.py',
@@ -86,12 +87,14 @@ BASE_SCRIPTS= [
     'mempool_resurrect_test.py',
     'txn_doublespend.py --mineblock',
     'txn_clone.py',
+    'txn_clone.py --segwit',
     'getchaintips.py',
     'rest.py',
     'mempool_spendcoinbase.py',
     'mempool_reorg.py',
     'mempool_persist.py',
     'multiwallet.py',
+    'multiwallet.py --usecli',
     'httpbasics.py',
     'multi_rpc.py',
     'proxy_test.py',
@@ -130,6 +133,8 @@ BASE_SCRIPTS= [
     'feature_logging.py',
     'node_network_limited.py',
     'conf_args.py',
+    # Don't append tests at the end to avoid merge conflicts
+    # Put them in a random line within the section that fits their approximate run-time
 ]
 
 EXTENDED_SCRIPTS = [
@@ -216,8 +221,8 @@ def main():
     enable_umkoind = config["components"].getboolean("ENABLE_UMKOIND")
 
     if config["environment"]["EXEEXT"] == ".exe" and not args.force:
-        # https://github.com/vmta/umkoin/commit/d52802551752140cf41f0d9a225a43e84404d3e9
-        # https://github.com/vmta/umkoin/pull/5677#issuecomment-136646964
+        # https://github.com/bitcoin/bitcoin/commit/d52802551752140cf41f0d9a225a43e84404d3e9
+        # https://github.com/bitcoin/bitcoin/pull/5677#issuecomment-136646964
         print("Tests currently disabled on Windows by default. Use --force option to enable")
         sys.exit(0)
 

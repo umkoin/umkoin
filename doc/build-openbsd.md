@@ -44,26 +44,14 @@ If you have to build it yourself, you can use [the installation script included
 in contrib/](contrib/install_db4.sh) like so
 
 ```shell
-./contrib/install_db4.sh `pwd` CC=egcc CXX=eg++ CPP=ecpp
+./contrib/install_db4.sh `pwd` CC=cc CXX=c++
 ```
 
-from the root of the repository.
+from the root of the repository. Then set `BDB_PREFIX` for the next section:
 
-### Resource limits
-
-The standard ulimit restrictions in OpenBSD are very strict:
-
-    data(kbytes)         1572864
-
-This, unfortunately, may no longer be enough to compile some `.cpp` files in the project,
-at least with GCC 4.9.4 (see issue [#6658](https://github.com/vmta/umkoin/issues/6658)).
-If your user is in the `staff` group the limit can be raised with:
-
-    ulimit -d 3000000
-
-The change will only affect the current shell and processes spawned by it. To
-make the change system-wide, change `datasize-cur` and `datasize-max` in
-`/etc/login.conf`, and reboot.
+```shell
+export BDB_PREFIX="$PWD/db4"
+```
 
 ### Building Umkoin Core
 
@@ -79,13 +67,13 @@ Make sure `BDB_PREFIX` is set to the appropriate path from the above steps.
 
 To configure with wallet:
 ```bash
-./configure --with-gui=no CC=egcc CXX=eg++ CPP=ecpp \
+./configure --with-gui=no CC=cc CXX=c++ \
     BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" BDB_CFLAGS="-I${BDB_PREFIX}/include"
 ```
 
 To configure without wallet:
 ```bash
-./configure --disable-wallet --with-gui=no CC=egcc CXX=eg++ CPP=ecpp
+./configure --disable-wallet --with-gui=no CC=cc CXX=c++
 ```
 
 Build and run the tests:
