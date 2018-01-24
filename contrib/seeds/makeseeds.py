@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # Copyright (c) 2013-2017 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -10,7 +9,7 @@ NSEEDS=512
 
 MAX_SEEDS_PER_ASN=2
 
-MIN_BLOCKS = 337600
+MIN_BLOCKS=5000
 
 # These are hosts that have been observed to be behaving strangely (e.g.
 # aggressively connecting to every node).
