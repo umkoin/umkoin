@@ -319,6 +319,22 @@ Alihkan fail data ke dalam tab semasa</translation>
         <translation>Buka &amp;URI...</translation>
     </message>
     <message>
+        <source>Click to disable network activity.</source>
+        <translation>Tekan untuk lumpuhkan rangkaian</translation>
+    </message>
+    <message>
+        <source>Network activity disabled.</source>
+        <translation>Aktiviti rangkaian dilumpuhkan</translation>
+    </message>
+    <message>
+        <source>Click to enable network activity again.</source>
+        <translation>Tekan untuk mengaktifkan rangkain semula</translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation>Penyelarasn tajuk (%1%)...</translation>
+    </message>
+    <message>
         <source>Reindexing blocks on disk...</source>
         <translation>Reindexi blok pada cakera...</translation>
     </message>
@@ -329,6 +345,70 @@ Alihkan fail data ke dalam tab semasa</translation>
     <message>
         <source>Backup wallet to another location</source>
         <translation>Wallet sandaran ke lokasi lain</translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation>Tukar kata laluan untuk dompet disulitkan</translation>
+    </message>
+    <message>
+        <source>&amp;Debug window</source>
+        <translation>Tetingkap windows</translation>
+    </message>
+    <message>
+        <source>Open debugging and diagnostic console</source>
+        <translation>buka debug dan konsol diagnostik</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation>sahkan mesej</translation>
+    </message>
+    <message>
+        <source>Umkoin</source>
+        <translation>Umkoin</translation>
+    </message>
+    <message>
+        <source>Wallet</source>
+        <translation>dompet</translation>
+    </message>
+    <message>
+        <source>&amp;Send</source>
+        <translation>hantar</translation>
+    </message>
+    <message>
+        <source>&amp;Receive</source>
+        <translation>terima</translation>
+    </message>
+    <message>
+        <source>&amp;Show / Hide</source>
+        <translation>&amp;tunjuk/sembunyi</translation>
+    </message>
+    <message>
+        <source>Show or hide the main Window</source>
+        <translation>tunjuk atau sembunyi tetingkap utama</translation>
+    </message>
+    <message>
+        <source>Encrypt the private keys that belong to your wallet</source>
+        <translation>sulitkan kata laluan milik peribadi anda </translation>
+    </message>
+    <message>
+        <source>Sign messages with your Umkoin addresses to prove you own them</source>
+        <translation>sahkan mesej bersama alamat umkoin anda untuk menunjukkan alamat ini anda punya</translation>
+    </message>
+    <message>
+        <source>Verify messages to ensure they were signed with specified Umkoin addresses</source>
+        <translation>Sahkan mesej untuk memastikan mereka telah ditandatangani dengan alamat Umkoin yang ditentukan</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation>fail</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation>tetapan</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>tolong</translation>
     </message>
     </context>
 <context>
@@ -357,6 +437,10 @@ Alihkan fail data ke dalam tab semasa</translation>
     </context>
 <context>
     <name>Intro</name>
+    <message>
+        <source>Umkoin</source>
+        <translation>Umkoin</translation>
+    </message>
     </context>
 <context>
     <name>ModalOverlay</name>

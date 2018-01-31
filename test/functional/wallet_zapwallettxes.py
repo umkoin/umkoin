@@ -10,7 +10,7 @@
   transactions are still available.
 - restart node 0 with zapwallettxes and persistmempool, and verify that both
   the confirmed and the unconfirmed transactions are still available.
-- restart node 0 with just zapwallettxed and verify that the confirmed
+- restart node 0 with just zapwallettxes and verify that the confirmed
   transactions are still available, but that the unconfirmed transaction has
   been zapped.
 """
@@ -59,6 +59,7 @@ class ZapWalletTXesTest (UmkoinTestFramework):
         self.start_node(0, ["-persistmempool=1", "-zapwallettxes=2"])
 
         wait_until(lambda: self.nodes[0].getmempoolinfo()['size'] == 1, timeout=3)
+        self.nodes[0].syncwithvalidationinterfacequeue()  # Flush mempool to wallet
 
         assert_equal(self.nodes[0].gettransaction(txid1)['txid'], txid1)
         assert_equal(self.nodes[0].gettransaction(txid2)['txid'], txid2)

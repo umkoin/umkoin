@@ -44,6 +44,12 @@ src/qt/forms/ui_*.h
 
 src/qt/test/moc*.cpp
 
+src/qt/umkoin-qt.config
+src/qt/umkoin-qt.creator
+src/qt/umkoin-qt.creator.user
+src/qt/umkoin-qt.files
+src/qt/umkoin-qt.includes
+
 .deps
 .dirstamp
 .libs
@@ -56,7 +62,6 @@ src/qt/test/moc*.cpp
 *.o
 *.o-*
 *.patch
-!depends/patches/zeromq/*.patch
 *.a
 *.pb.cc
 *.pb.h
