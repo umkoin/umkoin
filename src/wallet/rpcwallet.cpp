@@ -240,7 +240,7 @@ UniValue getrawchangeaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
             "getrawchangeaddress ( \"address_type\" )\n"
-            "\nReturns a new Bitcoin address, for receiving change.\n"
+            "\nReturns a new Umkoin address, for receiving change.\n"
             "This is for use with raw transactions, NOT normal use.\n"
             "\nArguments:\n"
             "1. \"address_type\"           (string, optional) The address type to use. Options are \"legacy\", \"p2sh-segwit\", and \"bech32\". Default is set by -changetype.\n"
@@ -1194,7 +1194,7 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
             "}\n"
             "\nResult (DEPRECATED. To see this result in v0.16 instead, please start umkoind with -deprecatedrpc=addmultisigaddress).\n"
             "        clients should transition to the new output api before upgrading to v0.17.\n"
-            "\"address\"                         (string) A bitcoin address associated with the keys.\n"
+            "\"address\"                         (string) A umkoin address associated with the keys.\n"
 
             "\nExamples:\n"
             "\nAdd a multisig address from 2 addresses\n"

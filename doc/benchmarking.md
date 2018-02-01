@@ -43,10 +43,10 @@ Help
 ---------------------
 `-?` will print a list of options and exit:
 
-    src/bench/bench_bitcoin -?
+    src/bench/bench_umkoin -?
 
 Notes
-
+---------------------
 More benchmarks are needed for, in no particular order:
 - Script Validation
 - CCoinDBView caching

@@ -107,6 +107,7 @@ EXPECTED_HOLDER_NAMES = [
     "Jan-Klaas Kollhof\n",
     "Sam Rushing\n",
     "ArtForz -- public domain half-a-node\n",
+    "The Umkoin Core developers\n",
 ]
 
 DOMINANT_STYLE_COMPILED = {}

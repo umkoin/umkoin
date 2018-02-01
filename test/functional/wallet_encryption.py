@@ -10,6 +10,8 @@ from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
+    assert_greater_than,
+    assert_greater_than_or_equal,
 )
 
 class WalletEncryptionTest(UmkoinTestFramework):

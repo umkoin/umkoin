@@ -222,7 +222,7 @@ class TestNodeCLI():
     def __call__(self, *options, input=None):
         # TestNodeCLI is callable with umkoin-cli command-line options
         cli = TestNodeCLI(self.binary, self.datadir)
-        cli.options = [str(arg) for arg in args]
+        cli.options = [str(o) for o in options]
         cli.input = input
         return cli
 

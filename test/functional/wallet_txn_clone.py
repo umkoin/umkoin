@@ -116,6 +116,7 @@ class TxnMallTest(UmkoinTestFramework):
         if self.options.segwit:
             assert_equal(txid1, txid1_clone)
             return
+
         # ... mine a block...
         self.nodes[2].generate(1)
 

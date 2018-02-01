@@ -470,6 +470,7 @@ class TestResult():
     def was_successful(self):
         return self.status != "Failed"
 
+
 def check_script_prefixes():
     """Check that test scripts start with one of the allowed name prefixes."""
 
@@ -480,6 +481,7 @@ def check_script_prefixes():
         print("%sERROR:%s %d tests not meeting naming conventions:" % (BOLD[1], BOLD[0], len(bad_script_names)))
         print("  %s" % ("\n  ".join(sorted(bad_script_names))))
         raise AssertionError("Some tests are not following naming convention!")
+
 
 def check_script_list(src_dir):
     """Check scripts directory.

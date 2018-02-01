@@ -231,7 +231,7 @@ class UmkoinTestFramework():
         if self.options.coveragedir is not None:
             coverage.write_all_rpc_commands(self.options.coveragedir, node.rpc)
 
-    def start_nodes(self, extra_args=None):
+    def start_nodes(self, extra_args=None, *args, **kwargs):
         """Start multiple umkoinds"""
 
         if extra_args is None:

@@ -52,7 +52,7 @@ public:
     explicit UmkoinUnits(QObject *parent);
 
     /** Umkoin units.
-      @note Source: https://en.umkoin.it/wiki/Units . Please add only sensible ones
+      @note Source: https://en.bitcoin.it/wiki/Units . Please add only sensible ones
      */
     enum Unit
     {
@@ -76,8 +76,10 @@ public:
     static QList<Unit> availableUnits();
     //! Is unit ID valid?
     static bool valid(int unit);
+    //! Long name
+    static QString longName(int unit);
     //! Short name
-    static QString name(int unit);
+    static QString shortName(int unit);
     //! Longer description
     static QString description(int unit);
     //! Number of Satoshis (1e-8) per unit

@@ -288,10 +288,9 @@ public:
         if (f1 == f2) {
             return a.GetTx().GetHash() < b.GetTx().GetHash();
         }
-
         return f1 > f2;
     }
- 
+
     // Return the fee/size we're using for sorting this entry.
     template <typename T>
     void GetModFeeAndSize(const T &a, double &mod_fee, double &size) const

@@ -295,6 +295,7 @@ bool CDB::VerifyEnvironment(const std::string& walletFile, const fs::path& walle
         errorStr = strprintf(_("Error initializing wallet database environment %s!"), walletDir);
         return false;
     }
+
     return true;
 }
 
