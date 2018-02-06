@@ -3,9 +3,9 @@ Release Process
 
 Before every release candidate:
 
-* Update translations (ping wumpus on IRC) see [translation_process.md](https://github.com/vmta/umkoin/blob/master/doc/translation_process.md#synchronising-translations).
+* Update translations (ping wumpus on IRC) see [translation_process.md](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md#synchronising-translations).
 
-* Update manpages, see [gen-manpages.sh](https://github.com/vmta/umkoin/blob/master/contrib/devtools/README.md#gen-manpagessh).
+* Update manpages, see [gen-manpages.sh](https://github.com/umkoin/umkoin/blob/master/contrib/devtools/README.md#gen-manpagessh).
 
 Before every minor and major release:
 
@@ -13,7 +13,7 @@ Before every minor and major release:
 * Update version in `configure.ac` (don't forget to set `CLIENT_VERSION_IS_RELEASE` to `true`)
 * Write release notes (see below)
 * Update `src/chainparams.cpp` nMinimumChainWork with information from the getblockchaininfo rpc.
-* Update `src/chainparams.cpp` defaultAssumeValid  with information from the getblockhash rpc.
+* Update `src/chainparams.cpp` defaultAssumeValid with information from the getblockhash rpc.
   - The selected value must not be orphaned so it may be useful to set the value two blocks back from the tip.
   - Testnet should be set some tens of thousands back from the tip due to reorgs there.
   - This update should be reviewed with a reindex-chainstate with assumevalid=0 to catch any defect
@@ -23,7 +23,8 @@ Before every major release:
 
 * Update hardcoded [seeds](/contrib/seeds/README.md), see [this pull request](https://github.com/bitcoin/bitcoin/pull/7415) for an example.
 * Update [`BLOCK_CHAIN_SIZE`](/src/qt/intro.cpp) to the current size plus some overhead.
-* Update `src/chainparams.cpp` chainTxData with statistics about the transaction count and rate. Use the output of the RPC `getchaintxstats`, see [this pull request](https://github.com/bitcoin/bitcoin/pull/12270) for an example.
+* Update `src/chainparams.cpp` chainTxData with statistics about the transaction count and rate. Use the output of the RPC `getchaintxstats`, see
+  [this pull request](https://github.com/bitcoin/bitcoin/pull/12270) for an example. Reviewers can verify the results by running `getchaintxstats <window_block_count> <window_last_block_hash>` with the `window_block_count` and `window_last_block_hash` from your output.
 * Update version of `contrib/gitian-descriptors/*.yml`: usually one'd want to do this on master after branching off the release - but be sure to at least do it before a new major release
 
 ### First time / New builders
@@ -36,7 +37,7 @@ Check out the source code in the following directory hierarchy.
     git clone https://github.com/bitcoin-core/gitian.sigs.git
     git clone https://github.com/bitcoin-core/bitcoin-detached-sigs.git
     git clone https://github.com/devrandom/gitian-builder.git
-    git clone https://github.com/vmta/umkoin.git
+    git clone https://github.com/umkoin/umkoin.git
 
 ### Umkoin maintainers/release engineers, suggestion for writing release notes
 
@@ -273,17 +274,14 @@ people without access to `bitcoin.org` to download the binary distribution.
 Also put it into the `optional_magnetlink:` slot in the YAML file for
 bitcoin.org (see below for bitcoin.org update instructions).
 
-- Update umkoin version
+- Update umkoin.org version
 
   - First, check to see if the Umkoin maintainers have prepared a
-    release: https://github.com/umkoin-dot-org/bitcoin.org/labels/Releases
+    release: https://github.com/umkoin/umkoin.org/labels/Releases
 
       - If they have, it will have previously failed their Travis CI
         checks because the final release files weren't uploaded.
         Trigger a Travis CI rebuild---if it passes, merge.
-
-  - If they have not prepared a release, follow the Umkoin release
-    instructions: https://github.com/bitcoin-dot-org/bitcoin.org#release-notes
 
   - After the pull request is merged, the website will automatically show the newest version within 15 minutes, as well
     as update the OS download links.
@@ -292,6 +290,6 @@ bitcoin.org (see below for bitcoin.org update instructions).
 
   - Archive release notes for the new version to `doc/release-notes/` (branch `master` and branch of the release)
 
-  - Create a [new GitHub release](https://github.com/vmta/umkoin/releases/new) with a link to the archived release notes.
+  - Create a [new GitHub release](https://github.com/umkoin/umkoin/releases/new) with a link to the archived release notes.
 
   - Celebrate

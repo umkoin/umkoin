@@ -1582,6 +1582,7 @@ UniValue getchaintxstats(const JSONRPCRequest& request)
     UniValue ret(UniValue::VOBJ);
     ret.push_back(Pair("time", (int64_t)pindex->nTime));
     ret.push_back(Pair("txcount", (int64_t)pindex->nChainTx));
+    ret.push_back(Pair("window_final_block_hash", pindex->GetBlockHash().GetHex()));
     ret.push_back(Pair("window_block_count", blockcount));
     if (blockcount > 0) {
         ret.push_back(Pair("window_tx_count", nTxDiff));
