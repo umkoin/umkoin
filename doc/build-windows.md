@@ -102,11 +102,9 @@ Note that for WSL the Umkoin Core source path MUST be somewhere in the default m
 example /usr/src/umkoin, AND not under /mnt/d/. If this is not the case the dependency autoconf scripts will fail.
 This means you cannot use a directory that located directly on the host Windows file system to perform the build.
 
-The next three steps are an example of how to acquire the source in an appropriate way.
+Acquire the source in the usual way:
 
-    cd /usr/src
-    sudo git clone https://github.com/vmta/umkoin.git
-    sudo chmod -R a+rw umkoin
+    git clone https://github.com/umkoin/umkoin.git
 
 Once the source code is ready the build steps are below.
 
@@ -132,11 +130,9 @@ Note that for WSL the Umkoin Core source path MUST be somewhere in the default m
 example /usr/src/umkoin, AND not under /mnt/d/. If this is not the case the dependency autoconf scripts will fail.
 This means you cannot use a directory that located directly on the host Windows file system to perform the build.
 
-The next three steps are an example of how to acquire the source in an appropriate way.
+Acquire the source in the usual way:
 
-    cd /usr/src
-    sudo git clone https://github.com/vmta/umkoin.git
-    sudo chmod -R a+rw umkoin
+    git clone https://github.com/umkoin/umkoin.git
 
 Then build using:
 
