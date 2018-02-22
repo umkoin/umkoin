@@ -25,7 +25,7 @@ python27
 
 Download the source code:
 ```
-git clone https://github.com/vmta/umkoin
+git clone https://github.com/umkoin/umkoin
 ```
 
 See [dependencies.md](dependencies.md) for a complete overview.

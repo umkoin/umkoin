@@ -132,13 +132,14 @@ UMKOIN_CORE_H = \
   rpc/protocol.h \
   rpc/safemode.h \
   rpc/server.h \
+  rpc/rawtransaction.h \
   rpc/register.h \
   rpc/util.h \
   scheduler.h \
+  script/ismine.h \
   script/sigcache.h \
   script/sign.h \
   script/standard.h \
-  script/ismine.h \
   streams.h \
   support/allocators/secure.h \
   support/allocators/zeroafterfree.h \
@@ -216,7 +217,6 @@ libumkoin_server_a_SOURCES = \
   rpc/safemode.cpp \
   rpc/server.cpp \
   script/sigcache.cpp \
-  script/ismine.cpp \
   timedata.cpp \
   torcontrol.cpp \
   txdb.cpp \
@@ -333,6 +333,7 @@ libumkoin_common_a_SOURCES = \
   policy/feerate.cpp \
   protocol.cpp \
   scheduler.cpp \
+  script/ismine.cpp \
   script/sign.cpp \
   script/standard.cpp \
   warnings.cpp \
@@ -389,10 +390,10 @@ endif
 
 umkoind_LDADD = \
   $(LIBUMKOIN_SERVER) \
+  $(LIBUMKOIN_WALLET) \
   $(LIBUMKOIN_COMMON) \
   $(LIBUNIVALUE) \
   $(LIBUMKOIN_UTIL) \
-  $(LIBUMKOIN_WALLET) \
   $(LIBUMKOIN_ZMQ) \
   $(LIBUMKOIN_CONSENSUS) \
   $(LIBUMKOIN_CRYPTO) \

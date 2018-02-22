@@ -85,6 +85,13 @@ gen-manpages.sh
 A small script to automatically create manpages in ../../doc/man by running the release binaries with the -help option.
 This requires help2man which can be found at: https://www.gnu.org/software/help2man/
 
+With in-tree builds this tool can be run from any directory within the
+repostitory. To use this tool with out-of-tree builds set `BUILDDIR`. For example:
+
+```bash
+BUILDDIR=$PWD/build contrib/devtools/gen-manpages.sh
+```
+
 git-subtree-check.sh
 ====================
 
@@ -132,7 +139,7 @@ Setup
 ---------
 Configuring the github-merge tool for the umkoin repository is done in the following way:
 
-    git config githubmerge.repository vmta/umkoin
+    git config githubmerge.repository umkoin/umkoin
     git config githubmerge.testcmd "make -j4 check" (adapt to whatever you want to use for testing)
     git config --global user.signingkey mykeyid (if you want to GPG sign)
 

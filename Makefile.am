@@ -42,7 +42,8 @@ DIST_CONTRIB = $(top_srcdir)/contrib/umkoin-cli.bash-completion \
 	       $(top_srcdir)/contrib/umkoin-tx.bash-completion \
 	       $(top_srcdir)/contrib/umkoind.bash-completion \
 	       $(top_srcdir)/contrib/init \
-	       $(top_srcdir)/contrib/install_db4.sh
+	       $(top_srcdir)/contrib/install_db4.sh \
+         $(top_srcdir)/contrib/rpm
 DIST_SHARE = \
   $(top_srcdir)/share/genbuild.sh \
   $(top_srcdir)/share/rpcauth
@@ -276,6 +277,21 @@ CLEANFILES = $(OSX_DMG) $(UMKOIN_WIN_INSTALLER)
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-man
 
-clean-local:
+doc/doxygen/.stamp: doc/Doxyfile FORCE
+	$(MKDIR_P) $(@D)
+	$(DOXYGEN) $^
+	$(AM_V_at) touch $@
+
+if HAVE_DOXYGEN
+docs: doc/doxygen/.stamp
+else
+docs:
+	@echo "error: doxygen not found"
+endif
+
+clean-docs:
+	rm -rf doc/doxygen
+
+clean-local: clean-docs
 	rm -rf coverage_percent.txt test_umkoin.coverage/ total.coverage/ test/tmp/ cache/ $(OSX_APP)
 	rm -rf test/functional/__pycache__ test/functional/test_framework/__pycache__ test/cache

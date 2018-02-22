@@ -589,4 +589,3 @@ class P2PDataStore(P2PInterface):
             wait_until(lambda: self.reject_code_received == reject_code, lock=mininode_lock)
         if reject_reason is not None:
             wait_until(lambda: self.reject_reason_received == reject_reason, lock=mininode_lock)
-            

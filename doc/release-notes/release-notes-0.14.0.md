@@ -1,17 +1,13 @@
 Umkoin Core version 0.14.0 is now available from:
 
-  <https://bitcoin.org/bin/umkoin-core-0.14.0/>
+  <http://umkoin.org/bin/umkoin-core-0.14.0/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at github:
 
-  <https://github.com/vmta/umkoin/issues>
-
-To receive security and update notifications, please subscribe to:
-
-  <https://bitcoincore.org/en/list/announcements/join/>
+  <https://github.com/umkoin/umkoin/issues>
 
 Compatibility
 ==============
@@ -96,7 +92,7 @@ ZMQ On Windows
 
 Previously the ZeroMQ notification system was unavailable on Windows
 due to various issues with ZMQ. These have been fixed upstream and
-now ZMQ can be used on Windows. Please see [this document](https://github.com/vmta/umkoin/blob/master/doc/zmq.md) for
+now ZMQ can be used on Windows. Please see [this document](https://github.com/umkoin/umkoin/blob/master/doc/zmq.md) for
 help with using ZMQ in general.
 
 Nested RPC Commands in Debug Console
@@ -242,7 +238,7 @@ Low-level RPC changes
 
  - A new RPC command `getmemoryinfo` has been added which will return information
    about the memory usage of Umkoin Core. This was added in conjunction with
-   optimizations to memory management. See [Pull #8753](https://github.com/vmta/umkoin/pull/8753)
+   optimizations to memory management. See [Pull #8753](https://github.com/umkoin/umkoin/pull/8753)
    for more information.
 
  - A new RPC command `bumpfee` has been added which allows replacing an
@@ -870,4 +866,4 @@ Thanks to everyone who directly contributed to this release:
 - wodry
 - Zak Wilcox
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/umkoin/).
+As well as everyone that helped translating.

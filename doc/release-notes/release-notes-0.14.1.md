@@ -1,17 +1,13 @@
 Umkoin Core version 0.14.1 is now available from:
 
-  <https://bitcoin.org/bin/umkoin-core-0.14.1/>
+  <http://umkoin.org/bin/umkoin-core-0.14.1/>
 
 This is a new minor version release, including various bugfixes and
 performance improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at github:
 
-  <https://github.com/vmta/umkoin/issues>
-
-To receive security and update notifications, please subscribe to:
-
-  <https://bitcoincore.org/en/list/announcements/join/>
+  <https://github.com/umkoin/umkoin/issues>
 
 Compatibility
 ==============
@@ -139,5 +135,4 @@ Thanks to everyone who directly contributed to this release:
 - Suhas Daftuar
 - Wladimir J. van der Laan
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/umkoin/).
-
+As well as everyone that helped translating.

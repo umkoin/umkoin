@@ -45,7 +45,7 @@ Build Umkoin Core
 
 1. Clone the umkoin source code and cd into `umkoin`
 
-        git clone https://github.com/vmta/umkoin
+        git clone https://github.com/umkoin/umkoin
         cd umkoin
 
 2.  Build umkoin-core:

@@ -1,7 +1,7 @@
 Umkoin Core integration/staging tree
 =====================================
 
-[![Build Status](https://travis-ci.org/vmta/umkoin.svg?branch=master)](https://travis-ci.org/vmta/umkoin)
+[![Build Status](https://travis-ci.org/umkoin/umkoin.svg?branch=master)](https://travis-ci.org/umkoin/umkoin)
 
 What is Umkoin?
 ----------------
@@ -25,7 +25,7 @@ Development Process
 -------------------
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/vmta/umkoin/tags) are created
+completely stable. [Tags](https://github.com/umkoin/umkoin/tags) are created
 regularly to indicate new official, stable release versions of Umkoin Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).

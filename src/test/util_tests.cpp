@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <vector>
 #ifndef WIN32
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #endif
@@ -640,7 +641,7 @@ static void TestOtherProcess(fs::path dirname, std::string lockname, int fd)
             exit(0);
         default:
             assert(0);
-       }
+        }
     }
 }
 #endif

@@ -212,7 +212,7 @@ bool parseUmkoinURI(QString uri, SendCoinsRecipient *out)
     //    which will lower-case it (and thus invalidate the address).
     if(uri.startsWith("umkoin://", Qt::CaseInsensitive))
     {
-        uri.replace(0, 10, "umkoin:");
+        uri.replace(0, 9, "umkoin:");
     }
     QUrl uriInstance(uri);
     return parseUmkoinURI(uriInstance, out);
@@ -417,7 +417,7 @@ void openDebugLogfile()
 
 bool openUmkoinConf()
 {
-    boost::filesystem::path pathConfig = GetConfigFile(UMKOIN_CONF_FILENAME);
+    boost::filesystem::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", UMKOIN_CONF_FILENAME));
 
     /* Create the file */
     boost::filesystem::ofstream configFile(pathConfig, std::ios_base::app);

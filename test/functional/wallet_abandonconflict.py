@@ -14,7 +14,7 @@ from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import *
 
 class AbandonConflictTest(UmkoinTestFramework):
-    
+
     def set_test_params(self):
         self.num_nodes = 2
         self.extra_args = [["-minrelaytxfee=0.00001"], []]
@@ -55,7 +55,7 @@ class AbandonConflictTest(UmkoinTestFramework):
 
         outputs[self.nodes[0].getnewaddress()] = Decimal("14.99998")
         outputs[self.nodes[1].getnewaddress()] = Decimal("5")
-        signed = self.nodes[0].signrawtransaction(self.nodes[0].createrawtransaction(inputs, outputs))
+        signed = self.nodes[0].signrawtransactionwithwallet(self.nodes[0].createrawtransaction(inputs, outputs))
         txAB1 = self.nodes[0].sendrawtransaction(signed["hex"])
 
         # Identify the 14.99998umk output
@@ -67,7 +67,7 @@ class AbandonConflictTest(UmkoinTestFramework):
         inputs.append({"txid":txC, "vout":nC})
         outputs = {}
         outputs[self.nodes[0].getnewaddress()] = Decimal("24.9996")
-        signed2 = self.nodes[0].signrawtransaction(self.nodes[0].createrawtransaction(inputs, outputs))
+        signed2 = self.nodes[0].signrawtransactionwithwallet(self.nodes[0].createrawtransaction(inputs, outputs))
         txABC2 = self.nodes[0].sendrawtransaction(signed2["hex"])
 
         # In mempool txs from self should increase balance from change
@@ -138,7 +138,7 @@ class AbandonConflictTest(UmkoinTestFramework):
         outputs = {}
         outputs[self.nodes[1].getnewaddress()] = Decimal("9.9999")
         tx = self.nodes[0].createrawtransaction(inputs, outputs)
-        signed = self.nodes[0].signrawtransaction(tx)
+        signed = self.nodes[0].signrawtransactionwithwallet(tx)
         self.nodes[1].sendrawtransaction(signed["hex"])
         self.nodes[1].generate(1)
 

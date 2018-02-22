@@ -1,5 +1,5 @@
 ---
-name: "umkoin-win-0.16"
+name: "umkoin-win-0.17"
 enable_cache: true
 suites:
 - "trusty"
@@ -22,7 +22,7 @@ packages:
 - "ca-certificates"
 - "python"
 remotes:
-- "url": "https://github.com/vmta/umkoin.git"
+- "url": "https://github.com/umkoin/umkoin.git"
   "dir": "umkoin"
 files: []
 script: |

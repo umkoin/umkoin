@@ -42,7 +42,7 @@ def make_utxo(node, amount, confirmed=True, scriptPubKey=CScript([1])):
     tx2.vout = [CTxOut(amount, scriptPubKey)]
     tx2.rehash()
 
-    signed_tx = node.signrawtransaction(txToHex(tx2))
+    signed_tx = node.signrawtransactionwithwallet(txToHex(tx2))
 
     txid = node.sendrawtransaction(signed_tx['hex'], True)
 
@@ -139,7 +139,6 @@ class ReplaceByFeeTest(UmkoinTestFramework):
         assert_raises_rpc_error(-26, "insufficient fee", self.nodes[0].sendrawtransaction, tx1b_hex, True)
         # This will raise an exception due to transaction replacement being disabled
         assert_raises_rpc_error(-26, "txn-mempool-conflict", self.nodes[1].sendrawtransaction, tx1b_hex, True)
-
         # Extra 0.1 UMK fee
         tx1b = CTransaction()
         tx1b.vin = [CTxIn(tx0_outpoint, nSequence=0)]
@@ -251,7 +250,6 @@ class ReplaceByFeeTest(UmkoinTestFramework):
         dbl_tx_hex = txToHex(dbl_tx)
         # This will raise an exception due to insufficient fee
         assert_raises_rpc_error(-26, "insufficient fee", self.nodes[0].sendrawtransaction, dbl_tx_hex, True)
-
         # 1 UMK fee is enough
         dbl_tx = CTransaction()
         dbl_tx.vin = [CTxIn(tx0_outpoint, nSequence=0)]

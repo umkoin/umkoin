@@ -23,7 +23,7 @@ TMPFILE="hashes.tmp"
 
 SIGNATUREFILENAME="SHA256SUMS.asc"
 RCSUBDIR="test"
-HOST1="https://bitcoincore.org"
+HOST1="http://umkoin.org"
 HOST2="https://bitcoin.org"
 BASEDIR="/bin/"
 VERSIONPREFIX="umkoin-core-"
