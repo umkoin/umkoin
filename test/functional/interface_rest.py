@@ -46,6 +46,7 @@ class RESTTest (UmkoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3
+        self.extra_args = [["-rest"]] * self.num_nodes
 
     def setup_network(self, split=False):
         super().setup_network()
