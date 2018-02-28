@@ -68,7 +68,7 @@ your umkoind's P2P listen port (6333 by default).
 
 In a typical situation, where you're only reachable via Tor, this should suffice:
 
-	./umkoind -proxy=127.0.0.1:9050 -externalip=57qr3yd1nyntf5k.onion -listen
+	./umkoind -proxy=127.0.0.1:9050 -externalip=klfchu53kxun6zx5.onion -listen
 
 (obviously, replace the Onion address with your own). It should be noted that you still
 listen on all devices and another node could establish a clearnet connection, when knowing
@@ -86,7 +86,7 @@ and open port 6333 on your firewall (or use -upnp).
 If you only want to use Tor to reach onion addresses, but not use it as a proxy
 for normal IPv4/IPv6 communication, use:
 
-	./umkoin -onion=127.0.0.1:9050 -externalip=57qr3yd1nyntf5k.onion -discover
+	./umkoin -onion=127.0.0.1:9050 -externalip=klfchu53kxun6zx5.onion -discover
 
 3. Automatically listen on Tor
 --------------------------------

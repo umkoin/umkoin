@@ -125,11 +125,11 @@ BOOST_AUTO_TEST_CASE(onioncat_test)
 {
 
     // values from https://web.archive.org/web/20121122003543/http://www.cypherpunk.at/onioncat/wiki/OnionCat
-    CNetAddr addr1(ResolveIP("5wyqrzbvrdsumnok.onion"));
+    CNetAddr addr1(ResolveIP("klfchu53kxun6zx5.onion"));
     CNetAddr addr2(ResolveIP("FD87:D87E:EB43:edb1:8e4:3588:e546:35ca"));
     BOOST_CHECK(addr1 == addr2);
     BOOST_CHECK(addr1.IsTor());
-    BOOST_CHECK(addr1.ToStringIP() == "5wyqrzbvrdsumnok.onion");
+    BOOST_CHECK(addr1.ToStringIP() == "klfchu53kxun6zx5.onion");
     BOOST_CHECK(addr1.IsRoutable());
 
 }

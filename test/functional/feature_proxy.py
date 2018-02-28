@@ -120,11 +120,11 @@ class ProxyTest(UmkoinTestFramework):
 
         if test_onion:
             # Test: outgoing onion connection through node
-            node.addnode("umkoinostk4e4re.onion:6333", "onetry")
+            node.addnode("klfchu53kxun6zx5.onion:6333", "onetry")
             cmd = proxies[2].queue.get()
             assert(isinstance(cmd, Socks5Command))
             assert_equal(cmd.atyp, AddressType.DOMAINNAME)
-            assert_equal(cmd.addr, b"umkoinostk4e4re.onion")
+            assert_equal(cmd.addr, b"klfchu53kxun6zx5.onion")
             assert_equal(cmd.port, 6333)
             if not auth:
                 assert_equal(cmd.username, None)
