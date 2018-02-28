@@ -8,10 +8,6 @@ Please report bugs using the issue tracker at GitHub:
 
   <https://github.com/umkoin/umkoin/issues>
 
-To receive security and update notifications, please subscribe to:
-
-  <https://bitcoincore.org/en/list/announcements/join/>
-
 How to Upgrade
 ==============
 
@@ -80,4 +76,4 @@ Thanks to everyone who directly contributed to this release:
 - Jonas Schnelli
 - Wladimir J. van der Laan
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/umkoin/).
+As well as everyone that helped translating.

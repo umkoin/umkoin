@@ -95,4 +95,3 @@ Thanks to everyone who directly contributed to this release:
 - Wladimir J. van der Laan
 
 As well as everyone that helped translating.
-

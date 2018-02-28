@@ -1,6 +1,6 @@
 Umkoin Core version *0.15.1* is now available from:
 
-  <http://umkoin.org/release/umkoin-core-0.15.1/>
+  <http://umkoin.org/bin/umkoin-core-0.15.1/>
 
 This is a new minor version release, including various bugfixes and
 performance improvements, as well as updated translations.

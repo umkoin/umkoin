@@ -3,11 +3,7 @@ and performance improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at GitHub:
 
-  <https://github.com/bitcoin/bitcoin/issues>
-
-To receive security and update notifications, please subscribe to:
-
-  <https://bitcoincore.org/en/list/announcements/join/>
+  <http://github.com/umkoin/umkoin/issues>
 
 How to Upgrade
 ==============
@@ -871,4 +867,4 @@ Thanks to everyone who directly contributed to this release:
 - Warren Togami
 - Wladimir J. van der Laan
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/bitcoin/).
+As well as everyone that helped translating.
