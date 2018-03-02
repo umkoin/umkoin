@@ -139,7 +139,7 @@
     </message>
     <message>
         <source>Send coins to a Umkoin address</source>
-        <translation>Испрати биткоини на Биткоин адреса</translation>
+        <translation>Испрати умкоини на Умкоин адреса</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
@@ -147,7 +147,7 @@
     </message>
     <message>
         <source>Umkoin</source>
-        <translation>Биткоин</translation>
+        <translation>Умкоин</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -300,7 +300,7 @@
     <name>Intro</name>
     <message>
         <source>Umkoin</source>
-        <translation>Биткоин</translation>
+        <translation>Умкоин</translation>
     </message>
     <message>
         <source>Error</source>
@@ -591,7 +591,7 @@
     </message>
     <message>
         <source>Umkoin Core</source>
-        <translation>Биткоин Core</translation>
+        <translation>Умкоин Core</translation>
     </message>
     <message>
         <source>Warning</source>

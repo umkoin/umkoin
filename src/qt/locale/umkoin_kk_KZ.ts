@@ -71,7 +71,7 @@
     </message>
     <message>
         <source>Umkoin</source>
-        <translation>Биткоин</translation>
+        <translation>Умкоин</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -170,7 +170,7 @@
     <name>Intro</name>
     <message>
         <source>Umkoin</source>
-        <translation>Биткоин</translation>
+        <translation>Умкоин</translation>
     </message>
     <message>
         <source>Error</source>

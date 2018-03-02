@@ -63,11 +63,11 @@
     </message>
     <message>
         <source>These are your Umkoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Тут знаходзяцца Біткойн-адрасы для высылання плацяжоў. Заўсёды спраўджвайце колькасць і адрас прызначэння перад здзяйсненнем транзакцыі.</translation>
+        <translation>Тут знаходзяцца Умкойн-адрасы для высылання плацяжоў. Заўсёды спраўджвайце колькасць і адрас прызначэння перад здзяйсненнем транзакцыі.</translation>
     </message>
     <message>
         <source>These are your Umkoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Тут знаходзяцца Біткойн-адрасы для прымання плацяжоў. Пажадана выкарыстоўваць новы адрас для кожнай транзакцыі.</translation>
+        <translation>Тут знаходзяцца Умкойн-адрасы для прымання плацяжоў. Пажадана выкарыстоўваць новы адрас для кожнай транзакцыі.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -299,7 +299,7 @@
     </message>
     <message>
         <source>Send coins to a Umkoin address</source>
-        <translation>Даслаць манеты на Біткойн-адрас</translation>
+        <translation>Даслаць манеты на Умкойн-адрас</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -323,7 +323,7 @@
     </message>
     <message>
         <source>Umkoin</source>
-        <translation>Біткойн</translation>
+        <translation>Умкойн</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -351,11 +351,11 @@
     </message>
     <message>
         <source>Sign messages with your Umkoin addresses to prove you own them</source>
-        <translation>Падпісаць паведамленне з дапамогай Біткойн-адраса каб даказаць, што яно належыць вам</translation>
+        <translation>Падпісаць паведамленне з дапамогай Умкойн-адраса каб даказаць, што яно належыць вам</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Umkoin addresses</source>
-        <translation>Спраўдзіць паведамленне з дапамогай Біткойн-адраса каб даказаць, што яно належыць вам</translation>
+        <translation>Спраўдзіць паведамленне з дапамогай Умкойн-адраса каб даказаць, што яно належыць вам</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -371,7 +371,7 @@
     </message>
     <message>
         <source>Request payments (generates QR codes and umkoin: URIs)</source>
-        <translation>Запатрабаваць плацёж (генеруецца QR-код для біткойн URI)</translation>
+        <translation>Запатрабаваць плацёж (генеруецца QR-код для умкойн URI)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -383,7 +383,7 @@
     </message>
     <message>
         <source>Open a umkoin: URI or payment request</source>
-        <translation>Адкрыць біткойн: URI ці запыт плацяжу</translation>
+        <translation>Адкрыць умкойн: URI ці запыт плацяжу</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -676,7 +676,7 @@
     </message>
     <message>
         <source>Umkoin</source>
-        <translation>Біткойн</translation>
+        <translation>Умкойн</translation>
     </message>
     <message>
         <source>Error</source>

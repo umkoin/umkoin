@@ -67,7 +67,7 @@
     </message>
     <message>
         <source>These are your Umkoin addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Това са Вашите Биткойн адреси,благодарение на които ще получавате плащания.Препоръчително е да използвате нови адреси за получаване на всяка транзакция.</translation>
+        <translation>Това са Вашите Умкойн адреси,благодарение на които ще получавате плащания.Препоръчително е да използвате нови адреси за получаване на всяка транзакция.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -331,7 +331,7 @@
     </message>
     <message>
         <source>Send coins to a Umkoin address</source>
-        <translation>Изпращане към Биткоин адрес</translation>
+        <translation>Изпращане към Умкоин адрес</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -355,7 +355,7 @@
     </message>
     <message>
         <source>Umkoin</source>
-        <translation>Биткоин</translation>
+        <translation>Умкоин</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -383,11 +383,11 @@
     </message>
     <message>
         <source>Sign messages with your Umkoin addresses to prove you own them</source>
-        <translation>Пишете съобщения със своя Биткойн адрес за да докажете,че е ваш.</translation>
+        <translation>Пишете съобщения със своя Умкойн адрес за да докажете,че е ваш.</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Umkoin addresses</source>
-        <translation>Потвърждаване на съобщения  за да се знае,че са написани с дадените Биткойн адреси.</translation>
+        <translation>Потвърждаване на съобщения  за да се знае,че са написани с дадените Умкойн адреси.</translation>
     </message>
     <message>
         <source>&amp;File</source>
@@ -407,7 +407,7 @@
     </message>
     <message>
         <source>Request payments (generates QR codes and umkoin: URIs)</source>
-        <translation>Изискване на плащания(генерира QR кодове и биткойн: URIs)</translation>
+        <translation>Изискване на плащания(генерира QR кодове и умкойн: URIs)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -419,7 +419,7 @@
     </message>
     <message>
         <source>Open a umkoin: URI or payment request</source>
-        <translation>Отворете биткойн: URI  или заявка за плащане</translation>
+        <translation>Отворете умкойн: URI  или заявка за плащане</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -463,7 +463,7 @@
     </message>
     <message>
         <source>Show the %1 help message to get a list with possible Umkoin command-line options</source>
-        <translation>Покажи %1 помощно съобщение за да получиш лист с възможни Биткойн команди</translation>
+        <translation>Покажи %1 помощно съобщение за да получиш лист с възможни Умкойн команди</translation>
     </message>
     <message>
         <source>%1 client</source>
@@ -525,7 +525,7 @@
     </message>
     <message>
         <source>A fatal error occurred. Umkoin can no longer continue safely and will quit.</source>
-        <translation>Възникна фатална грешка. Биткойн не може да продължи безопасно и ще се изключи.</translation>
+        <translation>Възникна фатална грешка. Умкойн не може да продължи безопасно и ще се изключи.</translation>
     </message>
 </context>
 <context>
@@ -711,7 +711,7 @@
     </message>
     <message>
         <source>The entered address "%1" is not a valid Umkoin address.</source>
-        <translation>"%1" не е валиден Биткоин адрес.</translation>
+        <translation>"%1" не е валиден Умкоин адрес.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -828,7 +828,7 @@
     </message>
     <message>
         <source>Umkoin</source>
-        <translation>Биткоин</translation>
+        <translation>Умкоин</translation>
     </message>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -941,7 +941,7 @@
     </message>
     <message>
         <source>Connect to the Umkoin network through a SOCKS5 proxy.</source>
-        <translation>Свързване с Биткойн мрежата чрез SOCKS5  прокси.</translation>
+        <translation>Свързване с Умкойн мрежата чрез SOCKS5  прокси.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1040,7 +1040,7 @@
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Umkoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>Текущата информация на екрана може да не е актуална. Вашият портфейл ще се синхронизира автоматично с мрежата на Биткоин, щом поне една връзката с нея се установи; този процес все още не е приключил.</translation>
+        <translation>Текущата информация на екрана може да не е актуална. Вашият портфейл ще се синхронизира автоматично с мрежата на Умкоин, щом поне една връзката с нея се установи; този процес все още не е приключил.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1095,7 +1095,7 @@
     </message>
     <message>
         <source>Cannot start umkoin: click-to-pay handler</source>
-        <translation>Биткойн не можe да се стартира: click-to-pay handler</translation>
+        <translation>Умкойн не можe да се стартира: click-to-pay handler</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -1177,7 +1177,7 @@
     </message>
     <message>
         <source>Enter a Umkoin address (e.g. %1)</source>
-        <translation>Въведете Биткойн адрес (например: %1)</translation>
+        <translation>Въведете Умкойн адрес (например: %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -1714,7 +1714,7 @@
     </message>
     <message>
         <source>Warning: Invalid Umkoin address</source>
-        <translation>Внимание: Невалиден Биткойн адрес</translation>
+        <translation>Внимание: Невалиден Умкойн адрес</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -1850,7 +1850,7 @@
     </message>
     <message>
         <source>Verify the message to ensure it was signed with the specified Umkoin address</source>
-        <translation>Проверете съобщение, за да сте сигурни че е подписано с определен Биткоин адрес</translation>
+        <translation>Проверете съобщение, за да сте сигурни че е подписано с определен Умкоин адрес</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -2367,7 +2367,7 @@
     </message>
     <message>
         <source>Umkoin Core</source>
-        <translation>Биткойн ядро</translation>
+        <translation>Умкойн ядро</translation>
     </message>
     <message>
         <source>&lt;category&gt; can be:</source>
