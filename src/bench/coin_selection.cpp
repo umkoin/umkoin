@@ -32,12 +32,11 @@ static void addCoin(const CAmount& nValue, const CWallet& wallet, std::vector<CO
 // (https://github.com/bitcoin/bitcoin/issues/7883#issuecomment-224807484)
 static void CoinSelection(benchmark::State& state)
 {
-    const CWallet wallet;
+    const CWallet wallet("dummy", CWalletDBWrapper::CreateDummy());
     std::vector<COutput> vCoins;
     LOCK(wallet.cs_wallet);
 
     while (state.KeepRunning()) {
-
         // Add coins.
         for (int i = 0; i < 1000; i++)
             addCoin(1000 * COIN, wallet, vCoins);
