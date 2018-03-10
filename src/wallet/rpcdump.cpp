@@ -736,9 +736,6 @@ UniValue dumpwallet(const JSONRPCRequest& request)
             CExtKey masterKey;
             masterKey.SetMaster(key.begin(), key.size());
 
-            CUmkoinExtKey b58extkey;
-            b58extkey.SetKey(masterKey);
-
             file << "# extended private masterkey: " << EncodeExtKey(masterKey) << "\n\n";
         }
     }
