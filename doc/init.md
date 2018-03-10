@@ -84,6 +84,8 @@ Installing this .service file consists of just copying it to
 To test, run `systemctl start umkoind` and to enable for system startup run
 `systemctl enable umkoind`
 
+NOTE: When installing for systemd in Debian/Ubuntu the .service file needs to be copied to the /lib/systemd/system directory instead.
+
 ### OpenRC
 
 Rename umkoind.openrc to umkoind and drop it in /etc/init.d.  Double
@@ -92,6 +94,7 @@ check ownership and permissions and make it executable.  Test it with
 `rc-update add umkoind`
 
 ### Upstart (for Debian/Ubuntu based distributions)
+Upstart is the default init system for Debian/Ubuntu versions older than 15.04. If you are using version 15.04 or newer and haven't manually configured upstart you should follow the systemd instructions instead.
 
 Drop umkoind.conf in /etc/init.  Test by running `service umkoind start`
 it will automatically start on reboot.

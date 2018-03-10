@@ -3,7 +3,7 @@ release-notes at release time)
 
 Umkoin Core version *version* is now available from:
 
-  <http://umkoin.org/bin/umkoin-*version*/>
+  <http://umkoin.org/bin/umkoin-core-*version*/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements, as well as updated translations.
@@ -58,6 +58,36 @@ RPC changes
 ### Low-level changes
 
 - The `fundrawtransaction` rpc will reject the previously deprecated `reserveChangeKey` option.
+
+External wallet files
+---------------------
+
+The `-wallet=<path>` option now accepts full paths instead of requiring wallets
+to be located in the -walletdir directory.
+
+Newly created wallet format
+---------------------------
+
+If `-wallet=<path>` is specified with a path that does not exist, it will now
+create a wallet directory at the specified location (containing a wallet.dat
+data file, a db.log file, and database/log.?????????? files) instead of just
+creating a data file at the path and storing log files in the parent
+directory. This should make backing up wallets more straightforward than
+before because the specified wallet path can just be directly archived without
+having to look in the parent directory for transaction log files.
+
+For backwards compatibility, wallet paths that are names of existing data files
+in the `-walletdir` directory will continue to be accepted and interpreted the
+same as before.
+
+Low-level RPC changes
+---------------------
+
+- When umkoin is not started with any `-wallet=<path>` options, the name of
+  the default wallet returned by `getwalletinfo` and `listwallets` RPCs is
+  now the empty string `""` instead of `"wallet.dat"`. If umkoin is started
+  with any `-wallet=<path>` options, there is no change in behavior, and the
+  name of any wallet is just its `<path>` string.
 
 Credits
 =======

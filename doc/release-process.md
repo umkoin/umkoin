@@ -3,7 +3,7 @@ Release Process
 
 Before every release candidate:
 
-* Update translations (ping wumpus on IRC) see [translation_process.md](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md#synchronising-translations).
+* Update translations see [translation_process.md](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md#synchronising-translations).
 
 * Update manpages, see [gen-manpages.sh](https://github.com/umkoin/umkoin/blob/master/contrib/devtools/README.md#gen-manpagessh).
 
@@ -93,7 +93,9 @@ Create the OS X SDK tarball, see the [OS X readme](README_osx.md) for details, a
 
 ### Optional: Seed the Gitian sources cache and offline git repositories
 
-By default, Gitian will fetch source files as needed. To cache them ahead of time:
+NOTE: Gitian is sometimes unable to download files. If you have errors, try the step below.
+
+By default, Gitian will fetch source files as needed. To cache them ahead of time, make sure you have checked out the tag you want to build in umkoin, then:
 
     pushd ./gitian-builder
     make -C ../umkoin/depends download SOURCES_PATH=`pwd`/cache/common
@@ -260,7 +262,7 @@ rm SHA256SUMS
 Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spurious/nonsensical entry.
 
 - Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the umkoin.org server
-  into `/var/www/umkoin.org/releases/umkoin-${VERSION}`
+  into `/var/www/umkoin.org/bin/umkoin-core-${VERSION}`
 
 - A `.torrent` will appear in the directory after a few minutes. Optionally help seed this torrent. To get the `magnet:` URI use:
 ```bash
