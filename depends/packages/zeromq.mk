@@ -13,7 +13,8 @@ endef
 
 define $(package)_preprocess_cmds
    patch -p1 < $($(package)_patch_dir)/0001-fix-build-with-older-mingw64.patch && \
-   patch -p1 < $($(package)_patch_dir)/0002-disable-pthread_set_name_np.patch
+   patch -p1 < $($(package)_patch_dir)/0002-disable-pthread_set_name_np.patch && \
+   ./autogen.sh
 endef
 
 define $(package)_config_cmds
