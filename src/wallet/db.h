@@ -113,7 +113,7 @@ public:
     }
 
     /** Return object for accessing database at specified path. */
-   static std::unique_ptr<CWalletDBWrapper> Create(const fs::path& path)
+    static std::unique_ptr<CWalletDBWrapper> Create(const fs::path& path)
     {
         return MakeUnique<CWalletDBWrapper>(path);
     }
