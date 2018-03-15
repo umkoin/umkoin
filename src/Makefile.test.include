@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2017 The Bitcoin Core developers
+# Copyright (c) 2013-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -94,7 +94,8 @@ UMKOIN_TESTS += \
   wallet/test/wallet_test_fixture.h \
   wallet/test/accounting_tests.cpp \
   wallet/test/wallet_tests.cpp \
-  wallet/test/crypto_tests.cpp
+  wallet/test/crypto_tests.cpp \
+  wallet/test/coinselector_tests.cpp
 endif
 
 test_test_umkoin_SOURCES = $(UMKOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)

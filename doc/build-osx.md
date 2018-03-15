@@ -16,7 +16,7 @@ Then install [Homebrew](https://brew.sh).
 Dependencies
 ----------------------
 
-    brew install automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf python3 qt libevent
+    brew install automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf python qt libevent
 
 See [dependencies.md](dependencies.md) for a complete overview.
 
@@ -86,9 +86,10 @@ You can monitor the download process by looking at the debug.log file:
 Other commands:
 -------
 
-    ./src/bitcoind -daemon # Starts the bitcoin daemon.
-    ./src/bitcoin-cli --help # Outputs a list of command-line options.
-    ./src/bitcoin-cli help # Outputs a list of RPC commands when the daemon is running.
+    ./src/umkoind -daemon # Starts the umkoin daemon.
+    ./src/umkoin-cli --help # Outputs a list of command-line options.
+    ./src/umkoin-cli help # Outputs a list of RPC commands when the daemon is running.
+
 Notes
 -----
 
