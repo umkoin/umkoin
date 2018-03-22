@@ -3,7 +3,7 @@ AC_PREREQ([2.60])
 define(_CLIENT_VERSION_MAJOR, 0)
 define(_CLIENT_VERSION_MINOR, 16)
 define(_CLIENT_VERSION_REVISION, 0)
-define(_CLIENT_VERSION_BUILD, 12)
+define(_CLIENT_VERSION_BUILD, 13)
 define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2018)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
@@ -643,22 +643,6 @@ AC_CHECK_DECLS([bswap_16, bswap_32, bswap_64],,,
 
 AC_CHECK_DECLS([__builtin_clz, __builtin_clzl, __builtin_clzll])
 
-dnl Check for MSG_NOSIGNAL
-AC_MSG_CHECKING(for MSG_NOSIGNAL)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/socket.h>]],
- [[ int f = MSG_NOSIGNAL; ]])],
- [ AC_MSG_RESULT(yes); AC_DEFINE(HAVE_MSG_NOSIGNAL, 1,[Define this symbol if you have MSG_NOSIGNAL]) ],
- [ AC_MSG_RESULT(no)]
-)
-
-dnl Check for MSG_DONTWAIT
-AC_MSG_CHECKING(for MSG_DONTWAIT)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/socket.h>]],
- [[ int f = MSG_DONTWAIT; ]])],
- [ AC_MSG_RESULT(yes); AC_DEFINE(HAVE_MSG_DONTWAIT, 1,[Define this symbol if you have MSG_DONTWAIT]) ],
- [ AC_MSG_RESULT(no)]
-)
-
 dnl Check for malloc_info (for memory statistics information in getmemoryinfo)
 AC_MSG_CHECKING(for getmemoryinfo)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <malloc.h>]],
@@ -771,7 +755,7 @@ dnl Check for libminiupnpc (optional)
 if test x$use_upnp != xno; then
   AC_CHECK_HEADERS(
     [miniupnpc/miniwget.h miniupnpc/miniupnpc.h miniupnpc/upnpcommands.h miniupnpc/upnperrors.h],
-    [AC_CHECK_LIB([miniupnpc], [main],[MINIUPNPC_LIBS=-lminiupnpc], [have_miniupnpc=no])],
+    [AC_CHECK_LIB([miniupnpc], [upnpDiscover], [MINIUPNPC_LIBS=-lminiupnpc], [have_miniupnpc=no])],
     [have_miniupnpc=no]
   )
 fi

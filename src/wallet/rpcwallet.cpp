@@ -162,10 +162,10 @@ UniValue getnewaddress(const JSONRPCRequest& request)
     if (!request.params[0].isNull())
         strAccount = AccountFromValue(request.params[0]);
 
-    OutputType output_type = g_address_type;
+    OutputType output_type = pwallet->m_default_address_type;
     if (!request.params[1].isNull()) {
-        output_type = ParseOutputType(request.params[1].get_str(), g_address_type);
-        if (output_type == OUTPUT_TYPE_NONE) {
+        output_type = ParseOutputType(request.params[1].get_str(), pwallet->m_default_address_type);
+        if (output_type == OutputType::NONE) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown address type '%s'", request.params[1].get_str()));
         }
     }
@@ -259,10 +259,10 @@ UniValue getrawchangeaddress(const JSONRPCRequest& request)
         pwallet->TopUpKeyPool();
     }
 
-    OutputType output_type = g_change_type != OUTPUT_TYPE_NONE ? g_change_type : g_address_type;
+    OutputType output_type = pwallet->m_default_change_type != OutputType::NONE ? pwallet->m_default_change_type : pwallet->m_default_address_type;
     if (!request.params[0].isNull()) {
         output_type = ParseOutputType(request.params[0].get_str(), output_type);
-        if (output_type == OUTPUT_TYPE_NONE) {
+        if (output_type == OutputType::NONE) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown address type '%s'", request.params[0].get_str()));
         }
     }
@@ -1221,10 +1221,10 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
         }
     }
 
-    OutputType output_type = g_address_type;
+    OutputType output_type = pwallet->m_default_address_type;
     if (!request.params[3].isNull()) {
         output_type = ParseOutputType(request.params[3].get_str(), output_type);
-        if (output_type == OUTPUT_TYPE_NONE) {
+        if (output_type == OutputType::NONE) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown address type '%s'", request.params[3].get_str()));
         }
     }
@@ -2363,8 +2363,6 @@ UniValue walletpassphrase(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwallet->cs_wallet);
 
-    if (request.fHelp)
-        return true;
     if (!pwallet->IsCrypted()) {
         throw JSONRPCError(RPC_WALLET_WRONG_ENC_STATE, "Error: running with an unencrypted wallet, but walletpassphrase was called.");
     }
@@ -2429,8 +2427,6 @@ UniValue walletpassphrasechange(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwallet->cs_wallet);
 
-    if (request.fHelp)
-        return true;
     if (!pwallet->IsCrypted()) {
         throw JSONRPCError(RPC_WALLET_WRONG_ENC_STATE, "Error: running with an unencrypted wallet, but walletpassphrasechange was called.");
     }
@@ -2485,8 +2481,6 @@ UniValue walletlock(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwallet->cs_wallet);
 
-    if (request.fHelp)
-        return true;
     if (!pwallet->IsCrypted()) {
         throw JSONRPCError(RPC_WALLET_WRONG_ENC_STATE, "Error: running with an unencrypted wallet, but walletlock was called.");
     }
@@ -2532,8 +2526,6 @@ UniValue encryptwallet(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwallet->cs_wallet);
 
-    if (request.fHelp)
-        return true;
     if (pwallet->IsCrypted()) {
         throw JSONRPCError(RPC_WALLET_WRONG_ENC_STATE, "Error: running with an encrypted wallet, but encryptwallet was called.");
     }
@@ -3183,8 +3175,8 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
             if (options.exists("changeAddress")) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "Cannot specify both changeAddress and address_type options");
             }
-            coinControl.change_type = ParseOutputType(options["change_type"].get_str(), coinControl.change_type);
-            if (coinControl.change_type == OUTPUT_TYPE_NONE) {
+            coinControl.m_change_type = ParseOutputType(options["change_type"].get_str(), pwallet->m_default_change_type);
+            if (coinControl.m_change_type == OutputType::NONE) {
                 throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, strprintf("Unknown change type '%s'", options["change_type"].get_str()));
             }
         }
