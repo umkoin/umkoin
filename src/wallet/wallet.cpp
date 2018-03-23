@@ -809,12 +809,12 @@ bool CWallet::AccountMove(std::string strFrom, std::string strTo, CAmount nAmoun
     return true;
 }
 
-bool CWallet::GetAccountDestination(CTxDestination &dest, std::string strAccount, bool bForceNew)
+bool CWallet::GetLabelDestination(CTxDestination &dest, const std::string& label, bool bForceNew)
 {
     CWalletDB walletdb(*dbw);
 
     CAccount account;
-    walletdb.ReadAccount(strAccount, account);
+    walletdb.ReadAccount(label, account);
 
     if (!bForceNew) {
         if (!account.vchPubKey.IsValid())
@@ -840,8 +840,8 @@ bool CWallet::GetAccountDestination(CTxDestination &dest, std::string strAccount
 
         LearnRelatedScripts(account.vchPubKey, m_default_address_type);
         dest = GetDestinationForKey(account.vchPubKey, m_default_address_type);
-        SetAddressBook(dest, strAccount, "receive");
-        walletdb.WriteAccount(strAccount, account);
+        SetAddressBook(dest, label, "receive");
+        walletdb.WriteAccount(label, account);
     } else {
         dest = GetDestinationForKey(account.vchPubKey, m_default_address_type);
     }
@@ -1267,7 +1267,7 @@ void CWallet::BlockUntilSyncedToCurrentChain() {
         // chainActive.Tip()...
         // We could also take cs_wallet here, and call m_last_block_processed
         // protected by cs_wallet instead of cs_main, but as long as we need
-        // cs_main here anyway, its easier to just call it cs_main-protected.
+        // cs_main here anyway, it's easier to just call it cs_main-protected.
         LOCK(cs_main);
         const CBlockIndex* initialChainTip = chainActive.Tip();
 
@@ -2220,7 +2220,7 @@ CAmount CWallet::GetLegacyBalance(const isminefilter& filter, int minDepth, cons
         for (const CTxOut& out : wtx.tx->vout) {
             if (outgoing && IsChange(out)) {
                 debit -= out.nValue;
-            } else if (IsMine(out) & filter && depth >= minDepth && (!account || *account == GetAccountName(out.scriptPubKey))) {
+            } else if (IsMine(out) & filter && depth >= minDepth && (!account || *account == GetLabelName(out.scriptPubKey))) {
                 balance += out.nValue;
             }
         }
@@ -2425,21 +2425,21 @@ const CTxOut& CWallet::FindNonChangeParentOutput(const CTransaction& tx, int out
     return ptx->vout[n];
 }
 
-bool CWallet::OutputEligibleForSpending(const COutput& output, const CoinEligibilityFilter& eligibilty_filter) const
+bool CWallet::OutputEligibleForSpending(const COutput& output, const CoinEligibilityFilter& eligibility_filter) const
 {
     if (!output.fSpendable)
         return false;
 
-    if (output.nDepth < (output.tx->IsFromMe(ISMINE_ALL) ? eligibilty_filter.conf_mine : eligibilty_filter.conf_theirs))
+    if (output.nDepth < (output.tx->IsFromMe(ISMINE_ALL) ? eligibility_filter.conf_mine : eligibility_filter.conf_theirs))
         return false;
 
-    if (!mempool.TransactionWithinChainLimit(output.tx->GetHash(), eligibilty_filter.max_ancestors))
+    if (!mempool.TransactionWithinChainLimit(output.tx->GetHash(), eligibility_filter.max_ancestors))
         return false;
 
     return true;
 }
 
-bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const CoinEligibilityFilter& eligibilty_filter, std::vector<COutput> vCoins,
+bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const CoinEligibilityFilter& eligibility_filter, std::vector<COutput> vCoins,
                                  std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet, const CoinSelectionParams& coin_selection_params, bool& bnb_used) const
 {
     setCoinsRet.clear();
@@ -2460,7 +2460,7 @@ bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const CoinEligibil
         // Filter by the min conf specs and add to utxo_pool and calculate effective value
         for (const COutput &output : vCoins)
         {
-            if (!OutputEligibleForSpending(output, eligibilty_filter))
+            if (!OutputEligibleForSpending(output, eligibility_filter))
                 continue;
 
             CInputCoin coin(output.tx->tx, output.i);
@@ -2480,7 +2480,7 @@ bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const CoinEligibil
         // Filter by the min conf specs and add to utxo_pool
         for (const COutput &output : vCoins)
         {
-            if (!OutputEligibleForSpending(output, eligibilty_filter))
+            if (!OutputEligibleForSpending(output, eligibility_filter))
                 continue;
 
             CInputCoin coin = CInputCoin(output.tx->tx, output.i);
@@ -2491,7 +2491,7 @@ bool CWallet::SelectCoinsMinConf(const CAmount& nTargetValue, const CoinEligibil
     }
 }
 
-bool CWallet::SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet, const CCoinControl& coin_control, const CoinSelectionParams& coin_selection_params, bool& bnb_used) const
+bool CWallet::SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet, const CCoinControl& coin_control, CoinSelectionParams& coin_selection_params, bool& bnb_used) const
 {
     std::vector<COutput> vCoins(vAvailableCoins);
 
@@ -2521,6 +2521,7 @@ bool CWallet::SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAm
     {
         // For now, don't use BnB if preset inputs are selected. TODO: Enable this later
         bnb_used = false;
+        coin_selection_params.use_bnb = false;
 
         std::map<uint256, CWalletTx>::const_iterator it = mapWallet.find(outpoint.hash);
         if (it != mapWallet.end())
@@ -3251,7 +3252,7 @@ bool CWallet::DelAddressBook(const CTxDestination& address)
     return CWalletDB(*dbw).EraseName(EncodeDestination(address));
 }
 
-const std::string& CWallet::GetAccountName(const CScript& scriptPubKey) const
+const std::string& CWallet::GetLabelName(const CScript& scriptPubKey) const
 {
     CTxDestination address;
     if (ExtractDestination(scriptPubKey, address) && !scriptPubKey.IsUnspendable()) {
@@ -3261,9 +3262,9 @@ const std::string& CWallet::GetAccountName(const CScript& scriptPubKey) const
         }
     }
     // A scriptPubKey that doesn't have an entry in the address book is
-    // associated with the default account ("").
-    const static std::string DEFAULT_ACCOUNT_NAME;
-    return DEFAULT_ACCOUNT_NAME;
+    // associated with the default label ("").
+    const static std::string DEFAULT_LABEL_NAME;
+    return DEFAULT_LABEL_NAME;
 }
 
 /**
@@ -3619,7 +3620,7 @@ std::set< std::set<CTxDestination> > CWallet::GetAddressGroupings()
     return ret;
 }
 
-std::set<CTxDestination> CWallet::GetAccountAddresses(const std::string& strAccount) const
+std::set<CTxDestination> CWallet::GetLabelAddresses(const std::string& label) const
 {
     LOCK(cs_wallet);
     std::set<CTxDestination> result;
@@ -3627,7 +3628,7 @@ std::set<CTxDestination> CWallet::GetAccountAddresses(const std::string& strAcco
     {
         const CTxDestination& address = item.first;
         const std::string& strName = item.second.name;
-        if (strName == strAccount)
+        if (strName == label)
             result.insert(address);
     }
     return result;
@@ -4197,8 +4198,8 @@ bool CWalletTx::AcceptToMemoryPool(const CAmount& nAbsurdFee, CValidationState& 
     // We must set fInMempool here - while it will be re-set to true by the
     // entered-mempool callback, if we did not there would be a race where a
     // user could call sendmoney in a loop and hit spurious out of funds errors
-    // because we think that the transaction they just generated's change is
-    // unavailable as we're not yet aware its in mempool.
+    // because we think that this newly generated transaction's change is
+    // unavailable as we're not yet aware that it is in the mempool.
     bool ret = ::AcceptToMemoryPool(mempool, state, tx, nullptr /* pfMissingInputs */,
                                 nullptr /* plTxnReplaced */, false /* bypass_limits */, nAbsurdFee);
     fInMempool |= ret;

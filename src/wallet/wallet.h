@@ -665,15 +665,6 @@ private:
     std::mutex mutexScanning;
     friend class WalletRescanReserver;
 
-
-    /**
-     * Select a set of coins such that nValueRet >= nTargetValue and at least
-     * all coins from coinControl are selected; Never select unconfirmed coins
-     * if they are not ours
-     */
-    bool SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet,
-                    const CCoinControl& coin_control, const CoinSelectionParams& coin_selection_params, bool& bnb_used) const;
-
     CWalletDB *pwalletdbEncryption;
 
     //! the current wallet version: clients below this version are not able to load the wallet
@@ -766,6 +757,14 @@ public:
         return *dbw;
     }
 
+    /**
+     * Select a set of coins such that nValueRet >= nTargetValue and at least
+     * all coins from coinControl are selected; Never select unconfirmed coins
+     * if they are not ours
+     */
+    bool SelectCoins(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet,
+                    const CCoinControl& coin_control, CoinSelectionParams& coin_selection_params, bool& bnb_used) const;
+
     /** Get a name for this wallet for logging/debugging purposes.
      */
     const std::string& GetName() const { return m_name; }
@@ -853,7 +852,7 @@ public:
      * completion the coin set and corresponding actual target value is
      * assembled
      */
-    bool SelectCoinsMinConf(const CAmount& nTargetValue, const CoinEligibilityFilter& eligibilty_filter, std::vector<COutput> vCoins,
+    bool SelectCoinsMinConf(const CAmount& nTargetValue, const CoinEligibilityFilter& eligibility_filter, std::vector<COutput> vCoins,
         std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet, const CoinSelectionParams& coin_selection_params, bool& bnb_used) const;
 
     bool IsSpent(const uint256& hash, unsigned int n) const;
@@ -929,7 +928,7 @@ public:
     int64_t IncOrderPosNext(CWalletDB *pwalletdb = nullptr);
     DBErrors ReorderTransactions();
     bool AccountMove(std::string strFrom, std::string strTo, CAmount nAmount, std::string strComment = "");
-    bool GetAccountDestination(CTxDestination &dest, std::string strAccount, bool bForceNew = false);
+    bool GetLabelDestination(CTxDestination &dest, const std::string& label, bool bForceNew = false);
 
     void MarkDirty();
     bool AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose=true);
@@ -1007,7 +1006,7 @@ public:
     std::set< std::set<CTxDestination> > GetAddressGroupings();
     std::map<CTxDestination, CAmount> GetAddressBalances();
 
-    std::set<CTxDestination> GetAccountAddresses(const std::string& strAccount) const;
+    std::set<CTxDestination> GetLabelAddresses(const std::string& label) const;
 
     isminetype IsMine(const CTxIn& txin) const;
     /**
@@ -1037,7 +1036,7 @@ public:
 
     bool DelAddressBook(const CTxDestination& address);
 
-    const std::string& GetAccountName(const CScript& scriptPubKey) const;
+    const std::string& GetLabelName(const CScript& scriptPubKey) const;
 
     void Inventory(const uint256 &hash) override
     {
@@ -1167,7 +1166,7 @@ public:
     CTxDestination AddAndGetDestinationForScript(const CScript& script, OutputType);
 
     /** Whether a given output is spendable by this wallet */
-    bool OutputEligibleForSpending(const COutput& output, const CoinEligibilityFilter& eligibilty_filter) const;
+    bool OutputEligibleForSpending(const COutput& output, const CoinEligibilityFilter& eligibility_filter) const;
 };
 
 /** A key allocated from the key pool. */

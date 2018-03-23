@@ -209,14 +209,6 @@ bool parseUmkoinURI(const QUrl &uri, SendCoinsRecipient *out)
 
 bool parseUmkoinURI(QString uri, SendCoinsRecipient *out)
 {
-    // Convert umkoin:// to umkoin:
-    //
-    //    Cannot handle this later, because umkoin:// will cause Qt to see the part after // as host,
-    //    which will lower-case it (and thus invalidate the address).
-    if(uri.startsWith("umkoin://", Qt::CaseInsensitive))
-    {
-        uri.replace(0, 9, "umkoin:");
-    }
     QUrl uriInstance(uri);
     return parseUmkoinURI(uriInstance, out);
 }

@@ -404,7 +404,12 @@ void PaymentServer::handleURIOrFile(const QString& s)
         return;
     }
 
-    if (s.startsWith(UMKOIN_IPC_PREFIX, Qt::CaseInsensitive)) // umkoin: URI
+    if (s.startsWith("umkoin://", Qt::CaseInsensitive))
+    {
+        Q_EMIT message(tr("URI handling"), tr("'umkoin://' is not a valid URI. Use 'umkoin:' instead."),
+            CClientUIInterface::MSG_ERROR);
+    }
+    else if (s.startsWith(UMKOIN_IPC_PREFIX, Qt::CaseInsensitive)) // umkoin: URI
     {
 #if QT_VERSION < 0x050000
         QUrl uri(s);
@@ -634,8 +639,6 @@ void PaymentServer::fetchPaymentACK(CWallet* wallet, const SendCoinsRecipient& r
     payment.add_transactions(transaction.data(), transaction.size());
 
     // Create a new refund address, or re-use:
-    QString account = tr("Refund from %1").arg(recipient.authenticatedMerchant);
-    std::string strAccount = account.toStdString();
     CPubKey newKey;
     if (wallet->GetKeyFromPool(newKey)) {
         // BIP70 requests encode the scriptPubKey directly, so we are not restricted to address
@@ -646,7 +649,8 @@ void PaymentServer::fetchPaymentACK(CWallet* wallet, const SendCoinsRecipient& r
         const OutputType change_type = wallet->m_default_change_type != OutputType::NONE ? wallet->m_default_change_type : wallet->m_default_address_type;
         wallet->LearnRelatedScripts(newKey, change_type);
         CTxDestination dest = GetDestinationForKey(newKey, change_type);
-        wallet->SetAddressBook(dest, strAccount, "refund");
+        std::string label = tr("Refund from %1").arg(recipient.authenticatedMerchant).toStdString();
+        wallet->SetAddressBook(dest, label, "refund");
 
         CScript s = GetScriptForDestination(dest);
         payments::Output* refund_to = payment.add_refund_to();

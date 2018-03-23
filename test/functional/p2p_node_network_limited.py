@@ -64,7 +64,7 @@ class NodeNetworkLimitedTest(UmkoinTestFramework):
         blocks = self.nodes[1].generate(292)
         sync_blocks([self.nodes[0], self.nodes[1]])
 
-        self.log.info("Make sure we can max retrive block at tip-288.")
+        self.log.info("Make sure we can max retrieve block at tip-288.")
         node.send_getdata_for_block(blocks[1])  # last block in valid range
         node.wait_for_block(int(blocks[1], 16), timeout=3)
 
@@ -109,7 +109,7 @@ class NodeNetworkLimitedTest(UmkoinTestFramework):
         # mine 10 blocks on node 0 (pruned node)
         self.nodes[0].generate(10)
 
-        # connect node1 (non pruned) with node0 (pruned) and check if they can sync
+        # connect node1 (non pruned) with node0 (pruned) and check if the can sync
         connect_nodes_bi(self.nodes, 0, 1)
 
         # sync must be possible, node 1 is no longer in IBD and should therefore connect to node 0 (NODE_NETWORK_LIMITED)
