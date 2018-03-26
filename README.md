@@ -13,7 +13,7 @@ out collectively by the network. Umkoin Core is the name of open source
 software which enables the use of this currency.
 
 For more information, as well as an immediately useable, binary version of
-the Umkoin Core software, see http://umkoin.org/releases/.
+the Umkoin Core software, see http://umkoin.org/bin/.
 
 License
 -------
@@ -40,7 +40,7 @@ lots of money.
 
 ### Automated Testing
 
-Developers are strongly encouraged to write [unit tests](/src/test/README.md) for new code, and to
+Developers are strongly encouraged to write [unit tests](src/test/README.md) for new code, and to
 submit new unit tests for old code. Unit tests can be compiled and run
 (assuming they weren't disabled in configure) with: `make check`. Further details on running
 and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
