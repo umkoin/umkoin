@@ -105,7 +105,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000007a61eac12f0292"); //10000
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000000987c3cd5479d50415279b5134299a17ca29601e1ff7fb3352b172"); //10000
+        consensus.defaultAssumeValid = uint256S("0x000000000003ee24189c3f7eb4786dc83eb888772088ca60dd4125dd6734bfd5"); //13216
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -129,7 +129,7 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        vSeeds.emplace_back("dnsseed.umkoin.org", true); // vmta
+        vSeeds.emplace_back("dnsseed.umkoin.org"); // vmta
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
@@ -151,14 +151,15 @@ public:
                 { 2500, uint256S("0x00000000003ba8db8c59875216c5b2502291492bf442f194794aed0736434302")},
                 { 5000, uint256S("0x00000000001bdcc3946071fceb5c29ff00d3042d66c08d659d3bd96e10c61dbe")},
                 { 7500, uint256S("0x00000000003e9de0964d74bb1368bc085799b55daa52f1cdc6233b8a305b141d")},
-                { 10000, uint256S("0x00000000000987c3cd5479d50415279b5134299a17ca29601e1ff7fb3352b172")}
+                { 10000, uint256S("0x00000000000987c3cd5479d50415279b5134299a17ca29601e1ff7fb3352b172")},
+                { 13216, uint256S("0x000000000003ee24189c3f7eb4786dc83eb888772088ca60dd4125dd6734bfd5")}
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 00000000001ce2edbebfd7f354055c030972fb674c5a7827deec12f822262a8e (height 10083).
-            1519805386, // * UNIX timestamp of last known number of transactions
-            36477,      // * total number of transactions between genesis and that timestamp
+            // Data as of block 000000000003ee24189c3f7eb4786dc83eb888772088ca60dd4125dd6734bfd5 (height 13216).
+            1522132516, // * UNIX timestamp of last known number of transactions
+            48441,      // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.007       // * estimated number of transactions per second after that timestamp
         };
@@ -223,7 +224,7 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("dnsseed.umkoin.org", true); // vmta
+        vSeeds.emplace_back("dnsseed.umkoin.org"); // vmta
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
