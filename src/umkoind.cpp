@@ -29,7 +29,7 @@
  *
  * \section intro_sec Introduction
  *
- * This is the developer documentation of the reference client for an experimental new digital currency called Umkoin,
+ * This is the developer documentation of the reference client for an experimental new digital currency called Umkoin (https://www.umkoin.org/),
  * which enables instant payments to anyone, anywhere in the world. Umkoin uses peer-to-peer technology to operate
  * with no central authority: managing transactions and issuing money are carried out collectively by the network.
  *
@@ -79,7 +79,7 @@ bool AppInit(int argc, char* argv[])
             strUsage += "\n" + _("Usage:") + "\n" +
                   "  umkoind [options]                     " + strprintf(_("Start %s Daemon"), _(PACKAGE_NAME)) + "\n";
 
-            strUsage += "\n" + HelpMessage(HMM_UMKOIND);
+            strUsage += "\n" + HelpMessage(HelpMessageMode::UMKOIND);
         }
 
         fprintf(stdout, "%s", strUsage.c_str());

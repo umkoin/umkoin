@@ -623,7 +623,7 @@ int main(int argc, char *argv[])
     if (!Intro::pickDataDirectory())
         return EXIT_SUCCESS;
 
-    /// 6. Determine availability of data directory and parse umkoin.conf
+    /// 6. Determine availability of data and blocks directory and parse umkoin.conf
     /// - Do not call GetDataDir(true) before this step finishes
     if (!fs::is_directory(GetDataDir(false)))
     {
@@ -696,7 +696,7 @@ int main(int argc, char *argv[])
     // Allow parameter interaction before we create the options model
     app.parameterSetup();
     // Load GUI settings from QSettings
-    app.createOptionsModel(gArgs.IsArgSet("-resetguisettings"));
+    app.createOptionsModel(gArgs.GetBoolArg("-resetguisettings", false));
 
     // Subscribe to global signals from core
     uiInterface.InitMessage.connect(InitMessage);

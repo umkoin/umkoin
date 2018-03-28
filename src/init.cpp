@@ -333,12 +333,13 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-version", _("Print version and exit"));
     strUsage += HelpMessageOpt("-alertnotify=<cmd>", _("Execute command when a relevant alert is received or we see a really long fork (%s in cmd is replaced by message)"));
     strUsage +=HelpMessageOpt("-assumevalid=<hex>", strprintf(_("If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all, default: %s, testnet: %s)"), defaultChainParams->GetConsensus().defaultAssumeValid.GetHex(), testnetChainParams->GetConsensus().defaultAssumeValid.GetHex()));
+    strUsage += HelpMessageOpt("-blocksdir=<dir>", _("Specify blocks directory (default: <datadir>/blocks)"));
     strUsage += HelpMessageOpt("-blocknotify=<cmd>", _("Execute command when the best block changes (%s in cmd is replaced by block hash)"));
     strUsage += HelpMessageOpt("-blockreconstructionextratxn=<n>", strprintf(_("Extra transactions to keep in memory for compact block reconstructions (default: %u)"), DEFAULT_BLOCK_RECONSTRUCTION_EXTRA_TXN));
     if (showDebug)
         strUsage += HelpMessageOpt("-blocksonly", strprintf(_("Whether to operate in a blocks only mode (default: %u)"), DEFAULT_BLOCKSONLY));
     strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file. Relative paths will be prefixed by datadir location. (default: %s)"), UMKOIN_CONF_FILENAME));
-    if (mode == HMM_UMKOIND)
+    if (mode == HelpMessageMode::UMKOIND)
     {
 #if HAVE_DECL_DAEMON
         strUsage += HelpMessageOpt("-daemon", _("Run in the background as a daemon and accept commands"));
@@ -432,7 +433,7 @@ std::string HelpMessage(HelpMessageMode mode)
     {
         strUsage += HelpMessageOpt("-checkblocks=<n>", strprintf(_("How many blocks to check at startup (default: %u, 0 = all)"), DEFAULT_CHECKBLOCKS));
         strUsage += HelpMessageOpt("-checklevel=<n>", strprintf(_("How thorough the block verification of -checkblocks is (0-4, default: %u)"), DEFAULT_CHECKLEVEL));
-        strUsage += HelpMessageOpt("-checkblockindex", strprintf("Do a full consistency check for mapBlockIndex, setBlockIndexCandidates, chainActive and mapBlocksUnlinked occasionally. Also sets -checkmempool (default: %u)", defaultChainParams->DefaultConsistencyChecks()));
+        strUsage += HelpMessageOpt("-checkblockindex", strprintf("Do a full consistency check for mapBlockIndex, setBlockIndexCandidates, chainActive and mapBlocksUnlinked occasionally. (default: %u)", defaultChainParams->DefaultConsistencyChecks()));
         strUsage += HelpMessageOpt("-checkmempool=<n>", strprintf("Run checks every <n> transactions (default: %u)", defaultChainParams->DefaultConsistencyChecks()));
         strUsage += HelpMessageOpt("-checkpoints", strprintf("Disable expensive verification for known chain history (default: %u)", DEFAULT_CHECKPOINTS_ENABLED));
         strUsage += HelpMessageOpt("-disablesafemode", strprintf("Disable safemode, override a real safe mode event (default: %u)", DEFAULT_DISABLE_SAFEMODE));
@@ -594,7 +595,7 @@ void CleanupBlockRevFiles()
     // Remove the rev files immediately and insert the blk file paths into an
     // ordered map keyed by block file index.
     LogPrintf("Removing unusable blk?????.dat and rev?????.dat files for -reindex with -prune\n");
-    fs::path blocksdir = GetDataDir() / "blocks";
+    fs::path blocksdir = GetBlocksDir();
     for (fs::directory_iterator it(blocksdir); it != fs::directory_iterator(); it++) {
         if (fs::is_regular_file(*it) &&
             it->path().filename().string().length() == 12 &&
@@ -896,6 +897,10 @@ bool AppInitParameterInteraction()
     // ********************************************************* Step 2: parameter interactions
 
     // also see: InitParameterInteraction()
+
+    if (!fs::is_directory(GetBlocksDir(false))) {
+        return InitError(strprintf(_("Specified blocks directory \"%s\" does not exist.\n"), gArgs.GetArg("-blocksdir", "").c_str()));
+    }
 
     // if using block pruning, then disallow txindex
     if (gArgs.GetArg("-prune", 0)) {
@@ -1622,7 +1627,7 @@ bool AppInitMain()
 
     // ********************************************************* Step 10: import blocks
 
-    if (!CheckDiskSpace())
+    if (!CheckDiskSpace() && !CheckDiskSpace(0, true))
         return false;
 
     // Either install a handler to notify us when genesis activates, or set fHaveGenesis directly.
