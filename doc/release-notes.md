@@ -113,9 +113,15 @@ deprecated in V0.15.1, and has now been removed. Miners should use the
 `-blockmaxweight` option if they want to limit the weight of their blocks'
 weights.
 
+Python Support
+--------------
+
+Support for Python 2 has been discontinued for all test files and tools.
+
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release.
+
 
 As well as everyone that helped translating on [Transifex](https://www.transifex.com/umkoin/umkoin-core/).
