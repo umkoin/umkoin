@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef UMKOIN_UMKOINCONSENSUS_H
-#define UMKOIN_UMKOINCONSENSUS_H
+#ifndef UMKOIN_SCRIPT_UMKOINCONSENSUS_H
+#define UMKOIN_SCRIPT_UMKOINCONSENSUS_H
 
 #include <stdint.h>
 
@@ -80,4 +80,4 @@ EXPORT_SYMBOL unsigned int umkoinconsensus_version();
 
 #undef EXPORT_SYMBOL
 
-#endif // UMKOIN_UMKOINCONSENSUS_H
+#endif // UMKOIN_SCRIPT_UMKOINCONSENSUS_H

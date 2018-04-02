@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef UMKOIN_BLOCK_ENCODINGS_H
-#define UMKOIN_BLOCK_ENCODINGS_H
+#ifndef UMKOIN_BLOCKENCODINGS_H
+#define UMKOIN_BLOCKENCODINGS_H
 
 #include <primitives/block.h>
 
@@ -206,4 +206,4 @@ public:
     ReadStatus FillBlock(CBlock& block, const std::vector<CTransactionRef>& vtx_missing);
 };
 
-#endif
+#endif // UMKOIN_BLOCKENCODINGS_H

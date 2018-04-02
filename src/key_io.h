@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef UMKOIN_KEYIO_H
-#define UMKOIN_KEYIO_H
+#ifndef UMKOIN_KEY_IO_H
+#define UMKOIN_KEY_IO_H
 
 #include <chainparams.h>
 #include <key.h>
@@ -26,4 +26,4 @@ CTxDestination DecodeDestination(const std::string& str);
 bool IsValidDestinationString(const std::string& str);
 bool IsValidDestinationString(const std::string& str, const CChainParams& params);
 
-#endif // UMKOIN_KEYIO_H
+#endif // UMKOIN_KEY_IO_H

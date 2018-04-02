@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef UMKOIN_COINSELECTION_H
-#define UMKOIN_COINSELECTION_H
+#ifndef UMKOIN_WALLET_COINSELECTION_H
+#define UMKOIN_WALLET_COINSELECTION_H
 
 #include <amount.h>
 #include <primitives/transaction.h>
@@ -51,4 +51,4 @@ bool SelectCoinsBnB(std::vector<CInputCoin>& utxo_pool, const CAmount& target_va
 
 // Original coin selection algorithm as a fallback
 bool KnapsackSolver(const CAmount& nTargetValue, std::vector<CInputCoin>& vCoins, std::set<CInputCoin>& setCoinsRet, CAmount& nValueRet);
-#endif // UMKOIN_COINSELECTION_H
+#endif // UMKOIN_WALLET_COINSELECTION_H

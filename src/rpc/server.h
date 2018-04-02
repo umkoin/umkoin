@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef UMKOIN_RPCSERVER_H
-#define UMKOIN_RPCSERVER_H
+#ifndef UMKOIN_RPC_SERVER_H
+#define UMKOIN_RPC_SERVER_H
 
 #include <amount.h>
 #include <rpc/protocol.h>
@@ -206,4 +206,4 @@ std::string JSONRPCExecBatch(const JSONRPCRequest& jreq, const UniValue& vReq);
 // Retrieves any serialization flags requested in command line argument
 int RPCSerializationFlags();
 
-#endif // UMKOIN_RPCSERVER_H
+#endif // UMKOIN_RPC_SERVER_H

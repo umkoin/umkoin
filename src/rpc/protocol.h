@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef UMKOIN_RPCPROTOCOL_H
-#define UMKOIN_RPCPROTOCOL_H
+#ifndef UMKOIN_RPC_PROTOCOL_H
+#define UMKOIN_RPC_PROTOCOL_H
 
 #include <fs.h>
 
@@ -104,4 +104,4 @@ void DeleteAuthCookie();
 /** Parse JSON-RPC batch reply into a vector */
 std::vector<UniValue> JSONRPCProcessBatchReply(const UniValue &in, size_t num);
 
-#endif // UMKOIN_RPCPROTOCOL_H
+#endif // UMKOIN_RPC_PROTOCOL_H
