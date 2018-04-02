@@ -1894,7 +1894,7 @@
     <message numerus="yes">
         <location line="+4"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n hour</numerusform>
             <numerusform>%n hours</numerusform>
         </translation>
@@ -1902,7 +1902,7 @@
     <message numerus="yes">
         <location line="+4"/>
         <source>%n day(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n day</numerusform>
             <numerusform>%n days</numerusform>
         </translation>
@@ -1911,7 +1911,7 @@
         <location line="+4"/>
         <location line="+6"/>
         <source>%n week(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n week</numerusform>
             <numerusform>%n weeks</numerusform>
         </translation>
@@ -1924,7 +1924,7 @@
     <message numerus="yes">
         <location line="+0"/>
         <source>%n year(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n year</numerusform>
             <numerusform>%n years</numerusform>
         </translation>

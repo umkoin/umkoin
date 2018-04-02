@@ -58,10 +58,11 @@ Setup your transifex client config as follows. Please *ignore the token field*.
 nano ~/.transifexrc
 
 [https://www.transifex.com]
+api_hostname = https://api.transifex.com
 hostname = https://www.transifex.com
-password = PASSWORD
+password = YOUR_TRANSIFEX_API_KEY
 token =
-username = USERNAME
+username = api
 ```
 
 **For Windows**
