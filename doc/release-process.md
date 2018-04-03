@@ -34,8 +34,8 @@ If you're using the automated script (found in [contrib/gitian-build.sh](/contri
 Check out the source code in the following directory hierarchy.
 
     cd /path/to/your/toplevel/build
-    git clone https://github.com/bitcoin-core/gitian.sigs.git
-    git clone https://github.com/bitcoin-core/bitcoin-detached-sigs.git
+    git clone https://github.com/umkoin/gitian.sigs.git
+    git clone https://github.com/umkoin/umkoin-detached-sigs.git
     git clone https://github.com/devrandom/gitian-builder.git
     git clone https://github.com/umkoin/umkoin.git
 
@@ -43,10 +43,7 @@ Check out the source code in the following directory hierarchy.
 
 Write release notes. git shortlog helps a lot, for example:
 
-    git shortlog --no-merges v(current version, e.g. 0.7.2)..v(new version, e.g. 0.8.0)
-
-(or ping @wumpus on IRC, he has specific tooling to generate the list of merged pulls
-and sort them into categories based on labels)
+    git shortlog --no-merges v(current version, e.g. 0.15.0)..v(new version, e.g. 0.16.0)
 
 Generate list of authors:
 
@@ -54,7 +51,7 @@ Generate list of authors:
 
 Tag version (or release candidate) in git
 
-    git tag -s v(new version, e.g. 0.8.0)
+    git tag -s v(new version, e.g. 0.16.0)
 
 ### Setup and perform Gitian builds
 
@@ -63,8 +60,8 @@ If you're using the automated script (found in [contrib/gitian-build.sh](/contri
 Setup Gitian descriptors:
 
     pushd ./umkoin
-    export SIGNER=(your Gitian key, ie bluematt, sipa, etc)
-    export VERSION=(new version, e.g. 0.8.0)
+    export SIGNER=(your Gitian key, ie sipa, vmta, etc)
+    export VERSION=(new version, e.g. 0.16.0)
     git fetch
     git checkout v${VERSION}
     popd
@@ -195,7 +192,7 @@ Codesigner only: Commit the detached codesign payloads:
 Non-codesigners: wait for Windows/OS X detached signatures:
 
 - Once the Windows/OS X builds each have 3 matching signatures, they will be signed with their respective release keys.
-- Detached signatures will then be committed to the [umkoin-detached-sigs](https://github.com/umkoin-core/umkoin-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
+- Detached signatures will then be committed to the [umkoin-detached-sigs](https://github.com/umkoin/umkoin-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
 
 Create (and optionally verify) the signed OS X binary:
 

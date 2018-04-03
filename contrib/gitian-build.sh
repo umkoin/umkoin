@@ -21,7 +21,7 @@ proc=2
 mem=2000
 lxc=true
 osslTarUrl=http://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.7.1.tar.gz
-osslPatchUrl=https://bitcoincore.org/cfields/osslsigncode-Backports-to-1.7.1.patch
+osslPatchUrl=http://umkoin.org/cfields/osslsigncode-Backports-to-1.7.1.patch
 scriptName=$(basename -- "$0")
 signProg="gpg --detach-sign"
 commitFiles=true
@@ -229,8 +229,8 @@ echo ${COMMIT}
 if [[ $setup = true ]]
 then
     sudo apt-get install ruby apache2 git apt-cacher-ng python-vm-builder qemu-kvm qemu-utils
-    git clone https://github.com/bitcoin-core/gitian.sigs.git
-    git clone https://github.com/bitcoin-core/bitcoin-detached-sigs.git
+    git clone https://github.com/umkoin/gitian.sigs.git
+    git clone https://github.com/umkoin/umkoin-detached-sigs.git
     git clone https://github.com/devrandom/gitian-builder.git
     pushd ./gitian-builder
     if [[ -n "$USE_LXC" ]]
@@ -328,10 +328,10 @@ then
 	echo "Verifying v${VERSION} Windows"
 	echo ""
 	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../umkoin/contrib/gitian-descriptors/gitian-win.yml
-	# Mac OSX	
+	# Mac OSX
 	echo ""
 	echo "Verifying v${VERSION} Mac OSX"
-	echo ""	
+	echo ""
 	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../umkoin/contrib/gitian-descriptors/gitian-osx.yml
 	# Signed Windows
 	echo ""
@@ -342,14 +342,14 @@ then
 	echo ""
 	echo "Verifying v${VERSION} Signed Mac OSX"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml	
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml
 	popd
 fi
 
 # Sign binaries
 if [[ $sign = true ]]
 then
-	
+
         pushd ./gitian-builder
 	# Sign Windows
 	if [[ $windows = true ]]

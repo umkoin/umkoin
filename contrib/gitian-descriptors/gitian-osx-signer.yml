@@ -7,7 +7,7 @@ architectures:
 packages:
 - "faketime"
 remotes:
-- "url": "https://github.com/umkoin-core/umkoin-detached-sigs.git"
+- "url": "https://github.com/umkoin/umkoin-detached-sigs.git"
   "dir": "signature"
 files:
 - "umkoin-osx-unsigned.tar.gz"

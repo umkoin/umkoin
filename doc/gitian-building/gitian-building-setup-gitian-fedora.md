@@ -80,8 +80,8 @@ Clone the git repositories for umkoin and Gitian.
 ```bash
 git clone https://github.com/devrandom/gitian-builder.git
 git clone https://github.com/umkoin/umkoin
-git clone https://github.com/bitcoin-core/gitian.sigs.git
-git clone https://github.com/bitcoin-core/bitcoin-detached-sigs.git
+git clone https://github.com/umkoin/gitian.sigs.git
+git clone https://github.com/umkoin/umkoin-detached-sigs.git
 ```
 
 Setting up the Gitian image

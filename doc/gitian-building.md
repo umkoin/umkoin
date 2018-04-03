@@ -161,10 +161,10 @@ Then when building, override the remote URLs that gbuild would otherwise pull fr
 ```bash
 
 cd /some/root/path/
-git clone https://github.com/bitcoin-core/bitcoin-detached-sigs.git
+git clone https://github.com/umkoin/umkoin-detached-sigs.git
 
 BTCPATH=/some/root/path/umkoin
-SIGPATH=/some/root/path/bitcoin-detached-sigs
+SIGPATH=/some/root/path/umkoin-detached-sigs
 
 ./bin/gbuild --url umkoin=${BTCPATH},signature=${SIGPATH} ../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml
 ```
@@ -193,5 +193,5 @@ Uploading signatures
 ---------------------
 
 After building and signing you can push your signatures (both the `.assert` and `.assert.sig` files) to the
-[bitcoin-core/gitian.sigs](https://github.com/bitcoin-core/gitian.sigs/) repository, or if that's not possible create a pull
+[umkoin/gitian.sigs](https://github.com/umkoin/gitian.sigs/) repository, or if that's not possible create a pull
 request.
