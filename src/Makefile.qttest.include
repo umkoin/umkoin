@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2017 The Bitcoin Core developers
+# Copyright (c) 2013-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -52,7 +52,7 @@ nodist_qt_test_test_umkoin_qt_SOURCES = $(TEST_QT_MOC_CPP)
 
 qt_test_test_umkoin_qt_LDADD = $(LIBUMKOINQT) $(LIBUMKOIN_SERVER)
 if ENABLE_WALLET
-qt_test_test_umkoin_qt_LDADD += $(LIBUMKOIN_WALLET)
+qt_test_test_umkoin_qt_LDADD += $(LIBUMKOIN_UTIL) $(LIBUMKOIN_WALLET)
 endif
 if ENABLE_ZMQ
 qt_test_test_umkoin_qt_LDADD += $(LIBUMKOIN_ZMQ) $(ZMQ_LIBS)

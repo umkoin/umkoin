@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2017 The Bitcoin Core developers
+# Copyright (c) 2013-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -402,7 +402,7 @@ if TARGET_WINDOWS
 endif
 qt_umkoin_qt_LDADD = qt/libumkoinqt.a $(LIBUMKOIN_SERVER)
 if ENABLE_WALLET
-qt_umkoin_qt_LDADD += $(LIBUMKOIN_WALLET)
+qt_umkoin_qt_LDADD += $(LIBUMKOIN_UTIL) $(LIBUMKOIN_WALLET)
 endif
 if ENABLE_ZMQ
 qt_umkoin_qt_LDADD += $(LIBUMKOIN_ZMQ) $(ZMQ_LIBS)
@@ -411,7 +411,7 @@ qt_umkoin_qt_LDADD += $(LIBUMKOIN_CLI) $(LIBUMKOIN_COMMON) $(LIBUMKOIN_UTIL) $(L
   $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(PROTOBUF_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(LIBSECP256K1) \
   $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
 qt_umkoin_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-qt_umkoin_qt_LIBTOOLFLAGS = --tag CXX
+qt_umkoin_qt_LIBTOOLFLAGS = $(AM_LIBTOOLFLAGS) --tag CXX
 
 #locale/foo.ts -> locale/foo.qm
 QT_QM=$(QT_TS:.ts=.qm)

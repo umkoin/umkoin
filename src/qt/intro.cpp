@@ -12,6 +12,7 @@
 
 #include <qt/guiutil.h>
 
+#include <interface/node.h>
 #include <util.h>
 
 #include <QFileDialog>
@@ -126,7 +127,7 @@ Intro::Intro(QWidget *parent) :
     ui->lblExplanation1->setText(ui->lblExplanation1->text()
         .arg(tr(PACKAGE_NAME))
         .arg(BLOCK_CHAIN_SIZE)
-        .arg(2017)
+        .arg(2009)
         .arg(tr("Umkoin"))
     );
     ui->lblExplanation2->setText(ui->lblExplanation2->text().arg(tr(PACKAGE_NAME)));
@@ -186,7 +187,7 @@ QString Intro::getDefaultDataDirectory()
     return GUIUtil::boostPathToQString(GetDefaultDataDir());
 }
 
-bool Intro::pickDataDirectory()
+bool Intro::pickDataDirectory(interface::Node& node)
 {
     QSettings settings;
     /* If data directory provided on command line, no need to look at settings
@@ -233,8 +234,9 @@ bool Intro::pickDataDirectory()
      * override -datadir in the umkoin.conf file in the default data directory
      * (to be consistent with umkoind behavior)
      */
-    if(dataDir != getDefaultDataDirectory())
-        gArgs.SoftSetArg("-datadir", GUIUtil::qstringToBoostPath(dataDir).string()); // use OS locale for path setting
+    if(dataDir != getDefaultDataDirectory()) {
+        node.softSetArg("-datadir", GUIUtil::qstringToBoostPath(dataDir).string()); // use OS locale for path setting
+    }
     return true;
 }
 
