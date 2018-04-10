@@ -36,7 +36,7 @@ Represents the main window of the Umkoin UI.
 
 ### \*model.(h/cpp)
 
-The model. When it has a corresponding controller, it generally inherits from  [QAbstractTableModel](http://doc.qt.io/qt-5/qabstracttablemodel.html). Models that are used by controllers as helpers inherit from other QT classes like [QValidator](http://doc.qt.io/qt-5/qvalidator.html).
+The model. When it has a corresponding controller, it generally inherits from  [QAbstractTableModel](http://doc.qt.io/qt-5/qabstracttablemodel.html). Models that are used by controllers as helpers inherit from other Qt classes like [QValidator](http://doc.qt.io/qt-5/qvalidator.html).
 
 ClientModel is used by the main application `umkoingui` and several models like `peertablemodel`.
 
@@ -60,7 +60,7 @@ Represents the view to a single wallet.
 
 * UI elements like UmkoinAmountField, which inherit from QWidget.
 * `umkoinstrings.cpp`: automatically generated
-* `umkoinunits.(h/cpp)`: BTC / mBTC / etc handling
+* `umkoinunits.(h/cpp)`: UMK / mUMK / etc handling
 * `callback.h`
 * `guiconstants.h`: UI colors, app name, etc
 * `guiutil.h`: several helper functions
@@ -69,7 +69,7 @@ Represents the view to a single wallet.
 
 ## Contribute
 
-See [CONTRIBUTING.md](/CONTRIBUTING.md) for general guidelines. Specifically for QT:
+See [CONTRIBUTING.md](/CONTRIBUTING.md) for general guidelines. Specifically for Qt:
 
 * don't change `local/umkoin_en.ts`; this happens [automatically](/doc/translation_process.md#writing-code-with-translations)
 
@@ -83,7 +83,7 @@ Uncheck everything except Qt Creator during the installation process.
 
 Instructions for OSX:
 
-1. Make sure you installed everything through Homebrew mentioned in the [OSX build instructions](/docs/build-osx.md)
+1. Make sure you installed everything through Homebrew mentioned in the [OSX build instructions](/doc/build-osx.md)
 2. Use `./configure` with the `--enable-debug` flag
 3. In Qt Creator do "New Project" -> Import Project -> Import Existing Project
 4. Enter "umkoin-qt" as project name, enter src/qt as location

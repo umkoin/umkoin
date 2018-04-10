@@ -105,9 +105,9 @@ UMKOIN_CORE_H = \
   httpserver.h \
   indirectmap.h \
   init.h \
-  interface/handler.h \
-  interface/node.h \
-  interface/wallet.h \
+  interfaces/handler.h \
+  interfaces/node.h \
+  interfaces/wallet.h \
   key.h \
   key_io.h \
   keystore.h \
@@ -172,7 +172,6 @@ UMKOIN_CORE_H = \
   wallet/db.h \
   wallet/feebumper.h \
   wallet/fees.h \
-  wallet/init.h \
   wallet/rpcwallet.h \
   wallet/wallet.h \
   wallet/walletdb.h \
@@ -249,7 +248,7 @@ endif
 libumkoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_wallet_a_SOURCES = \
-  interface/wallet.cpp \
+  interfaces/wallet.cpp \
   wallet/crypter.cpp \
   wallet/db.cpp \
   wallet/feebumper.cpp \
@@ -317,6 +316,7 @@ libumkoin_consensus_a_SOURCES = \
   script/script_error.cpp \
   script/script_error.h \
   serialize.h \
+  span.h \
   tinyformat.h \
   uint256.cpp \
   uint256.h \
@@ -362,8 +362,8 @@ libumkoin_util_a_SOURCES = \
   compat/glibcxx_sanity.cpp \
   compat/strnlen.cpp \
   fs.cpp \
-  interface/handler.cpp \
-  interface/node.cpp \
+  interfaces/handler.cpp \
+  interfaces/node.cpp \
   random.cpp \
   rpc/protocol.cpp \
   rpc/util.cpp \

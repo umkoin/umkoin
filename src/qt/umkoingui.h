@@ -33,7 +33,7 @@ class WalletModel;
 class HelpMessageDialog;
 class ModalOverlay;
 
-namespace interface {
+namespace interfaces {
 class Handler;
 class Node;
 }
@@ -56,7 +56,7 @@ class UmkoinGUI : public QMainWindow
 public:
     static const std::string DEFAULT_UIPLATFORM;
 
-    explicit UmkoinGUI(interface::Node& node, const PlatformStyle *platformStyle, const NetworkStyle *networkStyle, QWidget *parent = 0);
+    explicit UmkoinGUI(interfaces::Node& node, const PlatformStyle *platformStyle, const NetworkStyle *networkStyle, QWidget *parent = 0);
     ~UmkoinGUI();
 
     /** Set the client model.
@@ -83,9 +83,9 @@ protected:
     bool eventFilter(QObject *object, QEvent *event);
 
 private:
-    interface::Node& m_node;
-    std::unique_ptr<interface::Handler> m_handler_message_box;
-    std::unique_ptr<interface::Handler> m_handler_question;
+    interfaces::Node& m_node;
+    std::unique_ptr<interfaces::Handler> m_handler_message_box;
+    std::unique_ptr<interfaces::Handler> m_handler_question;
     ClientModel *clientModel;
     WalletFrame *walletFrame;
 

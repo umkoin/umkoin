@@ -41,7 +41,28 @@ TEST_EXIT_PASSED = 0
 TEST_EXIT_FAILED = 1
 TEST_EXIT_SKIPPED = 77
 
-class UmkoinTestFramework():
+
+class UmkoinTestMetaClass(type):
+    """Metaclass for UmkoinTestFramework.
+
+    Ensures that any attempt to register a subclass of `UmkoinTestFramework`
+    adheres to a standard whereby the subclass overrides `set_test_params` and
+    `run_test` but DOES NOT override either `__init__` or `main`. If any of
+    those standards are violated, a ``TypeError`` is raised."""
+
+    def __new__(cls, clsname, bases, dct):
+        if not clsname == 'UmkoinTestFramework':
+            if not ('run_test' in dct and 'set_test_params' in dct):
+                raise TypeError("UmkoinTestFramework subclasses must override "
+                                "'run_test' and 'set_test_params'")
+            if '__init__' in dct or 'main' in dct:
+                raise TypeError("UmkoinTestFramework subclasses may not override "
+                                "'__init__' or 'main'")
+
+        return super().__new__(cls, clsname, bases, dct)
+
+
+class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
     """Base class for a umkoin test script.
 
     Individual umkoin test scripts should subclass this class and override the set_test_params() and run_test() methods.
@@ -148,6 +169,8 @@ class UmkoinTestFramework():
             if self.nodes:
                 self.stop_nodes()
         else:
+            for node in self.nodes:
+                node.cleanup_on_exit = False
             self.log.info("Note: umkoinds were not stopped and may still be running")
 
         if not self.options.nocleanup and not self.options.noshutdown and success != TestStatus.FAILED:
@@ -431,6 +454,7 @@ class UmkoinTestFramework():
         Useful if a test case wants complete control over initialization."""
         for i in range(self.num_nodes):
             initialize_datadir(self.options.tmpdir, i)
+
 
 class SkipTest(Exception):
     """This exception is raised to skip a test"""
