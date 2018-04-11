@@ -331,7 +331,7 @@ BOOST_AUTO_TEST_CASE(test_CheckQueue_Memory)
                 control.Add(vChecks);
             }
         }
-        BOOST_REQUIRE_EQUAL(MemoryCheck::fake_allocated_memory, 0);
+        BOOST_REQUIRE_EQUAL(MemoryCheck::fake_allocated_memory, 0U);
     }
     tg.interrupt_all();
     tg.join_all();
@@ -406,10 +406,10 @@ BOOST_AUTO_TEST_CASE(test_CheckQueueControl_Locks)
         boost::thread_group tg;
         std::mutex m;
         std::condition_variable cv;
-        bool has_lock {false};
-        bool has_tried {false};
-        bool done {false};
-        bool done_ack {false};
+        bool has_lock{false};
+        bool has_tried{false};
+        bool done{false};
+        bool done_ack{false};
         {
             std::unique_lock<std::mutex> l(m);
             tg.create_thread([&]{
