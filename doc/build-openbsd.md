@@ -23,25 +23,21 @@ git clone https://github.com/umkoin/umkoin.git
 
 See [dependencies.md](dependencies.md) for a complete overview.
 
-GCC
--------
-
-The default C++ compiler that comes with OpenBSD 6.2 is g++ 4.2.1. This version is old (from 2007), and is not able to compile the current version of Umkoin Core because it has no C++11 support. We'll install a newer version of GCC:
-
-```bash
- pkg_add g++
- ```
-
- This compiler will not overwrite the system compiler, it will be installed as `egcc` and `eg++` in `/usr/local/bin`.
+**Important**: From OpenBSD 6.2 onwards a C++11-supporting clang compiler is
+part of the base image, and while building it is necessary to make sure that this
+compiler is used and not ancient g++ 4.2.1. This is done by appending
+`CC=cc CXX=c++` to configuration commands. Mixing different compilers
+within the same executable will result in linker errors.
 
 ### Building BerkeleyDB
 
-BerkeleyDB is only necessary for the wallet functionality. To skip this, pass `--disable-wallet` to `./configure`.
+BerkeleyDB is only necessary for the wallet functionality. To skip this, pass
+`--disable-wallet` to `./configure` and skip to the next section.
 
 It is recommended to use Berkeley DB 4.8. You cannot use the BerkeleyDB library
 from ports, for the same reason as boost above (g++/libstd++ incompatibility).
 If you have to build it yourself, you can use [the installation script included
-in contrib/](contrib/install_db4.sh) like so
+in contrib/](/contrib/install_db4.sh) like so
 
 ```shell
 ./contrib/install_db4.sh `pwd` CC=cc CXX=c++
@@ -82,13 +78,23 @@ gmake # use -jX here for parallelism
 gmake check
 ```
 
-Clang
-------------------------------
+Resource limits
+-------------------
 
-```bash
-pkg_add llvm
+If the build runs into out-of-memory errors, the instructions in this section
+might help.
 
-./configure --disable-wallet --with-gui=no CC=clang CXX=clang++
-gmake # use -jX here for parallelism
-gmake check
-```
+The standard ulimit restrictions in OpenBSD are very strict:
+
+    data(kbytes)         1572864
+
+This, unfortunately, in some cases not enough to compile some `.cpp` files in the project,
+(see issue [#6658](https://github.com/bitcoin/bitcoin/issues/6658)).
+If your user is in the `staff` group the limit can be raised with:
+
+    ulimit -d 3000000
+
+The change will only affect the current shell and processes spawned by it. To
+make the change system-wide, change `datasize-cur` and `datasize-max` in
+`/etc/login.conf`, and reboot.
+

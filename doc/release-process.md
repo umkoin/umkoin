@@ -112,16 +112,16 @@ The gbuild invocations below <b>DO NOT DO THIS</b> by default.
 
     pushd ./gitian-builder
     ./bin/gbuild --num-make 2 --memory 3000 --commit umkoin=v${VERSION} ../umkoin/contrib/gitian-descriptors/gitian-linux.yml
-    ./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-linux.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-linux --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-linux.yml
     mv build/out/umkoin-*.tar.gz build/out/src/umkoin-*.tar.gz ../
 
     ./bin/gbuild --num-make 2 --memory 3000 --commit umkoin=v${VERSION} ../umkoin/contrib/gitian-descriptors/gitian-win.yml
-    ./bin/gsign --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-win.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-win.yml
     mv build/out/umkoin-*-win-unsigned.tar.gz inputs/umkoin-win-unsigned.tar.gz
     mv build/out/umkoin-*.zip build/out/umkoin-*.exe ../
 
     ./bin/gbuild --num-make 2 --memory 3000 --commit umkoin=v${VERSION} ../umkoin/contrib/gitian-descriptors/gitian-osx.yml
-    ./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-osx.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-osx.yml
     mv build/out/umkoin-*-osx-unsigned.tar.gz inputs/umkoin-osx-unsigned.tar.gz
     mv build/out/umkoin-*.tar.gz build/out/umkoin-*.dmg ../
     popd
@@ -151,9 +151,9 @@ Verify the signatures
 Commit your signature to gitian.sigs:
 
     pushd gitian.sigs
-    git add ${VERSION}-linux/${SIGNER}
-    git add ${VERSION}-win-unsigned/${SIGNER}
-    git add ${VERSION}-osx-unsigned/${SIGNER}
+    git add ${VERSION}-linux/"${SIGNER}"
+    git add ${VERSION}-win-unsigned/"${SIGNER}"
+    git add ${VERSION}-osx-unsigned/"${SIGNER}"
     git commit -a
     git push  # Assuming you can push to the gitian.sigs tree
     popd
@@ -198,7 +198,7 @@ Create (and optionally verify) the signed OS X binary:
 
     pushd ./gitian-builder
     ./bin/gbuild -i --commit signature=v${VERSION} ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml
-    ./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml
     ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml
     mv build/out/umkoin-osx-signed.dmg ../umkoin-${VERSION}-osx.dmg
     popd
@@ -207,7 +207,7 @@ Create (and optionally verify) the signed Windows binaries:
 
     pushd ./gitian-builder
     ./bin/gbuild -i --commit signature=v${VERSION} ../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml
-    ./bin/gsign --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml
     ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml
     mv build/out/umkoin-*win64-setup.exe ../umkoin-${VERSION}-win64-setup.exe
     mv build/out/umkoin-*win32-setup.exe ../umkoin-${VERSION}-win32-setup.exe
@@ -216,8 +216,8 @@ Create (and optionally verify) the signed Windows binaries:
 Commit your signature for the signed OS X/Windows binaries:
 
     pushd gitian.sigs
-    git add ${VERSION}-osx-signed/${SIGNER}
-    git add ${VERSION}-win-signed/${SIGNER}
+    git add ${VERSION}-osx-signed/"${SIGNER}"
+    git add ${VERSION}-win-signed/"${SIGNER}"
     git commit -a
     git push  # Assuming you can push to the gitian.sigs tree
     popd

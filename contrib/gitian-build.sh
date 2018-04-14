@@ -328,10 +328,10 @@ then
 	echo "Verifying v${VERSION} Windows"
 	echo ""
 	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../umkoin/contrib/gitian-descriptors/gitian-win.yml
-	# Mac OSX
+	# Mac OSX	
 	echo ""
 	echo "Verifying v${VERSION} Mac OSX"
-	echo ""
+	echo ""	
 	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../umkoin/contrib/gitian-descriptors/gitian-osx.yml
 	# Signed Windows
 	echo ""
@@ -342,14 +342,14 @@ then
 	echo ""
 	echo "Verifying v${VERSION} Signed Mac OSX"
 	echo ""
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml	
 	popd
 fi
 
 # Sign binaries
 if [[ $sign = true ]]
 then
-
+	
         pushd ./gitian-builder
 	# Sign Windows
 	if [[ $windows = true ]]

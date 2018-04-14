@@ -2,15 +2,18 @@ UNIX BUILD NOTES
 ====================
 Some notes on how to build Umkoin Core in Unix.
 
-(For BSD specific instructions, see [build-openbsd.md](build-openbsd.md) and/or [build-netbsd.md](build-netbsd.md))
+(For BSD specific instructions, see [build-openbsd.md](build-openbsd.md) and/or
+[build-netbsd.md](build-netbsd.md))
 
 Note
 ---------------------
-Always use absolute paths to configure and compile umkoin and the dependencies, for example, when specifying the path of the dependency:
+Always use absolute paths to configure and compile umkoin and the dependencies,
+for example, when specifying the path of the dependency:
 
 	../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
 
-Here BDB_PREFIX must be an absolute path - it is defined using $(pwd) which ensures the usage of the absolute path.
+Here BDB_PREFIX must be an absolute path - it is defined using $(pwd) which ensures
+the usage of the absolute path.
 
 To Build
 ---------------------
@@ -52,10 +55,13 @@ For the versions used, see [dependencies.md](dependencies.md)
 Memory Requirements
 --------------------
 
-C++ compilers are memory-hungry. It is recommended to have at least 1.5 GB of memory available when compiling Umkoin Core. On systems with less, gcc can be tuned to conserve memory with additional CXXFLAGS:
+C++ compilers are memory-hungry. It is recommended to have at least 1.5 GB of
+memory available when compiling Umkoin Core. On systems with less, gcc can be
+tuned to conserve memory with additional CXXFLAGS:
 
 
     ./configure CXXFLAGS="--param ggc-min-expand=1 --param ggc-min-heapsize=32768"
+
 
 ## Linux Distribution Specific Instructions
 
@@ -69,7 +75,9 @@ Build requirements:
 
 Options when installing required Boost library files:
 
-1. On at least Ubuntu 14.04+ and Debian 7+ there are generic names for the individual boost development packages, so the following can be used to only install necessary parts of boost:
+1. On at least Ubuntu 14.04+ and Debian 7+ there are generic names for the
+individual boost development packages, so the following can be used to only
+install necessary parts of boost:
 
         sudo apt-get install libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev
 
@@ -91,10 +99,12 @@ ZMQ dependencies (provides ZMQ API 4.x):
 
     sudo apt-get install libzmq3-dev
 
-Dependencies for the GUI: Ubuntu & Debian
------------------------------------------
+#### Dependencies for the GUI
 
-If you want to build Umkoin-Qt, make sure that the required packages for Qt development are installed. Either Qt 5 or Qt 4 are necessary to build the GUI. If both Qt 4 and Qt 5 are installed, Qt 5 will be used. Pass `--with-gui=qt4` to configure to choose Qt4. To build without GUI pass `--without-gui`.
+If you want to build Umkoin-Qt, make sure that the required packages for Qt development
+are installed. Either Qt 5 or Qt 4 are necessary to build the GUI.
+If both Qt 4 and Qt 5 are installed, Qt 5 will be used. Pass `--with-gui=qt4` to configure to choose Qt4.
+To build without GUI pass `--without-gui`.
 
 To build with Qt 5 (recommended) you need the following:
 
@@ -108,7 +118,9 @@ libqrencode (optional) can be installed with:
 
     sudo apt-get install libqrencode-dev
 
-Once these are installed, they will be found by configure and a umkoin-qt executable will be built by default.
+Once these are installed, they will be found by configure and a umkoin-qt executable will be
+built by default.
+
 
 ### Fedora
 
@@ -132,20 +144,27 @@ libqrencode (optional) can be installed with:
 
 Notes
 -----
-The release is built with GCC and then "strip umkoind" to strip the debug symbols, which reduces the executable size by about 90%.
+The release is built with GCC and then "strip umkoind" to strip the debug
+symbols, which reduces the executable size by about 90%.
+
 
 miniupnpc
 ---------
 
-[miniupnpc](http://miniupnp.free.fr/) may be used for UPnP port mapping.  It can be downloaded from [here](http://miniupnp.tuxfamily.org/files/).  UPnP support is compiled in and turned off by default.  See the configure options for upnp behavior desired:
+[miniupnpc](http://miniupnp.free.fr/) may be used for UPnP port mapping.  It can be downloaded from [here](
+http://miniupnp.tuxfamily.org/files/).  UPnP support is compiled in and
+turned off by default.  See the configure options for upnp behavior desired:
 
 	--without-miniupnpc      No UPnP support miniupnp not required
 	--disable-upnp-default   (the default) UPnP support turned off by default at runtime
 	--enable-upnp-default    UPnP support turned on by default at runtime
 
+
 Berkeley DB
 -----------
-It is recommended to use Berkeley DB 4.8. If you have to build it yourself, you can use [the installation script included in contrib/](/contrib/install_db4.sh) like so
+It is recommended to use Berkeley DB 4.8. If you have to build it yourself,
+you can use [the installation script included in contrib/](/contrib/install_db4.sh)
+like so
 
 ```shell
 ./contrib/install_db4.sh `pwd`
@@ -163,6 +182,7 @@ If you need to build Boost yourself:
 	./bootstrap.sh
 	./bjam install
 
+
 Security
 --------
 To help make your umkoin installation more secure by making certain attacks impossible to
@@ -173,6 +193,7 @@ Hardening Flags:
 
 	./configure --enable-hardening
 	./configure --disable-hardening
+
 
 Hardening enables the following features:
 
@@ -192,7 +213,7 @@ Hardening enables the following features:
 
     The output should contain:
 
-        TYPE
+     TYPE
     ET_DYN
 
 * Non-executable Stack
@@ -212,20 +233,23 @@ Hardening enables the following features:
     The STK RW- means that the stack is readable and writeable but not executable.
 
 Disable-wallet mode
--------------------
-When the intention is to run only a P2P node without a wallet, umkoin may be compiled in disable-wallet mode with:
+--------------------
+When the intention is to run only a P2P node without a wallet, umkoin may be compiled in
+disable-wallet mode with:
 
     ./configure --disable-wallet
 
 In this case there is no dependency on Berkeley DB 4.8.
 
-Mining is also possible in disable-wallet mode, but only using the `getblocktemplate` RPC call not `getwork`.
+Mining is also possible in disable-wallet mode, but only using the `getblocktemplate` RPC
+call not `getwork`.
 
 Additional Configure Flags
 --------------------------
 A list of additional configure flags can be displayed with:
 
     ./configure --help
+
 
 Setup and Build Example: Arch Linux
 -----------------------------------
@@ -239,13 +263,21 @@ This example lists the steps necessary to setup and build a command line only, n
     make check
 
 Note:
-Enabling wallet support requires either compiling against a Berkeley DB newer than 4.8 (package `db`) using `--with-incompatible-bdb`, or building and depending on a local version of Berkeley DB 4.8. The readily available Arch Linux packages are currently built using `--with-incompatible-bdb`. As mentioned above, when maintaining portability of the wallet between the standard Umkoin Core distributions and independently built node software is desired, Berkeley DB 4.8 must be used.
+Enabling wallet support requires either compiling against a Berkeley DB newer than 4.8 (package `db`) using `--with-incompatible-bdb`,
+or building and depending on a local version of Berkeley DB 4.8. The readily available Arch Linux packages are currently built using
+`--with-incompatible-bdb` according to the [PKGBUILD](https://projects.archlinux.org/svntogit/community.git/tree/umkoin/trunk/PKGBUILD).
+As mentioned above, when maintaining portability of the wallet between the standard Umkoin Core distributions and independently built
+node software is desired, Berkeley DB 4.8 must be used.
+
 
 ARM Cross-compilation
----------------------
-These steps can be performed on, for example, an Ubuntu VM. The depends system will also work on other Linux distributions, however the commands for installing the toolchain will be different.
+-------------------
+These steps can be performed on, for example, an Ubuntu VM. The depends system
+will also work on other Linux distributions, however the commands for
+installing the toolchain will be different.
 
-Make sure you install the build requirements mentioned above. Then, install the toolchain and curl:
+Make sure you install the build requirements mentioned above.
+Then, install the toolchain and curl:
 
     sudo apt-get install g++-arm-linux-gnueabihf curl
 
@@ -257,20 +289,23 @@ To build executables for ARM:
     ./configure --prefix=$PWD/depends/arm-linux-gnueabihf --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++
     make
 
+
 For further documentation on the depends system see [README.md](../depends/README.md) in the depends directory.
 
 Building on FreeBSD
--------------------
+--------------------
 
 (Updated as of FreeBSD 11.0)
 
-Clang is installed by default as `cc` compiler, this makes it easier to get started than on [OpenBSD](build-openbsd.md). Installing dependencies:
+Clang is installed by default as `cc` compiler, this makes it easier to get
+started than on [OpenBSD](build-openbsd.md). Installing dependencies:
 
     pkg install autoconf automake libtool pkgconf
     pkg install boost-libs openssl libevent
     pkg install gmake
 
-You need to use GNU make (`gmake`) instead of `make`. (`libressl` instead of `openssl` will also work)
+You need to use GNU make (`gmake`) instead of `make`.
+(`libressl` instead of `openssl` will also work)
 
 For the wallet (optional):
 
@@ -284,4 +319,6 @@ Then build using:
     ./configure BDB_CFLAGS="-I${BDB_PREFIX}/include" BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx"
     gmake
 
-*Note on debugging*: The version of `gdb` installed by default is [ancient and considered harmful](https://wiki.freebsd.org/GdbRetirement . It is not suitable for debugging a multi-threaded C++ program, not even for getting backtraces. Please install the package `gdb` and use the versioned gdb command e.g. `gdb7111`.
+*Note on debugging*: The version of `gdb` installed by default is [ancient and considered harmful](https://wiki.freebsd.org/GdbRetirement).
+It is not suitable for debugging a multi-threaded C++ program, not even for getting backtraces. Please install the package `gdb` and
+use the versioned gdb command e.g. `gdb7111`.

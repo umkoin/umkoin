@@ -6,10 +6,10 @@ BUILDDIR=${BUILDDIR:-$TOPDIR}
 BINDIR=${BINDIR:-$BUILDDIR/src}
 MANDIR=${MANDIR:-$TOPDIR/doc/man}
 
-UMKOIND=${UMKOIND:-$SRCDIR/umkoind}
-UMKOINCLI=${UMKOINCLI:-$SRCDIR/umkoin-cli}
-UMKOINTX=${UMKOINTX:-$SRCDIR/umkoin-tx}
-UMKOINQT=${UMKOINQT:-$SRCDIR/qt/umkoin-qt}
+UMKOIND=${UMKOIND:-$BINDIR/umkoind}
+UMKOINCLI=${UMKOINCLI:-$BINDIR/umkoin-cli}
+UMKOINTX=${UMKOINTX:-$BINDIR/umkoin-tx}
+UMKOINQT=${UMKOINQT:-$BINDIR/qt/umkoin-qt}
 
 [ ! -x $UMKOIND ] && echo "$UMKOIND not found or not executable." && exit 1
 

@@ -15,7 +15,7 @@ Task-number: QTBUG-63401
 Change-Id: Ife64dff767cf6d3f4b839fc53ec486181c176bf3
 (cherry-picked from 861544583511d4e6f7745d2339b26ff1cd44132b)
 Reviewed-by: Timur Pocheptsov <timur.pocheptsov@qt.io>
-Reviewed-by: Tor Arne VestbГѓВё <tor.arne.vestbo@qt.io>
+Reviewed-by: Tor Arne VestbÃ¸ <tor.arne.vestbo@qt.io>
 ---
  src/plugins/platforms/cocoa/qcocoahelpers.h  |  2 +-
  src/plugins/platforms/cocoa/qcocoahelpers.mm | 13 +------------

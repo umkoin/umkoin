@@ -94,6 +94,7 @@ check ownership and permissions and make it executable.  Test it with
 `rc-update add umkoind`
 
 ### Upstart (for Debian/Ubuntu based distributions)
+
 Upstart is the default init system for Debian/Ubuntu versions older than 15.04. If you are using version 15.04 or newer and haven't manually configured upstart you should follow the systemd instructions instead.
 
 Drop umkoind.conf in /etc/init.  Test by running `service umkoind start`

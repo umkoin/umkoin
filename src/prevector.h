@@ -267,8 +267,6 @@ public:
     }
 
     prevector(const prevector<N, T, Size, Diff>& other) : _size(0) {
-        change_capacity(other.size());
-        const_iterator it = other.begin();
         size_type n = other.size();
         change_capacity(n);
         _size += n;
