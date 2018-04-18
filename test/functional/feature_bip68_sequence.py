@@ -53,7 +53,7 @@ class BIP68Test(UmkoinTestFramework):
     def test_disable_flag(self):
         # Create some unconfirmed inputs
         new_addr = self.nodes[0].getnewaddress()
-        self.nodes[0].sendtoaddress(new_addr, 2) # send 2 UMK         utxos = self.nodes[0].listunspent(0, 0)
+        self.nodes[0].sendtoaddress(new_addr, 2) # send 2 UMK
 
         utxos = self.nodes[0].listunspent(0, 0)
         assert(len(utxos) > 0)
@@ -129,7 +129,7 @@ class BIP68Test(UmkoinTestFramework):
 
             # Track whether any sequence locks used should fail
             should_pass = True
-            
+
             # Track whether this transaction was built with sequence locks
             using_sequence_locks = False
 
@@ -343,7 +343,7 @@ class BIP68Test(UmkoinTestFramework):
         tx2.rehash()
 
         self.nodes[0].sendrawtransaction(ToHex(tx2))
-        
+
         # Now make an invalid spend of tx2 according to BIP68
         sequence_value = 100 # 100 block relative locktime
 
