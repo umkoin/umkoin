@@ -75,7 +75,7 @@ public:
     CMainParams() {
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Height = 0;
+        consensus.BIP16Exception = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
         consensus.BIP65Height = 0;
@@ -102,10 +102,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000012772ce9193b42c"); //13779
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000014cd2e699182960"); //15783
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000000019fa12b934a7a9f0d9df8aef936bec187b7d4156bcffe45a2fc8fc"); //13779
+        consensus.defaultAssumeValid = uint256S("0x000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64"); //15783
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -147,20 +147,15 @@ public:
 
         checkpointData = {
             {
-                { 1000, uint256S("0x00000000001010d563cb86da8ee92e283816400f8fcf337934317fc59f2c8eec")},
-                { 2500, uint256S("0x00000000003ba8db8c59875216c5b2502291492bf442f194794aed0736434302")},
                 { 5000, uint256S("0x00000000001bdcc3946071fceb5c29ff00d3042d66c08d659d3bd96e10c61dbe")},
-                { 7500, uint256S("0x00000000003e9de0964d74bb1368bc085799b55daa52f1cdc6233b8a305b141d")},
                 { 10000, uint256S("0x00000000000987c3cd5479d50415279b5134299a17ca29601e1ff7fb3352b172")},
-                { 13216, uint256S("0x000000000003ee24189c3f7eb4786dc83eb888772088ca60dd4125dd6734bfd5")},
-                { 13779, uint256S("0x000000000019fa12b934a7a9f0d9df8aef936bec187b7d4156bcffe45a2fc8fc")}
-            }
+                { 15783, uint256S("0x000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64")}            }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 000000000003ee24189c3f7eb4786dc83eb888772088ca60dd4125dd6734bfd5 (height 13216).
-            1522994488, // * UNIX timestamp of last known number of transactions
-            55682,      // * total number of transactions between genesis and that timestamp
+            // Data as of block 000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64 (height 15783).
+            1524213229, // * UNIX timestamp of last known number of transactions
+            62125,      // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.007       // * estimated number of transactions per second after that timestamp
         };
@@ -178,7 +173,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Height = 0;
+        consensus.BIP16Exception = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
         consensus.BIP65Height = 0;
@@ -241,6 +236,7 @@ public:
         fRequireStandard = false;
         fMineBlocksOnDemand = false;
 
+
         checkpointData = {
             {
                 {0, uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429")},
@@ -268,7 +264,7 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         consensus.nSubsidyHalvingInterval = 150;
-        consensus.BIP16Height = 0; // always enforce P2SH BIP16 on regtest
+        consensus.BIP16Exception = uint256();
         consensus.BIP34Height = 100000000; // BIP34 has not activated on regtest (far in the future so block v1 are not rejected in tests)
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 0; // BIP65 activated on regtest (Used in rpc activation tests)
