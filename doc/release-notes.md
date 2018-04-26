@@ -66,6 +66,10 @@ RPC changes
   /rest/block/ endpoints when in json mode. This is also included in `getblock`
   (with verbosity=2), `listsinceblock`, `listtransactions`, and
   `getrawtransaction` RPC commands.
+- New `fees` field introduced in `getrawmempool`, `getmempoolancestors`, `getmempooldescendants` and
+   `getmempoolentry` when verbosity is set to `true` with sub-fields `ancestor`, `base`, `modified`
+   and `descendent` denominated in UMK. This new field deprecates previous fee fields, such as
+   `fee`, `modifiedfee`, `ancestorfee` and `descendentfee`.
 
 External wallet files
 ---------------------
@@ -96,6 +100,16 @@ Low-level RPC changes
   now the empty string `""` instead of `"wallet.dat"`. If umkoin is started
   with any `-wallet=<path>` options, there is no change in behavior, and the
   name of any wallet is just its `<path>` string.
+
+- Bare multisig outputs to our keys are no longer automatically treated as
+  incoming payments. As this feature was only available for multisig outputs for
+  which you had all private keys in your wallet, there was generally no use for
+  them compared to single-key schemes. Furthermore, no address format for such
+  outputs is defined, and wallet software can't easily send to it. These outputs
+  will no longer show up in `listtransactions`, `listunspent`, or contribute to
+  your balance, unless they are explicitly watched (using `importaddress` or
+  `importmulti` with hex script argument). `signrawtransaction*` also still
+  works for them.
 
 ### Logging
 
