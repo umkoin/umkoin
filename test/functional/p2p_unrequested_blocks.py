@@ -57,12 +57,8 @@ from test_framework.util import *
 import time
 from test_framework.blocktools import create_block, create_coinbase, create_transaction
 
-class AcceptBlockTest(UmkoinTestFramework):
-    def add_options(self, parser):
-        parser.add_option("--testbinary", dest="testbinary",
-                          default=os.getenv("UMKOIND", "umkoind"),
-                          help="umkoind binary to test")
 
+class AcceptBlockTest(UmkoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2

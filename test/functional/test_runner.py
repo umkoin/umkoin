@@ -283,9 +283,9 @@ def main():
     if not args.keepcache:
         shutil.rmtree("%s/test/cache" % config["environment"]["BUILDDIR"], ignore_errors=True)
 
-    run_tests(test_list, config["environment"]["SRCDIR"], config["environment"]["BUILDDIR"], config["environment"]["EXEEXT"], tmpdir, args.jobs, args.coverage, passon_args, args.combinedlogslen)
+    run_tests(test_list, config["environment"]["SRCDIR"], config["environment"]["BUILDDIR"], tmpdir, args.jobs, args.coverage, passon_args, args.combinedlogslen)
 
-def run_tests(test_list, src_dir, build_dir, exeext, tmpdir, jobs=1, enable_coverage=False, args=[], combined_logs_len=0):
+def run_tests(test_list, src_dir, build_dir, tmpdir, jobs=1, enable_coverage=False, args=[], combined_logs_len=0):
     # Warn if umkoind is already running (unix only)
     try:
         if subprocess.check_output(["pidof", "umkoind"]) is not None:
@@ -297,11 +297,6 @@ def run_tests(test_list, src_dir, build_dir, exeext, tmpdir, jobs=1, enable_cove
     cache_dir = "%s/test/cache" % build_dir
     if os.path.isdir(cache_dir):
         print("%sWARNING!%s There is a cache directory here: %s. If tests fail unexpectedly, try deleting the cache directory." % (BOLD[1], BOLD[0], cache_dir))
-
-    #Set env vars
-    if "UMKOIND" not in os.environ:
-        os.environ["UMKOIND"] = build_dir + '/src/umkoind' + exeext
-        os.environ["UMKOINCLI"] = build_dir + '/src/umkoin-cli' + exeext
 
     tests_dir = src_dir + '/test/functional/'
 
