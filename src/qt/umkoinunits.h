@@ -58,7 +58,8 @@ public:
     {
         UMK,
         mUMK,
-        uUMK
+        uUMK,
+        SAT
     };
 
     enum SeparatorStyle

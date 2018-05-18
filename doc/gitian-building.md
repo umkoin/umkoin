@@ -111,7 +111,7 @@ and inputs.
 
 For example:
 ```bash
-URL=https://github.com/vmta/umkoin.git
+URL=https://github.com/umkoin/umkoin.git
 COMMIT=2014_03_windows_unicode_path
 ./bin/gbuild --commit umkoin=${COMMIT} --url umkoin=${URL} ../umkoin/contrib/gitian-descriptors/gitian-linux.yml
 ./bin/gbuild --commit umkoin=${COMMIT} --url umkoin=${URL} ../umkoin/contrib/gitian-descriptors/gitian-win.yml
