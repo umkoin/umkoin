@@ -102,10 +102,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000014cd2e699182960"); //15783
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000197ec7827d86a1a"); //20058
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64"); //15783
+        consensus.defaultAssumeValid = uint256S("0x00000000001bdaa9b4c169c837970fbeec175ad148f7ec7ddcf01ccbb5357040"); //20058
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -149,15 +149,17 @@ public:
             {
                 { 5000, uint256S("0x00000000001bdcc3946071fceb5c29ff00d3042d66c08d659d3bd96e10c61dbe")},
                 { 10000, uint256S("0x00000000000987c3cd5479d50415279b5134299a17ca29601e1ff7fb3352b172")},
-                { 15783, uint256S("0x000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64")}            }
+                { 15783, uint256S("0x000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64")},
+                { 20058, uint256S("0x00000000001bdaa9b4c169c837970fbeec175ad148f7ec7ddcf01ccbb5357040")}
+            }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64 (height 15783).
-            1524213229, // * UNIX timestamp of last known number of transactions
-            62125,      // * total number of transactions between genesis and that timestamp
+            // Data as of block 00000000001bdaa9b4c169c837970fbeec175ad148f7ec7ddcf01ccbb5357040 (height 20058).
+            1526850751, // * UNIX timestamp of last known number of transactions
+            141322,     // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            0.007       // * estimated number of transactions per second after that timestamp
+            0.011       // * estimated number of transactions per second after that timestamp
         };
 
         /* disable fallback fee on mainnet */
