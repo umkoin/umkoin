@@ -123,7 +123,7 @@ The SHA256 hashing optimizations for architectures supporting SSE4, which lead t
 
 GUI changes
 -----------
-- Uses of "µBTC" in the GUI now also show the more colloquial term "bits", specified in BIP176.
+- Uses of "µUMK" in the GUI now also show the more colloquial term "bits", specified in BIP176.
 - The option to reuse a previous address has now been removed. This was justified by the need to "resend" an invoice, but now that we have the request history, that need should be gone.
 - Support for searching by TXID has been added, rather than just address and label.
 - A "Use available balance" option has been added to the send coins dialog, to add the remaining available wallet balance to a transaction output.
@@ -193,7 +193,7 @@ Other changed command-line options
 
 Testing changes
 ----------------
-- The default regtest JSON-RPC port has been changed to 18443 to avoid conflict with testnet's default of 18332.
+- The default regtest JSON-RPC port has been changed to 18443 to avoid conflict with testnet's default of 16332.
 - Segwit is now always active in regtest mode by default. Thus, if you upgrade a regtest node you will need to either -reindex or use the old rules by adding `vbparams=segwit:0:999999999999` to your regtest umkoin.conf. Failure to do this will result in a CheckBlockIndex() assertion failure that will look like: Assertion `(pindexFirstNeverProcessed != nullptr) == (pindex->nChainTx == 0)' failed.
 
 0.16.0 change log
@@ -308,7 +308,7 @@ Testing changes
 - #11415 `69ec021` Disallow using addresses in createmultisig (achow101)
 - #12278 `288deac` Add special error for genesis coinbase to getrawtransaction (MeshCollider)
 - #11362 `c6223b3` Remove nBlockMaxSize from miner opt struct as it is no longer used (gmaxwell)
-- #10825 `28485c7` Set regtest JSON-RPC port to 18443 to avoid conflict with testnet 18332 (fametrano)
+- #10825 `28485c7` Set regtest JSON-RPC port to 18443 to avoid conflict with testnet 16332 (fametrano)
 - #11303 `e542728` Fix estimatesmartfee rounding display issue (TheBlueMatt)
 - #7061 `8c2de82` Add RPC call "rescanblockchain <startheight> <stopheight>" (jonasschnelli)
 - #11055 `95e14dc` RPC getreceivedbyaddress should return error if called with address not owned by the wallet (jnewbery)
@@ -338,7 +338,7 @@ Testing changes
 - #11616 `8585bb8` Update ban-state in case of dirty-state during periodic sweep (jonasschnelli)
 - #11605 `f19ca12` Enable RBF by default in QT (Sjors)
 - #12074 `a1136f0` Optimizes boolean expression model && model->haveWatchOnly() (251Labs)
-- #12035 `eeb6d52` Change µBTC to bits (jb55)
+- #12035 `eeb6d52` Change µUMK to bits (jb55)
 - #12092 `fd4ca17` Replaces numbered place marker %2 with %1 (251Labs)
 - #12173 `bbc91b7` Use flexible font size for QRCode image address (jonasschnelli)
 - #12211 `10d10d7` Avoid potential null dereference in ReceiveCoinsDialog constructor (ryanofsky)

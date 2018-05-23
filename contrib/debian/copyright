@@ -7,7 +7,7 @@ Source: https://github.com/umkoin/umkoin
 Files: *
 Copyright: 2009-2018, Bitcoin Core Developers
 License: Expat
-Comment: The Bitcoin Core Developers encompasses the current developers listed on bitcoin.org,
+Comment: The Umkoin Core Developers encompasses the current developers listed on umkoin.org,
          as well as the numerous contributors to the project.
 
 Files: debian/*
