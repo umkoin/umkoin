@@ -130,9 +130,11 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         self.options.umkoind = os.getenv("UMKOIND", default=config["environment"]["BUILDDIR"] + '/src/umkoind' + config["environment"]["EXEEXT"])
         self.options.umkoincli = os.getenv("UMKOINCLI", default=config["environment"]["BUILDDIR"] + '/src/umkoin-cli' + config["environment"]["EXEEXT"])
 
-        os.environ['PATH'] = config['environment']['BUILDDIR'] + os.pathsep + \
-                             config['environment']['BUILDDIR'] + os.path.sep + "qt" + os.pathsep + \
-                             os.environ['PATH']
+        os.environ['PATH'] = os.pathsep.join([
+            os.path.join(config['environment']['BUILDDIR'], 'src'),
+            os.path.join(config['environment']['BUILDDIR'], 'src', 'qt'),
+            os.environ['PATH']
+        ])
 
         # Set up temp directory and start logging
         if self.options.tmpdir:
