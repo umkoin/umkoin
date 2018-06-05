@@ -15,7 +15,7 @@ Service User
 
 All three Linux startup configurations assume the existence of a "umkoin" user
 and group.  They must be created before attempting to use these scripts.
-The OS X configuration assumes umkoind will be set up for the current user.
+The macOS configuration assumes umkoind will be set up for the current user.
 
 Configuration
 ---------------------------------
@@ -65,7 +65,7 @@ reasons to make the configuration file and data directory only readable by the
 umkoin user and group.  Access to umkoin-cli and other umkoind rpc clients
 can then be controlled by group membership.
 
-### Mac OS X
+### macOS
 
 Binary:              `/usr/local/bin/umkoind`  
 Configuration file:  `~/Library/Application Support/Umkoin/umkoin.conf`  
@@ -111,7 +111,7 @@ Using this script, you can adjust the path and flags to the umkoind program by
 setting the UMKOIND and FLAGS environment variables in the file
 /etc/sysconfig/umkoind. You can also use the DAEMONOPTS environment variable here.
 
-### Mac OS X
+### macOS
 
 Copy org.umkoin.umkoind.plist into ~/Library/LaunchAgents. Load the launch agent by
 running `launchctl load ~/Library/LaunchAgents/org.umkoin.umkoind.plist`.
