@@ -46,28 +46,21 @@ Visit the [Transifex Signup](https://www.transifex.com/signup/) page to create a
 You can find the Umkoin translation project at [https://www.transifex.com/umkoin/umkoin-core/](https://www.transifex.com/umkoin/umkoin-core/).
 
 ### Installing the Transifex client command-line tool
-The client it used to fetch updated translations. If you are having problems, or need more details, see [http://docs.transifex.com/developer/client/setup](http://docs.transifex.com/developer/client/setup)
-
-**For Linux and Mac**
+The client is used to fetch updated translations. If you are having problems, or need more details, see [https://docs.transifex.com/client/installing-the-client](https://docs.transifex.com/client/installing-the-client)
 
 `pip install transifex-client`
 
-Setup your transifex client config as follows. Please *ignore the token field*.
+Setup your Transifex client config as follows. Please *ignore the token field*.
 
 ```ini
 nano ~/.transifexrc
 
 [https://www.transifex.com]
-api_hostname = https://api.transifex.com
 hostname = https://www.transifex.com
-password = YOUR_TRANSIFEX_API_KEY
+password = PASSWORD
 token =
-username = api
+username = USERNAME
 ```
-
-**For Windows**
-
-Please see [http://docs.transifex.com/developer/client/setup#windows](http://docs.transifex.com/developer/client/setup#windows) for details on installation.
 
 The Transifex Umkoin project config file is included as part of the repo. It can be found at `.tx/config`, however you shouldn’t need change anything.
 
