@@ -29,9 +29,7 @@ LIBUMKOIN_COMMON=libumkoin_common.a
 LIBUMKOIN_CONSENSUS=libumkoin_consensus.a
 LIBUMKOIN_CLI=libumkoin_cli.a
 LIBUMKOIN_UTIL=libumkoin_util.a
-LIBUMKOIN_CRYPTO=crypto/libumkoin_crypto.a
-LIBUMKOIN_CRYPTO_SSE41=crypto/libumkoin_crypto_sse41.a
-LIBUMKOIN_CRYPTO_AVX2=crypto/libumkoin_crypto_avx2.a
+LIBUMKOIN_CRYPTO_BASE=crypto/libumkoin_crypto_base.a
 LIBUMKOINQT=qt/libumkoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
@@ -45,6 +43,16 @@ if ENABLE_WALLET
 LIBUMKOIN_WALLET=libumkoin_wallet.a
 endif
 
+LIBUMKOIN_CRYPTO= $(LIBUMKOIN_CRYPTO_BASE)
+if ENABLE_SSE41
+LIBUMKOIN_CRYPTO_SSE41 = crypto/libumkoin_crypto_sse41.a
+LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_SSE41)
+endif
+if ENABLE_AVX2
+LIBUMKOIN_CRYPTO_AVX2 = crypto/libumkoin_crypto_avx2.a
+LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_AVX2)
+endif
+
 $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C $(@D) $(@F)
 
@@ -52,8 +60,6 @@ $(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
   $(LIBUMKOIN_CRYPTO) \
-  $(LIBUMKOIN_CRYPTO_SSE41) \
-  $(LIBUMKOIN_CRYPTO_AVX2) \
   $(LIBUMKOIN_UTIL) \
   $(LIBUMKOIN_COMMON) \
   $(LIBUMKOIN_CONSENSUS) \
@@ -270,9 +276,9 @@ libumkoin_wallet_a_SOURCES = \
   $(UMKOIN_CORE_H)
 
 # crypto primitives library
-crypto_libumkoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libumkoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libumkoin_crypto_a_SOURCES = \
+crypto_libumkoin_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libumkoin_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libumkoin_crypto_base_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
   crypto/chacha20.h \
@@ -292,23 +298,19 @@ crypto_libumkoin_crypto_a_SOURCES = \
   crypto/sha512.h
 
 if USE_ASM
-crypto_libumkoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
+crypto_libumkoin_crypto_base_a_SOURCES += crypto/sha256_sse4.cpp
 endif
 
 crypto_libumkoin_crypto_sse41_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 crypto_libumkoin_crypto_sse41_a_CPPFLAGS = $(AM_CPPFLAGS)
-if ENABLE_SSE41
 crypto_libumkoin_crypto_sse41_a_CXXFLAGS += $(SSE41_CXXFLAGS)
 crypto_libumkoin_crypto_sse41_a_CPPFLAGS += -DENABLE_SSE41
-endif
 crypto_libumkoin_crypto_sse41_a_SOURCES = crypto/sha256_sse41.cpp
 
 crypto_libumkoin_crypto_avx2_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 crypto_libumkoin_crypto_avx2_a_CPPFLAGS = $(AM_CPPFLAGS)
-if ENABLE_AVX2
 crypto_libumkoin_crypto_avx2_a_CXXFLAGS += $(AVX2_CXXFLAGS)
 crypto_libumkoin_crypto_avx2_a_CPPFLAGS += -DENABLE_AVX2
-endif
 crypto_libumkoin_crypto_avx2_a_SOURCES = crypto/sha256_avx2.cpp
 
 # consensus: shared between all executables that validate any consensus rules.
@@ -433,8 +435,6 @@ umkoind_LDADD = \
   $(LIBUMKOIN_ZMQ) \
   $(LIBUMKOIN_CONSENSUS) \
   $(LIBUMKOIN_CRYPTO) \
-  $(LIBUMKOIN_CRYPTO_SSE41) \
-  $(LIBUMKOIN_CRYPTO_AVX2) \
   $(LIBLEVELDB) \
   $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
@@ -456,9 +456,7 @@ umkoin_cli_LDADD = \
   $(LIBUMKOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBUMKOIN_UTIL) \
-  $(LIBUMKOIN_CRYPTO) \
-  $(LIBUMKOIN_CRYPTO_SSE41) \
-  $(LIBUMKOIN_CRYPTO_AVX2)
+  $(LIBUMKOIN_CRYPTO)
 
 umkoin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
@@ -479,8 +477,6 @@ umkoin_tx_LDADD = \
   $(LIBUMKOIN_UTIL) \
   $(LIBUMKOIN_CONSENSUS) \
   $(LIBUMKOIN_CRYPTO) \
-  $(LIBUMKOIN_CRYPTO_SSE41) \
-  $(LIBUMKOIN_CRYPTO_AVX2) \
   $(LIBSECP256K1)
 
 umkoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
@@ -489,7 +485,7 @@ umkoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 # umkoinconsensus library #
 if BUILD_UMKOIN_LIBS
 include_HEADERS = script/umkoinconsensus.h
-libumkoinconsensus_la_SOURCES = $(crypto_libumkoin_crypto_a_SOURCES) $(libumkoin_consensus_a_SOURCES)
+libumkoinconsensus_la_SOURCES = $(crypto_libumkoin_crypto_base_a_SOURCES) $(libumkoin_consensus_a_SOURCES)
 
 if GLIBC_BACK_COMPAT
   libumkoinconsensus_la_SOURCES += compat/glibc_compat.cpp
