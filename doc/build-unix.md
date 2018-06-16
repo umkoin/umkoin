@@ -70,23 +70,22 @@ tuned to conserve memory with additional CXXFLAGS:
 
 Build requirements:
 
-    sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils python3
-
-Options when installing required Boost library files:
-
-1. On at least Ubuntu 14.04+ and Debian 7+ there are generic names for the
-individual boost development packages, so the following can be used to only
-install necessary parts of boost:
-
-        sudo apt-get install libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev
-
-2. If that doesn't work, you can install all boost development packages with:
-
-        sudo apt-get install libboost-all-dev
+    sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils python3 libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev
 
 BerkeleyDB is required for the wallet.
 
-Ubuntu and Debian have their own libdb-dev and libdb++-dev packages, but these will install BerkeleyDB 5.1 or later, which break binary wallet compatibility with the distributed executables which are based on BerkeleyDB 4.8. If you do not care about wallet compatibility, pass `--with-incompatible-bdb` to configure.
+**For Ubuntu only:** db4.8 packages are available [here](https://launchpad.net/~umkoin/+archive/umkoin).
+You can add the repository and install using the following commands:
+
+    sudo apt-get install software-properties-common
+    sudo add-apt-repository ppa:umkoin/umkoin
+    sudo apt-get update
+    sudo apt-get install libdb4.8-dev libdb4.8++-dev
+
+Ubuntu and Debian have their own libdb-dev and libdb++-dev packages, but these will install
+BerkeleyDB 5.1 or later, which break binary wallet compatibility with the distributed executables which
+are based on BerkeleyDB 4.8. If you do not care about wallet compatibility,
+pass `--with-incompatible-bdb` to configure.
 
 See the section "Disable-wallet mode" to build Umkoin Core without wallet.
 
