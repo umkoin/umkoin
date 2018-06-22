@@ -156,9 +156,9 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 00000000000022e03eeb49ed3d8e622b434b2daa32fbe371da74cb5a3c53e352 (height 22087).
-            1528098910, // * UNIX timestamp of last known number of transactions
-            203171,     // * total number of transactions between genesis and that timestamp
+            // Data as of block 0000000000002961ea6e3bc410de58a5a5b38745fc177a3cf4f3ba29af81cc75 (height 22092).
+            1529645251, // * UNIX timestamp of last known number of transactions
+            203413,     // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.015       // * estimated number of transactions per second after that timestamp
         };
@@ -203,10 +203,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000200020002");
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000c000c000c"); //11
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a"); //1
+        consensus.defaultAssumeValid = uint256S("0x000000006c8d5857a598f1027fa34ecd0f09296a533d2f484a588bf9d09373e0"); //11
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -243,15 +243,16 @@ public:
         checkpointData = {
             {
                 {0, uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429")},
-                {1, uint256S("0x000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a")}
+                {1, uint256S("0x000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a")},
+                {11, uint256S("0x000000006c8d5857a598f1027fa34ecd0f09296a533d2f484a588bf9d09373e0")}
             }
         };
 
         chainTxData = ChainTxData{
             // Data as of block 000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a (height 1)
-            1513724950,
-            1,
-            0.01
+            1529648499,
+            12,
+            0.001
         };
 
         /* enable fallback fee on testnet */
