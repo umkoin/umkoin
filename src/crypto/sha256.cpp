@@ -530,7 +530,8 @@ bool SelfTest() {
 }
 
 
-#if defined(USE_ASM) && (defined(__x86_64__) || defined(__amd64__) || defined(__i386__))
+//#if defined(USE_ASM) && (defined(__x86_64__) || defined(__amd64__) || defined(__i386__))
+#if defined(USE_ASM) && (defined(__x86_64__) || defined(__amd64__))
 // We can't use cpuid.h's __get_cpuid as it does not support subleafs.
 void inline cpuid(uint32_t leaf, uint32_t subleaf, uint32_t& a, uint32_t& b, uint32_t& c, uint32_t& d)
 {
@@ -551,7 +552,8 @@ bool AVXEnabled()
 std::string SHA256AutoDetect()
 {
     std::string ret = "standard";
-#if defined(USE_ASM) && (defined(__x86_64__) || defined(__amd64__) || defined(__i386__))
+//#if defined(USE_ASM) && (defined(__x86_64__) || defined(__amd64__) || defined(__i386__))
+#if defined(USE_ASM) && (defined(__x86_64__) || defined(__amd64__))
     (void)AVXEnabled; // Silence unused warning (in case ENABLE_AVX2 is not defined)
     uint32_t eax, ebx, ecx, edx;
     cpuid(1, 0, eax, ebx, ecx, edx);
