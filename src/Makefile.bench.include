@@ -34,8 +34,8 @@ nodist_bench_bench_umkoin_SOURCES = $(GENERATED_BENCH_FILES)
 bench_bench_umkoin_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(EVENT_CLFAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
 bench_bench_umkoin_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 bench_bench_umkoin_LDADD = \
-  $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_WALLET) \
+  $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_COMMON) \
   $(LIBUMKOIN_UTIL) \
   $(LIBUMKOIN_CONSENSUS) \
