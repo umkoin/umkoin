@@ -3,7 +3,7 @@ AC_PREREQ([2.60])
 define(_CLIENT_VERSION_MAJOR, 0)
 define(_CLIENT_VERSION_MINOR, 16)
 define(_CLIENT_VERSION_REVISION, 1)
-define(_CLIENT_VERSION_BUILD, 8)
+define(_CLIENT_VERSION_BUILD, 9)
 define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2018)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
@@ -805,6 +805,14 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
  [[ static const int name[2] = {CTL_KERN, KERN_ARND};
     sysctl(name, 2, nullptr, nullptr, nullptr, 0); ]])],
  [ AC_MSG_RESULT(yes); AC_DEFINE(HAVE_SYSCTL_ARND, 1,[Define this symbol if the BSD sysctl(KERN_ARND) is available]) ],
+ [ AC_MSG_RESULT(no)]
+)
+
+AC_MSG_CHECKING(for if type char equals int8_t)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdint.h>
+  #include <type_traits>]],
+ [[ static_assert(std::is_same<int8_t, char>::value, ""); ]])],
+ [ AC_MSG_RESULT(yes); AC_DEFINE(CHAR_EQUALS_INT8, 1,[Define this symbol if type char equals int8_t]) ],
  [ AC_MSG_RESULT(no)]
 )
 
