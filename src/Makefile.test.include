@@ -137,6 +137,7 @@ test_test_umkoin_fuzzy_LDADD = \
   $(LIBUMKOIN_CRYPTO) \
   $(LIBUMKOIN_CRYPTO_SSE41) \
   $(LIBUMKOIN_CRYPTO_AVX2) \
+  $(LIBUMKOIN_CRYPTO_SHANI) \
   $(LIBSECP256K1)
 
 test_test_umkoin_fuzzy_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)

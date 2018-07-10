@@ -52,6 +52,10 @@ if ENABLE_AVX2
 LIBUMKOIN_CRYPTO_AVX2 = crypto/libumkoin_crypto_avx2.a
 LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_AVX2)
 endif
+if ENABLE_SHANI
+LIBUMKOIN_CRYPTO_SHANI = crypto/libumkoin_crypto_shani.a
+LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_SHANI)
+endif
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*.h) $(wildcard secp256k1/src/*.c) $(wildcard secp256k1/include/*)
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C $(@D) $(@F)
@@ -194,7 +198,8 @@ UMKOIN_CORE_H = \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h\
   zmq/zmqnotificationinterface.h \
-  zmq/zmqpublishnotifier.h
+  zmq/zmqpublishnotifier.h \
+  zmq/zmqrpc.h
 
 
 obj/build.h: FORCE
@@ -255,7 +260,8 @@ libumkoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
-  zmq/zmqpublishnotifier.cpp
+  zmq/zmqpublishnotifier.cpp \
+  zmq/zmqrpc.cpp
 endif
 
 
@@ -315,6 +321,12 @@ crypto_libumkoin_crypto_avx2_a_CPPFLAGS = $(AM_CPPFLAGS)
 crypto_libumkoin_crypto_avx2_a_CXXFLAGS += $(AVX2_CXXFLAGS)
 crypto_libumkoin_crypto_avx2_a_CPPFLAGS += -DENABLE_AVX2
 crypto_libumkoin_crypto_avx2_a_SOURCES = crypto/sha256_avx2.cpp
+
+crypto_libumkoin_crypto_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libumkoin_crypto_shani_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libumkoin_crypto_shani_a_CXXFLAGS += $(SHANI_CXXFLAGS)
+crypto_libumkoin_crypto_shani_a_CPPFLAGS += -DENABLE_SHANI
+crypto_libumkoin_crypto_shani_a_SOURCES = crypto/sha256_shani.cpp
 
 # consensus: shared between all executables that validate any consensus rules.
 libumkoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
