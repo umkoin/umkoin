@@ -418,6 +418,7 @@ libumkoin_util_a_SOURCES = \
 
 if GLIBC_BACK_COMPAT
 libumkoin_util_a_SOURCES += compat/glibc_compat.cpp
+AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
 # cli: shared between umkoin-cli and umkoin-qt
