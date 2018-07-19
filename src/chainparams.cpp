@@ -102,10 +102,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000003b01c0085ba8d78"); //22087
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000003f0579a4953bccf"); //22100
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000000022e03eeb49ed3d8e622b434b2daa32fbe371da74cb5a3c53e352"); //22087
+        consensus.defaultAssumeValid = uint256S("0x000000000000045eb86c9f6f55ebe6f52a6b499810c06a3c1528c555a6668d57"); //22100
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -151,16 +151,17 @@ public:
                 { 10000, uint256S("0x00000000000987c3cd5479d50415279b5134299a17ca29601e1ff7fb3352b172")},
                 { 15783, uint256S("0x000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64")},
                 { 20058, uint256S("0x00000000001bdaa9b4c169c837970fbeec175ad148f7ec7ddcf01ccbb5357040")},
-                { 22087, uint256S("0x00000000000022e03eeb49ed3d8e622b434b2daa32fbe371da74cb5a3c53e352")}
+                { 22087, uint256S("0x00000000000022e03eeb49ed3d8e622b434b2daa32fbe371da74cb5a3c53e352")},
+                { 22100, uint256S("0x000000000000045eb86c9f6f55ebe6f52a6b499810c06a3c1528c555a6668d57")}
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 0000000000002961ea6e3bc410de58a5a5b38745fc177a3cf4f3ba29af81cc75 (height 22092).
-            1529645251, // * UNIX timestamp of last known number of transactions
-            203413,     // * total number of transactions between genesis and that timestamp
+            // Data as of block 00000000000021612e1b74e212e5b02b41d5c6c22b3f7a4ef5289160962d4f2a (height 22101).
+            1530929122, // * UNIX timestamp of last known number of transactions
+            203490,     // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            0.015       // * estimated number of transactions per second after that timestamp
+            0.012       // * estimated number of transactions per second after that timestamp
         };
 
         /* disable fallback fee on mainnet */
@@ -203,10 +204,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000c000c000c"); //11
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000008600860086"); //133
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000006c8d5857a598f1027fa34ecd0f09296a533d2f484a588bf9d09373e0"); //11
+        consensus.defaultAssumeValid = uint256S("0x00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce"); //133
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -242,16 +243,16 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429")},
                 {1, uint256S("0x000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a")},
-                {11, uint256S("0x000000006c8d5857a598f1027fa34ecd0f09296a533d2f484a588bf9d09373e0")}
+                {11, uint256S("0x000000006c8d5857a598f1027fa34ecd0f09296a533d2f484a588bf9d09373e0")},
+                {133, uint256S("0x00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce")}
             }
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a (height 1)
-            1529648499,
-            12,
+            // Data as of block 00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce (height 133)
+            1531833836,
+            133,
             0.001
         };
 
