@@ -36,13 +36,15 @@ class ConfArgsTest(UmkoinTestFramework):
             f.write("datadir=" + new_data_dir + "\n")
             f.write(conf_file_contents)
 
-        self.nodes[0].assert_start_raises_init_error(['-conf=' + conf_file], 'Error reading configuration file: specified data directory "' + new_data_dir + '" does not exist.')
+        # Temporarily disabled, because this test would access the user's home dir (~/.umkoin)
+        #self.nodes[0].assert_start_raises_init_error(['-conf=' + conf_file], 'Error reading configuration file: specified data directory "' + new_data_dir + '" does not exist.')
 
         # Create the directory and ensure the config file now works
         os.mkdir(new_data_dir)
-        self.start_node(0, ['-conf='+conf_file, '-wallet=w1'])
-        self.stop_node(0)
-        assert os.path.exists(os.path.join(new_data_dir, 'regtest', 'wallets', 'w1'))
+        # Temporarily disabled, because this test would access the user's home dir (~/.umkoin)
+        #self.start_node(0, ['-conf='+conf_file, '-wallet=w1'])
+        #self.stop_node(0)
+        #assert os.path.exists(os.path.join(new_data_dir, 'regtest', 'wallets', 'w1'))
 
         # Ensure command line argument overrides datadir in conf
         os.mkdir(new_data_dir_2)
