@@ -357,7 +357,7 @@ if ENABLE_WALLET
 UMKOIN_QT_CPP += $(UMKOIN_QT_WALLET_CPP)
 endif
 
-RES_IMAGES = 
+RES_IMAGES =
 
 RES_MOVIES = $(wildcard $(srcdir)/qt/res/movies/spinner-*.png)
 
