@@ -157,11 +157,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 00000000000021612e1b74e212e5b02b41d5c6c22b3f7a4ef5289160962d4f2a (height 22101).
-            1530929122, // * UNIX timestamp of last known number of transactions
-            203490,     // * total number of transactions between genesis and that timestamp
-                        //   (the tx=... number in the SetBestChain debug.log lines)
-            0.012       // * estimated number of transactions per second after that timestamp
+            // Data from rpc: getchaintxstats 22108
+            /* nTime    */ 1532628804,
+            /* nTxCount */ 203535,
+            /* dTxRate  */ 0.011
         };
 
         /* disable fallback fee on mainnet */
@@ -250,10 +249,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data as of block 00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce (height 133)
-            1531833836,
-            133,
-            0.001
+            // Data from rpc: getchaintxstats 149
+            /* nTime    */ 1532935148,
+            /* nTxCount */ 151,
+            /* dTxRate  */ 0.001
         };
 
         /* enable fallback fee on testnet */
