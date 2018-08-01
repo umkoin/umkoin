@@ -44,7 +44,7 @@ This allows for running umkoind without having to do any manual configuration.
 relative to the data directory. `wallet` *only* supports relative paths.
 
 For an example configuration file that describes the configuration settings,
-see `contrib/debian/examples/umkoin.conf`.
+see `share/examples/umkoin.conf`.
 
 Paths
 ---------------------------------
