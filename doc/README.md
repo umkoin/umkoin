@@ -9,7 +9,7 @@ To download Umkoin Core, visit [umkoin.org](http://umkoin.org/en/download.php).
 
 Running
 ---------------------
-The following are some helpful notes on how to run Umkoin on your native platform.
+The following are some helpful notes on how to run Umkoin Core on your native platform.
 
 ### Unix
 
