@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2017 The Bitcoin Core developers
+# Copyright (c) 2014-2018 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test RPCs related to blockchainstate.
@@ -256,12 +256,8 @@ class BlockchainTest(UmkoinTestFramework):
 
     def _test_waitforblockheight(self):
         self.log.info("Test waitforblockheight")
-
         node = self.nodes[0]
-
-        # Start a P2P connection since we'll need to create some blocks.
         node.add_p2p_connection(P2PInterface())
-        node.p2p.wait_for_verack()
 
         current_height = node.getblock(node.getbestblockhash())['height']
 

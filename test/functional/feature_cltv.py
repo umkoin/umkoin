@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2017 The Bitcoin Core developers
+# Copyright (c) 2015-2018 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test BIP65 (CHECKLOCKTIMEVERIFY).
@@ -67,7 +67,6 @@ class BIP65Test(UmkoinTestFramework):
 
     def run_test(self):
         self.nodes[0].add_p2p_connection(P2PInterface())
-        self.nodes[0].p2p.wait_for_verack()
 
         self.log.info("Mining %d blocks", CLTV_HEIGHT - 2)
         self.coinbase_blocks = self.nodes[0].generate(CLTV_HEIGHT - 2)

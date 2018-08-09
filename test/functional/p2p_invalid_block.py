@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2017 The Bitcoin Core developers
+# Copyright (c) 2015-2018 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test node responses to invalid blocks.
@@ -28,7 +28,6 @@ class InvalidBlockRequestTest(UmkoinTestFramework):
         # Add p2p connection to node0
         node = self.nodes[0]  # convenience reference to the node
         node.add_p2p_connection(P2PDataStore())
-        node.p2p.wait_for_verack()
 
         best_block = node.getblock(node.getbestblockhash())
         tip = int(node.getbestblockhash(), 16)
