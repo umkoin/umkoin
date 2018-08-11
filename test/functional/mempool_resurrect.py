@@ -8,11 +8,10 @@ from test_framework.test_framework import UmkoinTestFramework
 from test_framework.blocktools import create_raw_transaction
 from test_framework.util import *
 
-# Create one-input, one-output, no-fee transaction:
+
 class MempoolCoinbaseTest(UmkoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
-        self.extra_args = [["-checkmempool"]]
 
     def run_test(self):
         node0_address = self.nodes[0].getnewaddress()

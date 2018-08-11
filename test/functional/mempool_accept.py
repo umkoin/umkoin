@@ -35,7 +35,6 @@ class MempoolAcceptanceTest(UmkoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.extra_args = [[
-            '-checkmempool',
             '-txindex',
             '-reindex',  # Need reindex for txindex
             '-acceptnonstdtxn=0',  # Try to mimic main-net
