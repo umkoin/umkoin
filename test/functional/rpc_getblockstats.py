@@ -27,7 +27,7 @@ class GetblockstatsTest(UmkoinTestFramework):
         'maxfee',
         'maxfeerate',
         'medianfee',
-        'medianfeerate',
+        'feerate_percentiles',
         'minfee',
         'minfeerate',
         'totalfee',

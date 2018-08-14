@@ -352,7 +352,7 @@
 #define PACKAGE_TARNAME "umkoin"
 
 /* Define to the home page for this package. */
-#define PACKAGE_URL "https://umkoincore.org/"
+#define PACKAGE_URL "http://umkoin.org/"
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "0.17.99"

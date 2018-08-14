@@ -40,6 +40,12 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 "Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -"
 "fallbackfee."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
+"Group outputs by address, selecting all or none, instead of selecting on a "
+"per-output basis. Privacy is improved as an address is only used once "
+"(unless someone sends to it after spending from it), but may result in "
+"slightly higher fees as suboptimal coin selection may result due to the "
+"added limitation (default: %u)"),
+QT_TRANSLATE_NOOP("umkoin-core", ""
 "Invalid amount for -maxtxfee=<amount>: '%s' (must be at least the minrelay "
 "fee of %s to prevent stuck transactions)"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
@@ -168,7 +174,7 @@ QT_TRANSLATE_NOOP("umkoin-core", "Signing transaction failed"),
 QT_TRANSLATE_NOOP("umkoin-core", "Specified -walletdir \"%s\" does not exist"),
 QT_TRANSLATE_NOOP("umkoin-core", "Specified -walletdir \"%s\" is a relative path"),
 QT_TRANSLATE_NOOP("umkoin-core", "Specified -walletdir \"%s\" is not a directory"),
-QT_TRANSLATE_NOOP("umkoin-core", "Specified blocks directory \"%s\" does not exist.\n"),
+QT_TRANSLATE_NOOP("umkoin-core", "Specified blocks directory \"%s\" does not exist."),
 QT_TRANSLATE_NOOP("umkoin-core", "Starting network threads..."),
 QT_TRANSLATE_NOOP("umkoin-core", "The source code is available from %s."),
 QT_TRANSLATE_NOOP("umkoin-core", "The transaction amount is too small to pay the fee"),
