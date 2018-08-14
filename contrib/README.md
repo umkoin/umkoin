@@ -21,9 +21,10 @@ Utility to generate the pnSeed[] array that is compiled into the client.
 Build Tools and Keys
 ---------------------
 
-### [Debian](/contrib/debian) ###
-Contains files used to package umkoind/umkoin-qt
-for Debian-based Linux systems. If you compile umkoind/umkoin-qt yourself, there are some useful files here.
+### Packaging ###
+The [Debian](/contrib/debian) subfolder contains the copyright file.
+
+All other packaging related files can be found in the repository.
 
 ### [Gitian-descriptors](/contrib/gitian-descriptors) ###
 Files used during the gitian build process. For more information about gitian, see the [the Umkoin Core documentation repository](https://github.com/umkoin/umkoin/doc/gitian-building).

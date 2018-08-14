@@ -28,7 +28,7 @@ Drag Umkoin-Core to your applications folder, and then run Umkoin-Core.
 
 Building
 ---------------------
-The following are developer notes on how to build Umkoin on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+The following are developer notes on how to build Umkoin Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
 
 - [Dependencies](dependencies.md)
 - [macOS Build Notes](build-osx.md)
