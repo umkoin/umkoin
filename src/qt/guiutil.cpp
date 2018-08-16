@@ -368,10 +368,10 @@ void openDebugLogfile()
 
 bool openUmkoinConf()
 {
-    boost::filesystem::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", UMKOIN_CONF_FILENAME));
+    fs::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", UMKOIN_CONF_FILENAME));
 
     /* Create the file */
-    boost::filesystem::ofstream configFile(pathConfig, std::ios_base::app);
+    fs::ofstream configFile(pathConfig, std::ios_base::app);
 
     if (!configFile.good())
         return false;
