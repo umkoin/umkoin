@@ -24,7 +24,7 @@ Unpack the files into a directory, and then run umkoin-qt.exe.
 
 ### macOS
 
-Drag Umkoin-Core to your applications folder, and then run Umkoin-Core.
+Drag Umkoin Core to your applications folder, and then run Umkoin Core.
 
 Building
 ---------------------
@@ -63,6 +63,7 @@ The Umkoin repo's [root README](/README.md) contains relevant information on the
 - [Tor Support](tor.md)
 - [Init Scripts (systemd/upstart/openrc)](init.md)
 - [ZMQ](zmq.md)
+- [PSBT support](psbt.md)
 
 License
 ---------------------

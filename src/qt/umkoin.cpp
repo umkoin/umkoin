@@ -353,7 +353,7 @@ void UmkoinApplication::createWindow(const NetworkStyle *networkStyle)
     window = new UmkoinGUI(m_node, platformStyle, networkStyle, 0);
 
     pollShutdownTimer = new QTimer(window);
-    connect(pollShutdownTimer, SIGNAL(timeout()), window, SLOT(detectShutdown()));
+    connect(pollShutdownTimer, &QTimer::timeout, window, &UmkoinGUI::detectShutdown);
 }
 
 void UmkoinApplication::createSplashScreen(const NetworkStyle *networkStyle)
@@ -362,8 +362,8 @@ void UmkoinApplication::createSplashScreen(const NetworkStyle *networkStyle)
     // We don't hold a direct pointer to the splash screen after creation, but the splash
     // screen will take care of deleting itself when slotFinish happens.
     splash->show();
-    connect(this, SIGNAL(splashFinished(QWidget*)), splash, SLOT(slotFinish(QWidget*)));
-    connect(this, SIGNAL(requestedShutdown()), splash, SLOT(close()));
+    connect(this, &UmkoinApplication::splashFinished, splash, &SplashScreen::slotFinish);
+    connect(this, &UmkoinApplication::requestedShutdown, splash, &QWidget::close);
 }
 
 void UmkoinApplication::startThread()
@@ -375,14 +375,14 @@ void UmkoinApplication::startThread()
     executor->moveToThread(coreThread);
 
     /*  communication to and from thread */
-    connect(executor, SIGNAL(initializeResult(bool)), this, SLOT(initializeResult(bool)));
-    connect(executor, SIGNAL(shutdownResult()), this, SLOT(shutdownResult()));
-    connect(executor, SIGNAL(runawayException(QString)), this, SLOT(handleRunawayException(QString)));
-    connect(this, SIGNAL(requestedInitialize()), executor, SLOT(initialize()));
-    connect(this, SIGNAL(requestedShutdown()), executor, SLOT(shutdown()));
+    connect(executor, &UmkoinCore::initializeResult, this, &UmkoinApplication::initializeResult);
+    connect(executor, &UmkoinCore::shutdownResult, this, &UmkoinApplication::shutdownResult);
+    connect(executor, &UmkoinCore::runawayException, this, &UmkoinApplication::handleRunawayException);
+    connect(this, &UmkoinApplication::requestedInitialize, executor, &UmkoinCore::initialize);
+    connect(this, &UmkoinApplication::requestedShutdown, executor, &UmkoinCore::shutdown);
     /*  make sure executor object is deleted in its own thread */
-    connect(this, SIGNAL(stopThread()), executor, SLOT(deleteLater()));
-    connect(this, SIGNAL(stopThread()), coreThread, SLOT(quit()));
+    connect(this, &UmkoinApplication::stopThread, executor, &QObject::deleteLater);
+    connect(this, &UmkoinApplication::stopThread, coreThread, &QThread::quit);
 
     coreThread->start();
 }
@@ -442,9 +442,9 @@ void UmkoinApplication::addWallet(WalletModel* walletModel)
         window->setCurrentWallet(walletModel->getWalletName());
     }
 
-    connect(walletModel, SIGNAL(coinsSent(WalletModel*, SendCoinsRecipient, QByteArray)),
-        paymentServer, SLOT(fetchPaymentACK(WalletModel*, const SendCoinsRecipient&, QByteArray)));
-    connect(walletModel, SIGNAL(unload()), this, SLOT(removeWallet()));
+    connect(walletModel, &WalletModel::coinsSent,
+        paymentServer, &PaymentServer::fetchPaymentACK);
+    connect(walletModel, &WalletModel::unload, this, &UmkoinApplication::removeWallet);
 
     m_wallet_models.push_back(walletModel);
 #endif
@@ -504,13 +504,12 @@ void UmkoinApplication::initializeResult(bool success)
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
         // umkoin: URIs or payment requests:
-        connect(paymentServer, SIGNAL(receivedPaymentRequest(SendCoinsRecipient)),
-                         window, SLOT(handlePaymentRequest(SendCoinsRecipient)));
-        connect(window, SIGNAL(receivedURI(QString)),
-                         paymentServer, SLOT(handleURIOrFile(QString)));
-        connect(paymentServer, SIGNAL(message(QString,QString,unsigned int)),
-                         window, SLOT(message(QString,QString,unsigned int)));
-        QTimer::singleShot(100, paymentServer, SLOT(uiReady()));
+        connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &UmkoinGUI::handlePaymentRequest);
+        connect(window, &UmkoinGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
+        connect(paymentServer, &PaymentServer::message, [this](const QString& title, const QString& message, unsigned int style) {
+            window->message(title, message, style);
+        });
+        QTimer::singleShot(100, paymentServer, &PaymentServer::uiReady);
 #endif
         pollShutdownTimer->start(200);
     } else {

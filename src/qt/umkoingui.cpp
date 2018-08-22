@@ -203,9 +203,9 @@ UmkoinGUI::UmkoinGUI(interfaces::Node& node, const PlatformStyle *_platformStyle
     modalOverlay = new ModalOverlay(this->centralWidget());
 #ifdef ENABLE_WALLET
     if(enableWallet) {
-        connect(walletFrame, SIGNAL(requestedSyncWarningInfo()), this, SLOT(showModalOverlay()));
-        connect(labelBlocksIcon, SIGNAL(clicked(QPoint)), this, SLOT(showModalOverlay()));
-        connect(progressBar, SIGNAL(clicked(QPoint)), this, SLOT(showModalOverlay()));
+        connect(walletFrame, &WalletFrame::requestedSyncWarningInfo, this, &UmkoinGUI::showModalOverlay);
+        connect(labelBlocksIcon, &GUIUtil::ClickableLabel::clicked, this, &UmkoinGUI::showModalOverlay);
+        connect(progressBar, &GUIUtil::ClickableProgressBar::clicked, this, &UmkoinGUI::showModalOverlay);
     }
 #endif
 }
@@ -270,18 +270,18 @@ void UmkoinGUI::createActions()
 #ifdef ENABLE_WALLET
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
     // can be triggered from the tray menu, and need to show the GUI to be useful.
-    connect(overviewAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(overviewAction, SIGNAL(triggered()), this, SLOT(gotoOverviewPage()));
-    connect(sendCoinsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(sendCoinsAction, SIGNAL(triggered()), this, SLOT(gotoSendCoinsPage()));
-    connect(sendCoinsMenuAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(sendCoinsMenuAction, SIGNAL(triggered()), this, SLOT(gotoSendCoinsPage()));
-    connect(receiveCoinsAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(receiveCoinsAction, SIGNAL(triggered()), this, SLOT(gotoReceiveCoinsPage()));
-    connect(receiveCoinsMenuAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(receiveCoinsMenuAction, SIGNAL(triggered()), this, SLOT(gotoReceiveCoinsPage()));
-    connect(historyAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
+    connect(overviewAction, &QAction::triggered, this, static_cast<void (UmkoinGUI::*)()>(&UmkoinGUI::showNormalIfMinimized));
+    connect(overviewAction, &QAction::triggered, this, &UmkoinGUI::gotoOverviewPage);
+    connect(sendCoinsAction, &QAction::triggered, this, static_cast<void (UmkoinGUI::*)()>(&UmkoinGUI::showNormalIfMinimized));
+    connect(sendCoinsAction, &QAction::triggered, [this]{ gotoSendCoinsPage(); });
+    connect(sendCoinsMenuAction, &QAction::triggered, this, static_cast<void (UmkoinGUI::*)()>(&UmkoinGUI::showNormalIfMinimized));
+    connect(sendCoinsMenuAction, &QAction::triggered, [this]{ gotoSendCoinsPage(); });
+    connect(receiveCoinsAction, &QAction::triggered, this, static_cast<void (UmkoinGUI::*)()>(&UmkoinGUI::showNormalIfMinimized));
+    connect(receiveCoinsAction, &QAction::triggered, this, &UmkoinGUI::gotoReceiveCoinsPage);
+    connect(receiveCoinsMenuAction, &QAction::triggered, this, static_cast<void (UmkoinGUI::*)()>(&UmkoinGUI::showNormalIfMinimized));
+    connect(receiveCoinsMenuAction, &QAction::triggered, this, &UmkoinGUI::gotoReceiveCoinsPage);
+    connect(historyAction, &QAction::triggered, this, static_cast<void (UmkoinGUI::*)()>(&UmkoinGUI::showNormalIfMinimized));
+    connect(historyAction, &QAction::triggered, this, &UmkoinGUI::gotoHistoryPage);
 #endif // ENABLE_WALLET
 
     quitAction = new QAction(platformStyle->TextColorIcon(":/icons/quit"), tr("E&xit"), this);
@@ -331,32 +331,32 @@ void UmkoinGUI::createActions()
     showHelpMessageAction->setMenuRole(QAction::NoRole);
     showHelpMessageAction->setStatusTip(tr("Show the %1 help message to get a list with possible Umkoin command-line options").arg(tr(PACKAGE_NAME)));
 
-    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-    connect(aboutAction, SIGNAL(triggered()), this, SLOT(aboutClicked()));
-    connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-    connect(optionsAction, SIGNAL(triggered()), this, SLOT(optionsClicked()));
-    connect(toggleHideAction, SIGNAL(triggered()), this, SLOT(toggleHidden()));
-    connect(showHelpMessageAction, SIGNAL(triggered()), this, SLOT(showHelpMessageClicked()));
-    connect(openRPCConsoleAction, SIGNAL(triggered()), this, SLOT(showDebugWindow()));
+    connect(quitAction, &QAction::triggered, qApp, QApplication::quit);
+    connect(aboutAction, &QAction::triggered, this, &UmkoinGUI::aboutClicked);
+    connect(aboutQtAction, &QAction::triggered, qApp, QApplication::aboutQt);
+    connect(optionsAction, &QAction::triggered, this, &UmkoinGUI::optionsClicked);
+    connect(toggleHideAction, &QAction::triggered, this, &UmkoinGUI::toggleHidden);
+    connect(showHelpMessageAction, &QAction::triggered, this, &UmkoinGUI::showHelpMessageClicked);
+    connect(openRPCConsoleAction, &QAction::triggered, this, &UmkoinGUI::showDebugWindow);
     // prevents an open debug window from becoming stuck/unusable on client shutdown
-    connect(quitAction, SIGNAL(triggered()), rpcConsole, SLOT(hide()));
+    connect(quitAction, &QAction::triggered, rpcConsole, &QWidget::hide);
 
 #ifdef ENABLE_WALLET
     if(walletFrame)
     {
-        connect(encryptWalletAction, SIGNAL(triggered(bool)), walletFrame, SLOT(encryptWallet(bool)));
-        connect(backupWalletAction, SIGNAL(triggered()), walletFrame, SLOT(backupWallet()));
-        connect(changePassphraseAction, SIGNAL(triggered()), walletFrame, SLOT(changePassphrase()));
-        connect(signMessageAction, SIGNAL(triggered()), this, SLOT(gotoSignMessageTab()));
-        connect(verifyMessageAction, SIGNAL(triggered()), this, SLOT(gotoVerifyMessageTab()));
-        connect(usedSendingAddressesAction, SIGNAL(triggered()), walletFrame, SLOT(usedSendingAddresses()));
-        connect(usedReceivingAddressesAction, SIGNAL(triggered()), walletFrame, SLOT(usedReceivingAddresses()));
-        connect(openAction, SIGNAL(triggered()), this, SLOT(openClicked()));
+        connect(encryptWalletAction, &QAction::triggered, walletFrame, &WalletFrame::encryptWallet);
+        connect(backupWalletAction, &QAction::triggered, walletFrame, &WalletFrame::backupWallet);
+        connect(changePassphraseAction, &QAction::triggered, walletFrame, &WalletFrame::changePassphrase);
+        connect(signMessageAction, &QAction::triggered, [this]{ gotoSignMessageTab(); });
+        connect(verifyMessageAction, &QAction::triggered, [this]{ gotoVerifyMessageTab(); });
+        connect(usedSendingAddressesAction, &QAction::triggered, walletFrame, &WalletFrame::usedSendingAddresses);
+        connect(usedReceivingAddressesAction, &QAction::triggered, walletFrame, &WalletFrame::usedReceivingAddresses);
+        connect(openAction, &QAction::triggered, this, &UmkoinGUI::openClicked);
     }
 #endif // ENABLE_WALLET
 
-    new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_C), this, SLOT(showDebugWindowActivateConsole()));
-    new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_D), this, SLOT(showDebugWindow()));
+    connect(new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_C), this), &QShortcut::activated, this, &UmkoinGUI::showDebugWindowActivateConsole);
+    connect(new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_D), this), &QShortcut::activated, this, &UmkoinGUI::showDebugWindow);
 }
 
 void UmkoinGUI::createMenuBar()
@@ -425,7 +425,7 @@ void UmkoinGUI::createToolBars()
         toolbar->addWidget(spacer);
 
         m_wallet_selector = new QComboBox();
-        connect(m_wallet_selector, SIGNAL(currentIndexChanged(int)), this, SLOT(setCurrentWalletBySelectorIndex(int)));
+        connect(m_wallet_selector, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &UmkoinGUI::setCurrentWalletBySelectorIndex);
 
         m_wallet_selector_label = new QLabel();
         m_wallet_selector_label->setText(tr("Wallet:") + " ");
@@ -451,18 +451,20 @@ void UmkoinGUI::setClientModel(ClientModel *_clientModel)
 
         // Keep up to date with client
         updateNetworkState();
-        connect(_clientModel, SIGNAL(numConnectionsChanged(int)), this, SLOT(setNumConnections(int)));
-        connect(_clientModel, SIGNAL(networkActiveChanged(bool)), this, SLOT(setNetworkActive(bool)));
+        connect(_clientModel, &ClientModel::numConnectionsChanged, this, &UmkoinGUI::setNumConnections);
+        connect(_clientModel, &ClientModel::networkActiveChanged, this, &UmkoinGUI::setNetworkActive);
 
         modalOverlay->setKnownBestHeight(_clientModel->getHeaderTipHeight(), QDateTime::fromTime_t(_clientModel->getHeaderTipTime()));
         setNumBlocks(m_node.getNumBlocks(), QDateTime::fromTime_t(m_node.getLastBlockTime()), m_node.getVerificationProgress(), false);
-        connect(_clientModel, SIGNAL(numBlocksChanged(int,QDateTime,double,bool)), this, SLOT(setNumBlocks(int,QDateTime,double,bool)));
+        connect(_clientModel, &ClientModel::numBlocksChanged, this, &UmkoinGUI::setNumBlocks);
 
         // Receive and report messages from client model
-        connect(_clientModel, SIGNAL(message(QString,QString,unsigned int)), this, SLOT(message(QString,QString,unsigned int)));
+        connect(_clientModel, &ClientModel::message, [this](const QString &title, const QString &message, unsigned int style){
+            this->message(title, message, style);
+        });
 
         // Show progress dialog
-        connect(_clientModel, SIGNAL(showProgress(QString,int)), this, SLOT(showProgress(QString,int)));
+        connect(_clientModel, &ClientModel::showProgress, this, &UmkoinGUI::showProgress);
 
         rpcConsole->setClientModel(_clientModel);
 
@@ -480,7 +482,7 @@ void UmkoinGUI::setClientModel(ClientModel *_clientModel)
         if(optionsModel)
         {
             // be aware of the tray icon disable state change reported by the OptionsModel object.
-            connect(optionsModel,SIGNAL(hideTrayIconChanged(bool)),this,SLOT(setTrayIconVisible(bool)));
+            connect(optionsModel, &OptionsModel::hideTrayIconChanged, this, &UmkoinGUI::setTrayIconVisible);
 
             // initialize the disable state of the tray icon with the current value in the model.
             setTrayIconVisible(optionsModel->getHideTrayIcon());
@@ -601,8 +603,7 @@ void UmkoinGUI::createTrayIconMenu()
     trayIconMenu = new QMenu(this);
     trayIcon->setContextMenu(trayIconMenu);
 
-    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-            this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &UmkoinGUI::trayIconActivated);
 #else
     // Note: On Mac, the dock icon is used to provide the tray's functionality.
     MacDockIconHandler *dockIconHandler = MacDockIconHandler::instance();
@@ -956,12 +957,12 @@ void UmkoinGUI::changeEvent(QEvent *e)
             QWindowStateChangeEvent *wsevt = static_cast<QWindowStateChangeEvent*>(e);
             if(!(wsevt->oldState() & Qt::WindowMinimized) && isMinimized())
             {
-                QTimer::singleShot(0, this, SLOT(hide()));
+                QTimer::singleShot(0, this, &UmkoinGUI::hide);
                 e->ignore();
             }
             else if((wsevt->oldState() & Qt::WindowMinimized) && !isMinimized())
             {
-                QTimer::singleShot(0, this, SLOT(show()));
+                QTimer::singleShot(0, this, &UmkoinGUI::show);
                 e->ignore();
             }
         }
@@ -1276,7 +1277,7 @@ void UnitDisplayStatusBarControl::createContextMenu()
         menuAction->setData(QVariant(u));
         menu->addAction(menuAction);
     }
-    connect(menu,SIGNAL(triggered(QAction*)),this,SLOT(onMenuSelection(QAction*)));
+    connect(menu, &QMenu::triggered, this, &UnitDisplayStatusBarControl::onMenuSelection);
 }
 
 /** Lets the control know about the Options Model (and its signals) */
@@ -1287,7 +1288,7 @@ void UnitDisplayStatusBarControl::setOptionsModel(OptionsModel *_optionsModel)
         this->optionsModel = _optionsModel;
 
         // be aware of a display unit change reported by the OptionsModel object.
-        connect(_optionsModel,SIGNAL(displayUnitChanged(int)),this,SLOT(updateDisplayUnit(int)));
+        connect(_optionsModel, &OptionsModel::displayUnitChanged, this, &UnitDisplayStatusBarControl::updateDisplayUnit);
 
         // initialize the display units label with the current value in the model.
         updateDisplayUnit(_optionsModel->getDisplayUnit());
