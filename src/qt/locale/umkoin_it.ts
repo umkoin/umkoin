@@ -3593,8 +3593,8 @@ Nota: poiché la commissione è calcolata su base per byte, una commissione di "
         <translation>Impossibile generare una chiave di indirizzo di modifica. Le chiavi private sono disabilitate per questo portafoglio.</translation>
     </message>
     <message>
-        <source>Cannot upgrade a non HD split wallet without upgrading to support pre split keypool. Please use -upgradewallet=160000 or -upgradewallet with no version specified.</source>
-        <translation>Impossibile aggiornare un portafoglio diviso non HD senza aggiornamento per supportare il keypool pre-split. Si prega di utilizzare -upgradewallet = 160000 o -upgradewallet senza specificare la versione.</translation>
+        <source>Cannot upgrade a non HD split wallet without upgrading to support pre split keypool. Please use -upgradewallet=169900 or -upgradewallet with no version specified.</source>
+        <translation>Impossibile aggiornare un portafoglio diviso non HD senza aggiornamento per supportare il keypool pre-split. Si prega di utilizzare -upgradewallet = 169900 o -upgradewallet senza specificare la versione.</translation>
     </message>
     <message>
         <source>Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -fallbackfee.</source>

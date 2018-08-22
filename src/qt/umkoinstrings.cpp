@@ -24,7 +24,7 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 "connections at the same."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "Cannot upgrade a non HD split wallet without upgrading to support pre split "
-"keypool. Please use -upgradewallet=160000 or -upgradewallet with no version "
+"keypool. Please use -upgradewallet=169900 or -upgradewallet with no version "
 "specified."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "Distributed under the MIT software license, see the accompanying file %s or "
