@@ -57,6 +57,8 @@
 #include <QUrlQuery>
 #include <QVBoxLayout>
 
+#include <boost/bind.hpp>
+
 const std::string UmkoinGUI::DEFAULT_UIPLATFORM =
 #if defined(Q_OS_MAC)
         "macosx"
