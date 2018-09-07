@@ -11,7 +11,7 @@ def setup():
     if args.kvm:
         programs += ['python-vm-builder', 'qemu-kvm', 'qemu-utils']
     elif args.docker:
-        dockers = ['docker.io', 'docker-ce']
+        dockers = ['docker-ce', 'docker.io']
         for i in dockers:
             return_code = subprocess.call(['sudo', 'apt-get', 'install', '-qq', i])
             if return_code == 0:
