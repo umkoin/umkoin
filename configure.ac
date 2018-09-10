@@ -4,7 +4,7 @@ define(_CLIENT_VERSION_MAJOR, 0)
 define(_CLIENT_VERSION_MINOR, 17)
 define(_CLIENT_VERSION_REVISION, 0)
 define(_CLIENT_VERSION_BUILD, 4)
-define(_CLIENT_VERSION_IS_RELEASE, false)
+define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2018)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
 define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[Umkoin Core]])
@@ -733,6 +733,10 @@ fi
 
 AC_CHECK_HEADERS([endian.h sys/endian.h byteswap.h stdio.h stdlib.h unistd.h strings.h sys/types.h sys/stat.h sys/select.h sys/prctl.h])
 
+AC_CHECK_DECLS([getifaddrs, freeifaddrs],,,
+    [#include <sys/types.h>
+    #include <ifaddrs.h>]
+)
 AC_CHECK_DECLS([strnlen])
 
 # Check for daemon(3), unrelated to --with-daemon (although used by it)
