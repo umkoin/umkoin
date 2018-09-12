@@ -260,6 +260,10 @@ libumkoin_server_a_SOURCES = \
   versionbits.cpp \
   $(UMKOIN_CORE_H)
 
+if !ENABLE_WALLET
+libumkoin_server_a_SOURCES += dummywallet.cpp
+endif
+
 if ENABLE_ZMQ
 libumkoin_zmq_a_CPPFLAGS = $(UMKOIN_INCLUDES) $(ZMQ_CFLAGS)
 libumkoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
