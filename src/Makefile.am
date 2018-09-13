@@ -228,6 +228,8 @@ libumkoin_server_a_SOURCES = \
   httpserver.cpp \
   index/base.cpp \
   index/txindex.cpp \
+  interfaces/handler.cpp \
+  interfaces/node.cpp \
   init.cpp \
   dbwrapper.cpp \
   merkleblock.cpp \
@@ -414,8 +416,6 @@ libumkoin_util_a_SOURCES = \
   compat/glibcxx_sanity.cpp \
   compat/strnlen.cpp \
   fs.cpp \
-  interfaces/handler.cpp \
-  interfaces/node.cpp \
   logging.cpp \
   random.cpp \
   rpc/protocol.cpp \
