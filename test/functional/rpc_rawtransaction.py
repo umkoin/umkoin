@@ -44,6 +44,9 @@ class RawTransactionsTest(UmkoinTestFramework):
         self.num_nodes = 3
         self.extra_args = [["-addresstype=legacy"], ["-addresstype=legacy"], ["-addresstype=legacy"]]
 
+    def skip_test_if_missing_module(self):
+        self.skip_if_no_wallet()
+
     def setup_network(self, split=False):
         super().setup_network()
         connect_nodes_bi(self.nodes, 0, 2)
@@ -358,7 +361,7 @@ class RawTransactionsTest(UmkoinTestFramework):
 
         # decoderawtransaction tests
         # witness transaction
-        encrawtx = "0200000001b25211ee08435ee404259e0b99572a15baafc206dfaa18a0ac362d82e8e7889f000000006a47304402207160613be43dec6b2e21422a995b4357ba0c337d89566e188b4ce7593a79dbff02200cc377ad0d4e0b289e1cd61334f2f7266344e114a9ca766873df4d94968b4be301210235bc9ed1fcd839d342531744c8ac993e5c96c8e3a96d7477d30297f6dd841647fdffffff013ce0f505000000001976a9149e1502512566ef23183857c3e516d132b765514e88ac53560000"
+        encrawtx = "010000000001010000000000000072c1a6a246ae63f74f931e8365e15a089c68d61900000000000000000000ffffffff0100e1f50500000000000102616100000000"
         decrawtx = self.nodes[0].decoderawtransaction(encrawtx, True) # decode as witness transaction
         assert_equal(decrawtx['vout'][0]['value'], Decimal('1.00000000'))
         assert_raises_rpc_error(-22, 'TX decode failed', self.nodes[0].decoderawtransaction, encrawtx, False) # force decode as non-witness transaction
