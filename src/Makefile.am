@@ -467,7 +467,7 @@ umkoind_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-umkoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+umkoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
 # umkoin-cli binary #
 umkoin_cli_SOURCES = umkoin-cli.cpp
@@ -485,7 +485,7 @@ umkoin_cli_LDADD = \
   $(LIBUMKOIN_UTIL) \
   $(LIBUMKOIN_CRYPTO)
 
-umkoin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+umkoin_cli_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
 # umkoin-tx binary #
