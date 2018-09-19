@@ -1,9 +1,12 @@
-Umkoin Core version 0.16.x is now available from:
+(note: this is a temporary file, to be added-to by anybody, and moved to
+release-notes at release time)
 
-  <http://umkoin.org/bin/umkoin-core-0.16.x/>
+Umkoin Core version *version* is now available from:
 
-This is a new minor version release, with various bugfixes
-as well as updated translations.
+  <https://bitcoincore.org/bin/umkoin-core-*version*/>
+
+This is a new major version release, including new features, various bugfixes
+and performance improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at GitHub:
 
@@ -17,50 +20,58 @@ shut down (which might take a few minutes for older versions), then run the
 installer (on Windows) or just copy over `/Applications/Umkoin-Qt` (on Mac)
 or `umkoind`/`umkoin-qt` (on Linux).
 
-The first time you run version 0.15.0 or newer, your chainstate database will be converted to a
+The first time you run version 0.15.0, your chainstate database will be converted to a
 new format, which will take anywhere from a few minutes to half an hour,
 depending on the speed of your machine.
 
 Note that the block database format also changed in version 0.8.0 and there is no
-automatic upgrade code from before version 0.8 to version 0.15.0 or higher. Upgrading
-directly from 0.7.x and earlier without re-downloading the blockchain is not supported.
+automatic upgrade code from before version 0.8 to version 0.15.0. Upgrading
+directly from 0.7.x and earlier without redownloading the blockchain is not supported.
 However, as usual, old wallet versions are still supported.
 
 Downgrading warning
 -------------------
 
-Wallets created in 0.16 and later are not compatible with versions prior to 0.16
-and will not work if you try to use newly created wallets in older versions. Existing
-wallets that were created with older versions are not affected by this.
+The chainstate database for this release is not compatible with previous
+releases, so if you run 0.15 and then decide to switch back to any
+older version, you will need to run the old release with the `-reindex-chainstate`
+option to rebuild the chainstate data structures in the old format.
+
+If your node has pruning enabled, this will entail re-downloading and
+processing the entire blockchain.
 
 Compatibility
 ==============
 
 Umkoin Core is extensively tested on multiple operating systems using
-the Linux kernel, macOS 10.8+, and Windows Vista and later. Windows XP is not supported.
+the Linux kernel, macOS 10.10+, and Windows 7 and newer (Windows XP is not supported).
 
 Umkoin Core should also work on most other Unix-like systems but is not
 frequently tested on them.
 
+From 0.17.0 onwards macOS <10.10 is no longer supported. 0.17.0 is built using Qt 5.9.x, which doesn't
+support versions of macOS older than 10.10.
+
 Notable changes
 ===============
 
-(to be filled in)
+Command line option changes
+---------------------------
 
-0.16.x change log
-------------------
+The `-enablebip61` command line option (introduced in Umkoin Core 0.17.0) is
+used to toggle sending of BIP 61 reject messages. Reject messages have no use
+case on the P2P network and are only logged for debugging by most network
+nodes. The option will now by default be off for improved privacy and security
+as well as reduced upload usage. The option can explicitly be turned on for
+local-network debugging purposes.
 
-(to be filled in)
+Example item
+------------
 
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
 
-(to be filled in)
-
-And to those that reported security issues:
-
-(to be filled in)
 
 As well as everyone that helped translating on [Transifex](https://www.transifex.com/umkoin/umkoin-core/).
