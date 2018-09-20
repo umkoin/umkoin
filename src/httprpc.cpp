@@ -14,7 +14,6 @@
 #include <util.h>
 #include <utilstrencodings.h>
 #include <ui_interface.h>
-#include <walletinitinterface.h>
 #include <crypto/hmac_sha256.h>
 #include <stdio.h>
 
@@ -241,12 +240,12 @@ bool StartHTTPRPC()
         return false;
 
     RegisterHTTPHandler("/", true, HTTPReq_JSONRPC);
-    if (g_wallet_init_interface.HasWalletSupport()) {
-        RegisterHTTPHandler("/wallet/", false, HTTPReq_JSONRPC);
-    }
-    struct event_base* eventBase = EventBase();
-    assert(eventBase);
-    httpRPCTimerInterface = MakeUnique<HTTPRPCTimerInterface>(eventBase);
+#ifdef ENABLE_WALLET
+    // ifdef can be removed once we switch to better endpoint support and API versioning
+    RegisterHTTPHandler("/wallet/", false, HTTPReq_JSONRPC);
+#endif
+    assert(EventBase());
+    httpRPCTimerInterface = MakeUnique<HTTPRPCTimerInterface>(EventBase());
     RPCSetTimerInterface(httpRPCTimerInterface.get());
     return true;
 }
@@ -260,9 +259,9 @@ void StopHTTPRPC()
 {
     LogPrint(BCLog::RPC, "Stopping HTTP RPC server\n");
     UnregisterHTTPHandler("/", true);
-    if (g_wallet_init_interface.HasWalletSupport()) {
-        UnregisterHTTPHandler("/wallet/", false);
-    }
+#ifdef ENABLE_WALLET
+    UnregisterHTTPHandler("/wallet/", false);
+#endif
     if (httpRPCTimerInterface) {
         RPCUnsetTimerInterface(httpRPCTimerInterface.get());
         httpRPCTimerInterface.reset();

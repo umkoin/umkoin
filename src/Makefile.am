@@ -96,7 +96,6 @@ UMKOIN_CORE_H = \
   bech32.h \
   bloom.h \
   blockencodings.h \
-  blockfilter.h \
   chain.h \
   chainparams.h \
   chainparamsbase.h \
@@ -220,7 +219,6 @@ libumkoin_server_a_SOURCES = \
   addrman.cpp \
   bloom.cpp \
   blockencodings.cpp \
-  blockfilter.cpp \
   chain.cpp \
   checkpoints.cpp \
   consensus/tx_verify.cpp \
@@ -228,8 +226,6 @@ libumkoin_server_a_SOURCES = \
   httpserver.cpp \
   index/base.cpp \
   index/txindex.cpp \
-  interfaces/handler.cpp \
-  interfaces/node.cpp \
   init.cpp \
   dbwrapper.cpp \
   merkleblock.cpp \
@@ -261,10 +257,6 @@ libumkoin_server_a_SOURCES = \
   validationinterface.cpp \
   versionbits.cpp \
   $(UMKOIN_CORE_H)
-
-if !ENABLE_WALLET
-libumkoin_server_a_SOURCES += dummywallet.cpp
-endif
 
 if ENABLE_ZMQ
 libumkoin_zmq_a_CPPFLAGS = $(UMKOIN_INCLUDES) $(ZMQ_CFLAGS)
@@ -416,6 +408,8 @@ libumkoin_util_a_SOURCES = \
   compat/glibcxx_sanity.cpp \
   compat/strnlen.cpp \
   fs.cpp \
+  interfaces/handler.cpp \
+  interfaces/node.cpp \
   logging.cpp \
   random.cpp \
   rpc/protocol.cpp \
@@ -467,7 +461,7 @@ umkoind_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-umkoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+umkoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
 # umkoin-cli binary #
 umkoin_cli_SOURCES = umkoin-cli.cpp
@@ -485,7 +479,7 @@ umkoin_cli_LDADD = \
   $(LIBUMKOIN_UTIL) \
   $(LIBUMKOIN_CRYPTO)
 
-umkoin_cli_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+umkoin_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
 # umkoin-tx binary #

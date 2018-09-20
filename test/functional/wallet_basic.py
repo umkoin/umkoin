@@ -23,9 +23,6 @@ class WalletTest(UmkoinTestFramework):
         self.num_nodes = 4
         self.setup_clean_chain = True
 
-    def skip_test_if_missing_module(self):
-        self.skip_if_no_wallet()
-
     def setup_network(self):
         self.add_nodes(4)
         self.start_node(0)

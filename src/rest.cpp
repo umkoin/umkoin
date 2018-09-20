@@ -464,7 +464,7 @@ static bool rest_getutxos(HTTPRequest* req, const std::string& strURIPart)
                 oss >> fCheckMemPool;
                 oss >> vOutPoints;
             }
-        } catch (const std::ios_base::failure&) {
+        } catch (const std::ios_base::failure& e) {
             // abort in case of unreadable binary data
             return RESTERR(req, HTTP_BAD_REQUEST, "Parse error");
         }
@@ -591,10 +591,11 @@ static const struct {
       {"/rest/getutxos", rest_getutxos},
 };
 
-void StartREST()
+bool StartREST()
 {
     for (unsigned int i = 0; i < ARRAYLEN(uri_prefixes); i++)
         RegisterHTTPHandler(uri_prefixes[i].prefix, false, uri_prefixes[i].handler);
+    return true;
 }
 
 void InterruptREST()

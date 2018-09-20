@@ -937,19 +937,17 @@ BOOST_AUTO_TEST_CASE(script_build)
         }
     }
 
-#ifdef UPDATE_JSON_TESTS
     std::string strGen;
-#endif
+
     for (TestBuilder& test : tests) {
         test.Test();
         std::string str = JSONPrettyPrint(test.GetJSON());
-#ifdef UPDATE_JSON_TESTS
-        strGen += str + ",\n";
-#else
+#ifndef UPDATE_JSON_TESTS
         if (tests_set.count(str) == 0) {
             BOOST_CHECK_MESSAGE(false, "Missing auto script_valid test: " + test.GetComment());
         }
 #endif
+        strGen += str + ",\n";
     }
 
 #ifdef UPDATE_JSON_TESTS

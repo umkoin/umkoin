@@ -60,7 +60,8 @@ IsMineResult IsMineInner(const CKeyStore& keystore, const CScript& scriptPubKey,
     IsMineResult ret = IsMineResult::NO;
 
     std::vector<valtype> vSolutions;
-    txnouttype whichType = Solver(scriptPubKey, vSolutions);
+    txnouttype whichType;
+    Solver(scriptPubKey, whichType, vSolutions);
 
     CKeyID keyID;
     switch (whichType)

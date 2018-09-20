@@ -7,8 +7,6 @@
 Tests correspond to code in rpc/net.cpp.
 """
 
-from decimal import Decimal
-
 from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import (
     assert_equal,
@@ -23,7 +21,6 @@ class NetTest(UmkoinTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2
-        self.extra_args = [["-minrelaytxfee=0.00001000"],["-minrelaytxfee=0.00000500"]]
 
     def run_test(self):
         self._test_connection_count()
@@ -98,8 +95,6 @@ class NetTest(UmkoinTestFramework):
         # the address bound to on one side will be the source address for the other node
         assert_equal(peer_info[0][0]['addrbind'], peer_info[1][0]['addr'])
         assert_equal(peer_info[1][0]['addrbind'], peer_info[0][0]['addr'])
-        assert_equal(peer_info[0][0]['minfeefilter'], Decimal("0.00000500"))
-        assert_equal(peer_info[1][0]['minfeefilter'], Decimal("0.00001000"))
 
 if __name__ == '__main__':
     NetTest().main()

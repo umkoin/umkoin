@@ -152,7 +152,6 @@ BASE_SCRIPTS = [
     'p2p_node_network_limited.py',
     'feature_blocksdir.py',
     'feature_config_args.py',
-    'rpc_help.py',
     'feature_help.py',
     # Don't append tests at the end to avoid merge conflicts
     # Put them in a random line within the section that fits their approximate run-time
@@ -236,6 +235,8 @@ def main():
 
     logging.debug("Temporary test directory at %s" % tmpdir)
 
+    enable_wallet = config["components"].getboolean("ENABLE_WALLET")
+    enable_utils = config["components"].getboolean("ENABLE_UTILS")
     enable_umkoind = config["components"].getboolean("ENABLE_UMKOIND")
 
     if config["environment"]["EXEEXT"] == ".exe" and not args.force:
@@ -244,9 +245,9 @@ def main():
         print("Tests currently disabled on Windows by default. Use --force option to enable")
         sys.exit(0)
 
-    if not enable_umkoind:
-        print("No functional tests to run.")
-        print("Rerun ./configure with --with-daemon and then make")
+    if not (enable_wallet and enable_utils and enable_umkoind):
+        print("No functional tests to run. Wallet, utils, and umkoind must all be enabled")
+        print("Rerun `configure` with -enable-wallet, -with-utils and -with-daemon and rerun make")
         sys.exit(0)
 
     # Build list of tests
