@@ -1,17 +1,15 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <sync.h>
 
-#include <logging.h>
+#include <memory>
+#include <set>
+#include <util.h>
 #include <utilstrencodings.h>
 
 #include <stdio.h>
-
-#include <map>
-#include <memory>
-#include <set>
 
 #ifdef DEBUG_LOCKCONTENTION
 #if !defined(HAVE_THREAD_LOCAL)
@@ -28,8 +26,8 @@ void PrintLockContention(const char* pszName, const char* pszFile, int nLine)
 //
 // Early deadlock detection.
 // Problem being solved:
-//    Thread 1 locks A, then B, then C
-//    Thread 2 locks D, then C, then A
+//    Thread 1 locks  A, then B, then C
+//    Thread 2 locks  D, then C, then A
 //     --> may result in deadlock between the two threads, depending on when they run.
 // Solution implemented here:
 // Keep track of pairs of locks: (A before B), (A before C), etc.
@@ -83,28 +81,24 @@ static void potential_deadlock_detected(const std::pair<void*, void*>& mismatch,
     LogPrintf("Previous lock order was:\n");
     for (const std::pair<void*, CLockLocation> & i : s2) {
         if (i.first == mismatch.first) {
-            LogPrintf(" (1)"); /* Continued */
+            LogPrintf(" (1)");
         }
         if (i.first == mismatch.second) {
-            LogPrintf(" (2)"); /* Continued */
+            LogPrintf(" (2)");
         }
         LogPrintf(" %s\n", i.second.ToString());
     }
     LogPrintf("Current lock order is:\n");
     for (const std::pair<void*, CLockLocation> & i : s1) {
         if (i.first == mismatch.first) {
-            LogPrintf(" (1)"); /* Continued */
+            LogPrintf(" (1)");
         }
         if (i.first == mismatch.second) {
-            LogPrintf(" (2)"); /* Continued */
+            LogPrintf(" (2)");
         }
         LogPrintf(" %s\n", i.second.ToString());
     }
-    if (g_debug_lockorder_abort) {
-        fprintf(stderr, "Assertion failed: detected inconsistent lock order at %s:%i, details in debug log.\n", __FILE__, __LINE__);
-        abort();
-    }
-    throw std::logic_error("potential deadlock detected");
+    assert(false);
 }
 
 static void push_lock(void* c, const CLockLocation& locklocation)
@@ -192,7 +186,5 @@ void DeleteLock(void* cs)
         lockdata.invlockorders.erase(invit++);
     }
 }
-
-bool g_debug_lockorder_abort = true;
 
 #endif /* DEBUG_LOCKORDER */

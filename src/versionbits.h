@@ -1,9 +1,9 @@
-// Copyright (c) 2016-2018 The Bitcoin Core developers
+// Copyright (c) 2016-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef UMKOIN_VERSIONBITS_H
-#define UMKOIN_VERSIONBITS_H
+#ifndef UMKOIN_CONSENSUS_VERSIONBITS
+#define UMKOIN_CONSENSUS_VERSIONBITS
 
 #include <chain.h>
 #include <map>
@@ -17,12 +17,12 @@ static const int32_t VERSIONBITS_TOP_MASK = 0xE0000000UL;
 /** Total bits available for versionbits */
 static const int32_t VERSIONBITS_NUM_BITS = 29;
 
-enum class ThresholdState {
-    DEFINED,
-    STARTED,
-    LOCKED_IN,
-    ACTIVE,
-    FAILED,
+enum ThresholdState {
+    THRESHOLD_DEFINED,
+    THRESHOLD_STARTED,
+    THRESHOLD_LOCKED_IN,
+    THRESHOLD_ACTIVE,
+    THRESHOLD_FAILED,
 };
 
 // A map that gives the state for blocks whose height is a multiple of Period().
@@ -77,4 +77,4 @@ BIP9Stats VersionBitsStatistics(const CBlockIndex* pindexPrev, const Consensus::
 int VersionBitsStateSinceHeight(const CBlockIndex* pindexPrev, const Consensus::Params& params, Consensus::DeploymentPos pos, VersionBitsCache& cache);
 uint32_t VersionBitsMask(const Consensus::Params& params, Consensus::DeploymentPos pos);
 
-#endif // UMKOIN_VERSIONBITS_H
+#endif

@@ -30,10 +30,6 @@
         <translation>Eliminar la dirección actualmente seleccionada de la lista</translation>
     </message>
     <message>
-        <source>Enter address or label to search</source>
-        <translation>Ingrese dirección o capa a buscar </translation>
-    </message>
-    <message>
         <source>Export the data in the current tab to a file</source>
         <translation>Exportar la información en la tabla actual a un archivo</translation>
     </message>
@@ -373,7 +369,15 @@
         <source>Command-line options</source>
         <translation>opciones de la Linea de comandos</translation>
     </message>
-</context>
+    <message>
+        <source>Usage:</source>
+        <translation>Uso:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>Opciones de comando de lineas</translation>
+    </message>
+    </context>
 <context>
     <name>Intro</name>
     <message>
@@ -487,10 +491,6 @@
     <message>
         <source>Copy &amp;Address</source>
         <translation>&amp;Copiar dirección</translation>
-    </message>
-    <message>
-        <source>Wallet</source>
-        <translation>Cartera</translation>
     </message>
     </context>
 <context>
@@ -656,12 +656,24 @@
 <context>
     <name>umkoin-core</name>
     <message>
+        <source>Options:</source>
+        <translation>Opciones:</translation>
+    </message>
+    <message>
         <source>Umkoin Core</source>
         <translation>nucleo Umkoin</translation>
     </message>
     <message>
+        <source>&lt;category&gt; can be:</source>
+        <translation>&lt;categoria&gt; puede ser:</translation>
+    </message>
+    <message>
         <source>Verifying blocks...</source>
         <translation>Verificando bloques...</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>Opciones de cartera:</translation>
     </message>
     <message>
         <source>Information</source>

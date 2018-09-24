@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2018 The Bitcoin Core developers
+# Copyright (c) 2014-2017 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the RBF code."""
 
-from decimal import Decimal
-
-from test_framework.messages import COIN, COutPoint, CTransaction, CTxIn, CTxOut
-from test_framework.script import CScript, OP_DROP
 from test_framework.test_framework import UmkoinTestFramework
-from test_framework.util import assert_equal, assert_raises_rpc_error, bytes_to_hex_str, satoshi_round
+from test_framework.util import *
+from test_framework.script import *
+from test_framework.mininode import *
 
 MAX_REPLACEMENT_LIMIT = 100
 
@@ -44,7 +42,7 @@ def make_utxo(node, amount, confirmed=True, scriptPubKey=CScript([1])):
     tx2.vout = [CTxOut(amount, scriptPubKey)]
     tx2.rehash()
 
-    signed_tx = node.signrawtransactionwithwallet(txToHex(tx2))
+    signed_tx = node.signrawtransaction(txToHex(tx2))
 
     txid = node.sendrawtransaction(signed_tx['hex'], True)
 
@@ -429,9 +427,6 @@ class ReplaceByFeeTest(UmkoinTestFramework):
         tx1a_hex = txToHex(tx1a)
         tx1a_txid = self.nodes[0].sendrawtransaction(tx1a_hex, True)
 
-        # This transaction isn't shown as replaceable
-        assert_equal(self.nodes[0].getmempoolentry(tx1a_txid)['bip125-replaceable'], False)
-
         # Shouldn't be able to double-spend
         tx1b = CTransaction()
         tx1b.vin = [CTxIn(tx0_outpoint, nSequence=0)]
@@ -472,10 +467,7 @@ class ReplaceByFeeTest(UmkoinTestFramework):
         tx3a.vout = [CTxOut(int(0.9*COIN), CScript([b'c'])), CTxOut(int(0.9*COIN), CScript([b'd']))]
         tx3a_hex = txToHex(tx3a)
 
-        tx3a_txid = self.nodes[0].sendrawtransaction(tx3a_hex, True)
-
-        # This transaction is shown as replaceable
-        assert_equal(self.nodes[0].getmempoolentry(tx3a_txid)['bip125-replaceable'], True)
+        self.nodes[0].sendrawtransaction(tx3a_hex, True)
 
         tx3b = CTransaction()
         tx3b.vin = [CTxIn(COutPoint(tx1a_txid, 0), nSequence=0)]

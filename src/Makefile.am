@@ -4,10 +4,9 @@
 
 DIST_SUBDIRS = secp256k1 univalue
 
-AM_LDFLAGS = $(PTHREAD_CFLAGS) $(LIBTOOL_LDFLAGS) $(HARDENED_LDFLAGS) $(GPROF_LDFLAGS) $(SANITIZER_LDFLAGS)
-AM_CXXFLAGS = $(DEBUG_CXXFLAGS) $(HARDENED_CXXFLAGS) $(WARN_CXXFLAGS) $(NOWARN_CXXFLAGS) $(ERROR_CXXFLAGS) $(GPROF_CXXFLAGS) $(SANITIZER_CXXFLAGS)
-AM_CPPFLAGS = $(DEBUG_CPPFLAGS) $(HARDENED_CPPFLAGS)
-AM_LIBTOOLFLAGS = --preserve-dup-deps
+AM_LDFLAGS = $(PTHREAD_CFLAGS) $(LIBTOOL_LDFLAGS) $(HARDENED_LDFLAGS)
+AM_CXXFLAGS = $(HARDENED_CXXFLAGS) $(ERROR_CXXFLAGS)
+AM_CPPFLAGS = $(HARDENED_CPPFLAGS)
 EXTRA_LIBRARIES =
 
 if EMBEDDED_UNIVALUE
@@ -29,7 +28,7 @@ LIBUMKOIN_COMMON=libumkoin_common.a
 LIBUMKOIN_CONSENSUS=libumkoin_consensus.a
 LIBUMKOIN_CLI=libumkoin_cli.a
 LIBUMKOIN_UTIL=libumkoin_util.a
-LIBUMKOIN_CRYPTO_BASE=crypto/libumkoin_crypto_base.a
+LIBUMKOIN_CRYPTO=crypto/libumkoin_crypto.a
 LIBUMKOINQT=qt/libumkoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
@@ -43,21 +42,7 @@ if ENABLE_WALLET
 LIBUMKOIN_WALLET=libumkoin_wallet.a
 endif
 
-LIBUMKOIN_CRYPTO= $(LIBUMKOIN_CRYPTO_BASE)
-if ENABLE_SSE41
-LIBUMKOIN_CRYPTO_SSE41 = crypto/libumkoin_crypto_sse41.a
-LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_SSE41)
-endif
-if ENABLE_AVX2
-LIBUMKOIN_CRYPTO_AVX2 = crypto/libumkoin_crypto_avx2.a
-LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_AVX2)
-endif
-if ENABLE_SHANI
-LIBUMKOIN_CRYPTO_SHANI = crypto/libumkoin_crypto_shani.a
-LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_SHANI)
-endif
-
-$(LIBSECP256K1): $(wildcard secp256k1/src/*.h) $(wildcard secp256k1/src/*.c) $(wildcard secp256k1/include/*)
+$(LIBSECP256K1): $(wildcard secp256k1/src/*) $(wildcard secp256k1/include/*)
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C $(@D) $(@F)
 
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
@@ -96,7 +81,6 @@ UMKOIN_CORE_H = \
   bech32.h \
   bloom.h \
   blockencodings.h \
-  blockfilter.h \
   chain.h \
   chainparams.h \
   chainparamsbase.h \
@@ -118,19 +102,12 @@ UMKOIN_CORE_H = \
   fs.h \
   httprpc.h \
   httpserver.h \
-  index/base.h \
-  index/txindex.h \
   indirectmap.h \
   init.h \
-  interfaces/handler.h \
-  interfaces/node.h \
-  interfaces/wallet.h \
   key.h \
-  key_io.h \
   keystore.h \
   dbwrapper.h \
   limitedmap.h \
-  logging.h \
   memusage.h \
   merkleblock.h \
   miner.h \
@@ -140,7 +117,6 @@ UMKOIN_CORE_H = \
   netbase.h \
   netmessagemaker.h \
   noui.h \
-  outputtype.h \
   policy/feerate.h \
   policy/fees.h \
   policy/policy.h \
@@ -154,17 +130,15 @@ UMKOIN_CORE_H = \
   rpc/client.h \
   rpc/mining.h \
   rpc/protocol.h \
+  rpc/safemode.h \
   rpc/server.h \
-  rpc/rawtransaction.h \
   rpc/register.h \
   rpc/util.h \
   scheduler.h \
-  script/descriptor.h \
-  script/ismine.h \
   script/sigcache.h \
   script/sign.h \
   script/standard.h \
-  shutdown.h \
+  script/ismine.h \
   streams.h \
   support/allocators/secure.h \
   support/allocators/zeroafterfree.h \
@@ -181,29 +155,26 @@ UMKOIN_CORE_H = \
   ui_interface.h \
   undo.h \
   util.h \
-  utilmemory.h \
   utilmoneystr.h \
   utiltime.h \
   validation.h \
   validationinterface.h \
   versionbits.h \
-  walletinitinterface.h \
   wallet/coincontrol.h \
   wallet/crypter.h \
   wallet/db.h \
   wallet/feebumper.h \
   wallet/fees.h \
+  wallet/init.h \
   wallet/rpcwallet.h \
   wallet/wallet.h \
   wallet/walletdb.h \
   wallet/walletutil.h \
-  wallet/coinselection.h \
   warnings.h \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h\
   zmq/zmqnotificationinterface.h \
-  zmq/zmqpublishnotifier.h \
-  zmq/zmqrpc.h
+  zmq/zmqpublishnotifier.h
 
 
 obj/build.h: FORCE
@@ -220,16 +191,11 @@ libumkoin_server_a_SOURCES = \
   addrman.cpp \
   bloom.cpp \
   blockencodings.cpp \
-  blockfilter.cpp \
   chain.cpp \
   checkpoints.cpp \
   consensus/tx_verify.cpp \
   httprpc.cpp \
   httpserver.cpp \
-  index/base.cpp \
-  index/txindex.cpp \
-  interfaces/handler.cpp \
-  interfaces/node.cpp \
   init.cpp \
   dbwrapper.cpp \
   merkleblock.cpp \
@@ -237,7 +203,6 @@ libumkoin_server_a_SOURCES = \
   net.cpp \
   net_processing.cpp \
   noui.cpp \
-  outputtype.cpp \
   policy/fees.cpp \
   policy/policy.cpp \
   policy/rbf.cpp \
@@ -248,10 +213,10 @@ libumkoin_server_a_SOURCES = \
   rpc/misc.cpp \
   rpc/net.cpp \
   rpc/rawtransaction.cpp \
+  rpc/safemode.cpp \
   rpc/server.cpp \
-  rpc/util.cpp \
   script/sigcache.cpp \
-  shutdown.cpp \
+  script/ismine.cpp \
   timedata.cpp \
   torcontrol.cpp \
   txdb.cpp \
@@ -262,18 +227,13 @@ libumkoin_server_a_SOURCES = \
   versionbits.cpp \
   $(UMKOIN_CORE_H)
 
-if !ENABLE_WALLET
-libumkoin_server_a_SOURCES += dummywallet.cpp
-endif
-
 if ENABLE_ZMQ
 libumkoin_zmq_a_CPPFLAGS = $(UMKOIN_INCLUDES) $(ZMQ_CFLAGS)
 libumkoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
-  zmq/zmqpublishnotifier.cpp \
-  zmq/zmqrpc.cpp
+  zmq/zmqpublishnotifier.cpp
 endif
 
 
@@ -282,8 +242,6 @@ endif
 libumkoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_wallet_a_SOURCES = \
-  interfaces/wallet.cpp \
-  wallet/coincontrol.cpp \
   wallet/crypter.cpp \
   wallet/db.cpp \
   wallet/feebumper.cpp \
@@ -294,13 +252,12 @@ libumkoin_wallet_a_SOURCES = \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
   wallet/walletutil.cpp \
-  wallet/coinselection.cpp \
   $(UMKOIN_CORE_H)
 
 # crypto primitives library
-crypto_libumkoin_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libumkoin_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libumkoin_crypto_base_a_SOURCES = \
+crypto_libumkoin_crypto_a_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libumkoin_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libumkoin_crypto_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
   crypto/chacha20.h \
@@ -320,26 +277,8 @@ crypto_libumkoin_crypto_base_a_SOURCES = \
   crypto/sha512.h
 
 if USE_ASM
-crypto_libumkoin_crypto_base_a_SOURCES += crypto/sha256_sse4.cpp
+crypto_libumkoin_crypto_a_SOURCES += crypto/sha256_sse4.cpp
 endif
-
-crypto_libumkoin_crypto_sse41_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libumkoin_crypto_sse41_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libumkoin_crypto_sse41_a_CXXFLAGS += $(SSE41_CXXFLAGS)
-crypto_libumkoin_crypto_sse41_a_CPPFLAGS += -DENABLE_SSE41
-crypto_libumkoin_crypto_sse41_a_SOURCES = crypto/sha256_sse41.cpp
-
-crypto_libumkoin_crypto_avx2_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libumkoin_crypto_avx2_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libumkoin_crypto_avx2_a_CXXFLAGS += $(AVX2_CXXFLAGS)
-crypto_libumkoin_crypto_avx2_a_CPPFLAGS += -DENABLE_AVX2
-crypto_libumkoin_crypto_avx2_a_SOURCES = crypto/sha256_avx2.cpp
-
-crypto_libumkoin_crypto_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libumkoin_crypto_shani_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libumkoin_crypto_shani_a_CXXFLAGS += $(SHANI_CXXFLAGS)
-crypto_libumkoin_crypto_shani_a_CPPFLAGS += -DENABLE_SHANI
-crypto_libumkoin_crypto_shani_a_SOURCES = crypto/sha256_shani.cpp
 
 # consensus: shared between all executables that validate any consensus rules.
 libumkoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
@@ -369,7 +308,6 @@ libumkoin_consensus_a_SOURCES = \
   script/script_error.cpp \
   script/script_error.h \
   serialize.h \
-  span.h \
   tinyformat.h \
   uint256.cpp \
   uint256.h \
@@ -389,15 +327,12 @@ libumkoin_common_a_SOURCES = \
   core_read.cpp \
   core_write.cpp \
   key.cpp \
-  key_io.cpp \
   keystore.cpp \
   netaddress.cpp \
   netbase.cpp \
   policy/feerate.cpp \
   protocol.cpp \
   scheduler.cpp \
-  script/descriptor.cpp \
-  script/ismine.cpp \
   script/sign.cpp \
   script/standard.cpp \
   warnings.cpp \
@@ -416,9 +351,9 @@ libumkoin_util_a_SOURCES = \
   compat/glibcxx_sanity.cpp \
   compat/strnlen.cpp \
   fs.cpp \
-  logging.cpp \
   random.cpp \
   rpc/protocol.cpp \
+  rpc/util.cpp \
   support/cleanse.cpp \
   sync.cpp \
   threadinterrupt.cpp \
@@ -430,7 +365,6 @@ libumkoin_util_a_SOURCES = \
 
 if GLIBC_BACK_COMPAT
 libumkoin_util_a_SOURCES += compat/glibc_compat.cpp
-AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
 # cli: shared between umkoin-cli and umkoin-qt
@@ -455,10 +389,10 @@ endif
 
 umkoind_LDADD = \
   $(LIBUMKOIN_SERVER) \
-  $(LIBUMKOIN_WALLET) \
   $(LIBUMKOIN_COMMON) \
   $(LIBUNIVALUE) \
   $(LIBUMKOIN_UTIL) \
+  $(LIBUMKOIN_WALLET) \
   $(LIBUMKOIN_ZMQ) \
   $(LIBUMKOIN_CONSENSUS) \
   $(LIBUMKOIN_CRYPTO) \
@@ -512,7 +446,7 @@ umkoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 # umkoinconsensus library #
 if BUILD_UMKOIN_LIBS
 include_HEADERS = script/umkoinconsensus.h
-libumkoinconsensus_la_SOURCES = $(crypto_libumkoin_crypto_base_a_SOURCES) $(libumkoin_consensus_a_SOURCES)
+libumkoinconsensus_la_SOURCES = $(crypto_libumkoin_crypto_a_SOURCES) $(libumkoin_consensus_a_SOURCES)
 
 if GLIBC_BACK_COMPAT
   libumkoinconsensus_la_SOURCES += compat/glibc_compat.cpp

@@ -1,0 +1,11 @@
+[Protocol]
+exec=umkoin-qt '%u'
+protocol=umkoin
+input=none
+output=none
+helper=true
+listing=
+reading=false
+writing=false
+makedir=false
+deleting=false

@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2018 The Bitcoin Core developers
+# Copyright (c) 2014-2017 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Base class for RPC testing."""
 
-import configparser
 from enum import Enum
 import logging
-import argparse
+import optparse
 import os
 import pdb
 import shutil
@@ -18,7 +17,6 @@ import time
 from .authproxy import JSONRPCException
 from . import coverage
 from .test_node import TestNode
-from .mininode import NetworkThread
 from .util import (
     MAX_NODES,
     PortSeed,
@@ -43,28 +41,7 @@ TEST_EXIT_PASSED = 0
 TEST_EXIT_FAILED = 1
 TEST_EXIT_SKIPPED = 77
 
-
-class UmkoinTestMetaClass(type):
-    """Metaclass for UmkoinTestFramework.
-
-    Ensures that any attempt to register a subclass of `UmkoinTestFramework`
-    adheres to a standard whereby the subclass overrides `set_test_params` and
-    `run_test` but DOES NOT override either `__init__` or `main`. If any of
-    those standards are violated, a ``TypeError`` is raised."""
-
-    def __new__(cls, clsname, bases, dct):
-        if not clsname == 'UmkoinTestFramework':
-            if not ('run_test' in dct and 'set_test_params' in dct):
-                raise TypeError("UmkoinTestFramework subclasses must override "
-                                "'run_test' and 'set_test_params'")
-            if '__init__' in dct or 'main' in dct:
-                raise TypeError("UmkoinTestFramework subclasses may not override "
-                                "'__init__' or 'main'")
-
-        return super().__new__(cls, clsname, bases, dct)
-
-
-class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
+class UmkoinTestFramework():
     """Base class for a umkoin test script.
 
     Individual umkoin test scripts should subclass this class and override the set_test_params() and run_test() methods.
@@ -84,11 +61,8 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         """Sets test framework defaults. Do not override this method. Instead, override the set_test_params() method"""
         self.setup_clean_chain = False
         self.nodes = []
-        self.network_thread = None
         self.mocktime = 0
-        self.rpc_timewait = 60  # Wait for up to 60 seconds for the RPC server to respond
         self.supports_cli = False
-        self.bind_to_localhost_only = True
         self.set_test_params()
 
         assert hasattr(self, "num_nodes"), "Test must set self.num_nodes in set_test_params()"
@@ -96,48 +70,40 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
     def main(self):
         """Main function. This should not be overridden by the subclass test scripts."""
 
-        parser = argparse.ArgumentParser(usage="%(prog)s [options]")
-        parser.add_argument("--nocleanup", dest="nocleanup", default=False, action="store_true",
-                            help="Leave umkoinds and test.* datadir on exit or error")
-        parser.add_argument("--noshutdown", dest="noshutdown", default=False, action="store_true",
-                            help="Don't stop umkoinds after the test execution")
-        parser.add_argument("--cachedir", dest="cachedir", default=os.path.abspath(os.path.dirname(os.path.realpath(__file__)) + "/../../cache"),
-                            help="Directory for caching pregenerated datadirs (default: %(default)s)")
-        parser.add_argument("--tmpdir", dest="tmpdir", help="Root directory for datadirs")
-        parser.add_argument("-l", "--loglevel", dest="loglevel", default="INFO",
-                            help="log events at this level and higher to the console. Can be set to DEBUG, INFO, WARNING, ERROR or CRITICAL. Passing --loglevel DEBUG will output all logs to console. Note that logs at all levels are always written to the test_framework.log file in the temporary test directory.")
-        parser.add_argument("--tracerpc", dest="trace_rpc", default=False, action="store_true",
-                            help="Print out all RPC calls as they are made")
-        parser.add_argument("--portseed", dest="port_seed", default=os.getpid(), type=int,
-                            help="The seed to use for assigning port numbers (default: current process id)")
-        parser.add_argument("--coveragedir", dest="coveragedir",
-                            help="Write tested RPC commands into this directory")
-        parser.add_argument("--configfile", dest="configfile",
-                            default=os.path.abspath(os.path.dirname(os.path.realpath(__file__)) + "/../../config.ini"),
-                            help="Location of the test framework config file (default: %(default)s)")
-        parser.add_argument("--pdbonfailure", dest="pdbonfailure", default=False, action="store_true",
-                            help="Attach a python debugger if test fails")
-        parser.add_argument("--usecli", dest="usecli", default=False, action="store_true",
-                            help="use umkoin-cli instead of RPC for all commands")
+        parser = optparse.OptionParser(usage="%prog [options]")
+        parser.add_option("--nocleanup", dest="nocleanup", default=False, action="store_true",
+                          help="Leave umkoinds and test.* datadir on exit or error")
+        parser.add_option("--noshutdown", dest="noshutdown", default=False, action="store_true",
+                          help="Don't stop umkoinds after the test execution")
+        parser.add_option("--srcdir", dest="srcdir", default=os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + "/../../../src"),
+                          help="Source directory containing umkoind/umkoin-cli (default: %default)")
+        parser.add_option("--cachedir", dest="cachedir", default=os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + "/../../cache"),
+                          help="Directory for caching pregenerated datadirs")
+        parser.add_option("--tmpdir", dest="tmpdir", help="Root directory for datadirs")
+        parser.add_option("-l", "--loglevel", dest="loglevel", default="INFO",
+                          help="log events at this level and higher to the console. Can be set to DEBUG, INFO, WARNING, ERROR or CRITICAL. Passing --loglevel DEBUG will output all logs to console. Note that logs at all levels are always written to the test_framework.log file in the temporary test directory.")
+        parser.add_option("--tracerpc", dest="trace_rpc", default=False, action="store_true",
+                          help="Print out all RPC calls as they are made")
+        parser.add_option("--portseed", dest="port_seed", default=os.getpid(), type='int',
+                          help="The seed to use for assigning port numbers (default: current process id)")
+        parser.add_option("--coveragedir", dest="coveragedir",
+                          help="Write tested RPC commands into this directory")
+        parser.add_option("--configfile", dest="configfile",
+                          help="Location of the test framework config file")
+        parser.add_option("--pdbonfailure", dest="pdbonfailure", default=False, action="store_true",
+                          help="Attach a python debugger if test fails")
+        parser.add_option("--usecli", dest="usecli", default=False, action="store_true",
+                          help="use umkoin-cli instead of RPC for all commands")
         self.add_options(parser)
-        self.options = parser.parse_args()
+        (self.options, self.args) = parser.parse_args()
 
         PortSeed.n = self.options.port_seed
+
+        os.environ['PATH'] = self.options.srcdir + ":" + self.options.srcdir + "/qt:" + os.environ['PATH']
 
         check_json_precision()
 
         self.options.cachedir = os.path.abspath(self.options.cachedir)
-
-        config = configparser.ConfigParser()
-        config.read_file(open(self.options.configfile))
-        self.options.umkoind = os.getenv("UMKOIND", default=config["environment"]["BUILDDIR"] + '/src/umkoind' + config["environment"]["EXEEXT"])
-        self.options.umkoincli = os.getenv("UMKOINCLI", default=config["environment"]["BUILDDIR"] + '/src/umkoin-cli' + config["environment"]["EXEEXT"])
-
-        os.environ['PATH'] = os.pathsep.join([
-            os.path.join(config['environment']['BUILDDIR'], 'src'),
-            os.path.join(config['environment']['BUILDDIR'], 'src', 'qt'),
-            os.environ['PATH']
-        ])
 
         # Set up temp directory and start logging
         if self.options.tmpdir:
@@ -146,10 +112,6 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         else:
             self.options.tmpdir = tempfile.mkdtemp(prefix="test")
         self._start_logging()
-
-        self.log.debug('Setting up network thread')
-        self.network_thread = NetworkThread()
-        self.network_thread.start()
 
         success = TestStatus.FAILED
 
@@ -178,8 +140,6 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
             print("Testcase failed. Attaching python debugger. Enter ? for help")
             pdb.set_trace()
 
-        self.log.debug('Closing down network thread')
-        self.network_thread.close()
         if not self.options.noshutdown:
             self.log.info("Stopping nodes")
             if self.nodes:
@@ -190,11 +150,10 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
             self.log.info("Note: umkoinds were not stopped and may still be running")
 
         if not self.options.nocleanup and not self.options.noshutdown and success != TestStatus.FAILED:
-            self.log.info("Cleaning up {} on exit".format(self.options.tmpdir))
-            cleanup_tree_on_exit = True
+            self.log.info("Cleaning up")
+            shutil.rmtree(self.options.tmpdir)
         else:
             self.log.warning("Not cleaning up dir %s" % self.options.tmpdir)
-            cleanup_tree_on_exit = False
 
         if success == TestStatus.PASSED:
             self.log.info("Tests successful")
@@ -207,8 +166,6 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
             self.log.error("Hint: Call {} '{}' to consolidate all logs".format(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + "/../combine_logs.py"), self.options.tmpdir))
             exit_code = TEST_EXIT_FAILED
         logging.shutdown()
-        if cleanup_tree_on_exit:
-            shutil.rmtree(self.options.tmpdir)
         sys.exit(exit_code)
 
     # Methods to override in subclass test scripts.
@@ -253,21 +210,17 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
 
     # Public helper methods. These can be accessed by the subclass test scripts.
 
-    def add_nodes(self, num_nodes, extra_args=None, *, rpchost=None, binary=None):
+    def add_nodes(self, num_nodes, extra_args=None, rpchost=None, timewait=None, binary=None):
         """Instantiate TestNode objects"""
-        if self.bind_to_localhost_only:
-            extra_confs = [["bind=127.0.0.1"]] * num_nodes
-        else:
-            extra_confs = [[]] * num_nodes
+
         if extra_args is None:
             extra_args = [[]] * num_nodes
         if binary is None:
-            binary = [self.options.umkoind] * num_nodes
-        assert_equal(len(extra_confs), num_nodes)
+            binary = [None] * num_nodes
         assert_equal(len(extra_args), num_nodes)
         assert_equal(len(binary), num_nodes)
         for i in range(num_nodes):
-            self.nodes.append(TestNode(i, get_datadir_path(self.options.tmpdir, i), rpchost=rpchost, timewait=self.rpc_timewait, umkoind=binary[i], umkoin_cli=self.options.umkoincli, mocktime=self.mocktime, coverage_dir=self.options.coveragedir, extra_conf=extra_confs[i], extra_args=extra_args[i], use_cli=self.options.usecli))
+            self.nodes.append(TestNode(i, self.options.tmpdir, extra_args[i], rpchost, timewait=timewait, binary=binary[i], stderr=None, mocktime=self.mocktime, coverage_dir=self.options.coveragedir, use_cli=self.options.usecli))
 
     def start_node(self, i, *args, **kwargs):
         """Start a umkoind"""
@@ -300,9 +253,9 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
             for node in self.nodes:
                 coverage.write_all_rpc_commands(self.options.coveragedir, node.rpc)
 
-    def stop_node(self, i, expected_stderr=''):
+    def stop_node(self, i):
         """Stop a umkoind test node"""
-        self.nodes[i].stop_node(expected_stderr)
+        self.nodes[i].stop_node()
         self.nodes[i].wait_until_stopped()
 
     def stop_nodes(self):
@@ -319,6 +272,27 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         """Stop and start a test node"""
         self.stop_node(i)
         self.start_node(i, extra_args)
+
+    def assert_start_raises_init_error(self, i, extra_args=None, expected_msg=None, *args, **kwargs):
+        with tempfile.SpooledTemporaryFile(max_size=2**16) as log_stderr:
+            try:
+                self.start_node(i, extra_args, stderr=log_stderr, *args, **kwargs)
+                self.stop_node(i)
+            except Exception as e:
+                assert 'umkoind exited' in str(e)  # node must have shutdown
+                self.nodes[i].running = False
+                self.nodes[i].process = None
+                if expected_msg is not None:
+                    log_stderr.seek(0)
+                    stderr = log_stderr.read().decode('utf-8')
+                    if expected_msg not in stderr:
+                        raise AssertionError("Expected error \"" + expected_msg + "\" not found in:\n" + stderr)
+            else:
+                if expected_msg is None:
+                    assert_msg = "umkoind should have exited with an error"
+                else:
+                    assert_msg = "umkoind should have exited with expected error " + expected_msg
+                raise AssertionError(assert_msg)
 
     def wait_for_node_exit(self, i, timeout):
         self.nodes[i].process.wait(timeout)
@@ -353,7 +327,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         blockchain.  If the cached version of the blockchain is used without
         mocktime then the mempools will not sync due to IBD.
 
-        For backward compatibility of the python scripts with previous
+        For backwared compatibility of the python scripts with previous
         versions of the cache, this helper function sets mocktime to Jan 1,
         2014 + (201 * 10 * 60)"""
         self.mocktime = 1388534400 + (201 * 10 * 60)
@@ -368,7 +342,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         self.log = logging.getLogger('TestFramework')
         self.log.setLevel(logging.DEBUG)
         # Create file handler to log all messages
-        fh = logging.FileHandler(self.options.tmpdir + '/test_framework.log', encoding='utf-8')
+        fh = logging.FileHandler(self.options.tmpdir + '/test_framework.log')
         fh.setLevel(logging.DEBUG)
         # Create console handler to log messages to stderr. By default this logs only error messages, but can be configured with --loglevel.
         ch = logging.StreamHandler(sys.stdout)
@@ -376,7 +350,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         ll = int(self.options.loglevel) if self.options.loglevel.isdigit() else self.options.loglevel.upper()
         ch.setLevel(ll)
         # Format logs the same as umkoind's debug.log with microprecision (so log files can be concatenated and sorted)
-        formatter = logging.Formatter(fmt='%(asctime)s.%(msecs)03d000Z %(name)s (%(levelname)s): %(message)s', datefmt='%Y-%m-%dT%H:%M:%S')
+        formatter = logging.Formatter(fmt='%(asctime)s.%(msecs)03d000 %(name)s (%(levelname)s): %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
         formatter.converter = time.gmtime
         fh.setFormatter(formatter)
         ch.setFormatter(formatter)
@@ -415,10 +389,10 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
             # Create cache directories, run umkoinds:
             for i in range(MAX_NODES):
                 datadir = initialize_datadir(self.options.cachedir, i)
-                args = [self.options.umkoind, "-datadir=" + datadir]
+                args = [os.getenv("UMKOIND", "umkoind"), "-server", "-keypool=1", "-datadir=" + datadir, "-discover=0"]
                 if i > 0:
                     args.append("-connect=127.0.0.1:" + str(p2p_port(0)))
-                self.nodes.append(TestNode(i, get_datadir_path(self.options.cachedir, i), extra_conf=["bind=127.0.0.1"], extra_args=[], rpchost=None, timewait=self.rpc_timewait, umkoind=self.options.umkoind, umkoin_cli=self.options.umkoincli, mocktime=self.mocktime, coverage_dir=None))
+                self.nodes.append(TestNode(i, self.options.cachedir, extra_args=[], rpchost=None, timewait=None, binary=None, stderr=None, mocktime=self.mocktime, coverage_dir=None))
                 self.nodes[i].args = args
                 self.start_node(i)
 
@@ -471,30 +445,36 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         for i in range(self.num_nodes):
             initialize_datadir(self.options.tmpdir, i)
 
+class ComparisonTestFramework(UmkoinTestFramework):
+    """Test framework for doing p2p comparison testing
+
+    Sets up some umkoind binaries:
+    - 1 binary: test binary
+    - 2 binaries: 1 test binary, 1 ref binary
+    - n>2 binaries: 1 test binary, n-1 ref binaries"""
+
+    def set_test_params(self):
+        self.num_nodes = 2
+        self.setup_clean_chain = True
+
+    def add_options(self, parser):
+        parser.add_option("--testbinary", dest="testbinary",
+                          default=os.getenv("UMKOIND", "umkoind"),
+                          help="umkoind binary to test")
+        parser.add_option("--refbinary", dest="refbinary",
+                          default=os.getenv("UMKOIND", "umkoind"),
+                          help="umkoind binary to use for reference nodes (if any)")
+
+    def setup_network(self):
+        extra_args = [['-whitelist=127.0.0.1']] * self.num_nodes
+        if hasattr(self, "extra_args"):
+            extra_args = self.extra_args
+        self.add_nodes(self.num_nodes, extra_args,
+                       binary=[self.options.testbinary] +
+                       [self.options.refbinary] * (self.num_nodes - 1))
+        self.start_nodes()
 
 class SkipTest(Exception):
     """This exception is raised to skip a test"""
     def __init__(self, message):
         self.message = message
-
-
-def skip_if_no_py3_zmq():
-    """Attempt to import the zmq package and skip the test if the import fails."""
-    try:
-        import zmq  # noqa
-    except ImportError:
-        raise SkipTest("python3-zmq module not available.")
-
-
-def skip_if_no_umkoind_zmq(test_instance):
-    """Skip the running test if umkoind has not been compiled with zmq support."""
-    if not is_zmq_enabled(test_instance):
-        raise SkipTest("umkoind has not been built with zmq enabled.")
-
-
-def is_zmq_enabled(test_instance):
-    """Checks whether zmq is enabled or not."""
-    config = configparser.ConfigParser()
-    config.read_file(open(test_instance.options.configfile))
-
-    return config["components"].getboolean("ENABLE_ZMQ")

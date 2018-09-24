@@ -1,0 +1,8 @@
+/usr/bin/umkoin-cli		--	gen_context(system_u:object_r:umkoin_exec_t,s0)
+/usr/sbin/umkoind		--	gen_context(system_u:object_r:umkoin_exec_t,s0)
+/usr/lib(64)?/umkoin/umkoind		--	gen_context(system_u:object_r:umkoin_exec_t,s0)
+
+/etc/umkoin(/.*)?		gen_context(system_u:object_r:umkoin_conf_t,s0)
+/var/lib/umkoin(/.*)?		gen_context(system_u:object_r:umkoin_var_lib_t,s0)
+
+(/var)?/run/umkoind(/.*)?   gen_context(system_u:object_r:umkoin_var_run_t,s0)

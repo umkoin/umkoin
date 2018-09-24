@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,10 +8,9 @@
 #include <qt/guiutil.h>
 #include <qt/optionsmodel.h>
 
+#include <base58.h>
 #include <chainparams.h>
-#include <interfaces/node.h>
 #include <policy/policy.h>
-#include <key_io.h>
 #include <ui_interface.h>
 #include <util.h>
 #include <wallet/wallet.h>
@@ -41,7 +40,12 @@
 #include <QSslSocket>
 #include <QStringList>
 #include <QTextDocument>
+
+#if QT_VERSION < 0x050000
+#include <QUrl>
+#else
 #include <QUrlQuery>
+#endif
 
 const int UMKOIN_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
 const QString UMKOIN_IPC_PREFIX("umkoin:");
@@ -95,7 +99,11 @@ static QList<QString> savedPaymentRequests;
 
 static void ReportInvalidCertificate(const QSslCertificate& cert)
 {
+#if QT_VERSION < 0x050000
+    qDebug() << QString("%1: Payment server found an invalid certificate: ").arg(__func__) << cert.serialNumber() << cert.subjectInfo(QSslCertificate::CommonName) << cert.subjectInfo(QSslCertificate::OrganizationalUnitName);
+#else
     qDebug() << QString("%1: Payment server found an invalid certificate: ").arg(__func__) << cert.serialNumber() << cert.subjectInfo(QSslCertificate::CommonName) << cert.subjectInfo(QSslCertificate::DistinguishedNameQualifier) << cert.subjectInfo(QSslCertificate::OrganizationalUnitName);
+#endif
 }
 
 //
@@ -148,11 +156,13 @@ void PaymentServer::LoadRootCAs(X509_STORE* _store)
             continue;
         }
 
+#if QT_VERSION >= 0x050000
         // Blacklisted certificate
         if (cert.isBlacklisted()) {
             ReportInvalidCertificate(cert);
             continue;
         }
+#endif
         QByteArray certData = cert.toDer();
         const unsigned char *data = (const unsigned char *)certData.data();
 
@@ -190,7 +200,7 @@ void PaymentServer::LoadRootCAs(X509_STORE* _store)
 // Warning: ipcSendCommandLine() is called early in init,
 // so don't use "Q_EMIT message()", but "QMessageBox::"!
 //
-void PaymentServer::ipcParseCommandLine(interfaces::Node& node, int argc, char* argv[])
+void PaymentServer::ipcParseCommandLine(int argc, char* argv[])
 {
     for (int i = 1; i < argc; i++)
     {
@@ -212,11 +222,11 @@ void PaymentServer::ipcParseCommandLine(interfaces::Node& node, int argc, char* 
                 auto tempChainParams = CreateChainParams(CBaseChainParams::MAIN);
 
                 if (IsValidDestinationString(r.address.toStdString(), *tempChainParams)) {
-                    node.selectParams(CBaseChainParams::MAIN);
+                    SelectParams(CBaseChainParams::MAIN);
                 } else {
                     tempChainParams = CreateChainParams(CBaseChainParams::TESTNET);
                     if (IsValidDestinationString(r.address.toStdString(), *tempChainParams)) {
-                        node.selectParams(CBaseChainParams::TESTNET);
+                        SelectParams(CBaseChainParams::TESTNET);
                     }
                 }
             }
@@ -230,11 +240,11 @@ void PaymentServer::ipcParseCommandLine(interfaces::Node& node, int argc, char* 
             {
                 if (request.getDetails().network() == "main")
                 {
-                    node.selectParams(CBaseChainParams::MAIN);
+                    SelectParams(CBaseChainParams::MAIN);
                 }
                 else if (request.getDetails().network() == "test")
                 {
-                    node.selectParams(CBaseChainParams::TESTNET);
+                    SelectParams(CBaseChainParams::TESTNET);
                 }
             }
         }
@@ -318,8 +328,8 @@ PaymentServer::PaymentServer(QObject* parent, bool startLocalServer) :
                 tr("Cannot start umkoin: click-to-pay handler"));
         }
         else {
-            connect(uriServer, &QLocalServer::newConnection, this, &PaymentServer::handleURIConnection);
-            connect(this, &PaymentServer::receivedPaymentACK, this, &PaymentServer::handlePaymentACK);
+            connect(uriServer, SIGNAL(newConnection()), this, SLOT(handleURIConnection()));
+            connect(this, SIGNAL(receivedPaymentACK(QString)), this, SLOT(handlePaymentACK(QString)));
         }
     }
 }
@@ -369,8 +379,10 @@ void PaymentServer::initNetManager()
     else
         qDebug() << "PaymentServer::initNetManager: No active proxy server found.";
 
-    connect(netManager, &QNetworkAccessManager::finished, this, &PaymentServer::netRequestFinished);
-    connect(netManager, &QNetworkAccessManager::sslErrors, this, &PaymentServer::reportSslErrors);
+    connect(netManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(netRequestFinished(QNetworkReply*)));
+    connect(netManager, SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError> &)),
+            this, SLOT(reportSslErrors(QNetworkReply*, const QList<QSslError> &)));
 }
 
 void PaymentServer::uiReady()
@@ -393,14 +405,13 @@ void PaymentServer::handleURIOrFile(const QString& s)
         return;
     }
 
-    if (s.startsWith("umkoin://", Qt::CaseInsensitive))
+    if (s.startsWith(UMKOIN_IPC_PREFIX, Qt::CaseInsensitive)) // umkoin: URI
     {
-        Q_EMIT message(tr("URI handling"), tr("'umkoin://' is not a valid URI. Use 'umkoin:' instead."),
-            CClientUIInterface::MSG_ERROR);
-    }
-    else if (s.startsWith(UMKOIN_IPC_PREFIX, Qt::CaseInsensitive)) // umkoin: URI
-    {
+#if QT_VERSION < 0x050000
+        QUrl uri(s);
+#else
         QUrlQuery uri((QUrl(s)));
+#endif
         if (uri.hasQueryItem("r")) // payment request URI
         {
             QByteArray temp;
@@ -468,7 +479,8 @@ void PaymentServer::handleURIConnection()
     while (clientConnection->bytesAvailable() < (int)sizeof(quint32))
         clientConnection->waitForReadyRead();
 
-    connect(clientConnection, &QLocalSocket::disconnected, clientConnection, &QLocalSocket::deleteLater);
+    connect(clientConnection, SIGNAL(disconnected()),
+            clientConnection, SLOT(deleteLater()));
 
     QDataStream in(clientConnection);
     in.setVersion(QDataStream::Qt_4_0);
@@ -510,7 +522,7 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
 
     if (request.IsInitialized()) {
         // Payment request network matches client network?
-        if (!verifyNetwork(optionsModel->node(), request.getDetails())) {
+        if (!verifyNetwork(request.getDetails())) {
             Q_EMIT message(tr("Payment request rejected"), tr("Payment request network doesn't match client network."),
                 CClientUIInterface::MSG_ERROR);
 
@@ -567,7 +579,7 @@ bool PaymentServer::processPaymentRequest(const PaymentRequestPlus& request, Sen
 
         // Extract and check amounts
         CTxOut txOut(sendingTo.second, sendingTo.first);
-        if (IsDust(txOut, optionsModel->node().getDustRelayFee())) {
+        if (IsDust(txOut, ::dustRelayFee)) {
             Q_EMIT message(tr("Payment request error"), tr("Requested payment amount of %1 is too small (considered dust).")
                 .arg(UmkoinUnits::formatWithUnit(optionsModel->getDisplayUnit(), sendingTo.second)),
                 CClientUIInterface::MSG_ERROR);
@@ -605,7 +617,7 @@ void PaymentServer::fetchRequest(const QUrl& url)
     netManager->get(netRequest);
 }
 
-void PaymentServer::fetchPaymentACK(WalletModel* walletModel, const SendCoinsRecipient& recipient, QByteArray transaction)
+void PaymentServer::fetchPaymentACK(CWallet* wallet, const SendCoinsRecipient& recipient, QByteArray transaction)
 {
     const payments::PaymentDetails& details = recipient.paymentRequest.getDetails();
     if (!details.has_payment_url())
@@ -623,18 +635,19 @@ void PaymentServer::fetchPaymentACK(WalletModel* walletModel, const SendCoinsRec
     payment.add_transactions(transaction.data(), transaction.size());
 
     // Create a new refund address, or re-use:
+    QString account = tr("Refund from %1").arg(recipient.authenticatedMerchant);
+    std::string strAccount = account.toStdString();
     CPubKey newKey;
-    if (walletModel->wallet().getKeyFromPool(false /* internal */, newKey)) {
+    if (wallet->GetKeyFromPool(newKey)) {
         // BIP70 requests encode the scriptPubKey directly, so we are not restricted to address
         // types supported by the receiver. As a result, we choose the address format we also
         // use for change. Despite an actual payment and not change, this is a close match:
         // it's the output type we use subject to privacy issues, but not restricted by what
         // other software supports.
-        const OutputType change_type = walletModel->wallet().getDefaultChangeType() != OutputType::CHANGE_AUTO ? walletModel->wallet().getDefaultChangeType() : walletModel->wallet().getDefaultAddressType();
-        walletModel->wallet().learnRelatedScripts(newKey, change_type);
+        const OutputType change_type = g_change_type != OUTPUT_TYPE_NONE ? g_change_type : g_address_type;
+        wallet->LearnRelatedScripts(newKey, change_type);
         CTxDestination dest = GetDestinationForKey(newKey, change_type);
-        std::string label = tr("Refund from %1").arg(recipient.authenticatedMerchant).toStdString();
-        walletModel->wallet().setAddressBook(dest, label, "refund");
+        wallet->SetAddressBook(dest, strAccount, "refund");
 
         CScript s = GetScriptForDestination(dest);
         payments::Output* refund_to = payment.add_refund_to();
@@ -742,14 +755,14 @@ void PaymentServer::handlePaymentACK(const QString& paymentACKMsg)
     Q_EMIT message(tr("Payment acknowledged"), paymentACKMsg, CClientUIInterface::ICON_INFORMATION | CClientUIInterface::MODAL);
 }
 
-bool PaymentServer::verifyNetwork(interfaces::Node& node, const payments::PaymentDetails& requestDetails)
+bool PaymentServer::verifyNetwork(const payments::PaymentDetails& requestDetails)
 {
-    bool fVerified = requestDetails.network() == node.getNetwork();
+    bool fVerified = requestDetails.network() == Params().NetworkIDString();
     if (!fVerified) {
         qWarning() << QString("PaymentServer::%1: Payment request network \"%2\" doesn't match client network \"%3\".")
             .arg(__func__)
             .arg(QString::fromStdString(requestDetails.network()))
-            .arg(QString::fromStdString(node.getNetwork()));
+            .arg(QString::fromStdString(Params().NetworkIDString()));
     }
     return fVerified;
 }
@@ -758,7 +771,7 @@ bool PaymentServer::verifyExpired(const payments::PaymentDetails& requestDetails
 {
     bool fVerified = (requestDetails.has_expires() && (int64_t)requestDetails.expires() < GetTime());
     if (fVerified) {
-        const QString requestExpires = QString::fromStdString(FormatISO8601DateTime((int64_t)requestDetails.expires()));
+        const QString requestExpires = QString::fromStdString(DateTimeStrFormat("%Y-%m-%d %H:%M:%S", (int64_t)requestDetails.expires()));
         qWarning() << QString("PaymentServer::%1: Payment request expired \"%2\".")
             .arg(__func__)
             .arg(requestExpires);

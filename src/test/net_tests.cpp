@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2018 The Bitcoin Core developers
+// Copyright (c) 2012-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #include <addrman.h>
@@ -63,10 +63,10 @@ public:
     }
 };
 
-static CDataStream AddrmanToStream(CAddrManSerializationMock& _addrman)
+CDataStream AddrmanToStream(CAddrManSerializationMock& _addrman)
 {
     CDataStream ssPeersIn(SER_DISK, CLIENT_VERSION);
-    ssPeersIn << Params().MessageStart();
+    ssPeersIn << FLATDATA(Params().MessageStart());
     ssPeersIn << _addrman;
     std::string str = ssPeersIn.str();
     std::vector<unsigned char> vchData(str.begin(), str.end());
@@ -89,7 +89,6 @@ BOOST_AUTO_TEST_CASE(cnode_listen_port)
 
 BOOST_AUTO_TEST_CASE(caddrdb_read)
 {
-    SetDataDir("caddrdb_read");
     CAddrManUncorrupted addrmanUncorrupted;
     addrmanUncorrupted.MakeDeterministic();
 
@@ -113,9 +112,9 @@ BOOST_AUTO_TEST_CASE(caddrdb_read)
     BOOST_CHECK(addrman1.size() == 0);
     try {
         unsigned char pchMsgTmp[4];
-        ssPeers1 >> pchMsgTmp;
+        ssPeers1 >> FLATDATA(pchMsgTmp);
         ssPeers1 >> addrman1;
-    } catch (const std::exception&) {
+    } catch (const std::exception& e) {
         exceptionThrown = true;
     }
 
@@ -135,7 +134,6 @@ BOOST_AUTO_TEST_CASE(caddrdb_read)
 
 BOOST_AUTO_TEST_CASE(caddrdb_read_corrupted)
 {
-    SetDataDir("caddrdb_read_corrupted");
     CAddrManCorrupted addrmanCorrupted;
     addrmanCorrupted.MakeDeterministic();
 
@@ -146,9 +144,9 @@ BOOST_AUTO_TEST_CASE(caddrdb_read_corrupted)
     BOOST_CHECK(addrman1.size() == 0);
     try {
         unsigned char pchMsgTmp[4];
-        ssPeers1 >> pchMsgTmp;
+        ssPeers1 >> FLATDATA(pchMsgTmp);
         ssPeers1 >> addrman1;
-    } catch (const std::exception&) {
+    } catch (const std::exception& e) {
         exceptionThrown = true;
     }
     // Even through de-serialization failed addrman is not left in a clean state.
@@ -173,9 +171,9 @@ BOOST_AUTO_TEST_CASE(cnode_simple_test)
 
     in_addr ipv4Addr;
     ipv4Addr.s_addr = 0xa0b0c001;
-
+    
     CAddress addr = CAddress(CService(ipv4Addr, 7777), NODE_NETWORK);
-    std::string pszDest;
+    std::string pszDest = "";
     bool fInboundIn = false;
 
     // Test that fFeeler is false by default.

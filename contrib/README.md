@@ -21,10 +21,9 @@ Utility to generate the pnSeed[] array that is compiled into the client.
 Build Tools and Keys
 ---------------------
 
-### Packaging ###
-The [Debian](/contrib/debian) subfolder contains the copyright file.
-
-All other packaging related files can be found in the repository.
+### [Debian](/contrib/debian) ###
+Contains files used to package umkoind/umkoin-qt
+for Debian-based Linux systems. If you compile umkoind/umkoin-qt yourself, there are some useful files here.
 
 ### [Gitian-descriptors](/contrib/gitian-descriptors) ###
 Files used during the gitian build process. For more information about gitian, see the [the Umkoin Core documentation repository](https://github.com/umkoin/umkoin/doc/gitian-building).
@@ -35,7 +34,10 @@ PGP keys used for signing Umkoin Core [Gitian release](/doc/release-process.md) 
 ### [MacDeploy](/contrib/macdeploy) ###
 Scripts and notes for Mac builds. 
 
-### [Gitian-build](/contrib/gitian-build.py) ###
+### [RPM](/contrib/rpm) ###
+RPM spec file for building umkoin-core on RPM based distributions.
+
+### [Gitian-build](/contrib/gitian-build.sh) ###
 Script for running full Gitian builds.
 
 Test and Verify Tools 

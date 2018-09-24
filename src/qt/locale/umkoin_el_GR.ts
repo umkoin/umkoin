@@ -30,10 +30,6 @@
         <translation>Διαγραφή της επιλεγμένης διεύθυνσης από τη λίστα</translation>
     </message>
     <message>
-        <source>Enter address or label to search</source>
-        <translation>Αναζήτηση με βάση τη διεύθυνση ή την επιγραφή</translation>
-    </message>
-    <message>
         <source>Export the data in the current tab to a file</source>
         <translation>Εξαγωγή δεδομένων καρτέλας σε αρχείο</translation>
     </message>
@@ -192,28 +188,12 @@
         <translation>%1 θα κλείσει τώρα για να τελειώσει η διαδικασία κρυπτογράφησης. Να θυμάστε ότι κρυπτογραφόντας το πορτοφόλι σας δεν μπορείτε να προστατεύσετε πλήρως τα umkoin σας απο κλοπή μέσω malware που μπορεί να προσβάλει τον υπολογιστή σας.</translation>
     </message>
     <message>
-        <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
-        <translation>ΣΗΜΑΝΤΙΚΟ: Τα προηγούμενα αντίγραφα ασφαλείας που έχετε κάνει από το αρχείο του πορτοφόλιου σας θα πρέπει να αντικατασταθουν με το νέο που δημιουργείται, κρυπτογραφημένο αρχείο πορτοφόλιου. Για λόγους ασφαλείας, τα προηγούμενα αντίγραφα ασφαλείας του μη κρυπτογραφημένου αρχείου πορτοφόλιου θα καταστουν άχρηστα μόλις αρχίσετε να χρησιμοποιείτε το νέο κρυπτογραφημένο πορτοφόλι. </translation>
-    </message>
-    <message>
         <source>Wallet encryption failed</source>
         <translation>Η κρυπτογράφηση του πορτοφολιού απέτυχε</translation>
     </message>
     <message>
-        <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
-        <translation>Η κρυπτογράφηση του πορτοφολιού απέτυχε λογω εσωτερικού σφάλματος. Το πορτοφολι δεν κρυπτογραφηθηκε.</translation>
-    </message>
-    <message>
-        <source>The supplied passphrases do not match.</source>
-        <translation>Οι εισαχθέντες κωδικοί δεν ταιριάζουν.</translation>
-    </message>
-    <message>
         <source>Wallet unlock failed</source>
         <translation>Το ξεκλείδωμα του πορτοφολιού απέτυχε</translation>
-    </message>
-    <message>
-        <source>The passphrase entered for the wallet decryption was incorrect.</source>
-        <translation>Ο κωδικος που εισήχθη για την αποκρυπτογραφηση του πορτοφολιού ήταν λαθος.</translation>
     </message>
     <message>
         <source>Wallet decryption failed</source>
@@ -223,17 +203,9 @@
         <source>Wallet passphrase was successfully changed.</source>
         <translation>Η φράση πρόσβασης άλλαξε επιτυχώς</translation>
     </message>
-    <message>
-        <source>Warning: The Caps Lock key is on!</source>
-        <translation>Προσοχη: το πλήκτρο Caps Lock είναι ενεργο.</translation>
-    </message>
-</context>
+    </context>
 <context>
     <name>BanTableModel</name>
-    <message>
-        <source>IP/Netmask</source>
-        <translation>IP/Netmask</translation>
-    </message>
     </context>
 <context>
     <name>UmkoinGUI</name>
@@ -278,10 +250,6 @@
         <translation>&amp;Περί %1</translation>
     </message>
     <message>
-        <source>Show information about %1</source>
-        <translation>Εμφάνισε πληροφορίες σχετικά με %1</translation>
-    </message>
-    <message>
         <source>About &amp;Qt</source>
         <translation>Σχετικά με &amp;Qt</translation>
     </message>
@@ -292,10 +260,6 @@
     <message>
         <source>&amp;Options...</source>
         <translation>&amp;Επιλογές...</translation>
-    </message>
-    <message>
-        <source>Modify configuration options for %1</source>
-        <translation>Επεργασία ρυθμισεων επιλογών για το %1</translation>
     </message>
     <message>
         <source>&amp;Encrypt Wallet...</source>
@@ -320,22 +284,6 @@
     <message>
         <source>Open &amp;URI...</source>
         <translation>'Ανοιγμα &amp;URI</translation>
-    </message>
-    <message>
-        <source>Wallet:</source>
-        <translation>Πορτοφόλι</translation>
-    </message>
-    <message>
-        <source>Click to disable network activity.</source>
-        <translation>Κάντε κλικ για να απενεργοποιήσετε το δίκτυο.</translation>
-    </message>
-    <message>
-        <source>Network activity disabled.</source>
-        <translation>Η δραστηριότητα δικτύου είναι απενεργοποιημένη.</translation>
-    </message>
-    <message>
-        <source>Click to enable network activity again.</source>
-        <translation>Κάντε κλικ για να ενεργοποιήσετε τo δίκτυο ξανά.</translation>
     </message>
     <message>
         <source>Reindexing blocks on disk...</source>
@@ -436,14 +384,6 @@
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Επιλογές γραμμής εντολών</translation>
-    </message>
-    <message>
-        <source>Indexing blocks on disk...</source>
-        <translation>Φόρτωση ευρετηρίου μπλοκ στον σκληρο δισκο...</translation>
-    </message>
-    <message>
-        <source>Processing blocks on disk...</source>
-        <translation>Φόρτωση ευρετηρίου μπλοκ στον σκληρο δισκο...</translation>
     </message>
     <message>
         <source>%1 behind</source>
@@ -650,6 +590,10 @@
         <translation>&amp;Διεύθυνση</translation>
     </message>
     <message>
+        <source>New receiving address</source>
+        <translation>Νέα Διεύθυνση Λήψης</translation>
+    </message>
+    <message>
         <source>New sending address</source>
         <translation>Νέα Διεύθυνση Αποστολής</translation>
     </message>
@@ -699,7 +643,15 @@
         <source>Command-line options</source>
         <translation>Επιλογές γραμμής εντολών</translation>
     </message>
-</context>
+    <message>
+        <source>Usage:</source>
+        <translation>Χρήση:</translation>
+    </message>
+    <message>
+        <source>command-line options</source>
+        <translation>επιλογές γραμμής εντολών</translation>
+    </message>
+    </context>
 <context>
     <name>Intro</name>
     <message>
@@ -1358,10 +1310,6 @@
         <source>Label</source>
         <translation>Ετικέτα</translation>
     </message>
-    <message>
-        <source>Wallet</source>
-        <translation>Πορτοφόλι</translation>
-    </message>
     </context>
 <context>
     <name>RecentRequestsTableModel</name>
@@ -1491,10 +1439,6 @@
     <message>
         <source>Copy amount</source>
         <translation>Αντιγραφή ποσού</translation>
-    </message>
-    <message>
-        <source>Transaction fee</source>
-        <translation>Κόστος συναλλαγής</translation>
     </message>
     <message>
         <source>(no label)</source>
@@ -1670,6 +1614,10 @@
         <translation>Ανοιχτό μέχρι %1</translation>
     </message>
     <message>
+        <source>%1/offline</source>
+        <translation>%1/αποσυνδεδεμένο</translation>
+    </message>
+    <message>
         <source>0/unconfirmed, %1</source>
         <translation>0/ανεπιβεβαίωτο, %1</translation>
     </message>
@@ -1822,8 +1770,52 @@
 <context>
     <name>umkoin-core</name>
     <message>
+        <source>Options:</source>
+        <translation>Επιλογές:</translation>
+    </message>
+    <message>
+        <source>Specify data directory</source>
+        <translation>Ορισμός φακέλου δεδομένων</translation>
+    </message>
+    <message>
+        <source>Connect to a node to retrieve peer addresses, and disconnect</source>
+        <translation>Σύνδεση σε έναν κόμβο για την ανάκτηση διευθύνσεων από ομότιμους, και αποσύνδεση</translation>
+    </message>
+    <message>
+        <source>Specify your own public address</source>
+        <translation>Διευκρινίστε τη δικιά σας δημόσια διεύθυνση.</translation>
+    </message>
+    <message>
+        <source>Accept command line and JSON-RPC commands</source>
+        <translation>Αποδοχή εντολών κονσόλας και JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Run in the background as a daemon and accept commands</source>
+        <translation>Εκτέλεση στο παρασκήνιο και αποδοχή εντολών</translation>
+    </message>
+    <message>
         <source>Umkoin Core</source>
         <translation>Umkoin Core</translation>
+    </message>
+    <message>
+        <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>
+        <translation>Δέσμευση σε συγκεκριμένη διεύθυνση και συνεχόμενη παρακολούθηση σε αυτή. Χρησιμοποιήστε τη σημειογραφία [διακομιστή]:θύρα για IPv6</translation>
+    </message>
+    <message>
+        <source>Execute command when a wallet transaction changes (%s in cmd is replaced by TxID)</source>
+        <translation>Εκτέλεσε την εντολή όταν το καλύτερο μπλοκ αλλάξει(%s στην εντολή αντικαθίσταται από το hash του μπλοκ)</translation>
+    </message>
+    <message>
+        <source>Accept connections from outside (default: 1 if no -proxy or -connect)</source>
+        <translation>Να δέχεσαι συνδέσεις από έξω(προεπιλογή:1)</translation>
+    </message>
+    <message>
+        <source>Block creation options:</source>
+        <translation>Επιλογές δημιουργίας μπλοκ:</translation>
+    </message>
+    <message>
+        <source>Connection options:</source>
+        <translation>Επιλογές σύνδεσης:</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -1866,8 +1858,24 @@
         <translation>Δεν υπάρχουν αρκετοί περιγραφείς αρχείων διαθέσιμοι.</translation>
     </message>
     <message>
+        <source>Only connect to nodes in network &lt;net&gt; (ipv4, ipv6 or onion)</source>
+        <translation>Σύνδεση μόνο σε κόμβους του δικτύου &lt;net&gt; (ipv4, ipv6 ή onion)</translation>
+    </message>
+    <message>
+        <source>Specify wallet file (within data directory)</source>
+        <translation>Επιλέξτε αρχείο πορτοφολιού (μέσα από κατάλογο δεδομένων)</translation>
+    </message>
+    <message>
         <source>Verifying blocks...</source>
         <translation>Επαλήθευση των μπλοκ...</translation>
+    </message>
+    <message>
+        <source>Wallet options:</source>
+        <translation>Επιλογές πορτοφολιού:</translation>
+    </message>
+    <message>
+        <source>Connect through SOCKS5 proxy</source>
+        <translation>Σύνδεση μέσω διαμεσολαβητή SOCKS5</translation>
     </message>
     <message>
         <source>Error reading from database, shutting down.</source>
@@ -1876,6 +1884,26 @@
     <message>
         <source>Information</source>
         <translation>Πληροφορία</translation>
+    </message>
+    <message>
+        <source>Node relay options:</source>
+        <translation>Επιλογές αναμετάδοσης κόμβου:</translation>
+    </message>
+    <message>
+        <source>RPC server options:</source>
+        <translation>Επιλογές διακομιστή RPC:</translation>
+    </message>
+    <message>
+        <source>Send trace/debug info to console instead of debug.log file</source>
+        <translation>Αποστολή πληροφοριών εντοπισμού σφαλμάτων στην κονσόλα αντί του αρχείου debug.log</translation>
+    </message>
+    <message>
+        <source>Show all debugging options (usage: --help -help-debug)</source>
+        <translation>Προβολή όλων των επιλογών εντοπισμού σφαλμάτων (χρήση: --help -help-debug)</translation>
+    </message>
+    <message>
+        <source>Shrink debug.log file on client startup (default: 1 when no -debug)</source>
+        <translation>Συρρίκνωση του αρχείου debug.log κατα την εκκίνηση του πελάτη (προεπιλογή: 1 όταν δεν είναι -debug)</translation>
     </message>
     <message>
         <source>Signing transaction failed</source>
@@ -1894,12 +1922,68 @@
         <translation>Η συναλλαγή είναι πολύ μεγάλη</translation>
     </message>
     <message>
+        <source>Username for JSON-RPC connections</source>
+        <translation>Όνομα χρήστη για τις συνδέσεις JSON-RPC</translation>
+    </message>
+    <message>
         <source>Warning</source>
         <translation>Προειδοποίηση</translation>
     </message>
     <message>
         <source>Zapping all transactions from wallet...</source>
         <translation>Μεταφορά όλων των συναλλαγών από το πορτοφόλι</translation>
+    </message>
+    <message>
+        <source>Password for JSON-RPC connections</source>
+        <translation>Κωδικός για τις συνδέσεις JSON-RPC</translation>
+    </message>
+    <message>
+        <source>Execute command when the best block changes (%s in cmd is replaced by block hash)</source>
+        <translation>Εκτέλεσε την εντολή όταν το καλύτερο μπλοκ αλλάξει(%s στην εντολή αντικαθίσταται από το hash του μπλοκ)</translation>
+    </message>
+    <message>
+        <source>Allow DNS lookups for -addnode, -seednode and -connect</source>
+        <translation>Να επιτρέπονται οι έλεγχοι DNS για προσθήκη και σύνδεση κόμβων</translation>
+    </message>
+    <message>
+        <source>How thorough the block verification of -checkblocks is (0-4, default: %u)</source>
+        <translation>Πόσο εξονυχιστική να είναι η επιβεβαίωση του μπλοκ (0-4, προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>Maintain a full transaction index, used by the getrawtransaction rpc call (default: %u)</source>
+        <translation>Διατήρηση ένος πλήρους ευρετηρίου συναλλαγών (προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>Number of seconds to keep misbehaving peers from reconnecting (default: %u)</source>
+        <translation>Αριθμός δευτερολέπτων πριν επιτραπεί ξανά η σύνδεση των προβληματικών χρηστών (προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>How many blocks to check at startup (default: %u, 0 = all)</source>
+        <translation>Πόσα μπλοκ να ελεγχθούν κατά την εκκίνηση (προεπιλογή: %u, 0 = όλα)</translation>
+    </message>
+    <message>
+        <source>Include IP addresses in debug output (default: %u)</source>
+        <translation>Να συμπεριληφθεί η διεύθυνση IP στην αναφορά? (προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>Maintain at most &lt;n&gt; connections to peers (default: %u)</source>
+        <translation>Μέγιστες αριθμός συνδέσεων με τους χρήστες &lt;n&gt; (προεπιλογή: %u)</translation>
+    </message>
+    <message>
+        <source>Specify configuration file (default: %s)</source>
+        <translation>Ορίστε αρχείο ρυθμίσεων (προεπιλογή: %s)</translation>
+    </message>
+    <message>
+        <source>Specify connection timeout in milliseconds (minimum: 1, default: %d)</source>
+        <translation>Ορισμός λήξης χρονικού ορίου σε χιλιοστά του δευτερολέπτου(προεπιλογή: %d)</translation>
+    </message>
+    <message>
+        <source>Specify pid file (default: %s)</source>
+        <translation>Ορίστε αρχείο pid (προεπιλογή: %s)</translation>
+    </message>
+    <message>
+        <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
+        <translation>Όριο αποσύνδεσης προβληματικών χρηστών (προεπιλογή: %u)</translation>
     </message>
     <message>
         <source>Unknown network specified in -onlynet: '%s'</source>

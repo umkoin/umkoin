@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2017 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,7 +20,6 @@ QList<UmkoinUnits::Unit> UmkoinUnits::availableUnits()
     unitlist.append(UMK);
     unitlist.append(mUMK);
     unitlist.append(uUMK);
-    unitlist.append(SAT);
     return unitlist;
 }
 
@@ -31,7 +30,6 @@ bool UmkoinUnits::valid(int unit)
     case UMK:
     case mUMK:
     case uUMK:
-    case SAT:
         return true;
     default:
         return false;
@@ -45,7 +43,6 @@ QString UmkoinUnits::longName(int unit)
     case UMK: return QString("UMK");
     case mUMK: return QString("mUMK");
     case uUMK: return QString::fromUtf8("µUMK (bits)");
-    case SAT: return QString("Satoshi (sat)");
     default: return QString("???");
     }
 }
@@ -55,8 +52,7 @@ QString UmkoinUnits::shortName(int unit)
     switch(unit)
     {
     case uUMK: return QString::fromUtf8("bits");
-    case SAT: return QString("sat");
-    default: return longName(unit);
+    default:   return longName(unit);
     }
 }
 
@@ -67,7 +63,6 @@ QString UmkoinUnits::description(int unit)
     case UMK: return QString("Umkoins");
     case mUMK: return QString("Milli-Umkoins (1 / 1" THIN_SP_UTF8 "000)");
     case uUMK: return QString("Micro-Umkoins (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-    case SAT: return QString("Satoshi (sat) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
     default: return QString("???");
     }
 }
@@ -76,11 +71,10 @@ qint64 UmkoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case UMK: return 100000000;
+    case UMK:  return 100000000;
     case mUMK: return 100000;
     case uUMK: return 100;
-    case SAT: return 1;
-    default: return 100000000;
+    default:   return 100000000;
     }
 }
 
@@ -91,7 +85,6 @@ int UmkoinUnits::decimals(int unit)
     case UMK: return 8;
     case mUMK: return 5;
     case uUMK: return 2;
-    case SAT: return 0;
     default: return 0;
     }
 }
@@ -107,7 +100,9 @@ QString UmkoinUnits::format(int unit, const CAmount& nIn, bool fPlus, SeparatorS
     int num_decimals = decimals(unit);
     qint64 n_abs = (n > 0 ? n : -n);
     qint64 quotient = n_abs / coin;
+    qint64 remainder = n_abs % coin;
     QString quotient_str = QString::number(quotient);
+    QString remainder_str = QString::number(remainder).rightJustified(num_decimals, '0');
 
     // Use SI-style thin space separators as these are locale independent and can't be
     // confused with the decimal marker.
@@ -121,14 +116,7 @@ QString UmkoinUnits::format(int unit, const CAmount& nIn, bool fPlus, SeparatorS
         quotient_str.insert(0, '-');
     else if (fPlus && n > 0)
         quotient_str.insert(0, '+');
-
-    if (num_decimals > 0) {
-        qint64 remainder = n_abs % coin;
-        QString remainder_str = QString::number(remainder).rightJustified(num_decimals, '0');
-        return quotient_str + QString(".") + remainder_str;
-    } else {
-        return quotient_str;
-    }
+    return quotient_str + QString(".") + remainder_str;
 }
 
 

@@ -42,7 +42,8 @@ DIST_CONTRIB = $(top_srcdir)/contrib/umkoin-cli.bash-completion \
 	       $(top_srcdir)/contrib/umkoin-tx.bash-completion \
 	       $(top_srcdir)/contrib/umkoind.bash-completion \
 	       $(top_srcdir)/contrib/init \
-	       $(top_srcdir)/contrib/install_db4.sh
+	       $(top_srcdir)/contrib/install_db4.sh \
+	       $(top_srcdir)/contrib/rpm
 DIST_SHARE = \
   $(top_srcdir)/share/genbuild.sh \
   $(top_srcdir)/share/rpcauth
@@ -94,9 +95,9 @@ $(OSX_APP)/Contents/Resources/umkoin.icns: $(OSX_INSTALLER_ICONS)
 	$(MKDIR_P) $(@D)
 	$(INSTALL_DATA) $< $@
 
-$(OSX_APP)/Contents/MacOS/Umkoin-Qt: all-recursive
+$(OSX_APP)/Contents/MacOS/Umkoin-Qt: $(UMKOIN_QT_BIN)
 	$(MKDIR_P) $(@D)
-	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM)  $(UMKOIN_QT_BIN) $@
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM)  $< $@
 
 $(OSX_APP)/Contents/Resources/Base.lproj/InfoPlist.strings:
 	$(MKDIR_P) $(@D)
@@ -268,8 +269,7 @@ EXTRA_DIST += \
     test/util/data/txcreatescript4.json \
     test/util/data/txcreatesignv1.hex \
     test/util/data/txcreatesignv1.json \
-    test/util/data/txcreatesignv2.hex \
-    test/util/rpcauth-test.py
+    test/util/data/txcreatesignv2.hex
 
 CLEANFILES = $(OSX_DMG) $(UMKOIN_WIN_INSTALLER)
 
@@ -277,22 +277,6 @@ CLEANFILES = $(OSX_DMG) $(UMKOIN_WIN_INSTALLER)
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-man
 
-doc/doxygen/.stamp: doc/Doxyfile FORCE
-	$(MKDIR_P) $(@D)
-	$(DOXYGEN) $^
-	$(AM_V_at) touch $@
-
-if HAVE_DOXYGEN
-docs: doc/doxygen/.stamp
-else
-docs:
-	@echo "error: doxygen not found"
-endif
-
-clean-docs:
-	rm -rf doc/doxygen
-
-clean-local: clean-docs
+clean-local:
 	rm -rf coverage_percent.txt test_umkoin.coverage/ total.coverage/ test/tmp/ cache/ $(OSX_APP)
 	rm -rf test/functional/__pycache__ test/functional/test_framework/__pycache__ test/cache
-

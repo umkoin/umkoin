@@ -1,11 +1,11 @@
-macOS Build Instructions and Notes
+Mac OS X Build Instructions and Notes
 ====================================
 The commands in this guide should be executed in a Terminal application.
 The built-in one is located in `/Applications/Utilities/Terminal.app`.
 
 Preparation
 -----------
-Install the macOS command line tools:
+Install the OS X command line tools:
 
 `xcode-select --install`
 
@@ -16,13 +16,15 @@ Then install [Homebrew](https://brew.sh).
 Dependencies
 ----------------------
 
-    brew install automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf python qt libevent qrencode
+    brew install automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf python3 qt libevent
 
 See [dependencies.md](dependencies.md) for a complete overview.
 
 If you want to build the disk image with `make deploy` (.dmg / optional), you need RSVG
 
     brew install librsvg
+
+NOTE: Building with Qt4 is still supported, however, could result in a broken UI. Building with Qt5 is recommended.
 
 Berkeley DB
 -----------
@@ -41,14 +43,14 @@ from the root of the repository.
 Build Umkoin Core
 ------------------------
 
-1. Clone the Umkoin Core source code and cd into `umkoin`
+1. Clone the umkoin source code and cd into `umkoin`
 
         git clone https://github.com/umkoin/umkoin
         cd umkoin
 
-2.  Build Umkoin Core:
+2.  Build umkoin-core:
 
-    Configure and build the headless Umkoin Core binaries as well as the GUI (if Qt is found).
+    Configure and build the headless umkoin binaries as well as the GUI (if Qt is found).
 
     You can disable the GUI build by passing `--without-gui` to configure.
 
@@ -64,23 +66,12 @@ Build Umkoin Core
 
         make deploy
 
-Disable-wallet mode
---------------------
-When the intention is to run only a P2P node without a wallet, Umkoin Core may be compiled in
-disable-wallet mode with:
-
-    ./configure --disable-wallet
-
-In this case there is no dependency on Berkeley DB 4.8.
-
-Mining is also possible in disable-wallet mode using the `getblocktemplate` RPC call.
-
 Running
 -------
 
 Umkoin Core is now available at `./src/umkoind`
 
-Before running, it's recommended that you create an RPC configuration file.
+Before running, it's recommended you create an RPC configuration file.
 
     echo -e "rpcuser=umkoinrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Umkoin/umkoin.conf"
 
@@ -99,9 +90,26 @@ Other commands:
     ./src/umkoin-cli --help # Outputs a list of command-line options.
     ./src/umkoin-cli help # Outputs a list of RPC commands when the daemon is running.
 
+Using Qt Creator as IDE
+------------------------
+You can use Qt Creator as an IDE, for umkoin development.
+Download and install the community edition of [Qt Creator](https://www.qt.io/download/).
+Uncheck everything except Qt Creator during the installation process.
+
+1. Make sure you installed everything through Homebrew mentioned above
+2. Do a proper ./configure --enable-debug
+3. In Qt Creator do "New Project" -> Import Project -> Import Existing Project
+4. Enter "umkoin-qt" as project name, enter src/qt as location
+5. Leave the file selection as it is
+6. Confirm the "summary page"
+7. In the "Projects" tab select "Manage Kits..."
+8. Select the default "Desktop" kit and select "Clang (x86 64bit in /usr/bin)" as compiler
+9. Select LLDB as debugger (you might need to set the path to your installation)
+10. Start debugging with Qt Creator
+
 Notes
 -----
 
-* Tested on OS X 10.10 Yosemite through macOS 10.13 High Sierra on 64-bit Intel processors only.
+* Tested on OS X 10.8 through 10.13 on 64-bit Intel processors only.
 
 * Building with downloaded Qt binaries is not officially supported. See the notes in [#7714](https://github.com/bitcoin/bitcoin/issues/7714)
