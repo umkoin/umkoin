@@ -88,7 +88,7 @@ Execute the following as user `gitianuser`:
 
 ```bash
 cd gitian-builder
-bin/make-base-vm --lxc --arch amd64 --suite trusty
+bin/make-base-vm --lxc --arch amd64 --suite bionic
 ```
 
 There will be a lot of warnings printed during the build of the image. These can be ignored.

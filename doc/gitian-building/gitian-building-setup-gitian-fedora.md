@@ -98,7 +98,7 @@ Execute the following as user `gitianuser`:
 ```bash
 cd gitian-builder
 git checkout 686a00ad712e30ba3a7850c16ef32f650df5b5dc # This version seems to work better than master
-bin/make-base-vm --lxc --arch amd64 --suite trusty
+bin/make-base-vm --lxc --arch amd64 --suite bionic
 ```
 
 There will be a lot of warnings printed during the build of the image. These can be ignored.
