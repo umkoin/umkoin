@@ -83,8 +83,11 @@ if BUILD_UMKOIND
   bin_PROGRAMS += umkoind
 endif
 
-if BUILD_UMKOIN_UTILS
-  bin_PROGRAMS += umkoin-cli umkoin-tx
+if BUILD_UMKOIN_CLI
+  bin_PROGRAMS += umkoin-cli
+endif
+if BUILD_UMKOIN_TX
+  bin_PROGRAMS += umkoin-tx
 endif
 
 .PHONY: FORCE check-symbols check-security

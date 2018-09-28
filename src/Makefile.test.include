@@ -174,8 +174,10 @@ umkoin_test_clean : FORCE
 	rm -f $(CLEAN_UMKOIN_TEST) $(test_test_umkoin_OBJECTS) $(TEST_BINARY)
 
 check-local: $(UMKOIN_TESTS:.cpp=.cpp.test)
+if BUILD_UMKOIN_TX
 	@echo "Running test/util/umkoin-util-test.py..."
 	$(PYTHON) $(top_builddir)/test/util/umkoin-util-test.py
+endif
 	@echo "Running test/util/rpcauth-test.py..."
 	$(PYTHON) $(top_builddir)/test/util/rpcauth-test.py
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C secp256k1 check

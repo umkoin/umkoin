@@ -3,7 +3,7 @@ AC_PREREQ([2.60])
 define(_CLIENT_VERSION_MAJOR, 0)
 define(_CLIENT_VERSION_MINOR, 17)
 define(_CLIENT_VERSION_REVISION, 0)
-define(_CLIENT_VERSION_BUILD, 11)
+define(_CLIENT_VERSION_BUILD, 12)
 define(_CLIENT_VERSION_IS_RELEASE, false)
 define(_COPYRIGHT_YEAR, 2018)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
@@ -405,6 +405,18 @@ AC_ARG_WITH([utils],
   [build umkoin-cli umkoin-tx (default=yes)])],
   [build_umkoin_utils=$withval],
   [build_umkoin_utils=yes])
+
+AC_ARG_ENABLE([util-cli],
+  [AS_HELP_STRING([--enable-util-cli],
+  [build umkoin-cli])],
+  [build_umkoin_cli=$enableval],
+  [build_umkoin_cli=$build_umkoin_utils])
+
+AC_ARG_ENABLE([util-tx],
+  [AS_HELP_STRING([--enable-util-tx],
+  [build umkoin-tx])],
+  [build_umkoin_tx=$enableval],
+  [build_umkoin_tx=$build_umkoin_utils])
 
 AC_ARG_WITH([libs],
   [AS_HELP_STRING([--with-libs],
@@ -886,7 +898,7 @@ UMKOIN_QT_INIT
 dnl sets $umkoin_enable_qt, $umkoin_enable_qt_test, $umkoin_enable_qt_dbus
 UMKOIN_QT_CONFIGURE([$use_pkgconfig])
 
-if test x$build_umkoin_utils$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnonononono; then
+if test x$build_umkoin_cli$build_umkoin_tx$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnononononono; then
     use_boost=no
 else
     use_boost=yes
@@ -1074,7 +1086,7 @@ if test x$use_pkgconfig = xyes; then
       if test x$use_qr != xno; then
         UMKOIN_QT_CHECK([PKG_CHECK_MODULES([QR], [libqrencode], [have_qrencode=yes], [have_qrencode=no])])
       fi
-      if test x$build_umkoin_utils$build_umkoind$umkoin_enable_qt$use_tests != xnononono; then
+      if test x$build_umkoin_cli$build_umkoin_tx$build_umkoind$umkoin_enable_qt$use_tests != xnonononono; then
         PKG_CHECK_MODULES([EVENT], [libevent],, [AC_MSG_ERROR(libevent not found.)])
         if test x$TARGET_OS != xwindows; then
           PKG_CHECK_MODULES([EVENT_PTHREADS], [libevent_pthreads],, [AC_MSG_ERROR(libevent_pthreads not found.)])
@@ -1099,7 +1111,7 @@ else
   AC_CHECK_HEADER([openssl/ssl.h],, AC_MSG_ERROR(libssl headers missing),)
   AC_CHECK_LIB([ssl],         [main],SSL_LIBS=-lssl, AC_MSG_ERROR(libssl missing))
 
-  if test x$build_umkoin_utils$build_umkoind$umkoin_enable_qt$use_tests != xnononono; then
+  if test x$build_umkoin_cli$build_umkoin_tx$build_umkoind$umkoin_enable_qt$use_tests != xnonononono; then
     AC_CHECK_HEADER([event2/event.h],, AC_MSG_ERROR(libevent headers missing),)
     AC_CHECK_LIB([event],[main],EVENT_LIBS=-levent,AC_MSG_ERROR(libevent missing))
     if test x$TARGET_OS != xwindows; then
@@ -1164,7 +1176,7 @@ dnl univalue check
 
 need_bundled_univalue=yes
 
-if test x$build_umkoin_utils$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnonononono; then
+if test x$build_umkoin_cli$build_umkoin_tx$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnononononono; then
   need_bundled_univalue=no
 else
 
@@ -1214,9 +1226,13 @@ AC_MSG_CHECKING([whether to build umkoind])
 AM_CONDITIONAL([BUILD_UMKOIND], [test x$build_umkoind = xyes])
 AC_MSG_RESULT($build_umkoind)
 
-AC_MSG_CHECKING([whether to build utils (umkoin-cli umkoin-tx)])
-AM_CONDITIONAL([BUILD_UMKOIN_UTILS], [test x$build_umkoin_utils = xyes])
-AC_MSG_RESULT($build_umkoin_utils)
+AC_MSG_CHECKING([whether to build umkoin-cli])
+AM_CONDITIONAL([BUILD_UMKOIN_CLI], [test x$build_umkoin_cli = xyes])
+AC_MSG_RESULT($build_umkoin_cli)
+
+AC_MSG_CHECKING([whether to build umkoin-tx])
+AM_CONDITIONAL([BUILD_UMKOIN_TX], [test x$build_umkoin_tx = xyes])
+AC_MSG_RESULT($build_umkoin_tx)
 
 AC_MSG_CHECKING([whether to build libraries])
 AM_CONDITIONAL([BUILD_UMKOIN_LIBS], [test x$build_umkoin_libs = xyes])
@@ -1342,7 +1358,7 @@ else
   AC_MSG_RESULT([no])
 fi
 
-if test x$build_umkoin_utils$build_umkoin_libs$build_umkoind$umkoin_enable_qt$use_bench$use_tests = xnononononono; then
+if test x$build_umkoin_cli$build_umkoin_tx$build_umkoin_libs$build_umkoind$umkoin_enable_qt$use_bench$use_tests = xnonononononono; then
   AC_MSG_ERROR([No targets! Please specify at least one of: --with-utils --with-libs --with-daemon --with-gui --enable-bench or --enable-tests])
 fi
 
