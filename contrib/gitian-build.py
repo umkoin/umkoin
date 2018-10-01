@@ -65,14 +65,14 @@ def build():
         print('\nCompiling ' + args.version + ' Windows')
         subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'umkoin='+args.commit, '--url', 'umkoin='+args.url, '../umkoin/contrib/gitian-descriptors/gitian-win.yml'])
         subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-win-unsigned', '--destination', '../gitian.sigs/', '../umkoin/contrib/gitian-descriptors/gitian-win.yml'])
-        subprocess.check_call('mv build/out/umkoin-*-win-unsigned.tar.gz inputs/umkoin-win-unsigned.tar.gz', shell=True)
+        subprocess.check_call('mv build/out/umkoin-*-win-unsigned.tar.gz inputs/', shell=True)
         subprocess.check_call('mv build/out/umkoin-*.zip build/out/umkoin-*.exe ../umkoin-binaries/'+args.version, shell=True)
 
     if args.macos:
         print('\nCompiling ' + args.version + ' MacOS')
         subprocess.check_call(['bin/gbuild', '-j', args.jobs, '-m', args.memory, '--commit', 'umkoin='+args.commit, '--url', 'umkoin='+args.url, '../umkoin/contrib/gitian-descriptors/gitian-osx.yml'])
         subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-osx-unsigned', '--destination', '../gitian.sigs/', '../umkoin/contrib/gitian-descriptors/gitian-osx.yml'])
-        subprocess.check_call('mv build/out/umkoin-*-osx-unsigned.tar.gz inputs/umkoin-osx-unsigned.tar.gz', shell=True)
+        subprocess.check_call('mv build/out/umkoin-*-osx-unsigned.tar.gz inputs/', shell=True)
         subprocess.check_call('mv build/out/umkoin-*.tar.gz build/out/umkoin-*.dmg ../umkoin-binaries/'+args.version, shell=True)
 
     os.chdir(workdir)
@@ -92,6 +92,7 @@ def sign():
 
     if args.windows:
         print('\nSigning ' + args.version + ' Windows')
+        subprocess.check_call('cp inputs/umkoin-' + args.version + '-win-unsigned.tar.gz inputs/umkoin-win-unsigned.tar.gz', shell=True)
         subprocess.check_call(['bin/gbuild', '-i', '--commit', 'signature='+args.commit, '../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml'])
         subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-win-signed', '--destination', '../gitian.sigs/', '../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml'])
         subprocess.check_call('mv build/out/umkoin-*win64-setup.exe ../umkoin-binaries/'+args.version, shell=True)
@@ -99,6 +100,7 @@ def sign():
 
     if args.macos:
         print('\nSigning ' + args.version + ' MacOS')
+        subprocess.check_call('cp inputs/umkoin-' + args.version + '-osx-unsigned.tar.gz inputs/umkoin-osx-unsigned.tar.gz', shell=True)
         subprocess.check_call(['bin/gbuild', '-i', '--commit', 'signature='+args.commit, '../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml'])
         subprocess.check_call(['bin/gsign', '-p', args.sign_prog, '--signer', args.signer, '--release', args.version+'-osx-signed', '--destination', '../gitian.sigs/', '../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml'])
         subprocess.check_call('mv build/out/umkoin-osx-signed.dmg ../umkoin-binaries/'+args.version+'/umkoin-'+args.version+'-osx.dmg', shell=True)
