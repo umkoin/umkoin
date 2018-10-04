@@ -9,10 +9,6 @@ Please report bugs using the issue tracker at GitHub:
 
   <https://github.com/umkoin/umkoin/issues>
 
-To receive security and update notifications, please subscribe to:
-
-  <https://bitcoincore.org/en/list/announcements/join/>
-
 How to Upgrade
 ==============
 
@@ -1102,4 +1098,4 @@ And to those that reported security issues:
 
 - awemany (for CVE-2018-17144, previously credited as "anonymous reporter")
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/umkoin/).
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/umkoin/umkoin-core/).
