@@ -22,7 +22,7 @@ Configuration
 
 At a bare minimum, umkoind requires that the rpcpassword setting be set
 when running as a daemon.  If the configuration file does not exist or this
-setting is not set, umkoind will shutdown promptly after startup.
+setting is not set, umkoind will shut down promptly after startup.
 
 This password does not have to be remembered or typed as it is mostly used
 as a fixed token that umkoind and client programs read from the configuration
