@@ -51,6 +51,7 @@ UMKOIN_TESTS =\
   test/cuckoocache_tests.cpp \
   test/denialofservice_tests.cpp \
   test/descriptor_tests.cpp \
+  test/fs_tests.cpp \
   test/getarg_tests.cpp \
   test/hash_tests.cpp \
   test/key_io_tests.cpp \
@@ -110,11 +111,14 @@ UMKOIN_TESTS += \
   wallet/test/psbt_wallet_tests.cpp \
   wallet/test/wallet_tests.cpp \
   wallet/test/wallet_crypto_tests.cpp \
-  wallet/test/coinselector_tests.cpp
+  wallet/test/coinselector_tests.cpp \
+  wallet/test/init_tests.cpp
 
 UMKOIN_TEST_SUITE += \
   wallet/test/wallet_test_fixture.cpp \
-  wallet/test/wallet_test_fixture.h
+  wallet/test/wallet_test_fixture.h \
+  wallet/test/init_test_fixture.cpp \
+  wallet/test/init_test_fixture.h
 endif
 
 test_test_umkoin_SOURCES = $(UMKOIN_TEST_SUITE) $(UMKOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
