@@ -122,7 +122,6 @@ QT_MOC_CPP = \
   qt/moc_umkoinamountfield.cpp \
   qt/moc_umkoingui.cpp \
   qt/moc_umkoinunits.cpp \
-  qt/moc_callback.cpp \
   qt/moc_clientmodel.cpp \
   qt/moc_coincontroldialog.cpp \
   qt/moc_coincontroltreewidget.cpp \
@@ -168,7 +167,6 @@ UMKOIN_MM = \
 QT_MOC = \
   qt/umkoin.moc \
   qt/umkoinamountfield.moc \
-  qt/callback.moc \
   qt/intro.moc \
   qt/overviewpage.moc \
   qt/rpcconsole.moc
@@ -191,7 +189,6 @@ UMKOIN_QT_H = \
   qt/umkoinamountfield.h \
   qt/umkoingui.h \
   qt/umkoinunits.h \
-  qt/callback.h \
   qt/clientmodel.h \
   qt/coincontroldialog.h \
   qt/coincontroltreewidget.h \

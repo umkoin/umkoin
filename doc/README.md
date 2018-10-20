@@ -57,6 +57,7 @@ The Umkoin repo's [root README](/README.md) contains relevant information on the
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)
+- [umkoin.conf Configuration File](umkoin-conf.md)
 - [Files](files.md)
 - [Fuzz-testing](fuzzing.md)
 - [Reduce Traffic](reduce-traffic.md)
