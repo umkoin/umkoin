@@ -29,7 +29,7 @@ git clone https://github.com/umkoin/umkoin
 
 ## Building Umkoin Core
 
-**Important**: Use `gmake` (the non-GNU `make` will exit with an error).
+**Important**: Use `gmake` (the non-GNU `make` will exit with an error):
 
 ```
 ./autogen.sh
