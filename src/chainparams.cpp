@@ -8,8 +8,8 @@
 #include <chainparamsseeds.h>
 #include <consensus/merkle.h>
 #include <tinyformat.h>
-#include <util.h>
-#include <utilstrencodings.h>
+#include <util/system.h>
+#include <util/strencodings.h>
 #include <versionbitsinfo.h>
 
 #include <assert.h>
@@ -91,10 +91,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000003f0579a4953bccf"); //22100
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000004e7643874b49a45"); //22150
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000000000045eb86c9f6f55ebe6f52a6b499810c06a3c1528c555a6668d57"); //22100
+        consensus.defaultAssumeValid = uint256S("0x000000000000056e1c71a808187950110f7d2af34b7c33b70bc5aafd81577bbe"); //22150
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -141,15 +141,16 @@ public:
                 { 15783, uint256S("0x000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64")},
                 { 20058, uint256S("0x00000000001bdaa9b4c169c837970fbeec175ad148f7ec7ddcf01ccbb5357040")},
                 { 22087, uint256S("0x00000000000022e03eeb49ed3d8e622b434b2daa32fbe371da74cb5a3c53e352")},
-                { 22100, uint256S("0x000000000000045eb86c9f6f55ebe6f52a6b499810c06a3c1528c555a6668d57")}
+                { 22100, uint256S("0x000000000000045eb86c9f6f55ebe6f52a6b499810c06a3c1528c555a6668d57")},
+                { 22100, uint256S("0x000000000000056e1c71a808187950110f7d2af34b7c33b70bc5aafd81577bbe")}
             }
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 22108
-            /* nTime    */ 1532628804,
-            /* nTxCount */ 203535,
-            /* dTxRate  */ 0.011
+            // Data from rpc: getchaintxstats 22153
+            /* nTime    */ 1541499407,
+            /* nTxCount */ 203665,
+            /* dTxRate  */ 0.008
         };
 
         /* disable fallback fee on mainnet */
@@ -192,10 +193,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000008600860086"); //133
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000000a010a010a01"); //2560
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce"); //133
+        consensus.defaultAssumeValid = uint256S("0x000000006dc40dec5d9e221e01b88bc9067f62f7a1f9106bac1907b393fa3a9e"); //2560
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -233,15 +234,16 @@ public:
             {
                 {1, uint256S("0x000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a")},
                 {11, uint256S("0x000000006c8d5857a598f1027fa34ecd0f09296a533d2f484a588bf9d09373e0")},
-                {133, uint256S("0x00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce")}
+                {133, uint256S("0x00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce")},
+                {2560, uint256S("0x000000006dc40dec5d9e221e01b88bc9067f62f7a1f9106bac1907b393fa3a9e")}
             }
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 149
-            /* nTime    */ 1532935148,
-            /* nTxCount */ 151,
-            /* dTxRate  */ 0.001
+            // Data from rpc: getchaintxstats 2563
+            /* nTime    */ 1541162245,
+            /* nTxCount */ 4141,
+            /* dTxRate  */ 0.0002
         };
 
         /* enable fallback fee on testnet */
