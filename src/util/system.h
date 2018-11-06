@@ -7,8 +7,8 @@
  * Server/client environment: argument handling, config file parsing,
  * thread wrappers, startup time
  */
-#ifndef UMKOIN_UTIL_H
-#define UMKOIN_UTIL_H
+#ifndef UMKOIN_UTIL_SYSTEM_H
+#define UMKOIN_UTIL_SYSTEM_H
 
 #if defined(HAVE_CONFIG_H)
 #include <config/umkoin-config.h>
@@ -19,8 +19,8 @@
 #include <logging.h>
 #include <sync.h>
 #include <tinyformat.h>
-#include <utilmemory.h>
-#include <utiltime.h>
+#include <util/memory.h>
+#include <util/time.h>
 
 #include <atomic>
 #include <exception>
@@ -379,4 +379,4 @@ private:
 
 } // namespace util
 
-#endif // UMKOIN_UTIL_H
+#endif // UMKOIN_UTIL_SYSTEM_H
