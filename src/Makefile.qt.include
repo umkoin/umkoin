@@ -421,6 +421,10 @@ qt_umkoin_qt_LDADD += $(LIBUMKOIN_CLI) $(LIBUMKOIN_COMMON) $(LIBUMKOIN_UTIL) $(L
   $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
 if ENABLE_BIP70
 qt_umkoin_qt_LDADD += $(SSL_LIBS)
+else
+if TARGET_WINDOWS
+qt_umkoin_qt_LDADD += $(SSL_LIBS)
+endif
 endif
 qt_umkoin_qt_LDADD += $(CRYPTO_LIBS)
 qt_umkoin_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)

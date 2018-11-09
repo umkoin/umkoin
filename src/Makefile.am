@@ -183,6 +183,7 @@ UMKOIN_CORE_H = \
   txmempool.h \
   ui_interface.h \
   undo.h \
+  util/bytevectorhash.h \
   util/system.h \
   util/memory.h \
   util/moneystr.h \
@@ -321,7 +322,9 @@ crypto_libumkoin_crypto_base_a_SOURCES = \
   crypto/sha256.cpp \
   crypto/sha256.h \
   crypto/sha512.cpp \
-  crypto/sha512.h
+  crypto/sha512.h \
+  crypto/siphash.cpp \
+  crypto/siphash.h
 
 if USE_ASM
 crypto_libumkoin_crypto_base_a_SOURCES += crypto/sha256_sse4.cpp
@@ -427,6 +430,7 @@ libumkoin_util_a_SOURCES = \
   support/cleanse.cpp \
   sync.cpp \
   threadinterrupt.cpp \
+  util/bytevectorhash.cpp \
   util/system.cpp \
   util/moneystr.cpp \
   util/strencodings.cpp \
