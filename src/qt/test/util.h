@@ -1,6 +1,8 @@
 #ifndef UMKOIN_QT_TEST_UTIL_H
 #define UMKOIN_QT_TEST_UTIL_H
 
+#include <QString>
+
 /**
  * Press "Ok" button in message box dialog.
  *
