@@ -19,6 +19,7 @@ endif
 UMKOIND_BIN=$(top_builddir)/src/$(UMKOIN_DAEMON_NAME)$(EXEEXT)
 UMKOIN_QT_BIN=$(top_builddir)/src/qt/$(UMKOIN_GUI_NAME)$(EXEEXT)
 UMKOIN_CLI_BIN=$(top_builddir)/src/$(UMKOIN_CLI_NAME)$(EXEEXT)
+UMKOIN_TX_BIN=$(top_builddir)/src/$(UMKOIN_TX_NAME)$(EXEEXT)
 UMKOIN_WIN_INSTALLER=$(PACKAGE)-$(PACKAGE_VERSION)-win$(WINDOWS_BITS)-setup$(EXEEXT)
 
 empty :=
@@ -74,6 +75,7 @@ $(UMKOIN_WIN_INSTALLER): all-recursive
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIND_BIN) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_QT_BIN) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_CLI_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_TX_BIN) $(top_builddir)/release
 	@test -f $(MAKENSIS) && $(MAKENSIS) -V2 $(top_builddir)/share/setup.nsi || \
 	  echo error: could not build $@
 	@echo built $@
@@ -165,6 +167,9 @@ $(UMKOIND_BIN): FORCE
 	$(MAKE) -C src $(@F)
 
 $(UMKOIN_CLI_BIN): FORCE
+	$(MAKE) -C src $(@F)
+
+$(UMKOIN_TX_BIN): FORCE
 	$(MAKE) -C src $(@F)
 
 if USE_LCOV
