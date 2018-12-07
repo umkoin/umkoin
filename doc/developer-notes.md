@@ -28,6 +28,8 @@ Developer Notes
     - [Strings and formatting](#strings-and-formatting)
     - [Variable names](#variable-names)
     - [Threads and synchronization](#threads-and-synchronization)
+    - [Scripts](#scripts)
+        - [Shebang](#shebang)
     - [Source code organization](#source-code-organization)
     - [GUI](#gui)
     - [Subtrees](#subtrees)
@@ -602,6 +604,31 @@ TRY_LOCK(cs_vNodes, lockNodes);
 }
 ```
 
+Scripts
+--------------------------
+
+### Shebang
+
+- Use `#!/usr/bin/env bash` instead of obsolete `#!/bin/bash`.
+
+  - [*Rationale*](https://github.com/dylanaraps/pure-bash-bible#shebang):
+
+    `#!/bin/bash` assumes it is always installed to /bin/ which can cause issues;
+
+    `#!/usr/bin/env bash` searches the user's PATH to find the bash binary.
+
+  OK:
+
+```bash
+#!/usr/bin/env bash
+```
+
+  Wrong:
+
+```bash
+#!/bin/bash
+```
+
 Source code organization
 --------------------------
 
@@ -714,7 +741,7 @@ Current subtrees include:
   - Upstream at https://github.com/bitcoin-core/ctaes ; actively maintained by Core contributors.
 
 - src/univalue
-  - Upstream at https://github.com/jgarzik/univalue ; report important PRs to Core to avoid delay.
+  - Upstream at https://github.com/bitcoin-core/univalue ; actively maintained by Core contributors, deviates from upstream https://github.com/jgarzik/univalue
 
 Upgrading LevelDB
 ---------------------
@@ -838,7 +865,7 @@ For development, it might be more convenient to verify all scripted-diffs in a r
 test/lint/commit-script-check.sh origin/master..HEAD
 ```
 
-Commit [`bb81e173`](https://github.com/bitcoin/bitcoin/commit/bb81e173) is an example of a scripted-diff.
+Commit [`bb81e173`](https://github.com/umkoin/umkoin/commit/bb81e173) is an example of a scripted-diff.
 
 RPC interface guidelines
 --------------------------
