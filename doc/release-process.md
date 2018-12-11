@@ -44,15 +44,15 @@ Check out the source code in the following directory hierarchy.
 
 Write release notes. git shortlog helps a lot, for example:
 
-    git shortlog --no-merges v(current version, e.g. 0.15.0)..v(new version, e.g. 0.16.0)
+    git shortlog --no-merges v(current version, e.g. 0.16.0)..v(new version, e.g. 0.17.0)
 
 Generate list of authors:
 
-    git log --format='%aN' | sort -ui | sed -e 's/^/- /'
+    git log --format='- %aN' v(current version, e.g. 0.17.0)..v(new version, e.g. 0.17.0.1) | sort -fiu
 
 Tag version (or release candidate) in git
 
-    git tag -s v(new version, e.g. 0.16.0)
+    git tag -s v(new version, e.g. 0.17.0)
 
 ### Setup and perform Gitian builds
 
@@ -61,8 +61,8 @@ If you're using the automated script (found in [contrib/gitian-build.py](/contri
 Setup Gitian descriptors:
 
     pushd ./umkoin
-    export SIGNER=(your Gitian key, ie sipa, vmta, etc)
-    export VERSION=(new version, e.g. 0.16.0)
+    export SIGNER="(your Gitian key, ie bluematt, sipa, vmta, etc)"
+    export VERSION=(new version, e.g. 0.17.0)
     git fetch
     git checkout v${VERSION}
     popd
@@ -84,7 +84,7 @@ Ensure gitian-builder is up-to-date:
     pushd ./gitian-builder
     mkdir -p inputs
     wget -P inputs http://www.umkoin.org/cfields/osslsigncode-Backports-to-1.7.1.patch
-    wget -P inputs http://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.7.1.tar.gz
+    wget -P inputs https://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.7.1.tar.gz
     popd
 
 Create the macOS SDK tarball, see the [macOS readme](README_osx.md) for details, and copy it into the inputs directory.
