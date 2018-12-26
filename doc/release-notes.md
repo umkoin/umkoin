@@ -3,7 +3,7 @@ release-notes at release time)
 
 Umkoin Core version *version* is now available from:
 
-  <https://bitcoincore.org/bin/umkoin-core-*version*/>
+  <http://umkoin.org/bin/umkoin-core-*version*/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements, as well as updated translations.
@@ -82,26 +82,26 @@ Documentation
 -------------
 
 - A new short
-  [document](https://github.com/bitcoin/bitcoin/blob/master/doc/JSON-RPC-interface.md)
+  [document](https://github.com/umkoin/umkoin/blob/master/doc/JSON-RPC-interface.md)
   about the JSON-RPC interface describes cases where the results of an
   RPC might contain inconsistencies between data sourced from different
   subsystems, such as wallet state and mempool state.  A note is added
-  to the [REST interface documentation](https://github.com/bitcoin/bitcoin/blob/master/doc/REST-interface.md)
+  to the [REST interface documentation](https://github.com/umkoin/umkoin/blob/master/doc/REST-interface.md)
   indicating that the same rules apply.
 
-- A new [document](https://github.com/bitcoin/bitcoin/blob/master/doc/umkoin-conf.md)
+- A new [document](https://github.com/umkoin/umkoin/blob/master/doc/umkoin-conf.md)
   about the `umkoin.conf` file describes how to use it to configure
   Umkoin Core.
 
 - A new document introduces Umkoin Core's BIP174
-  [Partially-Signed Umkoin Transactions (PSBT)](https://github.com/bitcoin/bitcoin/blob/master/doc/psbt.md)
+  [Partially-Signed Umkoin Transactions (PSBT)](https://github.com/umkoin/umkoin/blob/master/doc/psbt.md)
   interface, which is used to allow multiple programs to collaboratively
   work to create, sign, and broadcast new transactions.  This is useful
   for offline (cold storage) wallets, multisig wallets, coinjoin
   implementations, and many other cases where two or more programs need
   to interact to generate a complete transaction.
 
-- The [output script descriptor](https://github.com/bitcoin/bitcoin/blob/master/doc/descriptors.md)
+- The [output script descriptor](https://github.com/umkoin/umkoin/blob/master/doc/descriptors.md)
   documentation has been updated with information about new features in
   this still-developing language for describing the output scripts that
   a wallet or other program wants to receive notifications for, such as
@@ -127,7 +127,7 @@ Deprecated or removed RPCs
 
 - The 'account' API is removed after being deprecated in v0.17.  The
   'label' API was introduced in v0.17 as a replacement for accounts.
-  See the [release notes from v0.17](https://github.com/bitcoin/bitcoin/blob/master/doc/release-notes/release-notes-0.17.0.md#label-and-account-apis-for-wallet)
+  See the [release notes from v0.17](https://github.com/umkoin/umkoin/blob/master/doc/release-notes/release-notes-0.17.0.md#label-and-account-apis-for-wallet)
   for a full description of the changes from the 'account' API to the
   'label' API.
 
