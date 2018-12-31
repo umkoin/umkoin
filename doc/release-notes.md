@@ -43,8 +43,9 @@ processing the entire blockchain.
 Compatibility
 ==============
 
-Umkoin Core is extensively tested on multiple operating systems using
-the Linux kernel, macOS 10.10+, and Windows 7 and newer (Windows XP is not supported).
+Umkoin Core is supported and extensively tested on operating systems using
+the Linux kernel, macOS 10.10+, and Windows 7 and newer.  It is not recommended
+to use Umkoin Core on unsupported systems.
 
 Umkoin Core should also work on most other Unix-like systems but is not
 frequently tested on them.
