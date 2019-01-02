@@ -3,7 +3,7 @@ release-notes at release time)
 
 Umkoin Core version *version* is now available from:
 
-  <http://umkoin.org/bin/umkoin-core-*version*/>
+  <http://www.umkoin.org/bin/umkoin-core-*version*/>
 
 This is a new major version release, including new features, various bugfixes
 and performance improvements, as well as updated translations.

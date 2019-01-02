@@ -13,7 +13,7 @@ out collectively by the network. Umkoin Core is the name of open source
 software which enables the use of this currency.
 
 For more information, as well as an immediately useable, binary version of
-the Umkoin Core software, see http://umkoin.org/en/download.php.
+the Umkoin Core software, see http://www.umkoin.org/en/download.php.
 
 License
 -------
