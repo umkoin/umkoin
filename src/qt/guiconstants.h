@@ -50,5 +50,6 @@ static const int MAX_URI_LENGTH = 255;
 #define QAPP_ORG_DOMAIN "umkoin.org"
 #define QAPP_APP_NAME_DEFAULT "Umkoin-Qt"
 #define QAPP_APP_NAME_TESTNET "Umkoin-Qt-testnet"
+#define QAPP_APP_NAME_REGTEST "Umkoin-Qt-regtest"
 
 #endif // UMKOIN_QT_GUICONSTANTS_H
