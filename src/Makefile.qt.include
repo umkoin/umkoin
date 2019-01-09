@@ -120,6 +120,7 @@ QT_MOC_CPP = \
   qt/moc_bantablemodel.cpp \
   qt/moc_umkoinaddressvalidator.cpp \
   qt/moc_umkoinamountfield.cpp \
+  qt/moc_umkoin.cpp \
   qt/moc_umkoingui.cpp \
   qt/moc_umkoinunits.cpp \
   qt/moc_clientmodel.cpp \
@@ -166,7 +167,6 @@ UMKOIN_MM = \
   qt/macos_appnap.mm
 
 QT_MOC = \
-  qt/umkoin.moc \
   qt/umkoinamountfield.moc \
   qt/intro.moc \
   qt/overviewpage.moc \
@@ -194,6 +194,7 @@ UMKOIN_QT_H = \
   qt/bantablemodel.h \
   qt/umkoinaddressvalidator.h \
   qt/umkoinamountfield.h \
+  qt/umkoin.h \
   qt/umkoingui.h \
   qt/umkoinunits.h \
   qt/clientmodel.h \
@@ -302,6 +303,7 @@ RES_ICONS = \
 
 UMKOIN_QT_BASE_CPP = \
   qt/bantablemodel.cpp \
+  qt/umkoin.cpp \
   qt/umkoinaddressvalidator.cpp \
   qt/umkoinamountfield.cpp \
   qt/umkoingui.cpp \
@@ -382,6 +384,9 @@ qt_libumkoinqt_a_OBJCXXFLAGS = $(AM_OBJCXXFLAGS) $(QT_PIE_FLAGS)
 
 qt_libumkoinqt_a_SOURCES = $(UMKOIN_QT_CPP) $(UMKOIN_QT_H) $(QT_FORMS_UI) \
   $(QT_QRC) $(QT_QRC_LOCALE) $(QT_TS) $(PROTOBUF_PROTO) $(RES_ICONS) $(RES_IMAGES) $(RES_MOVIES)
+if TARGET_DARWIN
+  qt_libumkoinqt_a_SOURCES += $(UMKOIN_MM)
+endif
 
 nodist_qt_libumkoinqt_a_SOURCES = $(QT_MOC_CPP) $(QT_MOC) $(PROTOBUF_CC) \
   $(PROTOBUF_H) $(QT_QRC_CPP) $(QT_QRC_LOCALE_CPP)
@@ -404,10 +409,7 @@ qt_umkoin_qt_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(UMKOIN_QT_INCLUDES) 
   $(QT_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
 qt_umkoin_qt_CXXFLAGS = $(AM_CXXFLAGS) $(QT_PIE_FLAGS)
 
-qt_umkoin_qt_SOURCES = qt/umkoin.cpp
-if TARGET_DARWIN
-  qt_umkoin_qt_SOURCES += $(UMKOIN_MM)
-endif
+qt_umkoin_qt_SOURCES = qt/main.cpp
 if TARGET_WINDOWS
   qt_umkoin_qt_SOURCES += $(UMKOIN_RC)
 endif

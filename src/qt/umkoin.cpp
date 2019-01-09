@@ -6,6 +6,7 @@
 #include <config/umkoin-config.h>
 #endif
 
+#include <qt/umkoin.h>
 #include <qt/umkoingui.h>
 
 #include <chainparams.h>
@@ -71,11 +72,6 @@ Q_DECLARE_METATYPE(bool*)
 Q_DECLARE_METATYPE(CAmount)
 Q_DECLARE_METATYPE(uint256)
 
-/** Translate string to current locale using Qt. */
-const std::function<std::string(const char*)> G_TRANSLATION_FUN = [](const char* psz) {
-    return QCoreApplication::translate("umkoin-core", psz).toStdString();
-};
-
 static QString GetLangTerritory()
 {
     QSettings settings;
@@ -139,101 +135,6 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
         LogPrintf("GUI: %s\n", msg.toStdString());
     }
 }
-
-/** Class encapsulating Umkoin Core startup and shutdown.
- * Allows running startup and shutdown in a different thread from the UI thread.
- */
-class UmkoinCore: public QObject
-{
-    Q_OBJECT
-public:
-    explicit UmkoinCore(interfaces::Node& node);
-
-public Q_SLOTS:
-    void initialize();
-    void shutdown();
-
-Q_SIGNALS:
-    void initializeResult(bool success);
-    void shutdownResult();
-    void runawayException(const QString &message);
-
-private:
-    /// Pass fatal exception message to UI thread
-    void handleRunawayException(const std::exception *e);
-
-    interfaces::Node& m_node;
-};
-
-/** Main Umkoin application object */
-class UmkoinApplication: public QApplication
-{
-    Q_OBJECT
-public:
-    explicit UmkoinApplication(interfaces::Node& node, int &argc, char **argv);
-    ~UmkoinApplication();
-
-#ifdef ENABLE_WALLET
-    /// Create payment server
-    void createPaymentServer();
-#endif
-    /// parameter interaction/setup based on rules
-    void parameterSetup();
-    /// Create options model
-    void createOptionsModel(bool resetSettings);
-    /// Create main window
-    void createWindow(const NetworkStyle *networkStyle);
-    /// Create splash screen
-    void createSplashScreen(const NetworkStyle *networkStyle);
-
-    /// Request core initialization
-    void requestInitialize();
-    /// Request core shutdown
-    void requestShutdown();
-
-    /// Get process return value
-    int getReturnValue() const { return returnValue; }
-
-    /// Get window identifier of QMainWindow (UmkoinGUI)
-    WId getMainWinId() const;
-
-    /// Setup platform style
-    void setupPlatformStyle();
-
-public Q_SLOTS:
-    void initializeResult(bool success);
-    void shutdownResult();
-    /// Handle runaway exceptions. Shows a message box with the problem and quits the program.
-    void handleRunawayException(const QString &message);
-    void addWallet(WalletModel* walletModel);
-    void removeWallet();
-
-Q_SIGNALS:
-    void requestedInitialize();
-    void requestedShutdown();
-    void stopThread();
-    void splashFinished();
-
-private:
-    QThread *coreThread;
-    interfaces::Node& m_node;
-    OptionsModel *optionsModel;
-    ClientModel *clientModel;
-    UmkoinGUI *window;
-    QTimer *pollShutdownTimer;
-#ifdef ENABLE_WALLET
-    PaymentServer* paymentServer;
-    std::vector<WalletModel*> m_wallet_models;
-    std::unique_ptr<interfaces::Handler> m_handler_load_wallet;
-#endif
-    int returnValue;
-    const PlatformStyle *platformStyle;
-    std::unique_ptr<QWidget> shutdownWindow;
-
-    void startThread();
-};
-
-#include <qt/umkoin.moc>
 
 UmkoinCore::UmkoinCore(interfaces::Node& node) :
     QObject(), m_node(node)
@@ -358,6 +259,11 @@ void UmkoinApplication::createSplashScreen(const NetworkStyle *networkStyle)
     connect(this, &UmkoinApplication::requestedShutdown, splash, &QWidget::close);
 }
 
+bool UmkoinApplication::baseInitialize()
+{
+    return m_node.baseInitialize();
+}
+
 void UmkoinApplication::startThread()
 {
     if(coreThread)
@@ -467,7 +373,7 @@ void UmkoinApplication::initializeResult(bool success)
 #ifdef ENABLE_BIP70
         PaymentServer::LoadRootCAs();
 #endif
-        paymentServer->setOptionsModel(optionsModel);
+        if (paymentServer) paymentServer->setOptionsModel(optionsModel);
 #endif
 
         clientModel = new ClientModel(m_node, optionsModel);
@@ -496,16 +402,19 @@ void UmkoinApplication::initializeResult(bool success)
             window->show();
         }
         Q_EMIT splashFinished();
+        Q_EMIT windowShown(window);
 
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
         // umkoin: URIs or payment requests:
-        connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &UmkoinGUI::handlePaymentRequest);
-        connect(window, &UmkoinGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
-        connect(paymentServer, &PaymentServer::message, [this](const QString& title, const QString& message, unsigned int style) {
-            window->message(title, message, style);
-        });
-        QTimer::singleShot(100, paymentServer, &PaymentServer::uiReady);
+        if (paymentServer) {
+            connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &UmkoinGUI::handlePaymentRequest);
+            connect(window, &UmkoinGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
+            connect(paymentServer, &PaymentServer::message, [this](const QString& title, const QString& message, unsigned int style) {
+                window->message(title, message, style);
+            });
+            QTimer::singleShot(100, paymentServer, &PaymentServer::uiReady);
+        }
 #endif
         pollShutdownTimer->start(200);
     } else {
@@ -548,7 +457,7 @@ static void SetupUIArgs()
 }
 
 #ifndef UMKOIN_QT_TEST
-int main(int argc, char *argv[])
+int GuiMain(int argc, char* argv[])
 {
 #ifdef WIN32
     util::WinCmdLineArgs winArgs;
@@ -706,7 +615,7 @@ int main(int argc, char *argv[])
         // Perform base initialization before spinning up initialization/shutdown thread
         // This is acceptable because this function only contains steps that are quick to execute,
         // so the GUI thread won't be held up.
-        if (node->baseInitialize()) {
+        if (app.baseInitialize()) {
             app.requestInitialize();
 #if defined(Q_OS_WIN)
             WinShutdownMonitor::registerShutdownBlockReason(QObject::tr("%1 didn't yet exit safely...").arg(QObject::tr(PACKAGE_NAME)), (HWND)app.getMainWinId());
