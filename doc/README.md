@@ -34,6 +34,7 @@ The following are developer notes on how to build Umkoin Core on your native pla
 - [macOS Build Notes](build-osx.md)
 - [Unix Build Notes](build-unix.md)
 - [Windows Build Notes](build-windows.md)
+- [FreeBSD Build Notes](build-freebsd.md)
 - [OpenBSD Build Notes](build-openbsd.md)
 - [NetBSD Build Notes](build-netbsd.md)
 - [Gitian Building Guide](gitian-building.md)
