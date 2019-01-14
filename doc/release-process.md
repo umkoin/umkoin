@@ -44,15 +44,15 @@ Check out the source code in the following directory hierarchy.
 
 Write release notes. git shortlog helps a lot, for example:
 
-    git shortlog --no-merges v(current version, e.g. 0.16.0)..v(new version, e.g. 0.17.0)
+    git shortlog --no-merges v(current version, e.g. 0.17.0)..v(new version, e.g. 0.17.1)
 
 Generate list of authors:
 
-    git log --format='- %aN' v(current version, e.g. 0.17.0)..v(new version, e.g. 0.17.0.1) | sort -fiu
+    git log --format='- %aN' v(current version, e.g. 0.17.0)..v(new version, e.g. 0.17.1) | sort -fiu
 
 Tag version (or release candidate) in git
 
-    git tag -s v(new version, e.g. 0.17.0)
+    git tag -s v(new version, e.g. 0.17.1)
 
 ### Setup and perform Gitian builds
 
@@ -62,7 +62,7 @@ Setup Gitian descriptors:
 
     pushd ./umkoin
     export SIGNER="(your Gitian key, ie bluematt, sipa, vmta, etc)"
-    export VERSION=(new version, e.g. 0.17.0)
+    export VERSION=(new version, e.g. 0.17.1)
     git fetch
     git checkout v${VERSION}
     popd
