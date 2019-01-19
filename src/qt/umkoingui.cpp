@@ -19,6 +19,7 @@
 #include <qt/utilitydialog.h>
 
 #ifdef ENABLE_WALLET
+#include <qt/walletcontroller.h>
 #include <qt/walletframe.h>
 #include <qt/walletmodel.h>
 #include <qt/walletview.h>
@@ -565,18 +566,33 @@ void UmkoinGUI::setClientModel(ClientModel *_clientModel)
 }
 
 #ifdef ENABLE_WALLET
+void UmkoinGUI::setWalletController(WalletController* wallet_controller)
+{
+    assert(!m_wallet_controller);
+    assert(wallet_controller);
+
+    m_wallet_controller = wallet_controller;
+
+    connect(wallet_controller, &WalletController::walletAdded, this, &UmkoinGUI::addWallet);
+    connect(wallet_controller, &WalletController::walletRemoved, this, &UmkoinGUI::removeWallet);
+
+    for (WalletModel* wallet_model : m_wallet_controller->getWallets()) {
+        addWallet(wallet_model);
+    }
+}
+
 void UmkoinGUI::addWallet(WalletModel* walletModel)
 {
     if (!walletFrame) return;
     const QString display_name = walletModel->getDisplayName();
     setWalletActionsEnabled(true);
+    rpcConsole->addWallet(walletModel);
+    walletFrame->addWallet(walletModel);
     m_wallet_selector->addItem(display_name, QVariant::fromValue(walletModel));
     if (m_wallet_selector->count() == 2) {
         m_wallet_selector_label_action->setVisible(true);
         m_wallet_selector_action->setVisible(true);
     }
-    rpcConsole->addWallet(walletModel);
-    walletFrame->addWallet(walletModel);
 }
 
 void UmkoinGUI::removeWallet(WalletModel* walletModel)
@@ -599,13 +615,19 @@ void UmkoinGUI::setCurrentWallet(WalletModel* wallet_model)
 {
     if (!walletFrame) return;
     walletFrame->setCurrentWallet(wallet_model);
+    for (int index = 0; index < m_wallet_selector->count(); ++index) {
+        if (m_wallet_selector->itemData(index).value<WalletModel*>() == wallet_model) {
+            m_wallet_selector->setCurrentIndex(index);
+            break;
+        }
+    }
     updateWindowTitle();
 }
 
 void UmkoinGUI::setCurrentWalletBySelectorIndex(int index)
 {
     WalletModel* wallet_model = m_wallet_selector->itemData(index).value<WalletModel*>();
-    setCurrentWallet(wallet_model);
+    if (wallet_model) setCurrentWallet(wallet_model);
 }
 
 void UmkoinGUI::removeAllWallets()
@@ -1245,25 +1267,21 @@ void UmkoinGUI::detectShutdown()
 
 void UmkoinGUI::showProgress(const QString &title, int nProgress)
 {
-    if (nProgress == 0)
-    {
-        progressDialog = new QProgressDialog(title, "", 0, 100);
+    if (nProgress == 0) {
+        progressDialog = new QProgressDialog(title, QString(), 0, 100);
+        GUIUtil::PolishProgressDialog(progressDialog);
         progressDialog->setWindowModality(Qt::ApplicationModal);
         progressDialog->setMinimumDuration(0);
-        progressDialog->setCancelButton(nullptr);
         progressDialog->setAutoClose(false);
         progressDialog->setValue(0);
-    }
-    else if (nProgress == 100)
-    {
-        if (progressDialog)
-        {
+    } else if (nProgress == 100) {
+        if (progressDialog) {
             progressDialog->close();
             progressDialog->deleteLater();
         }
-    }
-    else if (progressDialog)
+    } else if (progressDialog) {
         progressDialog->setValue(nProgress);
+    }
 }
 
 void UmkoinGUI::setTrayIconVisible(bool fHideTrayIcon)
