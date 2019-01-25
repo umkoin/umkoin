@@ -96,6 +96,7 @@ UMKOIN_CORE_H = \
   addrdb.h \
   addrman.h \
   attributes.h \
+  banman.h \
   base58.h \
   bech32.h \
   bloom.h \
@@ -225,6 +226,7 @@ libumkoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_server_a_SOURCES = \
   addrdb.cpp \
   addrman.cpp \
+  banman.cpp \
   bloom.cpp \
   blockencodings.cpp \
   blockfilter.cpp \
