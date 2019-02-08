@@ -5,6 +5,7 @@ src/umkoin
 src/umkoind
 src/umkoin-cli
 src/umkoin-tx
+src/umkoin-wallet
 src/test/test_umkoin
 src/test/test_umkoin_fuzzy
 src/qt/test/test_umkoin-qt

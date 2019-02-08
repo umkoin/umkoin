@@ -139,6 +139,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
 
         config = configparser.ConfigParser()
         config.read_file(open(self.options.configfile))
+        self.config = config
         self.options.umkoind = os.getenv("UMKOIND", default=config["environment"]["BUILDDIR"] + '/src/umkoind' + config["environment"]["EXEEXT"])
         self.options.umkoincli = os.getenv("UMKOINCLI", default=config["environment"]["BUILDDIR"] + '/src/umkoin-cli' + config["environment"]["EXEEXT"])
 

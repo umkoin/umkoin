@@ -41,6 +41,7 @@ LIBUMKOINCONSENSUS=libumkoinconsensus.la
 endif
 if ENABLE_WALLET
 LIBUMKOIN_WALLET=libumkoin_wallet.a
+LIBUMKOIN_WALLET_TOOL=libumkoin_wallet_tool.a
 endif
 
 LIBUMKOIN_CRYPTO= $(LIBUMKOIN_CRYPTO_BASE)
@@ -70,6 +71,7 @@ EXTRA_LIBRARIES += \
   $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_CLI) \
   $(LIBUMKOIN_WALLET) \
+  $(LIBUMKOIN_WALLET_TOOL) \
   $(LIBUMKOIN_ZMQ)
 
 lib_LTLIBRARIES = $(LIBUMKOINCONSENSUS)
@@ -88,6 +90,11 @@ if BUILD_UMKOIN_CLI
 endif
 if BUILD_UMKOIN_TX
   bin_PROGRAMS += umkoin-tx
+endif
+if ENABLE_WALLET
+if BUILD_UMKOIN_WALLET
+  bin_PROGRAMS += umkoin-wallet
+endif
 endif
 
 .PHONY: FORCE check-symbols check-security
@@ -205,6 +212,7 @@ UMKOIN_CORE_H = \
   wallet/rpcwallet.h \
   wallet/wallet.h \
   wallet/walletdb.h \
+  wallet/wallettool.h \
   wallet/walletutil.h \
   wallet/coinselection.h \
   warnings.h \
@@ -306,6 +314,12 @@ libumkoin_wallet_a_SOURCES = \
   wallet/walletdb.cpp \
   wallet/walletutil.cpp \
   wallet/coinselection.cpp \
+  $(UMKOIN_CORE_H)
+
+libumkoin_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+libumkoin_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libumkoin_wallet_tool_a_SOURCES = \
+  wallet/wallettool.cpp \
   $(UMKOIN_CORE_H)
 
 # crypto primitives library
@@ -523,6 +537,32 @@ umkoin_tx_LDADD = \
   $(LIBSECP256K1)
 
 umkoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+#
+
+# umkoin-wallet binary #
+umkoin_wallet_SOURCES = umkoin-wallet.cpp
+umkoin_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+umkoin_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+umkoin_wallet_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+
+if TARGET_WINDOWS
+umkoin_wallet_SOURCES += umkoin-wallet-res.rc
+endif
+
+umkoin_wallet_LDADD = \
+  $(LIBUMKOIN_WALLET_TOOL) \
+  $(LIBUMKOIN_WALLET) \
+  $(LIBUMKOIN_SERVER) \
+  $(LIBUMKOIN_COMMON) \
+  $(LIBUMKOIN_CONSENSUS) \
+  $(LIBUMKOIN_UTIL) \
+  $(LIBUMKOIN_CRYPTO) \
+  $(LIBLEVELDB) \
+  $(LIBLEVELDB_SSE42) \
+  $(LIBMEMENV) \
+  $(LIBSECP256K1)
+
+umkoin_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
 #
 
 # umkoinconsensus library #

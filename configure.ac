@@ -3,7 +3,7 @@ AC_PREREQ([2.60])
 define(_CLIENT_VERSION_MAJOR, 0)
 define(_CLIENT_VERSION_MINOR, 17)
 define(_CLIENT_VERSION_REVISION, 1)
-define(_CLIENT_VERSION_BUILD, 19)
+define(_CLIENT_VERSION_BUILD, 20)
 define(_CLIENT_VERSION_RC, 0)
 define(_CLIENT_VERSION_IS_RELEASE, false)
 define(_COPYRIGHT_YEAR, 2019)
@@ -19,6 +19,7 @@ UMKOIN_DAEMON_NAME=umkoind
 UMKOIN_GUI_NAME=umkoin-qt
 UMKOIN_CLI_NAME=umkoin-cli
 UMKOIN_TX_NAME=umkoin-tx
+UMKOIN_WALLET_TOOL_NAME=umkoin-wallet
 
 dnl Unless the user specified ARFLAGS, force it to be cr
 AC_ARG_VAR(ARFLAGS, [Flags for the archiver, defaults to <cr> if not set])
@@ -419,7 +420,7 @@ CPPFLAGS="$CPPFLAGS -DHAVE_BUILD_INFO -D__STDC_FORMAT_MACROS"
 
 AC_ARG_WITH([utils],
   [AS_HELP_STRING([--with-utils],
-  [build umkoin-cli umkoin-tx (default=yes)])],
+  [build umkoin-cli umkoin-tx umkoin-wallet (default=yes)])],
   [build_umkoin_utils=$withval],
   [build_umkoin_utils=yes])
 
@@ -434,6 +435,12 @@ AC_ARG_ENABLE([util-tx],
   [build umkoin-tx])],
   [build_umkoin_tx=$enableval],
   [build_umkoin_tx=$build_umkoin_utils])
+
+AC_ARG_ENABLE([util-wallet],
+  [AS_HELP_STRING([--enable-util-wallet],
+  [build umkoin-wallet])],
+  [build_umkoin_wallet=$enableval],
+  [build_umkoin_wallet=$build_umkoin_utils])
 
 AC_ARG_WITH([libs],
   [AS_HELP_STRING([--with-libs],
@@ -904,7 +911,7 @@ UMKOIN_QT_INIT
 dnl sets $umkoin_enable_qt, $umkoin_enable_qt_test, $umkoin_enable_qt_dbus
 UMKOIN_QT_CONFIGURE([$use_pkgconfig])
 
-if test x$build_umkoin_cli$build_umkoin_tx$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnononononono; then
+if test x$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnonononononono; then
     use_boost=no
 else
     use_boost=yes
@@ -1186,7 +1193,7 @@ dnl univalue check
 
 need_bundled_univalue=yes
 
-if test x$build_umkoin_cli$build_umkoin_tx$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnononononono; then
+if test x$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnonononononono; then
   need_bundled_univalue=no
 else
 
@@ -1247,6 +1254,10 @@ AC_MSG_RESULT($build_umkoin_cli)
 AC_MSG_CHECKING([whether to build umkoin-tx])
 AM_CONDITIONAL([BUILD_UMKOIN_TX], [test x$build_umkoin_tx = xyes])
 AC_MSG_RESULT($build_umkoin_tx)
+
+AC_MSG_CHECKING([whether to build umkoin-wallet])
+AM_CONDITIONAL([BUILD_UMKOIN_WALLET], [test x$build_umkoin_wallet = xyes])
+AC_MSG_RESULT($build_umkoin_wallet)
 
 AC_MSG_CHECKING([whether to build libraries])
 AM_CONDITIONAL([BUILD_UMKOIN_LIBS], [test x$build_umkoin_libs = xyes])
@@ -1389,7 +1400,7 @@ else
   AC_MSG_RESULT([no])
 fi
 
-if test x$build_umkoin_cli$build_umkoin_tx$build_umkoin_libs$build_umkoind$umkoin_enable_qt$use_bench$use_tests = xnonononononono; then
+if test x$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoin_libs$build_umkoind$umkoin_enable_qt$use_bench$use_tests = xnononononononono; then
   AC_MSG_ERROR([No targets! Please specify at least one of: --with-utils --with-libs --with-daemon --with-gui --enable-bench or --enable-tests])
 fi
 
@@ -1436,6 +1447,7 @@ AC_SUBST(UMKOIN_DAEMON_NAME)
 AC_SUBST(UMKOIN_GUI_NAME)
 AC_SUBST(UMKOIN_CLI_NAME)
 AC_SUBST(UMKOIN_TX_NAME)
+AC_SUBST(UMKOIN_WALLET_TOOL_NAME)
 
 AC_SUBST(RELDFLAGS)
 AC_SUBST(DEBUG_CPPFLAGS)

@@ -11,6 +11,7 @@ libs = [
     'libumkoin_crypto',
     'libumkoin_server',
     'libumkoin_util',
+    'libumkoin_wallet_tool',
     'libumkoin_wallet',
     'libumkoin_zmq',
 ]
