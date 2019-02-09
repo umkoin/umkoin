@@ -61,6 +61,9 @@
     <None Include="..\..\src\qt\locale\umkoin_af_ZA.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="..\..\src\qt\locale\umkoin_am.ts">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="..\..\src\qt\locale\umkoin_ar.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -73,10 +76,10 @@
     <None Include="..\..\src\qt\locale\umkoin_bg_BG.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="..\..\src\qt\locale\umkoin_ca%40valencia.ts">
+    <None Include="..\..\src\qt\locale\umkoin_ca.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="..\..\src\qt\locale\umkoin_ca.ts">
+    <None Include="..\..\src\qt\locale\umkoin_ca%40valencia.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\..\src\qt\locale\umkoin_ca_ES.ts">
@@ -178,7 +181,13 @@
     <None Include="..\..\src\qt\locale\umkoin_hu.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="..\..\src\qt\locale\umkoin_id.ts">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="..\..\src\qt\locale\umkoin_id_ID.ts">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\..\src\qt\locale\umkoin_is.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\..\src\qt\locale\umkoin_it.ts">
@@ -194,6 +203,9 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\..\src\qt\locale\umkoin_kk_KZ.ts">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\..\src\qt\locale\umkoin_ko.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\..\src\qt\locale\umkoin_ko_KR.ts">
@@ -215,6 +227,9 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\..\src\qt\locale\umkoin_mk_MK.ts">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\..\src\qt\locale\umkoin_ml.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\..\src\qt\locale\umkoin_mn.ts">
@@ -262,16 +277,22 @@
     <None Include="..\..\src\qt\locale\umkoin_sl_SI.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="..\..\src\qt\locale\umkoin_sq.ts">
+    <None Include="..\..\src\qt\locale\umkoin_sn.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="..\..\src\qt\locale\umkoin_sr%40latin.ts">
+    <None Include="..\..\src\qt\locale\umkoin_sq.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\..\src\qt\locale\umkoin_sr.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
+    <None Include="..\..\src\qt\locale\umkoin_sr%40latin.ts">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
     <None Include="..\..\src\qt\locale\umkoin_sv.ts">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\..\src\qt\locale\umkoin_szl.ts">
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="..\..\src\qt\locale\umkoin_ta.ts">
