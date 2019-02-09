@@ -56,7 +56,7 @@ All three configurations assume several paths that might need to be adjusted.
 Binary:              `/usr/bin/umkoind`  
 Configuration file:  `/etc/umkoin/umkoin.conf`  
 Data directory:      `/var/lib/umkoind`  
-PID file:            `/var/run/umkoind/umkoind.pid` (OpenRC and Upstart) or `/var/lib/umkoind/umkoind.pid` (systemd)  
+PID file:            `/var/run/umkoind/umkoind.pid` (OpenRC and Upstart) or `/run/umkoind/umkoind.pid` (systemd)
 Lock file:           `/var/lock/subsys/umkoind` (CentOS)  
 
 The configuration file, PID directory (if applicable) and data directory
@@ -64,6 +64,22 @@ should all be owned by the umkoin user and group.  It is advised for security
 reasons to make the configuration file and data directory only readable by the
 umkoin user and group.  Access to umkoin-cli and other umkoind rpc clients
 can then be controlled by group membership.
+
+NOTE: When using the systemd .service file, the creation of the aforementioned
+directories and the setting of their permissions is automatically handled by
+systemd. Directories are given a permission of 710, giving the umkoin group
+access to files under it _if_ the files themselves give permission to the
+umkoin group to do so (e.g. when `-sysperms` is specified). This does not allow
+for the listing of files under the directory.
+
+NOTE: It is not currently possible to override `datadir` in
+`/etc/umkoin/umkoin.conf` with the current systemd, OpenRC, and Upstart init
+files out-of-the-box. This is because the command line options specified in the
+init files take precedence over the configurations in
+`/etc/umkoin/umkoin.conf`. However, some init systems have their own
+configuration mechanisms that would allow for overriding the command line
+options specified in the init files (e.g. setting `UMKOIND_DATADIR` for
+OpenRC).
 
 ### macOS
 
