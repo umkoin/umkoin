@@ -260,12 +260,6 @@ def main():
 
     enable_umkoind = config["components"].getboolean("ENABLE_UMKOIND")
 
-    if config["environment"]["EXEEXT"] == ".exe" and not args.force:
-        # https://github.com/bitcoin/bitcoin/commit/d52802551752140cf41f0d9a225a43e84404d3e9
-        # https://github.com/bitcoin/bitcoin/pull/5677#issuecomment-136646964
-        print("Tests currently disabled on Windows by default. Use --force option to enable")
-        sys.exit(0)
-
     if not enable_umkoind:
         print("No functional tests to run.")
         print("Rerun ./configure with --with-daemon and then make")
