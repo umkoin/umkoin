@@ -10,6 +10,7 @@ MANDIR=${MANDIR:-$TOPDIR/doc/man}
 UMKOIND=${UMKOIND:-$BINDIR/umkoind}
 UMKOINCLI=${UMKOINCLI:-$BINDIR/umkoin-cli}
 UMKOINTX=${UMKOINTX:-$BINDIR/umkoin-tx}
+WALLET_TOOL=${WALLET_TOOL:-$BINDIR/umkoin-wallet}
 UMKOINQT=${UMKOINQT:-$BINDIR/qt/umkoin-qt}
 
 [ ! -x $UMKOIND ] && echo "$UMKOIND not found or not executable." && exit 1
@@ -23,7 +24,7 @@ UMKVER=($($UMKOINCLI --version | head -n1 | awk -F'[ -]' '{ print $6, $7 }'))
 echo "[COPYRIGHT]" > footer.h2m
 $UMKOIND --version | sed -n '1!p' >> footer.h2m
 
-for cmd in $UMKOIND $UMKOINCLI $UMKOINTX $UMKOINQT; do
+for cmd in $UMKOIND $UMKOINCLI $UMKOINTX $WALLET_TOOL $UMKOINQT; do
   cmdname="${cmd##*/}"
   help2man -N --version-string=${UMKVER[0]} --include=footer.h2m -o ${MANDIR}/${cmdname}.1 ${cmd}
   sed -i "s/\\\-${UMKVER[1]}//g" ${MANDIR}/${cmdname}.1
