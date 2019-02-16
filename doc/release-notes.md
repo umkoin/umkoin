@@ -126,6 +126,10 @@ Documentation
   to the [REST interface documentation](https://github.com/umkoin/umkoin/blob/master/doc/REST-interface.md)
   indicating that the same rules apply.
 
+- Further information is added to the [JSON-RPC
+  documentation](https://github.com/umkoin/umkoin/blob/master/doc/JSON-RPC-interface.md)
+  about how to secure this interface.
+
 - A new [document](https://github.com/umkoin/umkoin/blob/master/doc/umkoin-conf.md)
   about the `umkoin.conf` file describes how to use it to configure
   Umkoin Core.
@@ -186,13 +190,17 @@ Deprecated or removed RPCs
 New RPCs
 --------
 
-- A new `getnodeaddresses` RPC returns peer addresses known to this
+- The `getnodeaddresses` RPC returns peer addresses known to this
   node. It may be used to find nodes to connect to without using a DNS
   seeder.
 
-- A new `listwalletdir` RPC returns a list of wallets in the wallet
+- The `listwalletdir` RPC returns a list of wallets in the wallet
   directory (either the default wallet directory or the directory
   configured by the `-walletdir` parameter).
+
+- The `getrpcinfo` returns runtime details of the RPC server. At the
+  moment, it returns an array of the currently active commands and how
+  long they've been running.
 
 Updated RPCs
 ------------
