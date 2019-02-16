@@ -250,11 +250,24 @@ in the Low-level Changes section below.
 
 - See the [Mining](#mining) section for changes to `getblocktemplate`.
 
+- The `getmininginfo` RPC now omits `currentblockweight` and `currentblocktx`
+  when a block was never assembled via RPC on this node.
+
 - The `getrawtransaction` RPC & REST endpoints no longer check the
   unspent UTXO set for a transaction. The remaining behaviors are as
   follows: 1. If a blockhash is provided, check the corresponding block.
   2. If no blockhash is provided, check the mempool. 3. If no blockhash
   is provided but txindex is enabled, also check txindex.
+
+- The `unloadwallet` RPC is now synchronous, meaning it will not return
+  until the wallet is fully unloaded.
+
+REST changes
+------------
+
+- A new `/rest/blockhashbyheight/` endpoint is added for fetching the
+  hash of the block in the current best blockchain based on its height
+  (how many blocks it is after the Genesis Block).
 
 Graphical User Interface (GUI)
 ------------------------------
@@ -277,6 +290,16 @@ Graphical User Interface (GUI)
   CXXFLAGS="-mmacosx-version-min=10.11"
   CFLAGS="-mmacosx-version-min=10.11" for setting the deployment
   sdk version)
+
+Tools
+----
+
+- A new `umkoin-wallet` tool is now distributed alongside Umkoin
+  Core's other executables.  Without needing to use any RPCs, this tool
+  can currently create a new wallet file or display some basic
+  information about an existing wallet, such as whether the wallet is
+  encrypted, whether it uses an HD seed, how many transactions it
+  contains, and how many address book entries it has.
 
 Low-level changes
 =================
@@ -301,6 +324,32 @@ Configuration
   that version onwards, all new wallets created are hierarchical
   deterministic wallets. This release makes specifying `-usehd` an
   invalid configuration option.
+
+Network
+-------
+
+- This release allows peers that your node automatically disconnected
+  for misbehavior (e.g. sending invalid data) to reconnect to your node
+  if you have unused incoming connection slots.  If your slots fill up,
+  a misbehaving node will be disconnected to make room for nodes without
+  a history of problems (unless the misbehaving node helps your node in
+  some other way, such as by connecting to a part of the Internet from
+  which you don't have many other peers).  Previously, Umkoin Core
+  banned the IP addresses of misbehaving peers for a period of time
+  (default of 1 day); this was easily circumvented by attackers with
+  multiple IP addresses.  If you manually ban a peer, such as by using
+  the `setban` RPC, all connections from that peer will still be
+  rejected.
+
+Security
+--------
+
+- This release changes the Random Number Generator (RNG) used from
+  OpenSSL to Umkoin Core's own implementation, although entropy
+  gathered by Umkoin Core is fed out to OpenSSL and then read back in
+  when the program needs strong randomness.  This moves Umkoin Core a
+  little closer to no longer needing to depend on OpenSSL, a dependency
+  that has caused security issues in the past.
 
 Changes for particular platforms
 --------------------------------
