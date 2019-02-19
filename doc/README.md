@@ -3,7 +3,7 @@ Umkoin Core
 
 Setup
 ---------------------
-Umkoin Core is the original Umkoin client and it builds the backbone of the network. It downloads and, by default, stores the entire history of Umkoin transactions, which requires a few hundred gigabytes of disk space. Depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more.
+Umkoin Core is the original Umkoin client and it builds the backbone of the network. It downloads and, by default, stores the entire history of Umkoin transactions, which requires some free disk space. Depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few minutes to several hours or more.
 
 To download Umkoin Core, visit [www.umkoin.org](http://www.umkoin.org/en/download.php).
 
@@ -44,6 +44,7 @@ Development
 The Umkoin repo's [root README](/README.md) contains relevant information on the development process and automated testing.
 
 - [Developer Notes](developer-notes.md)
+- [Productivity Notes](productivity.md)
 - [Release Notes](release-notes.md)
 - [Release Process](release-process.md)
 - [Source Code Documentation (External Link)](https://dev.visucore.com/bitcoin/doxygen/)
