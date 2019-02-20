@@ -318,6 +318,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
                 umkoin_cli=self.options.umkoincli,
                 mocktime=self.mocktime,
                 coverage_dir=self.options.coveragedir,
+                cwd=self.options.tmpdir,
                 extra_conf=extra_confs[i],
                 extra_args=extra_args[i],
                 use_cli=self.options.usecli,
@@ -469,6 +470,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
                     umkoin_cli=self.options.umkoincli,
                     mocktime=self.mocktime,
                     coverage_dir=None,
+                    cwd=self.options.tmpdir,
                 ))
                 self.nodes[i].args = args
                 self.start_node(i)
