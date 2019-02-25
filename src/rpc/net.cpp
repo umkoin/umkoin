@@ -226,8 +226,8 @@ static UniValue addnode(const JSONRPCRequest& request)
                 },
                 RPCResults{},
                 RPCExamples{
-                    HelpExampleCli("addnode", "\"192.168.0.6:6333\" \"onetry\"")
-            + HelpExampleRpc("addnode", "\"192.168.0.6:6333\", \"onetry\"")
+                    HelpExampleCli("addnode", "\"192.166.0.6:6333\" \"onetry\"")
+            + HelpExampleRpc("addnode", "\"192.166.0.6:6333\", \"onetry\"")
                 },
             }.ToString());
 
@@ -271,9 +271,9 @@ static UniValue disconnectnode(const JSONRPCRequest& request)
                 },
                 RPCResults{},
                 RPCExamples{
-                    HelpExampleCli("disconnectnode", "\"192.168.0.6:6333\"")
+                    HelpExampleCli("disconnectnode", "\"192.166.0.6:6333\"")
             + HelpExampleCli("disconnectnode", "\"\" 1")
-            + HelpExampleRpc("disconnectnode", "\"192.168.0.6:6333\"")
+            + HelpExampleRpc("disconnectnode", "\"192.166.0.6:6333\"")
             + HelpExampleRpc("disconnectnode", "\"\", 1")
                 },
             }.ToString());
@@ -320,7 +320,7 @@ static UniValue getaddednodeinfo(const JSONRPCRequest& request)
             "    \"connected\" : true|false,          (boolean) If connected\n"
             "    \"addresses\" : [                    (list of objects) Only when connected = true\n"
             "       {\n"
-            "         \"address\" : \"192.168.0.201:6333\",  (string) The umkoin server IP and port we're connected to\n"
+            "         \"address\" : \"192.166.0.201:6333\",  (string) The umkoin server IP and port we're connected to\n"
             "         \"connected\" : \"outbound\"           (string) connection, inbound or outbound\n"
             "       }\n"
             "     ]\n"
@@ -523,13 +523,7 @@ static UniValue getnetworkinfo(const JSONRPCRequest& request)
 
 static UniValue setban(const JSONRPCRequest& request)
 {
-    std::string strCommand;
-    if (!request.params[1].isNull())
-        strCommand = request.params[1].get_str();
-    if (request.fHelp || request.params.size() < 2 ||
-        (strCommand != "add" && strCommand != "remove"))
-        throw std::runtime_error(
-            RPCHelpMan{"setban",
+    const RPCHelpMan help{"setban",
                 "\nAttempts to add or remove an IP/Subnet from the banned list.\n",
                 {
                     {"subnet", RPCArg::Type::STR, RPCArg::Optional::NO, "The IP/Subnet (see getpeerinfo for nodes IP) with an optional netmask (default is /32 = single IP)"},
@@ -543,7 +537,13 @@ static UniValue setban(const JSONRPCRequest& request)
                             + HelpExampleCli("setban", "\"192.168.0.0/24\" \"add\"")
                             + HelpExampleRpc("setban", "\"192.168.0.6\", \"add\", 86400")
                 },
-            }.ToString());
+    };
+    std::string strCommand;
+    if (!request.params[1].isNull())
+        strCommand = request.params[1].get_str();
+    if (request.fHelp || !help.IsValidNumArgs(request.params.size()) || (strCommand != "add" && strCommand != "remove")) {
+        throw std::runtime_error(help.ToString());
+    }
     if (!g_banman) {
         throw JSONRPCError(RPC_DATABASE_ERROR, "Error: Ban database not loaded");
     }
