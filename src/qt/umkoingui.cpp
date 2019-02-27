@@ -396,6 +396,8 @@ void UmkoinGUI::createActions()
                     connect(activity, &OpenWalletActivity::opened, this, &UmkoinGUI::setCurrentWallet);
                     connect(activity, &OpenWalletActivity::finished, activity, &QObject::deleteLater);
                     connect(activity, &OpenWalletActivity::finished, dialog, &QObject::deleteLater);
+                    bool invoked = QMetaObject::invokeMethod(activity, "open");
+                    assert(invoked);
                 });
             }
         });
