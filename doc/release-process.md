@@ -36,7 +36,7 @@ Check out the source code in the following directory hierarchy.
 
     cd /path/to/your/toplevel/build
     git clone https://github.com/umkoin/gitian.sigs.git
-    git clone https://github.com/umkoin/umkoin-detached-sigs.git
+    git clone https://github.com/umkoin/umkoin-detached-sigs.git 
     git clone https://github.com/devrandom/gitian-builder.git
     git clone https://github.com/umkoin/umkoin.git
 
