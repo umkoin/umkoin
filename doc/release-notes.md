@@ -112,9 +112,7 @@ Configuration option changes
   defaults to being off, so that changes in policy and disconnect/ban behavior
   will not cause a node that is whitelisting another to be dropped by peers.
   Users can still explicitly enable this behavior with the command line option
-  (and may want to consider [contacting](https://bitcoincore.org/en/contact/)
-  the Umkoin Core project to let us know about their
-  use-case, as this feature could be deprecated in the future).
+  (this feature could be deprecated in the future).
 
 Documentation
 -------------
