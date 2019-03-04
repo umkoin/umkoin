@@ -668,8 +668,8 @@ static void ThreadImport(std::vector<fs::path> vImportFiles)
     if (fReindex) {
         int nFile = 0;
         while (true) {
-            FlatFilePos pos(nFile, 0);
-            if (!fs::exists(GetBlockPosFilename(pos)))
+            CDiskBlockPos pos(nFile, 0);
+            if (!fs::exists(GetBlockPosFilename(pos, "blk")))
                 break; // No block files left to reindex
             FILE *file = OpenBlockFile(pos, true);
             if (!file)
@@ -839,7 +839,7 @@ void InitParameterInteraction()
 
     // Warn if unrecognized section name are present in the config file.
     for (const auto& section : gArgs.GetUnrecognizedSections()) {
-        InitWarning(strprintf("%s:%i " + _("Section [%s] is not recognized."), section.m_file, section.m_line, section.m_name));
+        InitWarning(strprintf(_("Section [%s] is not recognized."), section));
     }
 }
 
@@ -1669,11 +1669,11 @@ bool AppInitMain(InitInterfaces& interfaces)
 
     // ********************************************************* Step 11: import blocks
 
-    if (!CheckDiskSpace(GetDataDir())) {
+    if (!CheckDiskSpace(/* additional_bytes */ 0, /* blocks_dir */ false)) {
         InitError(strprintf(_("Error: Disk space is low for %s"), GetDataDir()));
         return false;
     }
-    if (!CheckDiskSpace(GetBlocksDir())) {
+    if (!CheckDiskSpace(/* additional_bytes */ 0, /* blocks_dir */ true)) {
         InitError(strprintf(_("Error: Disk space is low for %s"), GetBlocksDir()));
         return false;
     }
