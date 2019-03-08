@@ -26,6 +26,7 @@ bench_bench_umkoin_SOURCES = \
   bench/gcs_filter.cpp \
   bench/merkle_root.cpp \
   bench/mempool_eviction.cpp \
+  bench/rpc_mempool.cpp \
   bench/verify_script.cpp \
   bench/base58.cpp \
   bench/bech32.cpp \
@@ -37,6 +38,7 @@ nodist_bench_bench_umkoin_SOURCES = $(GENERATED_BENCH_FILES)
 bench_bench_umkoin_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(EVENT_CLFAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
 bench_bench_umkoin_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 bench_bench_umkoin_LDADD = \
+  $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_WALLET) \
   $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_COMMON) \
@@ -47,7 +49,9 @@ bench_bench_umkoin_LDADD = \
   $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
   $(LIBSECP256K1) \
-  $(LIBUNIVALUE)
+  $(LIBUNIVALUE) \
+  $(EVENT_PTHREADS_LIBS) \
+  $(EVENT_LIBS)
 
 if ENABLE_ZMQ
 bench_bench_umkoin_LDADD += $(LIBUMKOIN_ZMQ) $(ZMQ_LIBS)
