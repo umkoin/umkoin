@@ -74,10 +74,6 @@
         <translation>Умкоин</translation>
     </message>
     <message>
-        <source>Wallet</source>
-        <translation>Әмиян</translation>
-    </message>
-    <message>
         <source>&amp;Send</source>
         <translation>Жіберу</translation>
     </message>
