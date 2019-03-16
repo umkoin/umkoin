@@ -1,5 +1,6 @@
 ---
 name: "umkoin-win-signer"
+distro: "ubuntu"
 suites:
 - "bionic"
 architectures:
