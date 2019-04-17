@@ -33,10 +33,10 @@ TEST_QT_H = \
   qt/test/wallettests.h
 
 TEST_UMKOIN_CPP = \
-  test/test_umkoin.cpp
+  test/setup_common.cpp
 
 TEST_UMKOIN_H = \
-  test/test_umkoin.h
+  test/setup_common.h
 
 qt_test_test_umkoin_qt_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(UMKOIN_QT_INCLUDES) \
   $(QT_INCLUDES) $(QT_TEST_INCLUDES) $(PROTOBUF_CFLAGS)
