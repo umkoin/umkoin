@@ -82,6 +82,8 @@ Umkoin Core is now available at `./src/umkoind`
 
 Before running, you may create an empty configuration file:
 
+    mkdir -p "/Users/${USER}/Library/Application Support/Umkoin"
+
     touch "/Users/${USER}/Library/Application Support/Umkoin/umkoin.conf"
 
     chmod 600 "/Users/${USER}/Library/Application Support/Umkoin/umkoin.conf"
