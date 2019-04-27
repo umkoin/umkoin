@@ -306,25 +306,69 @@ in the Low-level Changes section below.
   2. If no blockhash is provided, check the mempool. 3. If no blockhash
   is provided but txindex is enabled, also check txindex.
 
-- The `unloadwallet` RPC is now synchronous, meaning it will not return
-  until the wallet is fully unloaded.
+- `unloadwallet` is now synchronous, meaning it will not return until
+  the wallet is fully unloaded.
 
-- The `importmulti` RPC now supports importing of addresses from descriptors. A
-  "desc" parameter can be provided instead of the "scriptPubKey" in a request, as
-  well as an optional range for ranged descriptors to specify the start and end
-  of the range to import. More information about descriptors can be found
+- `importmulti` now supports importing of addresses from descriptors. A
+  "desc" parameter can be provided instead of the "scriptPubKey" in a
+  request, as well as an optional range for ranged descriptors to
+  specify the start and end of the range to import. Descriptors with key
+  origin information imported through `importmulti` will have their key
+  origin information stored in the wallet for use with creating PSBTs.
+  More information about descriptors can be found
   [here](https://github.com/bitcoin/bitcoin/blob/master/doc/descriptors.md).
 
-- The `listunspent` RPC has been modified so that it also returns `witnessScript`,
-  the witness script in the case of a P2WSH or P2SH-P2WSH output.
+- `listunspent` has been modified so that it also returns
+  `witnessScript`, the witness script in the case of a P2WSH or
+  P2SH-P2WSH output.
 
-- The RPC `createwallet` now has an optional `blank` argument that can be used
-  to create a blank wallet. Blank wallets do not have any keys or HD seed.
-  They cannot be opened in software older than 0.18. Once a blank wallet has a
-  HD seed set (by using `sethdseed`) or private keys, scripts, addresses, and
-  other watch only things have been imported, the wallet is no longer blank and
-  can be opened in 0.17.x. Encrypting a blank wallet will also set a HD seed
-  for it.
+- `createwallet` now has an optional `blank` argument that can be used
+  to create a blank wallet. Blank wallets do not have any keys or HD
+  seed.  They cannot be opened in software older than 0.18. Once a blank
+  wallet has a HD seed set (by using `sethdseed`) or private keys,
+  scripts, addresses, and other watch only things have been imported,
+  the wallet is no longer blank and can be opened in 0.17.x. Encrypting
+  a blank wallet will also set a HD seed for it.
+
+Deprecated or removed RPCs
+--------------------------
+
+- `signrawtransaction` is removed after being deprecated and hidden
+  behind a special configuration option in version 0.17.0.
+
+- The 'account' API is removed after being deprecated in v0.17.  The
+  'label' API was introduced in v0.17 as a replacement for accounts.
+  See the [release notes from
+  v0.17](https://github.com/bitcoin/bitcoin/blob/master/doc/release-notes/release-notes-0.17.0.md#label-and-account-apis-for-wallet)
+  for a full description of the changes from the 'account' API to the
+  'label' API.
+
+- `addwitnessaddress` is removed after being deprecated in version
+  0.16.0.
+
+- `generate` is deprecated and will be fully removed in a subsequent
+  major version.  This RPC is only used for testing, but its
+  implementation reached across multiple subsystems (wallet and mining),
+  so it is being deprecated to simplify the wallet-node interface.
+  Projects that are using `generate` for testing purposes should
+  transition to using the `generatetoaddress` RPC, which does not
+  require or use the wallet component. Calling `generatetoaddress` with
+  an address returned by the `getnewaddress` RPC gives the same
+  functionality as the old `generate` RPC.  To continue using `generate`
+  in this version, restart umkoind with the `-deprecatedrpc=generate`
+  configuration option.
+
+- Be reminded that parts of the `validateaddress` command have been
+  deprecated and moved to `getaddressinfo`. The following deprecated
+  fields have moved to `getaddressinfo`: `ismine`, `iswatchonly`,
+  `script`, `hex`, `pubkeys`, `sigsrequired`, `pubkey`, `embedded`,
+  `iscompressed`, `label`, `timestamp`, `hdkeypath`, `hdmasterkeyid`.
+
+- The `addresses` field has been removed from the `validateaddress`
+  and `getaddressinfo` RPC methods.  This field was confusing since
+  it referred to public keys using their P2PKH address.  Clients
+  should use the `embedded.address` field for P2SH or P2WSH wrapped
+  addresses, and `pubkeys` for inspecting multisig participants.
 
 REST changes
 ------------
@@ -453,16 +497,6 @@ Network
   multiple IP addresses. If you manually ban a peer, such as by using
   the `setban` RPC, all connections from that peer will still be
   rejected.
-
-- When fetching a transaction announced by multiple peers, previous
-  versions of Umkoin Core would sequentially attempt to download the
-  the transaction from each announcing peer until the transaction is
-  received, in the order that those peers' announcements were received.
-  In this release, the download logic has changed to randomize the fetch
-  order across peers and to prefer sending download requests to outbound
-  peers over inbound peers.
-
-(TODO pieter: perhaps mention orphan tx handling from #14626)
 
 Wallet
 -------
