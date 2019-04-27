@@ -16,7 +16,7 @@ class TestUmkoinCli(UmkoinTestFramework):
         """Main test logic"""
 
         cli_response = self.nodes[0].cli("-version").send_cli()
-        assert "Umkoin Core RPC client version" in cli_response
+        assert "{} RPC client version".format(self.config['environment']['PACKAGE_NAME']) in cli_response
 
         self.log.info("Compare responses from getwalletinfo RPC and `umkoin-cli getwalletinfo`")
         if self.is_wallet_compiled():
