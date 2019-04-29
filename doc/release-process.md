@@ -26,7 +26,13 @@ Before every major release:
 * Update [`src/chainparams.cpp`](/src/chainparams.cpp) m_assumed_blockchain_size and m_assumed_chain_state_size with the current size plus some overhead.
 * Update `src/chainparams.cpp` chainTxData with statistics about the transaction count and rate. Use the output of the RPC `getchaintxstats`, see
   [this pull request](https://github.com/bitcoin/bitcoin/pull/12270) for an example. Reviewers can verify the results by running `getchaintxstats <window_block_count> <window_last_block_hash>` with the `window_block_count` and `window_last_block_hash` from your output.
-* Update version of `contrib/gitian-descriptors/*.yml`: usually one'd want to do this on master after branching off the release - but be sure to at least do it before a new major release
+* Update version of `contrib/gitian-descriptors/*.yml`: usually one'd want to do this on master after branching off the release - but be sure to at least do it before a new major release.
+* In `configure.ac` and `build_msvc/umkoin_config.h` on _the master branch_:
+  - update `CLIENT_VERSION_MINOR` version
+* In `configure.ac` and `build_msvc/umkoin_config.h` on _a new release branch_:
+  - update `CLIENT_VERSION_MINOR` version
+  - set `CLIENT_VERSION_REVISION` to `0`
+  - set `CLIENT_VERSION_IS_RELEASE` to `true`
 
 ### First time / New builders
 
