@@ -101,6 +101,7 @@ $ curl localhost:16332/rest/getutxos/checkmempool/b2cdfd7b89def827ff8af7cd9bff76
 
 Returns various information about the TX mempool.
 Only supports JSON as output format.
+* loaded : (boolean) if the mempool is fully loaded
 * size : (numeric) the number of transactions in the TX mempool
 * bytes : (numeric) size of the TX mempool in bytes
 * usage : (numeric) total TX mempool memory usage
@@ -114,4 +115,4 @@ Only supports JSON as output format.
 
 Risks
 -------------
-Running a web browser on the same node with a REST enabled umkoind can be a risk. Accessing prepared XSS websites could read out tx/block data of your node by placing links like `<script src="http://127.0.0.1:6332/rest/tx/1234567890.json">` which might break the nodes privacy.
+Running a web browser on the same node with a REST enabled umkoind can be a risk. Accessing prepared XSS websites could read out tx/block data of your node by placing links like `<script src="http://127.0.0.1:6332/rest/tx/1234567690.json">` which might break the nodes privacy.
