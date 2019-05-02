@@ -3,8 +3,8 @@ AC_PREREQ([2.60])
 define(_CLIENT_VERSION_MAJOR, 0)
 define(_CLIENT_VERSION_MINOR, 18)
 define(_CLIENT_VERSION_REVISION, 0)
-define(_CLIENT_VERSION_BUILD, 5)
-define(_CLIENT_VERSION_RC, 3)
+define(_CLIENT_VERSION_BUILD, 6)
+define(_CLIENT_VERSION_RC, 0)
 define(_CLIENT_VERSION_IS_RELEASE, false)
 define(_COPYRIGHT_YEAR, 2019)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
@@ -836,8 +836,23 @@ AC_LINK_IFELSE([AC_LANG_SOURCE([
   }
   ])],
   [
-    AC_DEFINE(HAVE_THREAD_LOCAL,1,[Define if thread_local is supported.])
-    AC_MSG_RESULT(yes)
+   case $host in
+     *mingw*)
+        # mingw32's implementation of thread_local has also been shown to behave
+        # erroneously under concurrent usage; see:
+        # https://gist.github.com/jamesob/fe9a872051a88b2025b1aa37bfa98605
+        AC_MSG_RESULT(no)
+        ;;
+      *darwin*)
+        # TODO enable thread_local on later versions of Darwin where it is
+        # supported (per https://stackoverflow.com/a/29929949)
+        AC_MSG_RESULT(no)
+        ;;
+      *)
+        AC_DEFINE(HAVE_THREAD_LOCAL,1,[Define if thread_local is supported.])
+        AC_MSG_RESULT(yes)
+        ;;
+    esac
   ],
   [
     AC_MSG_RESULT(no)
