@@ -219,7 +219,6 @@ Create (and optionally verify) the signed Windows binaries:
     ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml
     ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml
     mv build/out/umkoin-*win64-setup.exe ../umkoin-${VERSION}-win64-setup.exe
-    mv build/out/umkoin-*win32-setup.exe ../umkoin-${VERSION}-win32-setup.exe
     popd
 
 Commit your signature for the signed macOS/Windows binaries:
@@ -227,7 +226,7 @@ Commit your signature for the signed macOS/Windows binaries:
     pushd gitian.sigs
     git add ${VERSION}-osx-signed/"${SIGNER}"
     git add ${VERSION}-win-signed/"${SIGNER}"
-    git commit -a
+    git commit -m "Add ${SIGNER} ${VERSION} signed binaries signatures"
     git push  # Assuming you can push to the gitian.sigs tree
     popd
 
@@ -248,8 +247,6 @@ umkoin-${VERSION}-x86_64-linux-gnu.tar.gz
 umkoin-${VERSION}-osx64.tar.gz
 umkoin-${VERSION}-osx.dmg
 umkoin-${VERSION}.tar.gz
-umkoin-${VERSION}-win32-setup.exe
-umkoin-${VERSION}-win32.zip
 umkoin-${VERSION}-win64-setup.exe
 umkoin-${VERSION}-win64.zip
 ```
