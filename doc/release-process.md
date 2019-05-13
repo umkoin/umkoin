@@ -1,18 +1,19 @@
 Release Process
 ====================
 
-Before every release candidate:
+## Branch updates
 
-* Update translations see [translation_process.md](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md#synchronising-translations).
+### Before every release candidate
 
+* Update translations, see [translation_process.md](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md#synchronising-translations).
 * Update manpages, see [gen-manpages.sh](https://github.com/umkoin/umkoin/blob/master/contrib/devtools/README.md#gen-manpagessh).
-* Update release candidate version in `configure.ac` (`CLIENT_VERSION_RC`)
+* Update release candidate version in `configure.ac` (`CLIENT_VERSION_RC`).
 
-Before every minor and major release:
+### Before every major and minor release
 
 * Update [bips.md](bips.md) to account for changes since the last release.
-* Update version in `configure.ac` (don't forget to set `CLIENT_VERSION_IS_RELEASE` to `true`) (don't forget to set `CLIENT_VERSION_RC` to `0`)
-* Write release notes (see below)
+* Update version in `configure.ac` (don't forget to set `CLIENT_VERSION_RC` to `0`).
+* Write release notes (see "Write the release notes" below).
 * Update `src/chainparams.cpp` nMinimumChainWork with information from the getblockchaininfo rpc.
 * Update `src/chainparams.cpp` defaultAssumeValid with information from the getblockhash rpc.
   - The selected value must not be orphaned so it may be useful to set the value two blocks back from the tip.
@@ -20,19 +21,38 @@ Before every minor and major release:
   - This update should be reviewed with a reindex-chainstate with assumevalid=0 to catch any defect
      that causes rejection of blocks in the past history.
 
-Before every major release:
+### Before every major release
 
 * Update hardcoded [seeds](/contrib/seeds/README.md), see [this pull request](https://github.com/bitcoin/bitcoin/pull/7415) for an example.
 * Update [`src/chainparams.cpp`](/src/chainparams.cpp) m_assumed_blockchain_size and m_assumed_chain_state_size with the current size plus some overhead.
 * Update `src/chainparams.cpp` chainTxData with statistics about the transaction count and rate. Use the output of the RPC `getchaintxstats`, see
   [this pull request](https://github.com/bitcoin/bitcoin/pull/12270) for an example. Reviewers can verify the results by running `getchaintxstats <window_block_count> <window_last_block_hash>` with the `window_block_count` and `window_last_block_hash` from your output.
-* Update version of `contrib/gitian-descriptors/*.yml`: usually one'd want to do this on master after branching off the release - but be sure to at least do it before a new major release.
 * In `configure.ac` and `build_msvc/umkoin_config.h` on _the master branch_:
   - update `CLIENT_VERSION_MINOR` version
 * In `configure.ac` and `build_msvc/umkoin_config.h` on _a new release branch_:
   - update `CLIENT_VERSION_MINOR` version
   - set `CLIENT_VERSION_REVISION` to `0`
   - set `CLIENT_VERSION_IS_RELEASE` to `true`
+
+#### Before branch-off
+
+- Clear the release notes and move them to the wiki (see "Write the release notes" below).
+
+#### After branch-off (on master)
+
+- Update the version of `contrib/gitian-descriptors/*.yml`.
+
+#### After branch-off (on the major release branch)
+
+- Update the versions and the link to the release notes draft in `doc/release-notes.md`.
+
+#### Before final release
+
+- Merge the release notes from the wiki into the branch.
+- Ensure the "Needs release note" label is removed from all relevant pull requests and issues.
+
+
+## Building
 
 ### First time / New builders
 
@@ -42,23 +62,23 @@ Check out the source code in the following directory hierarchy.
 
     cd /path/to/your/toplevel/build
     git clone https://github.com/umkoin/gitian.sigs.git
-    git clone https://github.com/umkoin/umkoin-detached-sigs.git 
+    git clone https://github.com/umkoin/umkoin-detached-sigs.git
     git clone https://github.com/devrandom/gitian-builder.git
     git clone https://github.com/umkoin/umkoin.git
 
-### Umkoin maintainers/release engineers, suggestion for writing release notes
+### Write the release notes
 
-Write release notes. git shortlog helps a lot, for example:
+Write the release notes. `git shortlog` helps a lot, for example:
 
-    git shortlog --no-merges v(current version, e.g. 0.17.0)..v(new version, e.g. 0.17.1)
+    git shortlog --no-merges v(current version, e.g. 0.19.2)..v(new version, e.g. 0.20.0)
 
 Generate list of authors:
 
-    git log --format='- %aN' v(current version, e.g. 0.17.0)..v(new version, e.g. 0.17.1) | sort -fiu
+    git log --format='- %aN' v(current version, e.g. 0.20.0)..v(new version, e.g. 0.20.1) | sort -fiu
 
-Tag version (or release candidate) in git
+Tag the version (or release candidate) in git:
 
-    git tag -s v(new version, e.g. 0.17.1)
+    git tag -s v(new version, e.g. 0.20.0)
 
 ### Setup and perform Gitian builds
 
@@ -68,7 +88,7 @@ Setup Gitian descriptors:
 
     pushd ./umkoin
     export SIGNER="(your Gitian key, ie bluematt, sipa, vmta, etc)"
-    export VERSION=(new version, e.g. 0.17.1)
+    export VERSION=(new version, e.g. 0.20.0)
     git fetch
     git checkout v${VERSION}
     popd
@@ -265,21 +285,12 @@ rm SHA256SUMS
 Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spurious/nonsensical entry.
 
 - Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the umkoin.org server
-  into `/var/www/umkoin.org/bin/umkoin-core-${VERSION}`
-
-- A `.torrent` will appear in the directory after a few minutes. Optionally help seed this torrent. To get the `magnet:` URI use:
-```bash
-transmission-show -m <torrent file>
-```
-Insert the magnet URI into the announcement sent to mailing lists. This permits
-people without access to `umkoin.org` to download the binary distribution.
-Also put it into the `optional_magnetlink:` slot in the YAML file for
-umkoin.org (see below for umkoin.org update instructions).
+  into `/var/www/bin/umkoin-core-${VERSION}`
 
 - Update umkoin.org version
 
-  - First, check to see if the Umkoin maintainers have prepared a
-    release: https://github.com/umkoin/umkoin.org/labels/Releases
+  - First, check to see if the Umkoin.org maintainers have prepared a
+    release: http://github.com/umkoin/umkoin.org/releases
 
       - If they have, it will have previously failed their Travis CI
         checks because the final release files weren't uploaded.
