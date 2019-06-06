@@ -107,15 +107,6 @@ jobs:
         UMKOIN_CONFIG="--enable-reduce-exports --disable-gui-tests"
 
     - stage: test
-      name: '32-bit + dash  [GOAL: install]  [GUI: no BIP70]'
-      env: >-
-        HOST=i686-pc-linux-gnu
-        PACKAGES="g++-multilib python3-zmq libdb5.3++-dev"
-        GOAL="install"
-        UMKOIN_CONFIG="--enable-zmq --with-gui=qt5 --disable-bip70 --enable-glibc-back-compat --enable-reduce-exports LDFLAGS=-static-libstdc++"
-        CONFIG_SHELL="/bin/dash"
-
-    - stage: test
       name: 'x86_64 Linux  [GOAL: install]  [bionic]  [uses qt5 dev package instead of depends Qt to speed up build and avoid timeout]'
       env: >-
         HOST=x86_64-unknown-linux-gnu
