@@ -4,8 +4,6 @@
 
 #include <qt/umkoinunits.h>
 
-#include <primitives/transaction.h>
-
 #include <QStringList>
 
 UmkoinUnits::UmkoinUnits(QObject *parent):
