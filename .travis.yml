@@ -1,4 +1,4 @@
-dist: bionic
+dist: xenial
 os: linux
 language: minimal
 cache:
@@ -12,7 +12,7 @@ stages:
   - test
 env:
   global:
-    - MAKEJOBS=-j4
+    - MAKEJOBS=-j3
     - RUN_UNIT_TESTS=false
     - RUN_FUNCTIONAL_TESTS=false
     - RUN_FUZZ_TESTS=false
