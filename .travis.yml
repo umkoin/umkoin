@@ -143,7 +143,7 @@ jobs:
         NO_DEPENDS=1
         RUN_UNIT_TESTS=false
         RUN_FUNCTIONAL_TESTS=false
-        RUN_FUZZ_TESTS=true
+        RUN_FUZZ_TESTS=false
         GOAL="install"
         UMKOIN_CONFIG="--disable-wallet --disable-bench --with-utils=no --with-daemon=no --with-libs=no --with-gui=no --enable-fuzz --with-sanitizers=fuzzer,address CC=clang CXX=clang++"
 
