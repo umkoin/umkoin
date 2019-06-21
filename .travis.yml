@@ -25,7 +25,7 @@
 # [1] https://docs.travis-ci.com/user/caching/#build-phases
 # [2] https://docs.travis-ci.com/user/customizing-the-build#build-timeouts
 
-dist: bionic
+dist: xenial
 os: linux
 language: minimal
 cache:
@@ -39,7 +39,7 @@ stages:
   - test
 env:
   global:
-    - MAKEJOBS=-j3
+    - MAKEJOBS=-j2
     - RUN_UNIT_TESTS=false
     - RUN_FUNCTIONAL_TESTS=false
     - RUN_FUZZ_TESTS=false
@@ -62,9 +62,9 @@ before_script:
   - set -o errexit; source .travis/test_05_before_script.sh
 script:
   - export CONTINUE=1
-  - if [ $SECONDS -gt 1200 ]; then export CONTINUE=0; fi  # Likely the depends build took very long
+  - if [ $SECONDS -gt 1800 ]; then export CONTINUE=0; fi  # Likely the depends build took very long
   - if [ $CONTINUE = "1" ]; then set -o errexit; source .travis/test_06_script_a.sh; else set +o errexit; echo "$CACHE_ERR_MSG"; false; fi
-  - if [ $SECONDS -gt 2000 ]; then export CONTINUE=0; fi  # Likely the build took very long; The tests take about 1000s, so we should abort if we have less than 50*60-1000=2000s left
+  - if [ $SECONDS -gt 2400 ]; then export CONTINUE=0; fi  # Likely the build took very long
   - if [ $CONTINUE = "1" ]; then set -o errexit; source .travis/test_06_script_b.sh; else set +o errexit; echo "$CACHE_ERR_MSG"; false; fi
 after_script:
   - echo $TRAVIS_COMMIT_RANGE
