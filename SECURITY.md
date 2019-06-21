@@ -2,12 +2,8 @@
 
 ## Supported Versions
 
-Versions of Umkoin Core that are currently supported with security updates:
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 0.18    | :white_check_mark: |
-| 0.17    | :white_check_mark: |
+See our website for versions of Umkoin Core that are currently supported with
+security updates: [http://www.umkoin.org/en/lifecycle.php](http://www.umkoin.org/en/lifecycle.php)
 
 ## Reporting a Vulnerability
 
