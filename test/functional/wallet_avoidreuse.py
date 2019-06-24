@@ -63,6 +63,12 @@ def assert_unspent(node, total_count=None, total_sum=None, reused_supported=None
     if reused_sum is not None:
         assert_approx(stats["reused"]["sum"], reused_sum, 0.001)
 
+def assert_balances(node, mine):
+    '''Make assertions about a node's getbalances output'''
+    got = node.getbalances()["mine"]
+    for k,v in mine.items():
+        assert_approx(got[k], v, 0.001)
+
 class AvoidReuseTest(UmkoinTestFramework):
 
     def set_test_params(self):
@@ -140,6 +146,10 @@ class AvoidReuseTest(UmkoinTestFramework):
 
         # listunspent should show 1 single, unused 10 umk output
         assert_unspent(self.nodes[1], total_count=1, total_sum=10, reused_supported=True, reused_count=0)
+        # getbalances should show no used, 10 umk trusted
+        assert_balances(self.nodes[1], mine={"used": 0, "trusted": 10})
+        # node 0 should not show a used entry, as it does not enable avoid_reuse
+        assert("used" not in self.nodes[0].getbalances()["mine"])
 
         self.nodes[1].sendtoaddress(retaddr, 5)
         self.nodes[0].generate(1)
@@ -147,6 +157,8 @@ class AvoidReuseTest(UmkoinTestFramework):
 
         # listunspent should show 1 single, unused 5 umk output
         assert_unspent(self.nodes[1], total_count=1, total_sum=5, reused_supported=True, reused_count=0)
+        # getbalances should show no used, 5 umk trusted
+        assert_balances(self.nodes[1], mine={"used": 0, "trusted": 5})
 
         self.nodes[0].sendtoaddress(fundaddr, 10)
         self.nodes[0].generate(1)
@@ -154,11 +166,15 @@ class AvoidReuseTest(UmkoinTestFramework):
 
         # listunspent should show 2 total outputs (5, 10 umk), one unused (5), one reused (10)
         assert_unspent(self.nodes[1], total_count=2, total_sum=15, reused_count=1, reused_sum=10)
+        # getbalances should show 10 used, 5 umk trusted
+        assert_balances(self.nodes[1], mine={"used": 10, "trusted": 5})
 
         self.nodes[1].sendtoaddress(address=retaddr, amount=10, avoid_reuse=False)
 
         # listunspent should show 1 total outputs (5 umk), unused
         assert_unspent(self.nodes[1], total_count=1, total_sum=5, reused_count=0)
+        # getbalances should show no used, 5 umk trusted
+        assert_balances(self.nodes[1], mine={"used": 0, "trusted": 5})
 
         # node 1 should now have about 5 umk left (for both cases)
         assert_approx(self.nodes[1].getbalance(), 5, 0.001)
@@ -183,6 +199,8 @@ class AvoidReuseTest(UmkoinTestFramework):
 
         # listunspent should show 1 single, unused 10 umk output
         assert_unspent(self.nodes[1], total_count=1, total_sum=10, reused_supported=True, reused_count=0)
+        # getbalances should show no used, 10 umk trusted
+        assert_balances(self.nodes[1], mine={"used": 0, "trusted": 10})
 
         self.nodes[1].sendtoaddress(retaddr, 5)
         self.nodes[0].generate(1)
@@ -190,6 +208,8 @@ class AvoidReuseTest(UmkoinTestFramework):
 
         # listunspent should show 1 single, unused 5 umk output
         assert_unspent(self.nodes[1], total_count=1, total_sum=5, reused_supported=True, reused_count=0)
+        # getbalances should show no used, 5 umk trusted
+        assert_balances(self.nodes[1], mine={"used": 0, "trusted": 5})
 
         self.nodes[0].sendtoaddress(fundaddr, 10)
         self.nodes[0].generate(1)
@@ -197,6 +217,8 @@ class AvoidReuseTest(UmkoinTestFramework):
 
         # listunspent should show 2 total outputs (5, 10 umk), one unused (5), one reused (10)
         assert_unspent(self.nodes[1], total_count=2, total_sum=15, reused_count=1, reused_sum=10)
+        # getbalances should show 10 used, 5 umk trusted
+        assert_balances(self.nodes[1], mine={"used": 10, "trusted": 5})
 
         # node 1 should now have a balance of 5 (no dirty) or 15 (including dirty)
         assert_approx(self.nodes[1].getbalance(), 5, 0.001)
@@ -208,6 +230,8 @@ class AvoidReuseTest(UmkoinTestFramework):
 
         # listunspent should show 2 total outputs (1, 10 umk), one unused (1), one reused (10)
         assert_unspent(self.nodes[1], total_count=2, total_sum=11, reused_count=1, reused_sum=10)
+        # getbalances should show 10 used, 1 umk trusted
+        assert_balances(self.nodes[1], mine={"used": 10, "trusted": 1})
 
         # node 1 should now have about 1 umk left (no dirty) and 11 (including dirty)
         assert_approx(self.nodes[1].getbalance(), 1, 0.001)
