@@ -5,7 +5,6 @@
 #ifndef UMKOIN_TEST_FUZZ_FUZZ_H
 #define UMKOIN_TEST_FUZZ_FUZZ_H
 
-#include <functional>
 #include <stdint.h>
 #include <vector>
 

@@ -6,7 +6,6 @@
 #ifndef UMKOIN_TEST_SCRIPTNUM10_H
 #define UMKOIN_TEST_SCRIPTNUM10_H
 
-#include <algorithm>
 #include <limits>
 #include <stdexcept>
 #include <stdint.h>

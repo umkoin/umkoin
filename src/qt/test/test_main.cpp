@@ -6,7 +6,6 @@
 #include <config/umkoin-config.h>
 #endif
 
-#include <chainparams.h>
 #include <interfaces/node.h>
 #include <qt/umkoin.h>
 #include <qt/test/apptests.h>
