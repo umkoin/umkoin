@@ -5,10 +5,10 @@
 Make sure you obtain the proper release signing key and verify the fingerprint with several independent sources.
 
 ```sh
-$ gpg --fingerprint "Umkoin Core binary release signing key"
-pub   4096R/36C2E964 2015-06-24 [expires: 2017-02-13]
-      Key fingerprint = 01EA 5486 DE18 A882 D4C2  6845 90C8 019E 36C2 E964
-uid                  Wladimir J. van der Laan (Umkoin Core binary release signing key) <laanwj@gmail.com>
+$ gpg --fingerprint "Umkoin Core Builder"
+pub   rsa4096 2019-06-19 [SC] [expires: 2019-11-27]
+      A405 D7A3 AACB 75AB 1B8D  C18A 3B59 F7F9 F2B4 FCF0
+uid           [ unknown] Umkoin Core Builder <umkoin@umkoin.org>
 ```
 
 #### Usage:
@@ -21,21 +21,21 @@ The script returns 0 if everything passes the checks. It returns 1 if either the
 
 
 ```sh
-./verify.sh umkoin-core-0.11.2
-./verify.sh umkoin-core-0.12.0
-./verify.sh umkoin-core-0.13.0-rc3
+./verify.sh umkoin-core-0.17.2
+./verify.sh umkoin-core-0.18.0
+./verify.sh umkoin-core-0.18.0-rc3
 ```
 
 If you only want to download the binaries of certain platform, add the corresponding suffix, e.g.:
 
 ```sh
-./verify.sh umkoin-core-0.11.2-osx
-./verify.sh 0.12.0-linux
-./verify.sh umkoin-core-0.13.0-rc3-win64
+./verify.sh umkoin-core-0.17.1-osx
+./verify.sh 0.18.0-linux
+./verify.sh umkoin-core-0.18.0-rc3-win64
 ```
 
 If you do not want to keep the downloaded binaries, specify anything as the second parameter.
 
 ```sh
-./verify.sh umkoin-core-0.13.0 delete
+./verify.sh umkoin-core-0.18.0 delete
 ```
