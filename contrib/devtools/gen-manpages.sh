@@ -16,7 +16,7 @@ UMKOINQT=${UMKOINQT:-$BINDIR/qt/umkoin-qt}
 [ ! -x $UMKOIND ] && echo "$UMKOIND not found or not executable." && exit 1
 
 # The autodetected version git tag can screw up manpage output a little bit
-UMKVER=($($UMKOINCLI --version | head -n1 | awk -F'[ -]' '{ print $6, $7 }'))
+read -r -a UMKVER <<< "$($UMKOINCLI --version | head -n1 | awk -F'[ -]' '{ print $6, $7 }')"
 
 # Create a footer file with copyright content.
 # This gets autodetected fine for umkoind if --version-string is not set,
