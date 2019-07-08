@@ -413,7 +413,6 @@ static void SetupUIArgs()
     gArgs.AddArg("-uiplatform", strprintf("Select platform to customize UI for (one of windows, macosx, other; default: %s)", UmkoinGUI::DEFAULT_UIPLATFORM), true, OptionsCategory::GUI);
 }
 
-#ifndef UMKOIN_QT_TEST
 int GuiMain(int argc, char* argv[])
 {
 #ifdef WIN32
@@ -593,4 +592,3 @@ int GuiMain(int argc, char* argv[])
     }
     return rv;
 }
-#endif // UMKOIN_QT_TEST
