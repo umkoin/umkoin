@@ -9,14 +9,13 @@
 #define UNUSED
 #endif
 static const char UNUSED *umkoin_strings[] = {
-QT_TRANSLATE_NOOP("umkoin-core", "Umkoin Core"),
 QT_TRANSLATE_NOOP("umkoin-core", "The %s developers"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "-maxtxfee is set very high! Fees this large could be paid on a single "
 "transaction."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
-"Can't generate a change-address key. Private keys are disabled for this "
-"wallet."),
+"Can't generate a change-address key. No keys in the internal keypool and "
+"can't generate any keys."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "Cannot obtain a lock on data directory %s. %s is probably already running."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
@@ -88,9 +87,6 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 "Warning: The network does not appear to fully agree! Some miners appear to "
 "be experiencing issues."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
-"Warning: Unknown block versions being mined! It's possible unknown rules are "
-"in effect"),
-QT_TRANSLATE_NOOP("umkoin-core", ""
 "Warning: Wallet file corrupt, data salvaged! Original %s saved as %s in %s; "
 "if your balance or transactions are incorrect you should restore from a "
 "backup."),
@@ -124,15 +120,13 @@ QT_TRANSLATE_NOOP("umkoin-core", "Error loading wallet %s. Duplicate -wallet fil
 QT_TRANSLATE_NOOP("umkoin-core", "Error opening block database"),
 QT_TRANSLATE_NOOP("umkoin-core", "Error reading from database, shutting down."),
 QT_TRANSLATE_NOOP("umkoin-core", "Error upgrading chainstate database"),
-QT_TRANSLATE_NOOP("umkoin-core", "Error"),
 QT_TRANSLATE_NOOP("umkoin-core", "Error: A fatal internal error occurred, see debug.log for details"),
 QT_TRANSLATE_NOOP("umkoin-core", "Error: Disk space is low for %s"),
-QT_TRANSLATE_NOOP("umkoin-core", "Error: Disk space is low!"),
+QT_TRANSLATE_NOOP("umkoin-core", "Error: Disk space is too low!"),
 QT_TRANSLATE_NOOP("umkoin-core", "Failed to listen on any port. Use -listen=0 if you want this."),
 QT_TRANSLATE_NOOP("umkoin-core", "Failed to rescan the wallet during initialization"),
 QT_TRANSLATE_NOOP("umkoin-core", "Importing..."),
 QT_TRANSLATE_NOOP("umkoin-core", "Incorrect or no genesis block found. Wrong datadir for network?"),
-QT_TRANSLATE_NOOP("umkoin-core", "Information"),
 QT_TRANSLATE_NOOP("umkoin-core", "Initialization sanity check failed. %s is shutting down."),
 QT_TRANSLATE_NOOP("umkoin-core", "Insufficient funds"),
 QT_TRANSLATE_NOOP("umkoin-core", "Invalid -onion address or hostname: '%s'"),
@@ -150,6 +144,7 @@ QT_TRANSLATE_NOOP("umkoin-core", "Loading wallet..."),
 QT_TRANSLATE_NOOP("umkoin-core", "Need to specify a port with -whitebind: '%s'"),
 QT_TRANSLATE_NOOP("umkoin-core", "Not enough file descriptors available."),
 QT_TRANSLATE_NOOP("umkoin-core", "Prune cannot be configured with a negative value."),
+QT_TRANSLATE_NOOP("umkoin-core", "Prune mode is incompatible with -blockfilterindex."),
 QT_TRANSLATE_NOOP("umkoin-core", "Prune mode is incompatible with -txindex."),
 QT_TRANSLATE_NOOP("umkoin-core", "Pruning blockstore..."),
 QT_TRANSLATE_NOOP("umkoin-core", "Reducing -maxconnections from %d to %d, because of system limitations."),
@@ -179,9 +174,11 @@ QT_TRANSLATE_NOOP("umkoin-core", "Transaction too large for fee policy"),
 QT_TRANSLATE_NOOP("umkoin-core", "Transaction too large"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unable to bind to %s on this computer (bind returned error %s)"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unable to bind to %s on this computer. %s is probably already running."),
+QT_TRANSLATE_NOOP("umkoin-core", "Unable to create the PID file '%s': %s"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unable to generate initial keys"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unable to generate keys"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unable to start HTTP server. See debug log for details."),
+QT_TRANSLATE_NOOP("umkoin-core", "Unknown -blockfilterindex value %s."),
 QT_TRANSLATE_NOOP("umkoin-core", "Unknown network specified in -onlynet: '%s'"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unsupported logging category %s=%s."),
 QT_TRANSLATE_NOOP("umkoin-core", "Upgrading UTXO database"),
@@ -189,9 +186,7 @@ QT_TRANSLATE_NOOP("umkoin-core", "Upgrading txindex database"),
 QT_TRANSLATE_NOOP("umkoin-core", "User Agent comment (%s) contains unsafe characters."),
 QT_TRANSLATE_NOOP("umkoin-core", "Verifying blocks..."),
 QT_TRANSLATE_NOOP("umkoin-core", "Verifying wallet(s)..."),
-QT_TRANSLATE_NOOP("umkoin-core", "Wallet %s resides outside wallet directory %s"),
 QT_TRANSLATE_NOOP("umkoin-core", "Wallet needed to be rewritten: restart %s to complete"),
-QT_TRANSLATE_NOOP("umkoin-core", "Warning"),
 QT_TRANSLATE_NOOP("umkoin-core", "Warning: unknown new rules activated (versionbit %i)"),
 QT_TRANSLATE_NOOP("umkoin-core", "Zapping all transactions from wallet..."),
 };

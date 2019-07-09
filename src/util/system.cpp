@@ -1184,11 +1184,12 @@ int GetNumCores()
 
 std::string CopyrightHolders(const std::string& strPrefix)
 {
-    std::string strCopyrightHolders = strPrefix + strprintf(_(COPYRIGHT_HOLDERS), _(COPYRIGHT_HOLDERS_SUBSTITUTION));
+    const auto copyright_devs = strprintf(_(COPYRIGHT_HOLDERS), COPYRIGHT_HOLDERS_SUBSTITUTION);
+    std::string strCopyrightHolders = strPrefix + copyright_devs;
 
-    // Check for untranslated substitution to make sure Umkoin Core copyright is not removed by accident
-    if (strprintf(COPYRIGHT_HOLDERS, COPYRIGHT_HOLDERS_SUBSTITUTION).find("Umkoin Core") == std::string::npos) {
-        strCopyrightHolders += "\n" + strPrefix + "The Bitcoin Core developers";
+    // Make sure Umkoin Core copyright is not removed by accident
+    if (copyright_devs.find("Umkoin Core") == std::string::npos) {
+        strCopyrightHolders += "\n" + strPrefix + "The Umkoin Core developers";
     }
     return strCopyrightHolders;
 }

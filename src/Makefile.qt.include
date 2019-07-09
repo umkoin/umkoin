@@ -447,7 +447,7 @@ SECONDARY: $(QT_QM)
 
 $(srcdir)/qt/umkoinstrings.cpp: $(libumkoin_server_a_SOURCES) $(libumkoin_wallet_a_SOURCES) $(libumkoin_common_a_SOURCES) $(libumkoin_zmq_a_SOURCES) $(libumkoin_consensus_a_SOURCES) $(libumkoin_util_a_SOURCES)
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
-	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) PACKAGE_NAME="$(PACKAGE_NAME)" COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" COPYRIGHT_HOLDERS_SUBSTITUTION="$(COPYRIGHT_HOLDERS_SUBSTITUTION)" $(PYTHON) ../share/qt/extract_strings_qt.py $^
+	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" $(PYTHON) ../share/qt/extract_strings_qt.py $^
 
 translate: $(srcdir)/qt/umkoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(UMKOIN_QT_BASE_CPP) qt/umkoin.cpp $(UMKOIN_QT_WINDOWS_CPP) $(UMKOIN_QT_WALLET_CPP) $(UMKOIN_QT_H) $(UMKOIN_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
