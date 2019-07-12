@@ -148,7 +148,8 @@ AC_ARG_ENABLE([extended-functional-tests],
     [use_extended_functional_tests=no])
 
 AC_ARG_ENABLE([fuzz],
-    AS_HELP_STRING([--enable-fuzz],[enable building of fuzz targets (default no)]),
+    AS_HELP_STRING([--enable-fuzz],
+    [Enable building of fuzz targets (default no). Enabling this will disable all other targets]),
     [enable_fuzz=$enableval],
     [enable_fuzz=no])
 
@@ -956,6 +957,29 @@ AC_SUBST(LEVELDB_CPPFLAGS)
 AC_SUBST(LIBLEVELDB)
 AC_SUBST(LIBMEMENV)
 
+dnl enable-fuzz should disable all other targets
+if test "x$enable_fuzz" = "xyes"; then
+  AC_MSG_WARN(enable-fuzz will disable all other targets)
+  build_umkoin_utils=no
+  build_umkoin_cli=no
+  build_umkoin_tx=no
+  build_umkoin_wallet=no
+  build_umkoind=no
+  build_umkoin_libs=no
+  umkoin_enable_qt=no
+  umkoin_enable_qt_test=no
+  umkoin_enable_qt_dbus=no
+  enable_wallet=no
+  use_bench=no
+  use_upnp=no
+  use_zmq=no
+else
+  UMKOIN_QT_INIT
+
+  dnl sets $umkoin_enable_qt, $umkoin_enable_qt_test, $umkoin_enable_qt_dbus
+  UMKOIN_QT_CONFIGURE([$use_pkgconfig])
+fi
+
 if test x$enable_wallet != xno; then
     dnl Check for libdb_cxx only if wallet enabled
     UMKOIN_FIND_BDB48
@@ -969,11 +993,6 @@ if test x$use_upnp != xno; then
     [have_miniupnpc=no]
   )
 fi
-
-UMKOIN_QT_INIT
-
-dnl sets $umkoin_enable_qt, $umkoin_enable_qt_test, $umkoin_enable_qt_dbus
-UMKOIN_QT_CONFIGURE([$use_pkgconfig])
 
 if test x$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnonononononono; then
     use_boost=no

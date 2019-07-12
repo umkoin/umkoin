@@ -46,7 +46,7 @@ export AFLPATH=$PWD
 To build Umkoin Core using AFL instrumentation (this assumes that the
 `AFLPATH` was set as above):
 ```
-./configure --disable-ccache --disable-shared --enable-tests --enable-fuzz --disable-wallet --disable-bench --with-utils=no --with-daemon=no --with-libs=no --with-gui=no CC=${AFLPATH}/afl-gcc CXX=${AFLPATH}/afl-g++
+./configure --disable-ccache --disable-shared --enable-tests --enable-fuzz CC=${AFLPATH}/afl-gcc CXX=${AFLPATH}/afl-g++
 export AFL_HARDEN=1
 cd src/
 make
@@ -62,31 +62,14 @@ binary will be instrumented in such a way that the AFL
 features "persistent mode" and "deferred forkserver" can be used. See
 https://github.com/mcarpenter/afl/tree/master/llvm_mode for details.
 
-### Preparing fuzzing
-
-AFL needs an input directory with examples, and an output directory where it
-will place examples that it found. These can be anywhere in the file system,
-we'll define environment variables to make it easy to reference them.
-
-```
-mkdir inputs
-AFLIN=$PWD/inputs
-mkdir outputs
-AFLOUT=$PWD/outputs
-```
-
-Example inputs are available from:
-
-- https://download.visucore.com/bitcoin/bitcoin_fuzzy_in.tar.xz
-- http://strateman.ninja/fuzzing.tar.xz
-
-Extract these (or other starting inputs) into the `inputs` directory before starting fuzzing.
-
 ### Fuzzing
 
 To start the actual fuzzing use:
+
 ```
-$AFLPATH/afl-fuzz -i ${AFLIN} -o ${AFLOUT} -m52 -- test/fuzz/fuzz_target_foo
+export FUZZ_TARGET=fuzz_target_foo  # Pick a fuzz_target
+mkdir ${AFLOUT}/${FUZZ_TARGET}
+$AFLPATH/afl-fuzz -i ${DIR_FUZZ_IN}/${FUZZ_TARGET} -o ${AFLOUT}/${FUZZ_TARGET} -m52 -- test/fuzz/${FUZZ_TARGET}
 ```
 
 You may have to change a few kernel parameters to test optimally - `afl-fuzz`
@@ -100,7 +83,7 @@ found in the `compiler-rt` runtime libraries package).
 To build all fuzz targets with libFuzzer, run
 
 ```
-./configure --disable-ccache --disable-wallet --disable-bench --with-utils=no --with-daemon=no --with-libs=no --with-gui=no --enable-fuzz --with-sanitizers=fuzzer,address CC=clang CXX=clang++
+./configure --disable-ccache --enable-fuzz --with-sanitizers=fuzzer,address CC=clang CXX=clang++
 make
 ```
 
