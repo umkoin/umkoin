@@ -352,6 +352,8 @@ crypto_libumkoin_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 crypto_libumkoin_crypto_base_a_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
+  crypto/chacha_poly_aead.h \
+  crypto/chacha_poly_aead.cpp \
   crypto/chacha20.h \
   crypto/chacha20.cpp \
   crypto/common.h \
@@ -614,7 +616,7 @@ umkoin_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(EVENT_PTHREADS
 # umkoinconsensus library #
 if BUILD_UMKOIN_LIBS
 include_HEADERS = script/umkoinconsensus.h
-libumkoinconsensus_la_SOURCES = $(crypto_libumkoin_crypto_base_a_SOURCES) $(libumkoin_consensus_a_SOURCES)
+libumkoinconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libumkoin_crypto_base_a_SOURCES) $(libumkoin_consensus_a_SOURCES)
 
 if GLIBC_BACK_COMPAT
   libumkoinconsensus_la_SOURCES += compat/glibc_compat.cpp
