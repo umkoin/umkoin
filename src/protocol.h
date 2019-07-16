@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2009-2019 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -69,100 +69,100 @@ namespace NetMsgType {
 /**
  * The version message provides information about the transmitting node to the
  * receiving node at the beginning of a connection.
- * @see https://umkoin.org/en/developer-reference#version
+ * @see http://www.umkoin.org/en/developer-reference.php#version
  */
 extern const char *VERSION;
 /**
  * The verack message acknowledges a previously-received version message,
  * informing the connecting node that it can begin to send other messages.
- * @see https://umkoin.org/en/developer-reference#verack
+ * @see http://www.umkoin.org/en/developer-reference.php#verack
  */
 extern const char *VERACK;
 /**
  * The addr (IP address) message relays connection information for peers on the
  * network.
- * @see https://umkoin.org/en/developer-reference#addr
+ * @see http://www.umkoin.org/en/developer-reference.php#addr
  */
 extern const char *ADDR;
 /**
  * The inv message (inventory message) transmits one or more inventories of
  * objects known to the transmitting peer.
- * @see https://umkoin.org/en/developer-reference#inv
+ * @see http://www.umkoin.org/en/developer-reference.php#inv
  */
 extern const char *INV;
 /**
  * The getdata message requests one or more data objects from another node.
- * @see https://umkoin.org/en/developer-reference#getdata
+ * @see http://www.umkoin.org/en/developer-reference.php#getdata
  */
 extern const char *GETDATA;
 /**
  * The merkleblock message is a reply to a getdata message which requested a
  * block using the inventory type MSG_MERKLEBLOCK.
  * @since protocol version 70001 as described by BIP37.
- * @see https://umkoin.org/en/developer-reference#merkleblock
+ * @see http://www.umkoin.org/en/developer-reference.php#merkleblock
  */
 extern const char *MERKLEBLOCK;
 /**
  * The getblocks message requests an inv message that provides block header
  * hashes starting from a particular point in the block chain.
- * @see https://umkoin.org/en/developer-reference#getblocks
+ * @see http://www.umkoin.org/en/developer-reference.php#getblocks
  */
 extern const char *GETBLOCKS;
 /**
  * The getheaders message requests a headers message that provides block
  * headers starting from a particular point in the block chain.
  * @since protocol version 31800.
- * @see https://umkoin.org/en/developer-reference#getheaders
+ * @see http://www.umkoin.org/en/developer-reference.php#getheaders
  */
 extern const char *GETHEADERS;
 /**
  * The tx message transmits a single transaction.
- * @see https://umkoin.org/en/developer-reference#tx
+ * @see http://www.umkoin.org/en/developer-reference.php#tx
  */
 extern const char *TX;
 /**
  * The headers message sends one or more block headers to a node which
  * previously requested certain headers with a getheaders message.
  * @since protocol version 31800.
- * @see https://umkoin.org/en/developer-reference#headers
+ * @see http://www.umkoin.org/en/developer-reference.php#headers
  */
 extern const char *HEADERS;
 /**
  * The block message transmits a single serialized block.
- * @see https://umkoin.org/en/developer-reference#block
+ * @see http://www.umkoin.org/en/developer-reference.php#block
  */
 extern const char *BLOCK;
 /**
  * The getaddr message requests an addr message from the receiving node,
  * preferably one with lots of IP addresses of other receiving nodes.
- * @see https://umkoin.org/en/developer-reference#getaddr
+ * @see http://www.umkoin.org/en/developer-reference.php#getaddr
  */
 extern const char *GETADDR;
 /**
  * The mempool message requests the TXIDs of transactions that the receiving
  * node has verified as valid but which have not yet appeared in a block.
  * @since protocol version 60002.
- * @see https://umkoin.org/en/developer-reference#mempool
+ * @see http://www.umkoin.org/en/developer-reference.php#mempool
  */
 extern const char *MEMPOOL;
 /**
  * The ping message is sent periodically to help confirm that the receiving
  * peer is still connected.
- * @see https://umkoin.org/en/developer-reference#ping
+ * @see http://www.umkoin.org/en/developer-reference.php#ping
  */
 extern const char *PING;
 /**
  * The pong message replies to a ping message, proving to the pinging node that
  * the ponging node is still alive.
  * @since protocol version 60001 as described by BIP31.
- * @see https://umkoin.org/en/developer-reference#pong
+ * @see http://www.umkoin.org/en/developer-reference.php#pong
  */
 extern const char *PONG;
 /**
  * The notfound message is a reply to a getdata message which requested an
  * object the receiving node does not have available for relay.
  * @since protocol version 70001.
- * @see https://umkoin.org/en/developer-reference#notfound
+ * @see http://www.umkoin.org/en/developer-reference.php#notfound
  */
 extern const char *NOTFOUND;
 /**
@@ -171,7 +171,7 @@ extern const char *NOTFOUND;
  * @since protocol version 70001 as described by BIP37.
  *   Only available with service bit NODE_BLOOM since protocol version
  *   70011 as described by BIP111.
- * @see https://umkoin.org/en/developer-reference#filterload
+ * @see http://www.umkoin.org/en/developer-reference.php#filterload
  */
 extern const char *FILTERLOAD;
 /**
@@ -180,7 +180,7 @@ extern const char *FILTERLOAD;
  * @since protocol version 70001 as described by BIP37.
  *   Only available with service bit NODE_BLOOM since protocol version
  *   70011 as described by BIP111.
- * @see https://umkoin.org/en/developer-reference#filteradd
+ * @see http://www.umkoin.org/en/developer-reference.php#filteradd
  */
 extern const char *FILTERADD;
 /**
@@ -189,21 +189,21 @@ extern const char *FILTERADD;
  * @since protocol version 70001 as described by BIP37.
  *   Only available with service bit NODE_BLOOM since protocol version
  *   70011 as described by BIP111.
- * @see https://umkoin.org/en/developer-reference#filterclear
+ * @see http://www.umkoin.org/en/developer-reference.php#filterclear
  */
 extern const char *FILTERCLEAR;
 /**
  * The reject message informs the receiving node that one of its previous
  * messages has been rejected.
  * @since protocol version 70002 as described by BIP61.
- * @see https://umkoin.org/en/developer-reference#reject
+ * @see http://www.umkoin.org/en/developer-reference.php#reject
  */
 extern const char *REJECT;
 /**
  * Indicates that a node prefers to receive new block announcements via a
  * "headers" message rather than an "inv".
  * @since protocol version 70012 as described by BIP130.
- * @see https://umkoin.org/en/developer-reference#sendheaders
+ * @see http://www.umkoin.org/en/developer-reference.php#sendheaders
  */
 extern const char *SENDHEADERS;
 /**
@@ -261,9 +261,6 @@ enum ServiceFlags : uint64_t {
     // NODE_WITNESS indicates that a node can be asked for blocks and transactions including
     // witness data.
     NODE_WITNESS = (1 << 3),
-    // NODE_XTHIN means the node supports Xtreme Thinblocks
-    // If this is turned off then the node will not service nor make xthin requests
-    NODE_XTHIN = (1 << 4),
     // NODE_NETWORK_LIMITED means the same as NODE_NETWORK with the limitation of only
     // serving the last 288 (2 day) blocks
     // See BIP159 for details on how this is implemented.
