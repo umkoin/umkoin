@@ -91,10 +91,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000bbdaf5775a7ebbc"); //23299
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000007de3a90456be680e"); //39333
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000000001937d0f8f9abf4c76e147daf4cf2149b66349fe29bac7f90eba16"); //23299
+        consensus.defaultAssumeValid = uint256S("0x00000000000023f8b92218fe06ce7e3b5029478e9a144d39b847999ee5899edf"); //39333
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -134,7 +134,7 @@ public:
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
-        fMineBlocksOnDemand = false;
+        m_is_test_chain = false;
 
         checkpointData = {
             {
@@ -145,15 +145,15 @@ public:
                 { 22087, uint256S("0x00000000000022e03eeb49ed3d8e622b434b2daa32fbe371da74cb5a3c53e352")},
                 { 22100, uint256S("0x000000000000045eb86c9f6f55ebe6f52a6b499810c06a3c1528c555a6668d57")},
                 { 22150, uint256S("0x000000000000056e1c71a808187950110f7d2af34b7c33b70bc5aafd81577bbe")},
-                { 23299, uint256S("0x000000000001937d0f8f9abf4c76e147daf4cf2149b66349fe29bac7f90eba16")}
-            }
+                { 23299, uint256S("0x000000000001937d0f8f9abf4c76e147daf4cf2149b66349fe29bac7f90eba16")},
+                { 39332, uint256S("0x0000000000003c265a3cf6a3a29e0ac6ab292a591eddf02f5e1d50abb7394c40")},            }
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 23298
-            /* nTime    */ 1552461879,
-            /* nTxCount */ 205018,
-            /* dTxRate  */ 0.006
+            // Data from rpc: getchaintxstats 4096 00000000000023f8b92218fe06ce7e3b5029478e9a144d39b847999ee5899edf
+            /* nTime    */ 1563344978,
+            /* nTxCount */ 228202,
+            /* dTxRate  */ 0.001740697622352573
         };
 
         /* disable fallback fee on mainnet */
@@ -196,10 +196,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000000a010a010a01"); //2560
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000014cf4110097fb"); //16344
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000006dc40dec5d9e221e01b88bc9067f62f7a1f9106bac1907b393fa3a9e"); //2560
+        consensus.defaultAssumeValid = uint256S("0x000000001623f5d83e1cffec76ee446e02f67e5158daca342842e124a7af892b"); //16344
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -232,7 +232,7 @@ public:
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
-        fMineBlocksOnDemand = false;
+        m_is_test_chain = true;
 
 
         checkpointData = {
@@ -240,15 +240,16 @@ public:
                 {1, uint256S("0x000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a")},
                 {11, uint256S("0x000000006c8d5857a598f1027fa34ecd0f09296a533d2f484a588bf9d09373e0")},
                 {133, uint256S("0x00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce")},
-                {2560, uint256S("0x000000006dc40dec5d9e221e01b88bc9067f62f7a1f9106bac1907b393fa3a9e")}
+                {2560, uint256S("0x000000006dc40dec5d9e221e01b88bc9067f62f7a1f9106bac1907b393fa3a9e")},
+                {16344, uint256S("0x000000001623f5d83e1cffec76ee446e02f67e5158daca342842e124a7af892b")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 2563
-            /* nTime    */ 1541162245,
-            /* nTxCount */ 4141,
-            /* dTxRate  */ 0.0002
+            // Data from rpc: getchaintxstats 4096 000000001623f5d83e1cffec76ee446e02f67e5158daca342842e124a7af892b
+            /* nTime    */ 1563335091,
+            /* nTxCount */ 19853,
+            /* dTxRate  */ 0.0006
         };
 
         /* enable fallback fee on testnet */
@@ -312,8 +313,8 @@ public:
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
 
         fDefaultConsistencyChecks = true;
-        fRequireStandard = false;
-        fMineBlocksOnDemand = true;
+        fRequireStandard = true;
+        m_is_test_chain = true;
 
         checkpointData = {
             {
