@@ -639,7 +639,7 @@ fs::path static GetAutostartFilePath()
     std::string chain = gArgs.GetChainName();
     if (chain == CBaseChainParams::MAIN)
         return GetAutostartDir() / "umkoin.desktop";
-    return GetAutostartDir() / strprintf("umkoin-%s.lnk", chain);
+    return GetAutostartDir() / strprintf("umkoin-%s.desktop", chain);
 }
 
 bool GetStartOnSystemStartup()
