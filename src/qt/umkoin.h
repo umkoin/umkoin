@@ -11,7 +11,6 @@
 
 #include <QApplication>
 #include <memory>
-#include <vector>
 
 class UmkoinGUI;
 class ClientModel;
