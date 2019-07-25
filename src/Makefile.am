@@ -212,6 +212,7 @@ UMKOIN_CORE_H = \
   util/rbf.h \
   util/threadnames.h \
   util/time.h \
+  util/translation.h \
   util/url.h \
   util/validation.h \
   validation.h \

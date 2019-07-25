@@ -4,6 +4,8 @@
 
 #include <qt/umkoin.h>
 
+#include <util/translation.h>
+
 #include <QCoreApplication>
 
 #include <functional>
