@@ -86,6 +86,7 @@ src/qt/umkoin-qt.includes
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
+!depends/Makefile
 umkoin-qt
 Umkoin-Qt.app
 background.tiff*
