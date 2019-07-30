@@ -310,7 +310,7 @@ libumkoin_server_a_SOURCES += dummywallet.cpp
 endif
 
 if ENABLE_ZMQ
-libumkoin_zmq_a_CPPFLAGS = $(UMKOIN_INCLUDES) $(ZMQ_CFLAGS)
+libumkoin_zmq_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(ZMQ_CFLAGS)
 libumkoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
