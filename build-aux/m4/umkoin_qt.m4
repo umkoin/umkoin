@@ -268,7 +268,7 @@ AC_DEFUN([_UMKOIN_QT_CHECK_QT5],[
 
 dnl Internal. Check if the included version of Qt is greater than Qt58.
 dnl Requires: INCLUDES must be populated as necessary.
-dnl Output: umkoin_cv_qt5=yes|no
+dnl Output: umkoin_cv_qt58=yes|no
 AC_DEFUN([_UMKOIN_QT_CHECK_QT58],[
   AC_CACHE_CHECK(for > Qt 5.7, umkoin_cv_qt58,[
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
@@ -468,7 +468,6 @@ AC_DEFUN([_UMKOIN_QT_FIND_LIBS_WITHOUT_PKGCONFIG],[
   ])
 
   UMKOIN_QT_CHECK(AC_CHECK_LIB([z] ,[main],,AC_MSG_WARN([zlib not found. Assuming qt has it built-in])))
-  UMKOIN_QT_CHECK(AC_SEARCH_LIBS([jpeg_create_decompress] ,[qtjpeg jpeg],,AC_MSG_WARN([libjpeg not found. Assuming qt has it built-in])))
   if test x$umkoin_cv_qt58 = xno; then
     UMKOIN_QT_CHECK(AC_SEARCH_LIBS([png_error] ,[qtpng png],,AC_MSG_WARN([libpng not found. Assuming qt has it built-in])))
     UMKOIN_QT_CHECK(AC_SEARCH_LIBS([pcre16_exec], [qtpcre pcre16],,AC_MSG_WARN([libpcre16 not found. Assuming qt has it built-in])))
