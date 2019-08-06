@@ -91,6 +91,9 @@ umkoin-qt
 Umkoin-Qt.app
 background.tiff*
 
+# Qt Creator
+Makefile.am.user
+
 # Unit-tests
 Makefile.test
 umkoin-qt_test
