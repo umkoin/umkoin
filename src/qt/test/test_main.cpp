@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 
     // Don't remove this, it's needed to access
     // QApplication:: and QCoreApplication:: in the tests
-    UmkoinApplication app(*node, argc, argv);
+    UmkoinApplication app(*node);
     app.setApplicationName("Umkoin-Qt-test");
 
     AppTests app_tests(app);
