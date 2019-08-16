@@ -68,6 +68,7 @@ class TestNode():
 
         self.index = i
         self.datadir = datadir
+        self.umkoinconf = os.path.join(self.datadir, "umkoin.conf")
         self.stdout_dir = os.path.join(self.datadir, "stdout")
         self.stderr_dir = os.path.join(self.datadir, "stderr")
         self.chain = chain
