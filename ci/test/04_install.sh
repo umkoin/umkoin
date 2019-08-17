@@ -9,7 +9,7 @@ export LC_ALL=C.UTF-8
 ccache echo "Creating ccache dir if it didn't already exist"
 
 if [ ! -d ${DIR_QA_ASSETS} ]; then
-  git clone https://github.com/umkoin/qa-assets ${DIR_QA_ASSETS}
+  git clone https://github.com/bitcoin-core/qa-assets ${DIR_QA_ASSETS}
 fi
 export DIR_FUZZ_IN=${DIR_QA_ASSETS}/fuzz_seed_corpus/
 
