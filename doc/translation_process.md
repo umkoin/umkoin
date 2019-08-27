@@ -108,3 +108,4 @@ To create a new language template, you will need to edit the languages manifest 
 ```
 
 **Note:** that the language translation file **must end in `.qm`** (the compiled extension), and not `.ts`.
+
