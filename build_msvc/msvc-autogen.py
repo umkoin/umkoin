@@ -17,6 +17,7 @@ libs = [
     'libumkoin_wallet_tool',
     'libumkoin_wallet',
     'libumkoin_zmq',
+    'bench_umkoin',
 ]
 
 ignore_list = [
