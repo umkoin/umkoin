@@ -50,3 +50,13 @@ rpcport=4000
 The configuration file is not automatically created; you can create it using your favorite text editor. By default, the configuration file name is `umkoin.conf` and it is located in the Umkoin data directory, but both the Umkoin data directory and the configuration file path may be changed using the `-datadir` and `-conf` command-line options.
 
 The `includeconf=<file>` option in the `umkoin.conf` file can be used to include additional configuration files.
+
+### Default configuration file locations
+
+Operating System | Data Directory | Example Path
+-- | -- | --
+Windows | `%APPDATA%\Umkoin\` | `C:\Users\username\AppData\Roaming\Umkoin\umkoin.conf`
+Linux | `$HOME/.umkoin/` | `/home/username/.umkoin/umkoin.conf`
+macOS | `$HOME/Library/Application Support/Umkoin/` | `/Users/username/Library/Application Support/Umkoin/umkoin.conf`
+
+You can find an example umkoin.conf file in [share/examples/umkoin.conf](../share/examples/umkoin.conf).
