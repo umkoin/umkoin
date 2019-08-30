@@ -8,7 +8,7 @@ Transifex is setup to monitor the GitHub repo for updates, and when code contain
 
 Multiple language support is critical in assisting Umkoin’s global adoption, and growth. One of Umkoin’s greatest strengths is cross-border money transfers, any help making that easier is greatly appreciated.
 
-See the [Transifex Umkoin project](https://www.transifex.com/umkoin/umkoin-core/) to assist in translations. You should also join the translation mailing list for announcements - see details below.
+See the [Transifex Umkoin project](https://www.transifex.com/umkoin/umkoin-core/) to assist in translations.
 
 ### Writing code with translations
 We use automated scripts to help extract translations in both Qt, and non-Qt source files. It is rarely necessary to manually edit the files in `src/qt/locale/`. The translation source files must adhere to the following format:
@@ -71,7 +71,7 @@ To assist in updating translations, we have created a script to help.
 2. `git add` new translations from `src/qt/locale/`
 3. Update `src/qt/umkoin_locale.qrc` manually or via
 ```bash
-git ls-files src/qt/locale/*ts|xargs -n1 basename|sed 's/\(umkoin_\(.*\)\).ts/<file alias="\2">locale\/\1.qm<\/file>/'
+git ls-files src/qt/locale/*ts|xargs -n1 basename|sed 's/\(umkoin_\(.*\)\).ts/           <file alias="\2">locale\/\1.qm<\/file>/'
 ```
 4. Update `src/Makefile.qt.include` manually or via
 ```bash
