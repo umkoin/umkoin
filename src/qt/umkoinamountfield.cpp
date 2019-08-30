@@ -6,6 +6,7 @@
 
 #include <qt/umkoinunits.h>
 #include <qt/guiconstants.h>
+#include <qt/guiutil.h>
 #include <qt/qvaluecombobox.h>
 
 #include <QApplication>
@@ -121,7 +122,7 @@ public:
 
             const QFontMetrics fm(fontMetrics());
             int h = lineEdit()->minimumSizeHint().height();
-            int w = fm.width(UmkoinUnits::format(UmkoinUnits::UMK, UmkoinUnits::maxMoney(), false, UmkoinUnits::separatorAlways));
+            int w = GUIUtil::TextWidth(fm, UmkoinUnits::format(UmkoinUnits::UMK, UmkoinUnits::maxMoney(), false, UmkoinUnits::separatorAlways));
             w += 2; // cursor blinking space
 
             QStyleOptionSpinBox opt;
