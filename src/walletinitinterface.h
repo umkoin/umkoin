@@ -5,10 +5,6 @@
 #ifndef UMKOIN_WALLETINITINTERFACE_H
 #define UMKOIN_WALLETINITINTERFACE_H
 
-#include <string>
-
-class CScheduler;
-class CRPCTable;
 struct InitInterfaces;
 
 class WalletInitInterface {
