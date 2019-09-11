@@ -10,3 +10,5 @@ packages/*
 *.vcxproj.user
 *.vcxproj
 */Win32
+libumkoin_qt/QtGeneratedFiles/*
+test_umkoin-qt/QtGeneratedFiles/*
