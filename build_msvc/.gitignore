@@ -8,7 +8,7 @@ packages/*
 */Release
 */x64
 *.vcxproj.user
-*.vcxproj
+#*.vcxproj
 */Win32
 libumkoin_qt/QtGeneratedFiles/*
 test_umkoin-qt/QtGeneratedFiles/*
