@@ -13,3 +13,5 @@ errorstring
 keyserver
 homogenous
 setban
+thru
+dependant

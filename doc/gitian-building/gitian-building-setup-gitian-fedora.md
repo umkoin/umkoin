@@ -12,7 +12,7 @@ Setting up Fedora for Gitian building
 In this section we will be setting up the Fedora installation for Gitian building.
 We assume that a user `gitianuser` was previously created and added to the `wheel` group.
 
-To repeat ths step, log in as `root` and type:
+To repeat this step, log in as `root` and type:
 
 ```bash
 usermod gitianuser -a -G wheel
