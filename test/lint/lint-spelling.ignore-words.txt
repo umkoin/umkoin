@@ -13,5 +13,7 @@ errorstring
 keyserver
 homogenous
 setban
+fo
+foo
 thru
 dependant
