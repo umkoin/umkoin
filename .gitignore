@@ -61,6 +61,7 @@ src/qt/umkoin-qt.includes
 *.bak
 *.rej
 *.orig
+*.save
 *.pyc
 *.o
 *.o-*
