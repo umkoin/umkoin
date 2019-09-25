@@ -25,7 +25,7 @@ jobs:
           name: Phase 3 (build)
           command: make
 
-workflow:
+workflows:
   version: 2
   Go_Live:
     jobs:
