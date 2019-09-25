@@ -13,7 +13,7 @@ jobs:
           name: Prepare build environment
           command: |
             sudo apt-get update
-            sudo apt-get install --no-install-recommends --no-upgrade -qq $$BUILD_PACKAGES $PACKAGES
+            sudo apt-get install --no-install-recommends --no-upgrade -qq $BUILD_PACKAGES $PACKAGES
       - checkout
       - run:
           name: Phase 1 (autogen)
