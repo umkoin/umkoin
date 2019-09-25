@@ -59,12 +59,6 @@ after_build:
 - ps:  fsutil behavior set disablelastaccess 1 # Disable Access time feature on Windows (better performance)
 - ps:  clcache -z
 - 7z a umkoin-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\build_msvc\%platform%\%configuration%\*.exe
-test_script:
-- cmd: src\test_umkoin.exe -k stdout -e stdout 2> NUL
-- cmd: src\bench_umkoin.exe -evals=1 -scaling=0 > NUL
-- ps:  python test\util\umkoin-util-test.py
-- cmd: python test\util\rpcauth-test.py
-- cmd: python test\functional\test_runner.py --ci --quiet --combinedlogslen=4000 --failfast
 artifacts:
 - path: umkoin-%APPVEYOR_BUILD_VERSION%.zip
 deploy: off
