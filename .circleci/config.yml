@@ -7,7 +7,8 @@ jobs:
       HOST: x86_64-unknown-linux-gnu
       BUILD_PACKAGES: "build-essential libtool autotools-dev automake pkg-config bsdmainutils curl ca-certificates ccache python3"
       PACKAGES: "python3-zmq qtbase5-dev qttools5-dev-tools libdbus-1-dev libharfbuzz-dev"
-      CONFIG: "--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --enable-debug CFLAGS=\"-g0 -O2 -funsigned-char\" CXXFLAGS=\"-g0 -O2 -funsigned-char\""
+      CONFIG: "--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --enable-debug"
+      BUILD_CONFIG: "CFLAGS=\"-g0 -O2 -funsigned-char\" CXXFLAGS=\"-g0 -O2 -funsigned-char\""
     steps:
       - run:
           name: Prepare build environment
@@ -23,7 +24,7 @@ jobs:
           command: ./configure $CONFIG
       - run:
           name: Phase 3 (build)
-          command: make
+          command: make $BUILD_CONFIG
 
 workflows:
   version: 2
