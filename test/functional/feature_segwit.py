@@ -55,20 +55,20 @@ class SegWitTest(UmkoinTestFramework):
             [
                 "-acceptnonstdtxn=1",
                 "-rpcserialversion=0",
-                "-segwitheight=432",
+                "-segwitheight=0",
                 "-addresstype=legacy",
             ],
             [
                 "-acceptnonstdtxn=1",
                 "-blockversion=4",
                 "-rpcserialversion=1",
-                "-segwitheight=432",
+                "-segwitheight=0",
                 "-addresstype=legacy",
             ],
             [
                 "-acceptnonstdtxn=1",
                 "-blockversion=536870915",
-                "-segwitheight=432",
+                "-segwitheight=0",
                 "-addresstype=legacy",
             ],
         ]
@@ -164,7 +164,7 @@ class SegWitTest(UmkoinTestFramework):
 
         self.log.info("Verify previous witness txs skipped for mining can now be mined")
         assert_equal(len(self.nodes[2].getrawmempool()), 4)
-        blockhash = self.nodes[2].generate(1)[0]  # block 432 (first block with new rules; 432 = 144 * 3)
+        blockhash = self.nodes[2].generate(1)[0]  # block 0
         self.sync_blocks()
         assert_equal(len(self.nodes[2].getrawmempool()), 0)
         segwit_tx_list = self.nodes[2].getblock(blockhash)["tx"]
@@ -199,10 +199,10 @@ class SegWitTest(UmkoinTestFramework):
         self.fail_accept(self.nodes[2], 'non-mandatory-script-verify-flag (Witness program was passed an empty witness) (code 64)', p2sh_ids[NODE_2][WIT_V1][2], sign=False, redeem_script=witness_script(True, self.pubkey[2]))
 
         self.log.info("Verify default node can now use witness txs")
-        self.success_mine(self.nodes[0], wit_ids[NODE_0][WIT_V0][0], True)  # block 432
-        self.success_mine(self.nodes[0], wit_ids[NODE_0][WIT_V1][0], True)  # block 433
-        self.success_mine(self.nodes[0], p2sh_ids[NODE_0][WIT_V0][0], True)  # block 434
-        self.success_mine(self.nodes[0], p2sh_ids[NODE_0][WIT_V1][0], True)  # block 435
+        self.success_mine(self.nodes[0], wit_ids[NODE_0][WIT_V0][0], True)  # block 0
+        self.success_mine(self.nodes[0], wit_ids[NODE_0][WIT_V1][0], True)  # block 1
+        self.success_mine(self.nodes[0], p2sh_ids[NODE_0][WIT_V0][0], True)  # block 2
+        self.success_mine(self.nodes[0], p2sh_ids[NODE_0][WIT_V1][0], True)  # block 3
 
         self.log.info("Verify sigops are counted in GBT with BIP141 rules after the fork")
         txid = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), 1)
