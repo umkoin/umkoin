@@ -228,7 +228,11 @@ AC_DEFUN([UMKOIN_QT_CONFIGURE],[
   ],[
     umkoin_enable_qt=no
   ])
-  AC_MSG_RESULT([$umkoin_enable_qt (Qt5)])
+  if test x$umkoin_enable_qt = xyes; then
+    AC_MSG_RESULT([$umkoin_enable_qt ($QT_LIB_PREFIX)])
+  else
+    AC_MSG_RESULT([$umkoin_enable_qt])
+  fi
 
   AC_SUBST(QT_PIE_FLAGS)
   AC_SUBST(QT_INCLUDES)
