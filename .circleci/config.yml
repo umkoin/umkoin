@@ -10,14 +10,14 @@ jobs:
 #      - image: circleci/buildpack-deps:18.04
     working_directory: ~/umkoin
     steps:
+      - restore_cache:
+          keys:
+            - CodeBase
       - run:
           name: Prepare build environment
           command: |
             sudo apt-get update
             sudo apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES
-      - restore_cache:
-          keys:
-            - CodeBase
       - checkout
       - persist_to_workspace:
           root: ~/umkoin
@@ -25,7 +25,7 @@ jobs:
             - .
       - save_cache:
           key: CodeBase
-          pathes:
+          paths:
             - .
 
   x86_64_bionic_qt5_dev:
