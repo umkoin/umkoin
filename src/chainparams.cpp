@@ -71,6 +71,7 @@ public:
         consensus.BIP66Height = 0;
         consensus.CSVHeight = 42893; // 000000000000517da2cfb04f214b1c9a51f787c2d2e7bc67a5b699987ff43819
         consensus.SegwitHeight = 42893; // 000000000000517da2cfb04f214b1c9a51f787c2d2e7bc67a5b699987ff43819
+        consensus.MinBIP9WarningHeight = consensus.SegwitHeight + consensus.nMinerConfirmationWindow;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
         consensus.nPowTargetSpacing = 10 * 60;
@@ -100,7 +101,7 @@ public:
         nDefaultPort = 6333;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 1;
-        m_assumed_chain_state_size = 3;
+        m_assumed_chain_state_size = 1;
 
         genesis = CreateGenesisBlock(1511563812, 4263252653, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -143,10 +144,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 4096 00000000000023f8b92218fe06ce7e3b5029478e9a144d39b847999ee5899edf
-            /* nTime    */ 1563344978,
-            /* nTxCount */ 228202,
-            /* dTxRate  */ 0.001740697622352573
+            // Data from rpc: getchaintxstats 4096 0000000000008a6ea2604f9132d52a29b180bbfc22df722943c13cd9a2d7d739
+            /* nTime    */ 1570162201,
+            /* nTxCount */ 303594,
+            /* dTxRate  */ 0.02630684645540277,
         };
     }
 };
@@ -166,6 +167,7 @@ public:
         consensus.BIP66Height = 0;
         consensus.CSVHeight = 21107; // 0000000000575176546caf025f676027235543e29da66256329615ba444a3553
         consensus.SegwitHeight = 21107; // 0000000000575176546caf025f676027235543e29da66256329615ba444a3553
+        consensus.MinBIP9WarningHeight = consensus.SegwitHeight + consensus.nMinerConfirmationWindow;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
         consensus.nPowTargetSpacing = 10 * 60;
@@ -190,7 +192,7 @@ public:
         nDefaultPort = 16333;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 1;
-        m_assumed_chain_state_size = 2;
+        m_assumed_chain_state_size = 1;
 
         genesis = CreateGenesisBlock(1511678228, 1037567534, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -228,10 +230,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 4096 000000001623f5d83e1cffec76ee446e02f67e5158daca342842e124a7af892b
-            /* nTime    */ 1563335091,
-            /* nTxCount */ 19853,
-            /* dTxRate  */ 0.0006
+            // Data from rpc: getchaintxstats 4096 0000000000272d8df081061ec7e3dd44fea3f553eea97ccaf2174713fd96d870
+            /* nTime    */ 1570167350,
+            /* nTxCount */ 35467,
+            /* dTxRate  */ 0.003969908714327503,
         };
     }
 };
@@ -251,6 +253,7 @@ public:
         consensus.BIP66Height = 0; // BIP66 activated on regtest (Used in functional tests)
         consensus.CSVHeight = 0; // CSV activated on regtest (Used in rpc activation tests)
         consensus.SegwitHeight = 0; // SEGWIT is always activated on regtest unless overridden
+        consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
         consensus.nPowTargetSpacing = 10 * 60;
