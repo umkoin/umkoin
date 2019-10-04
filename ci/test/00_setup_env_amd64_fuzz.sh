@@ -9,4 +9,8 @@ export LC_ALL=C.UTF-8
 export HOST=x86_64-unknown-linux-gnu
 export PACKAGES="clang llvm python3 libssl1.0-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev"
 export NO_DEPENDS=1
-export UMKOIN_CONFIG="--enable-fuzz --with-sanitizers=fuzzer,address CC=clang CXX=clang++"
+export RUN_UNIT_TESTS=false
+export RUN_FUNCTIONAL_TESTS=false
+export RUN_FUZZ_TESTS=false
+export GOAL="install"
+export UMKOIN_CONFIG="--enable-fuzz --with-sanitizers=fuzzer,address,undefined CC=clang CXX=clang++"
