@@ -7,7 +7,6 @@ jobs:
       PACKAGES: "build-essential libtool autotools-dev automake pkg-config bsdmainutils curl ca-certificates ccache python3"
     docker:
       - image: umkoin/build-docker-primary:0.0.1
-#      - image: circleci/buildpack-deps:18.04
     working_directory: ~/umkoin
     steps:
       - restore_cache:
@@ -16,8 +15,8 @@ jobs:
       - run:
           name: Prepare build environment
           command: |
-            sudo apt-get update
-            sudo apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES
       - checkout
       - persist_to_workspace:
           root: ~/umkoin
@@ -32,18 +31,17 @@ jobs:
     environment:
       HOST: x86_64-unknown-linux-gnu
       PACKAGES: "python3-zmq qtbase5-dev qttools5-dev-tools libdbus-1-dev libharfbuzz-dev libdb++-dev"
-      CONFIG: "--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --enable-debug"
+      CONFIG: "--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --disable-reduce-exports --enable-debug --with-incompatible-bdb"
       BUILD_CONFIG: "CFLAGS=\"-g0 -O2 -funsigned-char\" CXXFLAGS=\"-g0 -O2 -funsigned-char\""
     docker:
       - image: umkoin/build-docker-primary:0.0.1
-#      - image: circleci/buildpack-deps:18.04
     working_directory: ~/umkoin
     steps:
       - attach_workspace:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: sudo apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES
+          command: apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
