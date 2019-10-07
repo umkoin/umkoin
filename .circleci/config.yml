@@ -16,8 +16,8 @@ jobs:
       - run:
           name: Prepare build environment
           command: |
-            sudo apt-get update
-            sudo apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq $PACKAGES
       - checkout
       - persist_to_workspace:
           root: ~/umkoin
@@ -43,7 +43,7 @@ jobs:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: sudo apt-get install --no-install-recommends --no-upgrade -qq $PACKAGES
+          command: apt-get install --no-install-recommends --no-upgrade -myqq $PACKAGES
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
