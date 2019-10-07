@@ -60,3 +60,8 @@ void util::ThreadRename(std::string&& name)
     SetThreadName(("u-" + name).c_str());
     SetInternalName(std::move(name));
 }
+
+void util::ThreadSetInternalName(std::string&& name)
+{
+    SetInternalName(std::move(name));
+}
