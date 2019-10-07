@@ -520,6 +520,8 @@ endif
 libumkoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_cli_a_SOURCES = \
+  compat/stdin.h \
+  compat/stdin.cpp \
   rpc/client.cpp \
   $(UMKOIN_CORE_H)
 
