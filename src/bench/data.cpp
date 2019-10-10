@@ -7,8 +7,8 @@
 namespace benchmark {
 namespace data {
 
-#include <bench/data/block413567.raw.h>
-const std::vector<uint8_t> block413567{block413567_raw, block413567_raw + sizeof(block413567_raw) / sizeof(block413567_raw[0])};
+#include <bench/data/block47789.raw.h>
+const std::vector<uint8_t> block47789{block47789_raw, block47789_raw + sizeof(block47789_raw) / sizeof(block47789_raw[0])};
 
 } // namespace data
 } // namespace benchmark
