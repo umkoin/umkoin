@@ -1,0 +1,55 @@
+version: 2.1
+
+jobs:
+
+  Setup_Build_Environment:
+    docker:
+      - image: umkoin/build-docker-primary:0.0.1
+    working_directory: ~/umkoin
+    steps:
+      - restore_cache:
+          keys:
+            - CodeBase
+      - checkout
+      - persist_to_workspace:
+          root: ~/umkoin
+          paths:
+            - .
+      - save_cache:
+          key: CodeBase
+          paths:
+            - .
+
+  x86_64_bionic_qt5_dev:
+    environment:
+      HOST: x86_64-pc-linux-gnu
+      JOBS: 2
+      PACKAGES: "python3-zmq qtbase5-dev qttools5-dev-tools libdbus-1-dev libharfbuzz-dev libdb++-dev"
+      CONFIG: "--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --disable-reduce-exports --enable-debug --with-incompatible-bdb"
+    docker:
+      - image: umkoin/build-docker-primary:0.0.1
+    working_directory: ~/umkoin
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Phase 0 (install required packages)
+          command: apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+      - run:
+          name: Phase 1 (autogen)
+          command: ./autogen.sh
+      - run:
+          name: Phase 2 (configure)
+          command: ./configure ${CONFIG} --prefix=$(pwd)/depends/${HOST}
+      - run:
+          name: Phase 3 (build)
+          command: make HOST=${HOST} -j${JOBS}
+
+workflows:
+  version: 2
+  Go_Live:
+    jobs:
+      - Setup_Build_Environment
+      - x86_64_bionic_qt5_dev:
+          requires:
+            - Setup_Build_Environment
