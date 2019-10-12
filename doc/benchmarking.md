@@ -11,7 +11,7 @@ Running
 For benchmarks purposes you only need to compile `umkoin_bench`. Beware of configuring without `--enable-debug` as this would impact
 benchmarking by unlatching log printers and lock analysis.
 
-    make -C src bench_umkoin
+    make -C src umkoin_bench
 
 After compiling umkoin-core, the benchmarks can be run with:
 
