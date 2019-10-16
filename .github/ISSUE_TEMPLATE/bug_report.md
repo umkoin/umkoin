@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a report to help us improve (use this for suspected bugs only, if not sure, open a regular issue below)
 title: ''
 labels: Bug
 assignees: ''
@@ -9,7 +9,7 @@ assignees: ''
 
 <!-- This issue tracker is only for technical issues related to Umkoin Core.
 
-General bitcoin questions and/or support requests are best directed to the Umkoin at http://www.umkoin.org/
+General umkoin questions and/or support requests are best directed to the Umkoin at http://www.umkoin/org/
 
 For reporting security issues, please read instructions at http://www.umkoin.org/en/contact.php
 
