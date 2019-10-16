@@ -6,13 +6,11 @@
 #ifndef UMKOIN_ARITH_UINT256_H
 #define UMKOIN_ARITH_UINT256_H
 
-#include <assert.h>
 #include <cstring>
 #include <limits>
 #include <stdexcept>
 #include <stdint.h>
 #include <string>
-#include <vector>
 
 class uint256;
 

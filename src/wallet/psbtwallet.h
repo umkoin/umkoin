@@ -5,9 +5,7 @@
 #ifndef UMKOIN_WALLET_PSBTWALLET_H
 #define UMKOIN_WALLET_PSBTWALLET_H
 
-#include <node/transaction.h>
 #include <psbt.h>
-#include <primitives/transaction.h>
 #include <wallet/wallet.h>
 
 /**

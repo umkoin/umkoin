@@ -5,7 +5,6 @@
 #ifndef UMKOIN_WALLET_WALLETTOOL_H
 #define UMKOIN_WALLET_WALLETTOOL_H
 
-#include <wallet/ismine.h>
 #include <wallet/wallet.h>
 
 namespace WalletTool {

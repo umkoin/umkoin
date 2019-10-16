@@ -5,7 +5,6 @@
 #ifndef UMKOIN_UTIL_STRING_H
 #define UMKOIN_UTIL_STRING_H
 
-#include <functional>
 #include <string>
 #include <vector>
 

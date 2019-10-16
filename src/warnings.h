@@ -6,7 +6,6 @@
 #ifndef UMKOIN_WARNINGS_H
 #define UMKOIN_WARNINGS_H
 
-#include <stdlib.h>
 #include <string>
 
 void SetMiscWarning(const std::string& strWarning);

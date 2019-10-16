@@ -10,7 +10,6 @@
 #include <qt/umkoingui.h>
 
 #include <chainparams.h>
-#include <fs.h>
 #include <qt/clientmodel.h>
 #include <qt/guiconstants.h>
 #include <qt/guiutil.h>

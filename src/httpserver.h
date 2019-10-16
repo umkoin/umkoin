@@ -6,7 +6,6 @@
 #define UMKOIN_HTTPSERVER_H
 
 #include <string>
-#include <stdint.h>
 #include <functional>
 
 static const int DEFAULT_HTTP_THREADS=4;
