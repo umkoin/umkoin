@@ -155,7 +155,7 @@ jobs:
       # Xcode 11, macOS 10.14, JDK 12.0.1
       # https://docs.travis-ci.com/user/reference/osx/#macos-version
       osx_image: xcode11
-       env: >-
+      env: >-
         FILE_ENV="./ci/test/00_setup_env_mac_functional.sh"
 
     - stage: test
