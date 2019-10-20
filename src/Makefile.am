@@ -220,6 +220,7 @@ UMKOIN_CORE_H = \
   util/translation.h \
   util/url.h \
   util/validation.h \
+  util/vector.h \
   validation.h \
   validationinterface.h \
   versionbits.h \
