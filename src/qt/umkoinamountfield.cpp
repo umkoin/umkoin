@@ -102,7 +102,7 @@ public:
         CAmount val = value(&valid);
 
         currentUnit = unit;
-
+        lineEdit()->setPlaceholderText(UmkoinUnits::format(currentUnit, m_min_amount, false, UmkoinUnits::separatorAlways));
         if(valid)
             setValue(val);
         else
