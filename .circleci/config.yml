@@ -36,7 +36,9 @@ jobs:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
@@ -67,7 +69,9 @@ jobs:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
@@ -98,7 +102,9 @@ jobs:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
@@ -129,7 +135,9 @@ jobs:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
@@ -160,7 +168,9 @@ jobs:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
@@ -187,6 +197,9 @@ workflows:
           requires:
             - Setup_Build_Environment
       - x86_64_bionic_asan:
+          requires:
+            - Setup_Build_Environment
+      - x86_64_bionic_fuzz:
           requires:
             - Setup_Build_Environment
       - Win64:
