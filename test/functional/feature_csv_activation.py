@@ -57,7 +57,7 @@ from test_framework.util import (
 )
 
 BASE_RELATIVE_LOCKTIME = 10
-CSV_ACTIVATION_HEIGHT = 0
+CSV_ACTIVATION_HEIGHT = 432
 SEQ_DISABLE_FLAG = 1 << 31
 SEQ_RANDOM_HIGH_BIT = 1 << 25
 SEQ_TYPE_FLAG = 1 << 22
@@ -304,7 +304,7 @@ class BIP68_112_113Test(UmkoinTestFramework):
         self.send_blocks([self.create_test_block(success_txs)])
         self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
 
-        # 1 more version 4 block to get us to height 0 so the fork should now be active for the next block
+        # 1 more version 4 block to get us to height 432 so the fork should now be active for the next block
         assert not softfork_active(self.nodes[0], 'csv')
         test_blocks = self.generate_blocks(1)
         self.send_blocks(test_blocks)

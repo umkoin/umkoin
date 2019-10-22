@@ -7,10 +7,10 @@
 Connect to a single node.
 Generate 2 blocks (save the coinbases for later).
 Generate 427 more blocks.
-[Policy/Consensus] Check that NULLDUMMY compliant transactions are accepted in the 0 block.
+[Policy/Consensus] Check that NULLDUMMY compliant transactions are accepted in the 430 block.
 [Policy] Check that non-NULLDUMMY transactions are rejected before activation.
-[Consensus] Check that the new NULLDUMMY rules are not enforced on the 0 block.
-[Policy/Consensus] Check that the new NULLDUMMY rules are enforced on the 0 block.
+[Consensus] Check that the new NULLDUMMY rules are not enforced on the 431st block.
+[Policy/Consensus] Check that the new NULLDUMMY rules are enforced on the 432nd block.
 """
 import time
 
@@ -41,7 +41,7 @@ class NULLDUMMYTest(UmkoinTestFramework):
         self.setup_clean_chain = True
         # This script tests NULLDUMMY activation, which is part of the 'segwit' deployment, so we go through
         # normal segwit activation here (and don't use the default always-on behaviour).
-        self.extra_args = [['-whitelist=127.0.0.1', '-segwitheight=0', '-addresstype=legacy']]
+        self.extra_args = [['-whitelist=127.0.0.1', '-segwitheight=432', '-addresstype=legacy']]
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
@@ -93,7 +93,7 @@ class NULLDUMMYTest(UmkoinTestFramework):
         assert_raises_rpc_error(-26, NULLDUMMY_ERROR, self.nodes[0].sendrawtransaction, test5tx.serialize_with_witness().hex(), 0)
         self.block_submit(self.nodes[0], [test5tx], True)
 
-        self.log.info("Test 6: NULLDUMMY compliant base/witness transactions should be accepted to mempool and in block after activation [0]")
+        self.log.info("Test 6: NULLDUMMY compliant base/witness transactions should be accepted to mempool and in block after activation [432]")
         for i in test6txs:
             self.nodes[0].sendrawtransaction(i.serialize_with_witness().hex(), 0)
         self.block_submit(self.nodes[0], test6txs, True, True)
