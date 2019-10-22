@@ -124,10 +124,10 @@ class BlockchainTest(UmkoinTestFramework):
         assert_greater_than(res['size_on_disk'], 0)
 
         assert_equal(res['softforks'], {
-            'bip34': {'type': 'buried', 'active': False, 'height': 0},
-            'bip66': {'type': 'buried', 'active': False, 'height': 0},
-            'bip65': {'type': 'buried', 'active': False, 'height': 0},
-            'csv': {'type': 'buried', 'active': False, 'height': 0},
+            'bip34': {'type': 'buried', 'active': False, 'height': 500},
+            'bip66': {'type': 'buried', 'active': False, 'height': 1251},
+            'bip65': {'type': 'buried', 'active': False, 'height': 1351},
+            'csv': {'type': 'buried', 'active': False, 'height': 432},
             'segwit': {'type': 'buried', 'active': True, 'height': 0},
             'testdummy': {
                 'type': 'bip9',
