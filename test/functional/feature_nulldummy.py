@@ -7,7 +7,7 @@
 Connect to a single node.
 Generate 2 blocks (save the coinbases for later).
 Generate 427 more blocks.
-[Policy/Consensus] Check that NULLDUMMY compliant transactions are accepted in the 430 block.
+[Policy/Consensus] Check that NULLDUMMY compliant transactions are accepted in the 430th block.
 [Policy] Check that non-NULLDUMMY transactions are rejected before activation.
 [Consensus] Check that the new NULLDUMMY rules are not enforced on the 431st block.
 [Policy/Consensus] Check that the new NULLDUMMY rules are enforced on the 432nd block.
@@ -20,7 +20,7 @@ from test_framework.script import CScript
 from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 
-NULLDUMMY_ERROR = "non-mandatory-script-verify-flag (Dummy CHECKMULTISIG argument must be zero) (code 64)"
+NULLDUMMY_ERROR = "non-mandatory-script-verify-flag (Dummy CHECKMULTISIG argument must be zero)"
 
 def trueDummy(tx):
     scriptSig = CScript(tx.vin[0].scriptSig)
