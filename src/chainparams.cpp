@@ -69,8 +69,8 @@ public:
         consensus.BIP34Hash = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
-        consensus.CSVHeight = 42893; // 000000000000517da2cfb04f214b1c9a51f787c2d2e7bc67a5b699987ff43819
-        consensus.SegwitHeight = 42893; // 000000000000517da2cfb04f214b1c9a51f787c2d2e7bc67a5b699987ff43819
+        consensus.CSVHeight = 432;
+        consensus.SegwitHeight = 432;
         consensus.MinBIP9WarningHeight = consensus.SegwitHeight + consensus.nMinerConfirmationWindow;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
@@ -165,8 +165,8 @@ public:
         consensus.BIP34Hash = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
-        consensus.CSVHeight = 21107; // 0000000000575176546caf025f676027235543e29da66256329615ba444a3553
-        consensus.SegwitHeight = 21107; // 0000000000575176546caf025f676027235543e29da66256329615ba444a3553
+        consensus.CSVHeight = 144;
+        consensus.SegwitHeight = 144;
         consensus.MinBIP9WarningHeight = consensus.SegwitHeight + consensus.nMinerConfirmationWindow;
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
@@ -251,7 +251,7 @@ public:
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 0; // BIP65 activated on regtest (Used in functional tests)
         consensus.BIP66Height = 0; // BIP66 activated on regtest (Used in functional tests)
-        consensus.CSVHeight = 0; // CSV activated on regtest (Used in rpc activation tests)
+        consensus.CSVHeight = 432; // CSV activated on regtest (Used in rpc activation tests)
         consensus.SegwitHeight = 0; // SEGWIT is always activated on regtest unless overridden
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
