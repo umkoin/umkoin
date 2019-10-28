@@ -51,7 +51,7 @@
     </message>
     <message>
         <source>Choose the address to receive coins with</source>
-        <translation>Оберіть адресу на яку Ви будете отримувати монети</translation>
+        <translation>Оберіть адресу на яку буде отримвано монети</translation>
     </message>
     <message>
         <source>C&amp;hoose</source>
@@ -75,7 +75,7 @@
     </message>
     <message>
         <source>Copy &amp;Label</source>
-        <translation>Копіювати &amp;Створити мітку</translation>
+        <translation>Копіювати &amp;мітку</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -87,7 +87,7 @@
     </message>
     <message>
         <source>Comma separated file (*.csv)</source>
-        <translation>Файл (*.csv) розділений комами</translation>
+        <translation>Текстовий файл (*.csv) розділений комами</translation>
     </message>
     <message>
         <source>Exporting Failed</source>
@@ -95,7 +95,7 @@
     </message>
     <message>
         <source>There was an error trying to save the address list to %1. Please try again.</source>
-        <translation>Виникла помилка при спробі збереження списку адрес %1. Будь-ласка, спробуйте пізніше. </translation>
+        <translation>Виникла помилка при спробі збереження списку адрес %1. Будь-ласка, спробуйте пізніше.</translation>
     </message>
 </context>
 <context>
@@ -153,7 +153,7 @@
     </message>
     <message>
         <source>Change passphrase</source>
-        <translation>Введіть старий пароль і новий пароль гаманця.</translation>
+        <translation>Змінити пароль</translation>
     </message>
     <message>
         <source>Confirm wallet encryption</source>
@@ -220,7 +220,7 @@
     </message>
     <message>
         <source>Banned Until</source>
-        <translation>Заблоковано До</translation>
+        <translation>Заблоковано до</translation>
     </message>
 </context>
 <context>
@@ -327,7 +327,7 @@
     </message>
     <message>
         <source>Send coins to a Umkoin address</source>
-        <translation>Відправити монети на Umkoin адресу</translation>
+        <translation>Відправити монети на вказану адресу</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -371,7 +371,7 @@
     </message>
     <message>
         <source>Sign messages with your Umkoin addresses to prove you own them</source>
-        <translation>Підтвердіть, що Ви є власником повідомлення підписавши його Вашою Umkoin-адресою </translation>
+        <translation>Підтвердіть, що Ви є власником повідомлення підписавши його Вашою Umkoin-адресою</translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified Umkoin addresses</source>
@@ -678,7 +678,7 @@
     </message>
     <message>
         <source>Copy transaction ID</source>
-        <translation>Копіювати ID транзакції </translation>
+        <translation>Копіювати ID транзакції</translation>
     </message>
     <message>
         <source>Lock unspent</source>
@@ -2180,7 +2180,7 @@
 Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis per kB" for a transaction size of 500 bytes (half of 1 kB) would ultimately yield a fee of only 50 satoshis.</source>
         <translation>Вкажіть комісію за кБ (1,000 байт) віртуального розміру транзакції.
 
-Примітка: Так як комісія нараховується за байт, комісія "100 сатоші за кБ" для транзакції розміром 500 байт (пів 1 кБ) буде приблизно 50 сатоші. </translation>
+Примітка: Так як комісія нараховується за байт, комісія "100 сатоші за кБ" для транзакції розміром 500 байт (пів 1 кБ) буде приблизно 50 сатоші.</translation>
     </message>
     <message>
         <source>per kilobyte</source>
@@ -2596,7 +2596,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>Private key for the entered address is not available.</source>
-        <translation>Приватний ключ для введеної адреси недоступний. </translation>
+        <translation>Приватний ключ для введеної адреси недоступний.</translation>
     </message>
     <message>
         <source>Message signing failed.</source>
@@ -2999,7 +2999,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>Copy transaction ID</source>
-        <translation>Скопіювати ID транзакції </translation>
+        <translation>Копіювати ID транзакції</translation>
     </message>
     <message>
         <source>Copy raw transaction</source>
@@ -3023,11 +3023,11 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>Comma separated file (*.csv)</source>
-        <translation>Файл (*.csv) розділений комами</translation>
+        <translation>Текстовий файл (*.csv) розділений комами</translation>
     </message>
     <message>
         <source>Confirmed</source>
-        <translation>Підтверджені</translation>
+        <translation>Підтверджено</translation>
     </message>
     <message>
         <source>Watch-only</source>
@@ -3341,7 +3341,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>Error opening block database</source>
-        <translation>Помилка відкриття блоку бази даних </translation>
+        <translation>Помилка відкриття бази даних блоків</translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
@@ -3397,7 +3397,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>Prune cannot be configured with a negative value.</source>
-        <translation>Розмір скороченого ланцюжка блоків не може бути від'ємним. </translation>
+        <translation>Розмір скороченого ланцюжка блоків не може бути від'ємним.</translation>
     </message>
     <message>
         <source>Prune mode is incompatible with -txindex.</source>
@@ -3457,7 +3457,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>The transaction amount is too small to send after the fee has been deducted</source>
-        <translation>Залишок від суми транзакції зі сплатою комісії занадто малий </translation>
+        <translation>Залишок від суми транзакції зі сплатою комісії занадто малий</translation>
     </message>
     <message>
         <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
@@ -3554,7 +3554,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>Verifying wallet(s)...</source>
-        <translation>Перевірка гаманця(ців)... </translation>
+        <translation>Перевірка гаманця(ців)...</translation>
     </message>
     <message>
         <source>Warning: unknown new rules activated (versionbit %i)</source>

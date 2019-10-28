@@ -17,6 +17,7 @@ QT_TS = \
   qt/locale/umkoin_et.ts \
   qt/locale/umkoin_eu.ts \
   qt/locale/umkoin_fa.ts \
+  qt/locale/umkoin_fa_IR.ts \
   qt/locale/umkoin_fi.ts \
   qt/locale/umkoin_fil.ts \
   qt/locale/umkoin_fr.ts \
