@@ -9,14 +9,14 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - CodeBase
+            - 0.19_CodeBase
       - checkout
       - persist_to_workspace:
           root: ~/umkoin
           paths:
             - .
       - save_cache:
-          key: CodeBase
+          key: 0.19_CodeBase
           paths:
             - .
 
@@ -29,11 +29,16 @@ jobs:
       - image: umkoin/build-docker-primary:0.0.1
     working_directory: ~/umkoin
     steps:
+      - restore_cache:
+          keys:
+            - 0.19_cache_x86_64_bionic_qt5_dev
       - attach_workspace:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
@@ -43,6 +48,10 @@ jobs:
       - run:
           name: Phase 3 (build)
           command: make HOST=${HOST}
+      - save_cache:
+          key: 0.19_cache_x86_64_bionic_qt5_dev
+          paths:
+            - .
 
   x86_64_bionic_tsan:
     environment:
@@ -53,11 +62,16 @@ jobs:
       - image: umkoin/build-docker-primary:0.0.1
     working_directory: ~/umkoin
     steps:
+      - restore_cache:
+          keys:
+            - 0.19_cache_x86_64_bionic_tsan
       - attach_workspace:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
@@ -67,6 +81,10 @@ jobs:
       - run:
           name: Phase 3 (build)
           command: make HOST=${HOST}
+      - save_cache:
+          key: 0.19_cache_x86_64_bionic_tsan
+          paths:
+            - .
 
   x86_64_bionic_asan:
     environment:
@@ -77,11 +95,16 @@ jobs:
       - image: umkoin/build-docker-primary:0.0.1
     working_directory: ~/umkoin
     steps:
+      - restore_cache:
+          keys:
+            - 0.19_cache_x86_64_bionic_asan
       - attach_workspace:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
@@ -91,6 +114,43 @@ jobs:
       - run:
           name: Phase 3 (build)
           command: make HOST=${HOST}
+      - save_cache:
+          key: 0.19_cache_x86_64_bionic_asan
+          paths:
+            - .
+
+  x86_64_bionic_fuzz:
+    environment:
+      HOST: x86_64-pc-linux-gnu
+      PACKAGES: "clang llvm python3 libssl1.0-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev"
+      CONFIG: "--with-incompatible-bdb --enable-fuzz --with-sanitizers=fuzzer,address,undefined CC=clang CXX=clang++"
+    docker:
+      - image: umkoin/build-docker-primary:0.0.1
+    working_directory: ~/umkoin
+    steps:
+      - restore_cache:
+          keys:
+            - 0.19_cache_x86_64_bionic_fuzz
+      - attach_workspace:
+          at: .
+      - run:
+          name: Phase 0 (install required packages)
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+      - run:
+          name: Phase 1 (autogen)
+          command: ./autogen.sh
+      - run:
+          name: Phase 2 (configure)
+          command: ./configure ${CONFIG} --prefix=$(pwd)/depends/${HOST}
+      - run:
+          name: Phase 3 (build)
+          command: make HOST=${HOST}
+      - save_cache:
+          key: 0.19_cache_x86_64_bionic_fuzz
+          paths:
+            - .
 
   Win64:
     environment:
@@ -101,11 +161,16 @@ jobs:
       - image: umkoin/build-docker-primary:0.0.1
     working_directory: ~/umkoin
     steps:
+      - restore_cache:
+          keys:
+            - 0.19_cache_x86_64-w64-mingw32
       - attach_workspace:
           at: .
       - run:
           name: Phase 0 (install required packages)
-          command: apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
       - run:
           name: Phase 1 (autogen)
           command: ./autogen.sh
@@ -115,6 +180,10 @@ jobs:
       - run:
           name: Phase 3 (build)
           command: make HOST=${HOST}
+      - save_cache:
+          key: 0.19_cache_x86_64-w64-mingw32
+          paths:
+            - .
 
 workflows:
   version: 2
@@ -128,6 +197,9 @@ workflows:
           requires:
             - Setup_Build_Environment
       - x86_64_bionic_asan:
+          requires:
+            - Setup_Build_Environment
+      - x86_64_bionic_fuzz:
           requires:
             - Setup_Build_Environment
       - Win64:
