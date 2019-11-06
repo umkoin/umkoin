@@ -136,8 +136,10 @@ jobs:
 
     - stage: test
       name: 'ARM  [GOAL: install]  [no unit or functional tests]'
+      arch: arm64
       env: >-
         FILE_ENV="./ci/test/00_setup_env_arm.sh"
+        QEMU_USER_CMD=""  # Can run the tests natively without qemu
 
     - stage: test
       name: 'Win64  [GOAL: deploy]  [no gui, no functional tests]'
