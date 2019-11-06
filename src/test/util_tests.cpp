@@ -890,6 +890,7 @@ BOOST_FIXTURE_TEST_CASE(util_ChainMerge, ChainMergeTestingSetup)
             desc += " ";
             desc += argstr + 1;
             conf += argstr + 1;
+            conf += "\n";
         }
         std::istringstream conf_stream(conf);
         BOOST_CHECK(parser.ReadConfigStream(conf_stream, "filepath", error));
