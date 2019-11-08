@@ -4,7 +4,7 @@
 
 #include <merkleblock.h>
 #include <uint256.h>
-#include <test/setup_common.h>
+#include <test/util/setup_common.h>
 
 #include <boost/test/unit_test.hpp>
 
@@ -42,6 +42,9 @@ BOOST_AUTO_TEST_CASE(merkleblock_construct_from_txids_found)
     // Ordered by occurrence in depth-first tree traversal.
     BOOST_CHECK_EQUAL(vMatched[0].ToString(), txhash1.ToString());
     BOOST_CHECK_EQUAL(vIndex[0], 1U);
+
+    BOOST_CHECK_EQUAL(vMatched[1].ToString(), txhash1.ToString());
+    BOOST_CHECK_EQUAL(vIndex[1], 8U);
 }
 
 
