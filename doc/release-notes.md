@@ -1,10 +1,10 @@
 *After branching off for a major version release of Umkoin Core, use this
 template to create the initial release notes draft.*
- 
+
 *The release notes draft is a temporary file that can be added to by anyone. See
 [/doc/developer-notes.md#release-notes](/doc/developer-notes.md#release-notes)
 for the process.*
- 
+
 *version* Release Notes Draft
 ===============================
 
