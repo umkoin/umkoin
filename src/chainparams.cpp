@@ -71,7 +71,7 @@ public:
         consensus.BIP66Height = 0;
         consensus.CSVHeight = 432;
         consensus.SegwitHeight = 432;
-        consensus.MinBIP9WarningHeight = consensus.SegwitHeight + consensus.nMinerConfirmationWindow;
+        consensus.MinBIP9WarningHeight = 576; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
         consensus.nPowTargetSpacing = 10 * 60;
@@ -167,7 +167,7 @@ public:
         consensus.BIP66Height = 0;
         consensus.CSVHeight = 144;
         consensus.SegwitHeight = 144;
-        consensus.MinBIP9WarningHeight = consensus.SegwitHeight + consensus.nMinerConfirmationWindow;
+        consensus.MinBIP9WarningHeight = 288; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
         consensus.nPowTargetSpacing = 10 * 60;
