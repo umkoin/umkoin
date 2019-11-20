@@ -23,6 +23,7 @@ class ToolWalletTest(UmkoinTestFramework):
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
+        self.skip_if_no_wallet_tool()
 
     def umkoin_wallet_process(self, *args):
         binary = self.config["environment"]["BUILDDIR"] + '/src/umkoin-wallet' + self.config["environment"]["EXEEXT"]

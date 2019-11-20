@@ -596,6 +596,11 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         if not self.is_wallet_compiled():
             raise SkipTest("wallet has not been compiled.")
 
+    def skip_if_no_wallet_tool(self):
+        """Skip the running test if umkoin-wallet has not been compiled."""
+        if not self.is_wallet_tool_compiled():
+            raise SkipTest("umkoin-wallet has not been compiled")
+
     def skip_if_no_cli(self):
         """Skip the running test if umkoin-cli has not been compiled."""
         if not self.is_cli_compiled():
@@ -608,6 +613,10 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
     def is_wallet_compiled(self):
         """Checks whether the wallet module was compiled."""
         return self.config["components"].getboolean("ENABLE_WALLET")
+
+    def is_wallet_tool_compiled(self):
+        """Checks whether umkoin-wallet was compiled."""
+        return self.config["components"].getboolean("ENABLE_WALLET_TOOL")
 
     def is_zmq_compiled(self):
         """Checks whether the zmq module was compiled."""
