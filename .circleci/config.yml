@@ -56,7 +56,7 @@ jobs:
   x86_64_bionic_tsan:
     environment:
       HOST: x86_64-pc-linux-gnu
-      PACKAGES: "clang llvm python3-zmq qtbase5-dev qttools5-dev-tools libssl-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev libdb5.3++-dev libminiupnpc-dev libzmq3-dev libqrencode-dev"
+      PACKAGES: "clang llvm python3-zmq qtbase5-dev qttools5-dev-tools libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev libdb5.3++-dev libminiupnpc-dev libzmq3-dev libqrencode-dev"
       CONFIG: "--enable-zmq --disable-wallet --with-gui=qt5 CPPFLAGS=-DDEBUG_LOCKORDER --with-sanitizers=thread --disable-hardening --disable-asm CC=clang CXX=clang++"
     docker:
       - image: umkoin/build-docker-primary:0.0.1
@@ -89,7 +89,7 @@ jobs:
   x86_64_bionic_asan:
     environment:
       HOST: x86_64-pc-linux-gnu
-      PACKAGES: "clang llvm python3-zmq qtbase5-dev qttools5-dev-tools libssl1.0-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev libdb5.3++-dev libminiupnpc-dev libzmq3-dev libqrencode-dev"
+      PACKAGES: "clang llvm python3-zmq qtbase5-dev qttools5-dev-tools libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev libdb5.3++-dev libminiupnpc-dev libzmq3-dev libqrencode-dev"
       CONFIG: "--enable-zmq --with-incompatible-bdb --with-gui=qt5 CPPFLAGS=-DDEBUG_LOCKORDER --with-sanitizers=address,integer,undefined CC=clang CXX=clang++"
     docker:
       - image: umkoin/build-docker-primary:0.0.1
@@ -122,7 +122,7 @@ jobs:
   x86_64_bionic_fuzz:
     environment:
       HOST: x86_64-pc-linux-gnu
-      PACKAGES: "clang llvm python3 libssl1.0-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev"
+      PACKAGES: "clang llvm python3 libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev"
       CONFIG: "--with-incompatible-bdb --enable-fuzz --with-sanitizers=fuzzer,address,undefined CC=clang CXX=clang++"
     docker:
       - image: umkoin/build-docker-primary:0.0.1
