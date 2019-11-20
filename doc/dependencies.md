@@ -17,7 +17,6 @@ These are the dependencies currently used by Umkoin Core. You can find instructi
 | libpng |  |  |  |  | [Yes](https://github.com/umkoin/umkoin/blob/master/depends/packages/qt.mk) |
 | librsvg | |  |  |  |  |
 | MiniUPnPc | [2.0.20180203](http://miniupnp.free.fr/files) |  | No |  |  |
-| OpenSSL | [1.0.1k](https://www.openssl.org/source) |  | Yes |  |  |
 | PCRE |  |  |  |  | [Yes](https://github.com/umkoin/umkoin/blob/master/depends/packages/qt.mk) |
 | Python (tests) |  | [3.5](https://www.python.org/downloads) |  |  |  |
 | qrencode | [3.4.4](https://fukuchi.org/works/qrencode) |  | No |  |  |

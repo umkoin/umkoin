@@ -19,7 +19,7 @@ else
 LIBUNIVALUE = $(UNIVALUE_LIBS)
 endif
 
-UMKOIN_INCLUDES=-I$(builddir) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS)
+UMKOIN_INCLUDES=-I$(builddir) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
 
 UMKOIN_INCLUDES += -I$(srcdir)/secp256k1/include
 UMKOIN_INCLUDES += $(UNIVALUE_CFLAGS)
@@ -571,7 +571,7 @@ umkoind_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-umkoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+umkoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
 # umkoin-cli binary #
 umkoin_cli_SOURCES = umkoin-cli.cpp
@@ -589,7 +589,7 @@ umkoin_cli_LDADD = \
   $(LIBUMKOIN_UTIL) \
   $(LIBUMKOIN_CRYPTO)
 
-umkoin_cli_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+umkoin_cli_LDADD += $(BOOST_LIBS) $(EVENT_LIBS)
 #
 
 # umkoin-tx binary #
@@ -610,7 +610,7 @@ umkoin_tx_LDADD = \
   $(LIBUMKOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-umkoin_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+umkoin_tx_LDADD += $(BOOST_LIBS)
 #
 
 # umkoin-wallet binary #
@@ -637,7 +637,7 @@ umkoin_wallet_LDADD = \
   $(LIBSECP256K1) \
   $(LIBUNIVALUE)
 
-umkoin_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS)
+umkoin_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS)
 #
 
 # umkoinconsensus library #
