@@ -7,6 +7,7 @@
 #include <qt/umkoinunits.h>
 #include <qt/guiutil.h>
 #include <qt/optionsmodel.h>
+#include <qt/walletmodel.h>
 
 #include <clientversion.h>
 #include <streams.h>

@@ -5,7 +5,8 @@
 #ifndef UMKOIN_QT_WALLETMODELTRANSACTION_H
 #define UMKOIN_QT_WALLETMODELTRANSACTION_H
 
-#include <qt/walletmodel.h>
+#include <primitives/transaction.h>
+#include <qt/sendcoinsrecipient.h>
 
 #include <amount.h>
 

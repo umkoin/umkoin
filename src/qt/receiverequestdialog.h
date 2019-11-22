@@ -5,9 +5,11 @@
 #ifndef UMKOIN_QT_RECEIVEREQUESTDIALOG_H
 #define UMKOIN_QT_RECEIVEREQUESTDIALOG_H
 
-#include <qt/walletmodel.h>
+#include <qt/sendcoinsrecipient.h>
 
 #include <QDialog>
+
+class WalletModel;
 
 namespace Ui {
     class ReceiveRequestDialog;
