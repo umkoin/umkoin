@@ -26,12 +26,6 @@ TEST_QT_H = \
   qt/test/util.h \
   qt/test/wallettests.h
 
-TEST_UMKOIN_CPP = \
-  test/util/setup_common.cpp
-
-TEST_UMKOIN_H = \
-  test/util/setup_common.h
-
 qt_test_test_umkoin_qt_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(UMKOIN_QT_INCLUDES) \
   $(QT_INCLUDES) $(QT_TEST_INCLUDES)
 
@@ -42,9 +36,7 @@ qt_test_test_umkoin_qt_SOURCES = \
   qt/test/test_main.cpp \
   qt/test/uritests.cpp \
   qt/test/util.cpp \
-  $(TEST_QT_H) \
-  $(TEST_UMKOIN_CPP) \
-  $(TEST_UMKOIN_H)
+  $(TEST_QT_H)
 if ENABLE_WALLET
 qt_test_test_umkoin_qt_SOURCES += \
   qt/test/addressbooktests.cpp \
@@ -54,7 +46,7 @@ endif # ENABLE_WALLET
 
 nodist_qt_test_test_umkoin_qt_SOURCES = $(TEST_QT_MOC_CPP)
 
-qt_test_test_umkoin_qt_LDADD = $(LIBUMKOINQT) $(LIBUMKOIN_SERVER)
+qt_test_test_umkoin_qt_LDADD = $(LIBUMKOINQT) $(LIBUMKOIN_SERVER) $(LIBTEST_UTIL)
 if ENABLE_WALLET
 qt_test_test_umkoin_qt_LDADD += $(LIBUMKOIN_UTIL) $(LIBUMKOIN_WALLET)
 endif
