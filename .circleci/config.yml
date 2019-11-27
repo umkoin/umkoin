@@ -218,6 +218,39 @@ jobs:
           paths:
             - .
 
+  S390x:
+    environment:
+      HOST: s390x-unknown-linux-gnu
+      PACKAGES: "clang llvm python3-zmq qtbase5-dev qttools5-dev-tools libssl1.0-dev libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev libdb5.3++-dev libminiupnpc-dev libzmq3-dev libqrencode-dev"
+      CONFIG: "--enable-reduce-exports --with-incompatible-bdb"
+    docker:
+      - image: s390x/ubuntu:18.04
+    working_directory: ~/umkoin
+    steps:
+      - restore_cache:
+          keys:
+            - cache_s390x-unknown-linux-gnu
+      - attach_workspace:
+          at: .
+      - run:
+          name: Phase 0 (install required packages)
+          command: |
+            apt-get update
+            apt-get install --no-install-recommends --no-upgrade -myqq ${PACKAGES}
+      - run:
+          name: Phase 1 (autogen)
+          command: ./autogen.sh
+      - run:
+          name: Phase 2 (configure)
+          command: ./configure ${CONFIG} --prefix=$(pwd)/depends/${HOST}
+      - run:
+          name: Phase 3 (build)
+          command: make HOST=${HOST}
+      - save_cache:
+          key: cache_s390x-unknown-linux-gnu
+          paths:
+            - .
+
 workflows:
   version: 2
   Go_Live:
@@ -239,5 +272,8 @@ workflows:
           requires:
             - Setup_Build_Environment
       - Win64:
+          requires:
+            - Setup_Build_Environment
+      - S390x:
           requires:
             - Setup_Build_Environment
