@@ -57,7 +57,7 @@ jobs:
     environment:
       HOST: x86_64-pc-linux-gnu
       PACKAGES: "clang llvm python3-zmq qtbase5-dev qttools5-dev-tools libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev libdb5.3++-dev libminiupnpc-dev libzmq3-dev libqrencode-dev"
-      CONFIG: "--enable-zmq --disable-wallet --with-gui=qt5 CPPFLAGS='-DARENA_DEBUG -DDEBUG_LOCKORDER' --with-sanitizers=thread --disable-hardening --disable-asm CC=clang CXX=clang++"
+      CONFIG: "--enable-zmq --disable-wallet --with-gui=qt5 CPPFLAGS=-DARENA_DEBUG CPPFLAGS+=-DDEBUG_LOCKORDER --with-sanitizers=thread --disable-hardening --disable-asm CC=clang CXX=clang++"
     docker:
       - image: umkoin/build-docker-primary:0.0.1
     working_directory: ~/umkoin
@@ -90,7 +90,7 @@ jobs:
     environment:
       HOST: x86_64-pc-linux-gnu
       PACKAGES: "clang llvm python3-zmq qtbase5-dev qttools5-dev-tools libevent-dev bsdmainutils libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev libdb5.3++-dev libminiupnpc-dev libzmq3-dev libqrencode-dev"
-      CONFIG: "--enable-zmq --with-incompatible-bdb --with-gui=qt5 CPPFLAGS='-DARENA_DEBUG -DDEBUG_LOCKORDER' --with-sanitizers=address,integer,undefined CC=clang CXX=clang++"
+      CONFIG: "--enable-zmq --with-incompatible-bdb --with-gui=qt5 CPPFLAGS=-DARENA_DEBUG CPPFLAGS+=-DDEBUG_LOCKORDER --with-sanitizers=address,integer,undefined CC=clang CXX=clang++"
     docker:
       - image: umkoin/build-docker-primary:0.0.1
     working_directory: ~/umkoin
