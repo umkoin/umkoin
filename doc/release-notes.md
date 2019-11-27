@@ -84,6 +84,8 @@ Low-level Changes section below.
 GUI changes
 -----------
 
+- The "Start Umkoin Core on system login" option has been removed on macOS.
+
 Wallet
 ------
 
