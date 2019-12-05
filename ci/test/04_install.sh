@@ -72,6 +72,8 @@ if [ "$TRAVIS_OS_NAME" == "osx" ]; then
 else
   DOCKER_EXEC free -m -h
   DOCKER_EXEC echo "Number of CPUs \(nproc\):" \$\(nproc\)
+  DOCKER_EXEC echo "Free disk space:"
+  DOCKER_EXEC df -h
 fi
 
 if [ -n "$DPKG_ADD_ARCH" ]; then
@@ -80,7 +82,7 @@ fi
 
 if [ "$TRAVIS_OS_NAME" != "osx" ]; then
   ${CI_RETRY_EXE} DOCKER_EXEC apt-get update
-  ${CI_RETRY_EXE} DOCKER_EXEC apt-get install --no-install-recommends --no-upgrade -myqq $PACKAGES $DOCKER_PACKAGES
+  ${CI_RETRY_EXE} DOCKER_EXEC apt-get install --no-install-recommends --no-upgrade -y $PACKAGES $DOCKER_PACKAGES
 fi
 
 if [ ! -d ${DIR_QA_ASSETS} ]; then
