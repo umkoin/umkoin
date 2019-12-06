@@ -88,7 +88,7 @@ if [ "$TRAVIS_OS_NAME" != "osx" ]; then
 fi
 
 if [ ! -d ${DIR_QA_ASSETS} ]; then
-  DOCKER_EXEC git clone https://github.com/umkoin/qa-assets ${DIR_QA_ASSETS}
+  DOCKER_EXEC git clone https://github.com/bitcoin-core/qa-assets ${DIR_QA_ASSETS}
 fi
 export DIR_FUZZ_IN=${DIR_QA_ASSETS}/fuzz_seed_corpus/
 
