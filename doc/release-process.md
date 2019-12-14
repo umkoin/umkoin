@@ -5,8 +5,8 @@ Release Process
 
 ### Before every release candidate
 
-* Update translations, see [translation_process.md](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md#synchronising-translations).
-* Update manpages, see [gen-manpages.sh](https://github.com/umkoin/umkoin/blob/master/contrib/devtools/README.md#gen-manpagessh).
+* Update translations, see [translation_process.md](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md#synchronising-translations). 
+* Update manpages, see [gen-manpages.sh](https://github.com/umkoin/umkoin/blob/master/contrib/devtools/README.md#gen-manpagessh). 
 * Update release candidate version in `configure.ac` (`CLIENT_VERSION_RC`).
 
 ### Before every major and minor release
