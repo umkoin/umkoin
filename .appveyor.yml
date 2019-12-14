@@ -9,8 +9,8 @@ environment:
   CLCACHE_SERVER: 1
   PATH: 'C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%'
   PYTHONUTF8: 1
-  QT_DOWNLOAD_URL: 'https://github.com/sipsorcery/qt_win_binary/releases/download/v1.4/Qt5.9.8_x64_static_vs2019.zip'
-  QT_DOWNLOAD_HASH: 'f285cbb02bec3b3f3cc2621e3fa7d5edf0d6a66fa30c57859e583acda954ea80'
+  QT_DOWNLOAD_URL: 'https://github.com/sipsorcery/qt_win_binary/releases/download.phpv1.6/Qt5.9.8_x64_static_vs2019.zip'
+  QT_DOWNLOAD_HASH: '9a8c6eb20967873785057fdcd329a657c7f922b0af08c5fde105cc597dd37e21'
   QT_LOCAL_PATH: 'C:\Qt5.9.8_x64_static_vs2019'
   VCPKG_INSTALL_PATH: 'C:\tools\vcpkg\installed'
 cache:
@@ -77,14 +77,14 @@ build_script:
 after_build:
 - ps:  fsutil behavior set disablelastaccess 1 # Disable Access time feature on Windows (better performance)
 - ps:  clcache -z
-- 7z a umkoin-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\build_msvc\%platform%\%configuration%\*.exe
-##test_script:
-##- cmd: src\test_umkoin.exe -k stdout -e stdout 2> NUL
-##- cmd: src\bench_umkoin.exe -evals=1 -scaling=0 > NUL
-##- ps:  python test\util\umkoin-util-test.py
-##- cmd: python test\util\rpcauth-test.py
+#- 7z a umkoin-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\build_msvc\%platform%\%configuration%\*.exe
+test_script:
+- cmd: src\test_umkoin.exe -k stdout -e stdout 2> NUL
+- cmd: src\bench_umkoin.exe -evals=1 -scaling=0 > NUL
+- ps:  python test\util\umkoin-util-test.py
+- cmd: python test\util\rpcauth-test.py
 # Fee estimation test failing on appveyor with: WinError 10048] Only one usage of each socket address (protocol/network address/port) is normally permitted.
-##- cmd: python test\functional\test_runner.py --ci --quiet --combinedlogslen=4000 --failfast --exclude feature_fee_estimation
+- cmd: python test\functional\test_runner.py --ci --quiet --combinedlogslen=4000 --failfast --exclude feature_fee_estimation
 artifacts:
-- path: umkoin-%APPVEYOR_BUILD_VERSION%.zip
+#- path: umkoin-%APPVEYOR_BUILD_VERSION%.zip
 deploy: off
