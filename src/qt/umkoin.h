@@ -57,7 +57,7 @@ class UmkoinApplication: public QApplication
 {
     Q_OBJECT
 public:
-    explicit UmkoinApplication(interfaces::Node& node, int &argc, char **argv);
+    explicit UmkoinApplication(interfaces::Node& node);
     ~UmkoinApplication();
 
 #ifdef ENABLE_WALLET

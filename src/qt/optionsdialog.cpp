@@ -87,12 +87,12 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     /* Display elements init */
     QDir translations(":translations");
 
-    ui->umkoinAtStartup->setToolTip(ui->umkoinAtStartup->toolTip().arg(tr(PACKAGE_NAME)));
-    ui->umkoinAtStartup->setText(ui->umkoinAtStartup->text().arg(tr(PACKAGE_NAME)));
+    ui->umkoinAtStartup->setToolTip(ui->umkoinAtStartup->toolTip().arg(PACKAGE_NAME));
+    ui->umkoinAtStartup->setText(ui->umkoinAtStartup->text().arg(PACKAGE_NAME));
 
-    ui->openUmkoinConfButton->setToolTip(ui->openUmkoinConfButton->toolTip().arg(tr(PACKAGE_NAME)));
+    ui->openUmkoinConfButton->setToolTip(ui->openUmkoinConfButton->toolTip().arg(PACKAGE_NAME));
 
-    ui->lang->setToolTip(ui->lang->toolTip().arg(tr(PACKAGE_NAME)));
+    ui->lang->setToolTip(ui->lang->toolTip().arg(PACKAGE_NAME));
     ui->lang->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
     for (const QString &langStr : translations.entryList())
     {
