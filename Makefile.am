@@ -25,7 +25,7 @@ UMKOIN_QT_BIN=$(top_builddir)/src/qt/$(UMKOIN_GUI_NAME)$(EXEEXT)
 UMKOIN_CLI_BIN=$(top_builddir)/src/$(UMKOIN_CLI_NAME)$(EXEEXT)
 UMKOIN_TX_BIN=$(top_builddir)/src/$(UMKOIN_TX_NAME)$(EXEEXT)
 UMKOIN_WALLET_BIN=$(top_builddir)/src/$(UMKOIN_WALLET_TOOL_NAME)$(EXEEXT)
-UMKOIN_WIN_INSTALLER=$(PACKAGE)-$(PACKAGE_VERSION)-win$(WINDOWS_BITS)-setup$(EXEEXT)
+UMKOIN_WIN_INSTALLER=$(PACKAGE)-$(PACKAGE_VERSION)-win64-setup$(EXEEXT)
 
 empty :=
 space := $(empty) $(empty)
