@@ -10,6 +10,6 @@ export PACKAGES="valgrind clang llvm python3-zmq libevent-dev bsdmainutils libbo
 export USE_VALGRIND=1
 export NO_DEPENDS=1
 export TEST_RUNNER_EXTRA="p2p_segwit.py"  # Only run one test for now. TODO enable all and bump timeouts
-export RUN_FUNCTIONAL_TESTS=true
+export RUN_FUNCTIONAL_TESTS=false
 export GOAL="install"
 export UMKOIN_CONFIG="--enable-zmq --with-incompatible-bdb --with-gui=no CC=clang CXX=clang++"  # TODO enable GUI
