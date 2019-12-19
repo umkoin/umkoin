@@ -7,7 +7,7 @@ jobs:
     runs-on: windows-latest
     env:
         PYTHONUTF8: 1
-        QT_DOWNLOAD_URL: 'https://github.com/sipsorcery/qt_win_binary/releases/download.phpv1.4/Qt5.9.8_x64_static_vs2019.zip'
+        QT_DOWNLOAD_URL: 'https://github.com/sipsorcery/qt_win_binary/releases/download/v1.4/Qt5.9.8_x64_static_vs2019.zip'
         QT_DOWNLOAD_HASH: 'f285cbb02bec3b3f3cc2621e3fa7d5edf0d6a66fa30c57859e583acda954ea80'
         QT_LOCAL_PATH: 'C:\Qt5.9.8_x64_static_vs2019'
         VCPKG_INSTALL_PATH: "$env:VCPKG_INSTALLATION_ROOT/installed"
