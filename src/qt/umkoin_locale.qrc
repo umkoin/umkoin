@@ -11,6 +11,7 @@
         <file alias="de_DE">locale/umkoin_de_DE.qm</file>
         <file alias="el">locale/umkoin_el.qm</file>
         <file alias="el_GR">locale/umkoin_el_GR.qm</file>
+        <file alias="en">locale/umkoin_en.qm</file>
         <file alias="en_AU">locale/umkoin_en_AU.qm</file>
         <file alias="en_GB">locale/umkoin_en_GB.qm</file>
         <file alias="eo">locale/umkoin_eo.qm</file>
