@@ -19,7 +19,7 @@ msbuild /m build_msvc\umkoin.sln /p:Platform=x64 /p:Configuration=Release /t:bui
 
 Dependencies
 ---------------------
-A number of [open source libraries](https://github.com/umkoin/umkoin/blob/master/doc/dependencies.md) are required in order to be able to build Umkoin.
+A number of [open source libraries](https://github.com/umkoin/umkoin/blob/master/doc/dependencies.md) are required in order to be able to build Umkoin Core.
 
 Options for installing the dependencies in a Visual Studio compatible manner are:
 
@@ -56,11 +56,12 @@ Building
 ---------------------
 The instructions below use `vcpkg` to install the dependencies.
 
-- Clone `vcpkg` from the [github repository](https://github.com/Microsoft/vcpkg) and install as per the instructions in the main README.md.
-- Install the required packages (replace x64 with x86 as required):
+- Install [`vcpkg`](https://github.com/Microsoft/vcpkg).
+- Install the required packages (replace x64 with x86 as required). The list of required packages can be found in the `build_msvc\vcpkg-packages.txt` file. The PowerShell command below will work if run from the repository root directory and `vcpkg` is in the path. Alternatively the contents of the packages text file can be pasted in place of the `Get-Content` cmdlet.
 
 ```
-    PS >.\vcpkg install --triplet x64-windows-static boost-filesystem boost-signals2 boost-test libevent openssl zeromq berkeleydb rapidcheck double-conversion
+PS >.\vcpkg install --triplet x64-windows-static $(Get-Content -Path build_msvc\vcpkg-packages.txt).split()
+
 ```
 
 - Use Python to generate *.vcxproj from Makefile
@@ -74,13 +75,13 @@ The instructions below use `vcpkg` to install the dependencies.
 - Build with Visual Studio 2017 or msbuild.
 
 ```
-msbuild /m umkoin.sln /p:Platform=x64 /p:Configuration=Release /t:build
+msbuild /m umkoin.sln /p:Platform=x64 /p:Configuration=Release /p:PlatformToolset=v141 /t:build
 ```
 
 - Build with Visual Studio 2019 or msbuild.
 
 ```
-msbuild /m umkoin.sln /p:Platform=x64 /p:Configuration=Release /p:PlatformToolset=v142 /t:build
+msbuild /m umkoin.sln /p:Platform=x64 /p:Configuration=Release /t:build
 ```
 
 AppVeyor
@@ -92,4 +93,4 @@ For safety reasons the Umkoin Core .appveyor.yml file has the artifact options d
 ```
     #- 7z a umkoin-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\build_msvc\%platform%\%configuration%\*.exe
     #- path: umkoin-%APPVEYOR_BUILD_VERSION%.zip
-```nano
+```
