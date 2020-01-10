@@ -70,6 +70,10 @@
         <translation>Це ваші адреси Umkoin для надсилання платежів. Завжди перевіряйте суму та адресу одержувача перед відправленням монет.</translation>
     </message>
     <message>
+        <source>These are your Umkoin addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
+        <translation>Це ваші умкойн-адреси для отримання платежів. Використовуйте кнопку "Створити нову адресу прийому" на вкладці отримання, для створення нових адрес.</translation>
+    </message>
+    <message>
         <source>&amp;Copy Address</source>
         <translation>&amp;Копіювати адресу</translation>
     </message>
@@ -132,6 +136,10 @@
         <translation>Повторіть новий пароль</translation>
     </message>
     <message>
+        <source>Show passphrase</source>
+        <translation>Показати парольну фразу</translation>
+    </message>
+    <message>
         <source>Encrypt wallet</source>
         <translation>Зашифрувати гаманець</translation>
     </message>
@@ -172,8 +180,24 @@
         <translation>Гаманець зашифровано</translation>
     </message>
     <message>
+        <source>Enter the old passphrase and new passphrase for the wallet.</source>
+        <translation>Введіть стару та нову парольну фразу для гаманця.</translation>
+    </message>
+    <message>
         <source>Remember that encrypting your wallet cannot fully protect your umkoins from being stolen by malware infecting your computer.</source>
         <translation>Пам’ятайте, що шифрування гаманця не може повністю захистити ваші умкоіни від кражі, у випадку якщо ваш комп’ютер буде інфіковано шкідливими програмами.</translation>
+    </message>
+    <message>
+        <source>Wallet to be encrypted</source>
+        <translation>Гаманець який потрібно зашифрувати</translation>
+    </message>
+    <message>
+        <source>Your wallet is about to be encrypted. </source>
+        <translation>Ваш гаманець буде зашифровано.</translation>
+    </message>
+    <message>
+        <source>Your wallet is now encrypted. </source>
+        <translation>Ваш гаманець зашифровано.</translation>
     </message>
     <message>
         <source>IMPORTANT: Any previous backups you have made of your wallet file should be replaced with the newly generated, encrypted wallet file. For security reasons, previous backups of the unencrypted wallet file will become useless as soon as you start using the new, encrypted wallet.</source>
@@ -296,6 +320,14 @@
     <message>
         <source>Open &amp;URI...</source>
         <translation>Відкрити &amp;URI</translation>
+    </message>
+    <message>
+        <source>Create Wallet...</source>
+        <translation>Створити Гаманець...</translation>
+    </message>
+    <message>
+        <source>Create a new wallet</source>
+        <translation>Створити новий гаманець</translation>
     </message>
     <message>
         <source>Wallet:</source>
@@ -526,40 +558,32 @@
         <translation>Помилка: %1</translation>
     </message>
     <message>
-        <source>Date: %1
-</source>
-        <translation>Дата: %1
-</translation>
+        <source>Warning: %1</source>
+        <translation>Попередження: %1</translation>
     </message>
     <message>
-        <source>Amount: %1
-</source>
-        <translation>Кількість: %1
-</translation>
+        <source>Date: %1</source>
+        <translation>Дата: %1</translation>
     </message>
     <message>
-        <source>Wallet: %1
-</source>
-        <translation>Гаманець: %1
-</translation>
+        <source>Amount: %1</source>
+        <translation>Кількість: %1</translation>
     </message>
     <message>
-        <source>Type: %1
-</source>
-        <translation>Тип: %1
-</translation>
+        <source>Wallet: %1</source>
+        <translation>Гаманець: %1</translation>
     </message>
     <message>
-        <source>Label: %1
-</source>
-        <translation>Мітка: %1
-</translation>
+        <source>Type: %1</source>
+        <translation>Тип: %1</translation>
     </message>
     <message>
-        <source>Address: %1
-</source>
-        <translation>Адреса: %1
-</translation>
+        <source>Label: %1</source>
+        <translation>Мітка: %1</translation>
+    </message>
+    <message>
+        <source>Address: %1</source>
+        <translation>Адреса: %1</translation>
     </message>
     <message>
         <source>Sent transaction</source>
@@ -747,10 +771,42 @@
 </context>
 <context>
     <name>CreateWalletActivity</name>
-    </context>
+    <message>
+        <source>Creating Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation>Створення Гаманця &lt;b&gt;%1&lt;/b&gt;...</translation>
+    </message>
+    <message>
+        <source>Create wallet failed</source>
+        <translation>Помилка створення гаманця</translation>
+    </message>
+    <message>
+        <source>Create wallet warning</source>
+        <translation>Попередження створення гаманця</translation>
+    </message>
+</context>
 <context>
     <name>CreateWalletDialog</name>
-    </context>
+    <message>
+        <source>Create Wallet</source>
+        <translation>Створити Гаманець</translation>
+    </message>
+    <message>
+        <source>Wallet Name</source>
+        <translation>Назва Гаманця</translation>
+    </message>
+    <message>
+        <source>Encrypt the wallet. The wallet will be encrypted with a passphrase of your choice.</source>
+        <translation>Зашифруйте гаманець. Гаманець буде зашифрований за допомогою пароля на ваш вибір.</translation>
+    </message>
+    <message>
+        <source>Encrypt Wallet</source>
+        <translation>Шифрувати Гаманець</translation>
+    </message>
+    <message>
+        <source>Create</source>
+        <translation>Створити</translation>
+    </message>
+</context>
 <context>
     <name>EditAddressDialog</name>
     <message>
@@ -995,6 +1051,14 @@
 </context>
 <context>
     <name>OpenWalletActivity</name>
+    <message>
+        <source>Open wallet failed</source>
+        <translation>Помилка відкриття гаманця</translation>
+    </message>
+    <message>
+        <source>Open wallet warning</source>
+        <translation>Попередження відкриття гаманця</translation>
+    </message>
     <message>
         <source>default wallet</source>
         <translation>гаманець за змовчуванням</translation>
@@ -2769,6 +2833,10 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Вихідний індекс</translation>
     </message>
     <message>
+        <source> (Certificate was not verified)</source>
+        <translation>(Сертифікат не підтверджено)</translation>
+    </message>
+    <message>
         <source>Merchant</source>
         <translation>Продавець</translation>
     </message>
@@ -3388,6 +3456,10 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
         <translation>Завантаження P2P адрес...</translation>
     </message>
     <message>
+        <source>Error: Disk space is too low!</source>
+        <translation>Помилка: замало дискового простору!</translation>
+    </message>
+    <message>
         <source>Loading banlist...</source>
         <translation>Завантаження бан-списку...</translation>
     </message>
@@ -3626,7 +3698,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>Insufficient funds</source>
-        <translation>Неможливо створити ключ зміни адреси. Приватні ключі вимкнено для цього гаманця.</translation>
+        <translation>Недостатньо коштів</translation>
     </message>
     <message>
         <source>Cannot upgrade a non HD split wallet without upgrading to support pre split keypool. Please use -upgradewallet=169900 or -upgradewallet with no version specified.</source>

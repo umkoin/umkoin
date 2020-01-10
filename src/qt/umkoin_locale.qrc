@@ -7,6 +7,7 @@
         <file alias="da">locale/umkoin_da.qm</file>
         <file alias="de">locale/umkoin_de.qm</file>
         <file alias="el">locale/umkoin_el.qm</file>
+        <file alias="en">locale/umkoin_en.qm</file>
         <file alias="en_GB">locale/umkoin_en_GB.qm</file>
         <file alias="eo">locale/umkoin_eo.qm</file>
         <file alias="es">locale/umkoin_es.qm</file>
@@ -18,11 +19,9 @@
         <file alias="et">locale/umkoin_et.qm</file>
         <file alias="eu">locale/umkoin_eu.qm</file>
         <file alias="fa">locale/umkoin_fa.qm</file>
-        <file alias="fa_IR">locale/umkoin_fa_IR.qm</file>
         <file alias="fi">locale/umkoin_fi.qm</file>
         <file alias="fil">locale/umkoin_fil.qm</file>
         <file alias="fr">locale/umkoin_fr.qm</file>
-        <file alias="gl">locale/umkoin_gl.qm</file>
         <file alias="he">locale/umkoin_he.qm</file>
         <file alias="hi">locale/umkoin_hi.qm</file>
         <file alias="hr">locale/umkoin_hr.qm</file>
