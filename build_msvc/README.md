@@ -12,14 +12,14 @@ Quick Start
 The minimal steps required to build Umkoin Core with the msbuild toolchain are below. More detailed instructions are contained in the following sections.
 
 ```
-vcpkg install --triplet x64-windows-static boost-filesystem boost-multi-index boost-signals2 boost-test boost-thread libevent zeromq berkeleydb rapidcheck double-conversion
+vcpkg install --triplet x64-windows-static berkeleydb boost-filesystem boost-multi-index boost-signals2 boost-test boost-thread libevent[thread] rapidcheck zeromq double-conversion
 py -3 build_msvc\msvc-autogen.py
 msbuild /m build_msvc\umkoin.sln /p:Platform=x64 /p:Configuration=Release /t:build
 ```
 
 Dependencies
 ---------------------
-A number of [open source libraries](https://github.com/umkoin/umkoin/blob/master/doc/dependencies.md) are required in order to be able to build Umkoin.
+A number of [open source libraries](https://github.com/umkoin/umkoin/blob/master/doc/dependencies.md) are required in order to be able to build Umkoin Core.
 
 Options for installing the dependencies in a Visual Studio compatible manner are:
 
@@ -41,7 +41,9 @@ Qt
 ---------------------
 In order to build the Umkoin Core a static build of Qt is required. The runtime library version (e.g. v141, v142) and platform type (x86 or x64) must also match.
 
-A prebuilt version of Qt can be downloaded from [here](https://github.com/sipsorcery/qt_win_binary/releases). Please be aware this download is NOT an officially sanctioned Umkoin Core distribution and is provided for developer convenience. It should NOT be used for builds that will be used in a production environment or with real funds.
+Some prebuilt x64 versions of Qt can be downloaded from [here](https://github.com/sipsorcery/qt_win_binary/releases). Please be aware these downloads are NOT officially sanctioned by Umkoin Core and are provided for developer convenience only. They should NOT be used for builds that will be used in a production environment or with real funds.
+
+To determine which Qt prebuilt version to download open the `.appveyor.yml` file and note the `QT_DOWNLOAD_URL`. When extracting the zip file the destination path must be set to `C:\`. This is due to the way that Qt includes, libraries and tools use internal paths.
 
 To build Umkoin Core without Qt unload or disable the `umkoin-qt`, `libumkoin_qt` and `test_umkoin-qt` projects.
 
@@ -64,17 +66,19 @@ PS >py -3 msvc-autogen.py
 
 - An optional step is to adjust the settings in the build_msvc directory and the common.init.vcxproj file. This project file contains settings that are common to all projects such as the runtime library version and target Windows SDK version. The Qt directories can also be set.
 
-- Build with Visual Studio 2017 or msbuild.
+- To build from the command line with the Visual Studio 2017 toolchain use:
 
 ```
 msbuild /m umkoin.sln /p:Platform=x64 /p:Configuration=Release /p:PlatformToolset=v141 /t:build
 ```
 
-- Build with Visual Studio 2019 or msbuild.
+- To build from the command line with the Visual Studio 2019 toolchain use:
 
 ```
 msbuild /m umkoin.sln /p:Platform=x64 /p:Configuration=Release /t:build
 ```
+
+- Alternatively open the `build_msvc\umkoin.sln` file in Visual Studio.
 
 AppVeyor
 ---------------------
