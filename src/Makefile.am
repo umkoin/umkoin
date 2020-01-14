@@ -554,12 +554,9 @@ if TARGET_WINDOWS
 umkoind_SOURCES += umkoind-res.rc
 endif
 
-# Libraries below may be listed more than once to resolve circular dependencies (see
-# https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking#circular-dependency)
 umkoind_LDADD = \
   $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_WALLET) \
-  $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_COMMON) \
   $(LIBUNIVALUE) \
   $(LIBUMKOIN_UTIL) \
