@@ -564,9 +564,7 @@ void UmkoinGUI::setClientModel(ClientModel *_clientModel)
         connect(_clientModel, &ClientModel::numBlocksChanged, this, &UmkoinGUI::setNumBlocks);
 
         // Receive and report messages from client model
-        connect(_clientModel, &ClientModel::message, [this](const QString &title, const QString &message, unsigned int style){
-            this->message(title, message, style);
-        });
+        connect(_clientModel, &ClientModel::message, this, &UmkoinGUI::message);
 
         // Show progress dialog
         connect(_clientModel, &ClientModel::showProgress, this, &UmkoinGUI::showProgress);
@@ -1027,7 +1025,7 @@ void UmkoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVeri
     progressBar->setToolTip(tooltip);
 }
 
-void UmkoinGUI::message(const QString& title, QString message, unsigned int style, bool* ret)
+void UmkoinGUI::message(const QString& title, QString message, unsigned int style)
 {
     // Default title. On macOS, the window title is ignored (as required by the macOS Guidelines).
     QString strTitle{PACKAGE_NAME};
@@ -1081,9 +1079,7 @@ void UmkoinGUI::message(const QString& title, QString message, unsigned int styl
         showNormalIfMinimized();
         QMessageBox mBox(static_cast<QMessageBox::Icon>(nMBoxIcon), strTitle, message, buttons, this);
         mBox.setTextFormat(Qt::PlainText);
-        int r = mBox.exec();
-        if (ret != nullptr)
-            *ret = r == QMessageBox::Ok;
+        mBox.exec();
     } else {
         notificator->notify(static_cast<Notificator::Class>(nNotifyIcon), strTitle, message);
     }
