@@ -361,7 +361,9 @@ void UmkoinApplication::initializeResult(bool success)
         if (paymentServer) {
             connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &UmkoinGUI::handlePaymentRequest);
             connect(window, &UmkoinGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
-            connect(paymentServer, &PaymentServer::message, window, &UmkoinGUI::message);
+            connect(paymentServer, &PaymentServer::message, [this](const QString& title, const QString& message, unsigned int style) {
+                window->message(title, message, style);
+            });
             QTimer::singleShot(100, paymentServer, &PaymentServer::uiReady);
         }
 #endif

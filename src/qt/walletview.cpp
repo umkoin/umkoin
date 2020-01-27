@@ -97,7 +97,9 @@ void WalletView::setUmkoinGUI(UmkoinGUI *gui)
         connect(sendCoinsPage, &SendCoinsDialog::coinsSent, gui, &UmkoinGUI::gotoHistoryPage);
 
         // Receive and report messages
-        connect(this, &WalletView::message, gui, &UmkoinGUI::message);
+        connect(this, &WalletView::message, [gui](const QString &title, const QString &message, unsigned int style) {
+            gui->message(title, message, style);
+        });
 
         // Pass through encryption status changed signals
         connect(this, &WalletView::encryptionStatusChanged, gui, &UmkoinGUI::updateWalletStatus);
