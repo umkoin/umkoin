@@ -340,6 +340,27 @@ BOOST_AUTO_TEST_CASE(util_ParseParameters)
     BOOST_CHECK(testArgs.GetArgs("-ccc").size() == 2);
 }
 
+BOOST_AUTO_TEST_CASE(util_ParseInvalidParameters)
+{
+    TestArgsManager test;
+    test.SetupArgs({{"-registered", ArgsManager::ALLOW_ANY}});
+
+    const char* argv[] = {"ignored", "-registered"};
+    std::string error;
+    BOOST_CHECK(test.ParseParameters(2, (char**)argv, error));
+    BOOST_CHECK_EQUAL(error, "");
+
+    argv[1] = "-unregistered";
+    BOOST_CHECK(!test.ParseParameters(2, (char**)argv, error));
+    BOOST_CHECK_EQUAL(error, "Invalid parameter -unregistered");
+
+    // Make sure registered parameters prefixed with a chain name trigger errors.
+    // (Previously, they were accepted and ignored.)
+    argv[1] = "-test.registered";
+    BOOST_CHECK(!test.ParseParameters(2, (char**)argv, error));
+    BOOST_CHECK_EQUAL(error, "Invalid parameter -test.registered");
+}
+
 static void TestParse(const std::string& str, bool expected_bool, int64_t expected_int)
 {
     TestArgsManager test;
@@ -835,7 +856,8 @@ struct ArgsMergeTestingSetup : public BasicTestingSetup {
     void ForEachMergeSetup(Fn&& fn)
     {
         ActionList arg_actions = {};
-        ForEachNoDup(arg_actions, SET, SECTION_NEGATE, [&] {
+        // command_line_options do not have sections. Only iterate over SET and NEGATE
+        ForEachNoDup(arg_actions, SET, NEGATE, [&] {
             ActionList conf_actions = {};
             ForEachNoDup(conf_actions, SET, SECTION_NEGATE, [&] {
                 for (bool soft_set : {false, true}) {

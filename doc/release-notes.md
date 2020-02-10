@@ -98,6 +98,11 @@ Wallet
 Low-level changes
 =================
 
+Command line
+------------
+
+Command line options prefixed with main/test/regtest network names like `-main.port=6333` `-test.server=1` previously were allowed but ignored. Now they trigger "Invalid parameter" errors on startup.
+
 Tests
 -----
 
