@@ -260,7 +260,6 @@ The list of files should be:
 ```
 umkoin-${VERSION}-aarch64-linux-gnu.tar.gz
 umkoin-${VERSION}-arm-linux-gnueabihf.tar.gz
-umkoin-${VERSION}-i686-pc-linux-gnu.tar.gz
 umkoin-${VERSION}-riscv64-linux-gnu.tar.gz
 umkoin-${VERSION}-x86_64-linux-gnu.tar.gz
 umkoin-${VERSION}-osx64.tar.gz
