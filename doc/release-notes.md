@@ -51,17 +51,20 @@ distribution provides binaries for the RISC-V platform.
 - #17258 Fix issue with conflicted mempool tx in listsinceblock (adamjonas)
 - #17924 Bug: IsUsedDestination shouldn't use key id as script id for ScriptHash (instagibbs)
 - #17621 IsUsedDestination should count any known single-key address (instagibbs)
+- #17843 Reset reused transactions cache (fjahr)
 
 ### RPC and other APIs
 - #17687 cli: Fix fatal leveldb error when specifying -blockfilterindex=basic twice (brakmic)
 - #17728 require second argument only for scantxoutset start action (achow101)
 - #17445 zmq: Fix due to invalid argument and multiple notifiers (promag)
 - #17524 psbt: handle unspendable psbts (achow101)
+- #17156 psbt: check that various indexes and amounts are within bounds (achow101)
 
 ### GUI
 - #17427 Fix missing qRegisterMetaType for `size_t` (hebasto)
 - #17695 disable File-\>CreateWallet during startup (fanquake)
 - #17634 Fix comparison function signature (hebasto)
+- #18062 Fix unintialized WalletView::progressDialog (promag)
 
 ### Tests and QA
 - #17416 Appveyor improvement - text file for vcpkg package list (sipsorcery)
@@ -79,6 +82,7 @@ distribution provides binaries for the RISC-V platform.
 - #17654 Unbreak build with Boost 1.72.0 (jbeich)
 - #17857 scripts: Fix symbol-check & security-check argument passing (fanquake)
 - #17762 Log to net category for exceptions in ProcessMessages (laanwj)
+- #18100 Update univalue subtree (MarcoFalke)
 
 Credits
 =======
@@ -88,6 +92,7 @@ Thanks to everyone who directly contributed to this release:
 - Aaron Clauson
 - Adam Jonas
 - Andrew Chow
+- Fabian Jahr
 - fanquake
 - Gregory Sanders
 - Harris
@@ -97,6 +102,7 @@ Thanks to everyone who directly contributed to this release:
 - João Barbosa
 - Karl-Johan Alm
 - Luke Dashjr
+- MarcoFalke
 - Russell Yanofsky
 - Wladimir J. van der Laan
 
