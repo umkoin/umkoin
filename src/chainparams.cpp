@@ -84,10 +84,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000007de3a90456be680e"); //39333
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000e40ca5e2dda138b6"); //68000
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000000023f8b92218fe06ce7e3b5029478e9a144d39b847999ee5899edf"); //39333
+        consensus.defaultAssumeValid = uint256S("0x000000000000f684e1e068dda1924fbd6fb0ddc31607dee86eeafaf40677a1aa"); //68000
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -128,6 +128,7 @@ public:
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         m_is_test_chain = false;
+        m_is_mockable_chain = false;
 
         checkpointData = {
             {
@@ -140,14 +141,15 @@ public:
                 { 22150, uint256S("0x000000000000056e1c71a808187950110f7d2af34b7c33b70bc5aafd81577bbe")},
                 { 23299, uint256S("0x000000000001937d0f8f9abf4c76e147daf4cf2149b66349fe29bac7f90eba16")},
                 { 39332, uint256S("0x0000000000003c265a3cf6a3a29e0ac6ab292a591eddf02f5e1d50abb7394c40")},
+                { 67999, uint256S("0x000000000001972d726acfed45ffb647f7a6da7bdc3ab5288c7b2a82948ac65c")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 4096 0000000000008a6ea2604f9132d52a29b180bbfc22df722943c13cd9a2d7d739
-            /* nTime    */ 1570162201,
-            /* nTxCount */ 303594,
-            /* dTxRate  */ 0.02630684645540277,
+            // Data from rpc: getchaintxstats 4096 000000000001972d726acfed45ffb647f7a6da7bdc3ab5288c7b2a82948ac65c
+            /* nTime    */ 1581848598,
+            /* nTxCount */ 323067,
+            /* dTxRate  */ 0.00162178899216563,
         };
     }
 };
@@ -180,10 +182,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000014cf4110097fb"); //16344
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000dd6a762e6a2aba"); //55000
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000001623f5d83e1cffec76ee446e02f67e5158daca342842e124a7af892b"); //16344
+        consensus.defaultAssumeValid = uint256S("0x00000000062e2ccea12826ce46caeff7e812250362adc67db108dd285585b5b8"); //55000
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -217,7 +219,7 @@ public:
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
         m_is_test_chain = true;
-
+        m_is_mockable_chain = false;
 
         checkpointData = {
             {
@@ -226,14 +228,15 @@ public:
                 {133, uint256S("0x00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce")},
                 {2560, uint256S("0x000000006dc40dec5d9e221e01b88bc9067f62f7a1f9106bac1907b393fa3a9e")},
                 {16344, uint256S("0x000000001623f5d83e1cffec76ee446e02f67e5158daca342842e124a7af892b")},
+                {54999, uint256S("0x00000000015a7e3215de95ec1c0cad52c1de926f71f3f43ce4678a0050f8ed0b")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 4096 0000000000272d8df081061ec7e3dd44fea3f553eea97ccaf2174713fd96d870
-            /* nTime    */ 1570167350,
-            /* nTxCount */ 35467,
-            /* dTxRate  */ 0.003969908714327503,
+            // Data from rpc: getchaintxstats 4096 00000000015a7e3215de95ec1c0cad52c1de926f71f3f43ce4678a0050f8ed0b
+            /* nTime    */ 1581524012,
+            /* nTxCount */ 67520,
+            /* dTxRate  */ 0.002250253950168082,
         };
     }
 };
@@ -293,6 +296,7 @@ public:
         fDefaultConsistencyChecks = true;
         fRequireStandard = true;
         m_is_test_chain = true;
+        m_is_mockable_chain = true;
 
         checkpointData = {
             {
