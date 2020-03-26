@@ -48,7 +48,6 @@ bench_bench_umkoin_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 bench_bench_umkoin_LDADD = \
   $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_WALLET) \
-  $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_COMMON) \
   $(LIBUMKOIN_UTIL) \
   $(LIBUMKOIN_CONSENSUS) \
