@@ -139,7 +139,10 @@ pushd "$TARGET" || exit 1
         fi
         URL="http://umkoin.org/$BIN_PATH/umkoin-${tag:1}-$PLATFORM.tar.gz"
         echo "Fetching: $URL"
-        curl -O $URL
+        if ! curl -O -f $URL; then
+            echo "Download failed."
+            exit 1
+        fi
         tar -zxf "umkoin-${tag:1}-$PLATFORM.tar.gz" -C "$tag" --strip-components=1 "umkoin-${tag:1}"
         rm "umkoin-${tag:1}-$PLATFORM.tar.gz"
       fi
