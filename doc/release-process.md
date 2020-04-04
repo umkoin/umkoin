@@ -44,7 +44,8 @@ Release Process
 
 #### After branch-off (on the major release branch)
 
-- Update the versions and the link to the release notes draft in `doc/release-notes.md`.
+- Update the versions.
+- Create a pinned meta-issue for testing the release candidate and provide a link to it in the release announcements where useful.
 
 #### Before final release
 
@@ -211,7 +212,7 @@ Codesigner only: Commit the detached codesign payloads:
     rm -rf *
     tar xf signature-osx.tar.gz
     tar xf signature-win.tar.gz
-    git add -a
+    git add -A
     git commit -m "point to ${VERSION}"
     git tag -s v${VERSION} HEAD
     git push the current branch and new tag
