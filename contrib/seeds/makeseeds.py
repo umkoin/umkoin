@@ -15,7 +15,7 @@ NSEEDS=512
 
 MAX_SEEDS_PER_ASN=2
 
-MIN_BLOCKS = 64250
+MIN_BLOCKS = 74000
 
 # These are hosts that have been observed to be behaving strangely (e.g.
 # aggressively connecting to every node).
@@ -33,7 +33,8 @@ PATTERN_AGENT = re.compile(
     r"0.16.(0|1|2|3|99)|"
     r"0.17.(0|0.1|1|2|99)|"
     r"0.18.(0|1|99)|"
-    r"0.19.99"
+    r"0.19.(0|1|99)|"
+    r"0.20.99"
     r")")
 
 def parseline(line):
