@@ -5,6 +5,7 @@
 #ifndef UMKOIN_CUCKOOCACHE_H
 #define UMKOIN_CUCKOOCACHE_H
 
+#include <algorithm> // std::find
 #include <array>
 #include <atomic>
 #include <cmath>
