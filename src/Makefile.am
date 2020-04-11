@@ -523,8 +523,11 @@ libumkoin_util_a_SOURCES = \
   util/strencodings.cpp \
   util/string.cpp \
   util/time.cpp \
-  util/url.cpp \
   $(UMKOIN_CORE_H)
+
+if USE_LIBEVENT
+libumkoin_util_a_SOURCES += util/url.cpp
+endif
 
 if GLIBC_BACK_COMPAT
 libumkoin_util_a_SOURCES += compat/glibc_compat.cpp
