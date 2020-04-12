@@ -85,6 +85,10 @@ if BUILD_UMKOIND
   bin_PROGRAMS += umkoind
 endif
 
+if BUILD_UMKOIN_NODE
+  bin_PROGRAMS += umkoin-node
+endif
+
 if BUILD_UMKOIN_CLI
   bin_PROGRAMS += umkoin-cli
 endif
@@ -546,22 +550,22 @@ libumkoin_cli_a_SOURCES = \
 nodist_libumkoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# umkoind binary #
-umkoind_SOURCES = umkoind.cpp
-umkoind_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
-umkoind_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-umkoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# umkoind & umkoin-node binaries #
+umkoin_common_sources = umkoind.cpp
+umkoin_common_cppflags = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+umkoin_common_cxxflags = $(AM_CXXFLAGS) $(PIE_FLAGS)
+umkoin_common_ldflags = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-umkoind_SOURCES += umkoind-res.rc
+umkoin_common_sources += umkoind-res.rc
 endif
 
-umkoind_LDADD = \
+umkoin_common_ldadd = \
   $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_WALLET) \
   $(LIBUMKOIN_COMMON) \
-  $(LIBUNIVALUE) \
   $(LIBUMKOIN_UTIL) \
+  $(LIBUNIVALUE) \
   $(LIBUMKOIN_ZMQ) \
   $(LIBUMKOIN_CONSENSUS) \
   $(LIBUMKOIN_CRYPTO) \
@@ -570,7 +574,19 @@ umkoind_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-umkoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+umkoin_common_ldadd += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+
+umkoind_SOURCES = $(umkoin_common_sources)
+umkoind_CPPFLAGS = $(umkoin_common_cppflags)
+umkoind_CXXFLAGS = $(umkoin_common_cxxflags)
+umkoind_LDFLAGS = $(umkoin_common_ldflags)
+umkoind_LDADD = $(umkoin_common_ldadd)
+
+umkoin_node_SOURCES = $(umkoin_common_sources)
+umkoin_node_CPPFLAGS = $(umkoin_common_cppflags)
+umkoin_node_CXXFLAGS = $(umkoin_common_cxxflags)
+umkoin_node_LDFLAGS = $(umkoin_common_ldflags)
+umkoin_node_LDADD = $(umkoin_common_ldadd)
 
 # umkoin-cli binary #
 umkoin_cli_SOURCES = umkoin-cli.cpp
@@ -614,29 +630,14 @@ umkoin_tx_LDADD += $(BOOST_LIBS)
 
 # umkoin-wallet binary #
 umkoin_wallet_SOURCES = umkoin-wallet.cpp
-umkoin_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
-umkoin_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-umkoin_wallet_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+umkoin_wallet_CPPFLAGS = $(umkoin_common_cppflags)
+umkoin_wallet_CXXFLAGS = $(umkoin_common_cxxflags)
+umkoin_wallet_LDFLAGS = $(umkoin_common_ldflags)
+umkoin_wallet_LDADD = $(LIBUMKOIN_WALLET_TOOL) $(umkoin_common_ldadd)
 
 if TARGET_WINDOWS
 umkoin_wallet_SOURCES += umkoin-wallet-res.rc
 endif
-
-umkoin_wallet_LDADD = \
-  $(LIBUMKOIN_WALLET_TOOL) \
-  $(LIBUMKOIN_WALLET) \
-  $(LIBUMKOIN_COMMON) \
-  $(LIBUMKOIN_CONSENSUS) \
-  $(LIBUMKOIN_UTIL) \
-  $(LIBUMKOIN_CRYPTO) \
-  $(LIBUMKOIN_ZMQ) \
-  $(LIBLEVELDB) \
-  $(LIBLEVELDB_SSE42) \
-  $(LIBMEMENV) \
-  $(LIBSECP256K1) \
-  $(LIBUNIVALUE)
-
-umkoin_wallet_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(ZMQ_LIBS)
 #
 
 # umkoinconsensus library #
