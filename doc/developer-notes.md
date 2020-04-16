@@ -423,27 +423,52 @@ and its `cs_KeyStore` lock for example).
 Threads
 -------
 
-- ThreadScriptCheck : Verifies block scripts.
+- [Main thread (`umkoind`)]
+  : Started from `main()` in `umkoind.cpp`. Responsible for starting up and
+  shutting down the application.
 
-- ThreadImport : Loads blocks from `blk*.dat` files or `-loadblock=<file>`.
+- [ThreadImport (`b-loadblk`)]
+  : Loads blocks from `blk*.dat` files or `-loadblock=<file>` on startup.
 
-- ThreadDNSAddressSeed : Loads addresses of peers from the DNS.
+- [ThreadScriptCheck (`b-scriptch.x`)]
+  : Parallel script validation threads for transactions in blocks.
 
-- ThreadMapPort : Universal plug-and-play startup/shutdown.
+- [ThreadHTTP (`b-http`)]
+  : Libevent thread to listen for RPC and REST connections.
 
-- ThreadSocketHandler : Sends/Receives data from peers on port 6333.
+- [HTTP worker threads(`b-httpworker.x`)]
+  : Threads to service RPC and REST requests.
 
-- ThreadOpenAddedConnections : Opens network connections to added nodes.
+- [Indexer threads (`b-txindex`, etc)]
+  : One thread per indexer.
 
-- ThreadOpenConnections : Initiates new connections to peers.
+- [SchedulerThread (`b-scheduler`)]
+  : Does asynchronous background tasks like dumping wallet contents, dumping
+  addrman and running asynchronous validationinterface callbacks.
 
-- ThreadMessageHandler : Higher-level message handling (sending and receiving).
+- [TorControlThread (`b-torcontrol`)]
+  : Libevent thread for tor connections.
 
-- DumpAddresses : Dumps IP addresses of nodes to `peers.dat`.
+- Net threads:
 
-- ThreadRPCServer : Remote procedure call handler, listens on port 6332 for connections and services them.
+  - [ThreadMessageHandler (`b-msghand`)]
+    : Application level message handling (sending and receiving). Almost
+    all net_processing and validation logic runs on this thread.
 
-- Shutdown : Does an orderly shutdown of everything.
+  - [ThreadDNSAddressSeed (`b-dnsseed`)]
+    : Loads addresses of peers from the DNS.
+
+  - [ThreadMapPort (`b-upnp`)]
+    : Universal plug-and-play startup/shutdown.
+
+  - [ThreadSocketHandler (`b-net`)]
+    : Sends/Receives data from peers on port 6333.
+
+  - [ThreadOpenAddedConnections (`b-addcon`)]
+    : Opens network connections to added nodes.
+
+  - [ThreadOpenConnections (`b-opencon`)]
+    : Initiates new connections to peers.
 
 Ignoring IDE/editor files
 --------------------------
