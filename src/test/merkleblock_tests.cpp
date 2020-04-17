@@ -1,10 +1,10 @@
-// Copyright (c) 2012-2019 The Bitcoin Core developers
+// Copyright (c) 2012-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <merkleblock.h>
-#include <uint256.h>
 #include <test/util/setup_common.h>
+#include <uint256.h>
 
 #include <boost/test/unit_test.hpp>
 
@@ -37,10 +37,10 @@ BOOST_AUTO_TEST_CASE(merkleblock_construct_from_txids_found)
     std::vector<unsigned int> vIndex;
 
     BOOST_CHECK_EQUAL(merkleBlock.txn.ExtractMatches(vMatched, vIndex).GetHex(), block.hashMerkleRoot.GetHex());
-    BOOST_CHECK_EQUAL(vMatched.size(), 1U);
+    BOOST_CHECK_EQUAL(vMatched.size(), 2U);
 
     // Ordered by occurrence in depth-first tree traversal.
-    BOOST_CHECK_EQUAL(vMatched[0].ToString(), txhash1.ToString());
+    BOOST_CHECK_EQUAL(vMatched[0].ToString(), txhash2.ToString());
     BOOST_CHECK_EQUAL(vIndex[0], 1U);
 
     BOOST_CHECK_EQUAL(vMatched[1].ToString(), txhash1.ToString());
