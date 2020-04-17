@@ -27,6 +27,7 @@ BOOST_AUTO_TEST_CASE(bloom_create_insert_serialize)
 {
     CBloomFilter filter(3, 0.01, 0, BLOOM_UPDATE_ALL);
 
+    BOOST_CHECK_MESSAGE( !filter.contains(ParseHex("99108ad8ed9bb6274d3980bab5a85c048f0950c8")), "Bloom filter should be empty!");
     filter.insert(ParseHex("99108ad8ed9bb6274d3980bab5a85c048f0950c8"));
     BOOST_CHECK_MESSAGE( filter.contains(ParseHex("99108ad8ed9bb6274d3980bab5a85c048f0950c8")), "Bloom filter doesn't contain just-inserted object!");
     // One bit different in first byte
@@ -50,8 +51,6 @@ BOOST_AUTO_TEST_CASE(bloom_create_insert_serialize)
     BOOST_CHECK_EQUAL_COLLECTIONS(stream.begin(), stream.end(), expected.begin(), expected.end());
 
     BOOST_CHECK_MESSAGE( filter.contains(ParseHex("99108ad8ed9bb6274d3980bab5a85c048f0950c8")), "Bloom filter doesn't contain just-inserted object!");
-    filter.clear();
-    BOOST_CHECK_MESSAGE( !filter.contains(ParseHex("99108ad8ed9bb6274d3980bab5a85c048f0950c8")), "Bloom filter should be empty!");
 }
 
 BOOST_AUTO_TEST_CASE(bloom_create_insert_serialize_with_tweak)
@@ -186,7 +185,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_1)
     BOOST_CHECK_EQUAL(merkleBlock.header.GetHash().GetHex(), block.GetHash().GetHex());
 
     BOOST_CHECK_EQUAL(merkleBlock.vMatchedTxn.size(), 1U);
-    // std::pair<unsigned int, uint256> pair = merkleBlock.vMatchedTxn[0];
+    std::pair<unsigned int, uint256> pair = merkleBlock.vMatchedTxn[0];
 
     BOOST_CHECK(merkleBlock.vMatchedTxn[0].second == uint256S("0xd835b3569caa823c793b01b8c2070f03a1aaba90895cae57a7035c435b5dbd2a"));
     BOOST_CHECK(merkleBlock.vMatchedTxn[0].first == 0);
@@ -215,7 +214,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_2)
     BOOST_CHECK(merkleBlock.header.GetHash() == block.GetHash());
 
     BOOST_CHECK(merkleBlock.vMatchedTxn.size() == 1);
-    // std::pair<unsigned int, uint256> pair = merkleBlock.vMatchedTxn[0];
+    std::pair<unsigned int, uint256> pair = merkleBlock.vMatchedTxn[0];
 
     BOOST_CHECK(merkleBlock.vMatchedTxn[0].second == uint256S("0x4adde64f1dee6d3807f6c5c20304f8a0a90215a86f1226beac0f8407c8e5f56b"));
     BOOST_CHECK(merkleBlock.vMatchedTxn[0].first == 0);
