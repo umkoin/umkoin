@@ -37,14 +37,11 @@ BOOST_AUTO_TEST_CASE(merkleblock_construct_from_txids_found)
     std::vector<unsigned int> vIndex;
 
     BOOST_CHECK_EQUAL(merkleBlock.txn.ExtractMatches(vMatched, vIndex).GetHex(), block.hashMerkleRoot.GetHex());
-    BOOST_CHECK_EQUAL(vMatched.size(), 2U);
+    BOOST_CHECK_EQUAL(vMatched.size(), 1U);
 
     // Ordered by occurrence in depth-first tree traversal.
-    BOOST_CHECK_EQUAL(vMatched[0].ToString(), txhash2.ToString());
+    BOOST_CHECK_EQUAL(vMatched[0].ToString(), txhash1.ToString());
     BOOST_CHECK_EQUAL(vIndex[0], 1U);
-
-    BOOST_CHECK_EQUAL(vMatched[1].ToString(), txhash1.ToString());
-    BOOST_CHECK_EQUAL(vIndex[1], 8U);
 }
 
 
