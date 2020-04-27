@@ -161,20 +161,27 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
 {
     int unit = walletModel->getOptionsModel()->getDisplayUnit();
     m_balances = balances;
-    if (walletModel->wallet().privateKeysDisabled()) {
-        ui->labelBalance->setText(UmkoinUnits::formatWithUnit(unit, balances.watch_only_balance, false, UmkoinUnits::separatorAlways));
-        ui->labelUnconfirmed->setText(UmkoinUnits::formatWithUnit(unit, balances.unconfirmed_watch_only_balance, false, UmkoinUnits::separatorAlways));
-        ui->labelImmature->setText(UmkoinUnits::formatWithUnit(unit, balances.immature_watch_only_balance, false, UmkoinUnits::separatorAlways));
-        ui->labelTotal->setText(UmkoinUnits::formatWithUnit(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, false, UmkoinUnits::separatorAlways));
+    if (walletModel->wallet().isLegacy()) {
+        if (walletModel->wallet().privateKeysDisabled()) {
+            ui->labelBalance->setText(UmkoinUnits::formatWithUnit(unit, balances.watch_only_balance, false, UmkoinUnits::separatorAlways));
+            ui->labelUnconfirmed->setText(UmkoinUnits::formatWithUnit(unit, balances.unconfirmed_watch_only_balance, false, UmkoinUnits::separatorAlways));
+            ui->labelImmature->setText(UmkoinUnits::formatWithUnit(unit, balances.immature_watch_only_balance, false, UmkoinUnits::separatorAlways));
+            ui->labelTotal->setText(UmkoinUnits::formatWithUnit(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, false, UmkoinUnits::separatorAlways));
+        } else {
+            ui->labelBalance->setText(UmkoinUnits::formatWithUnit(unit, balances.balance, false, UmkoinUnits::separatorAlways));
+            ui->labelUnconfirmed->setText(UmkoinUnits::formatWithUnit(unit, balances.unconfirmed_balance, false, UmkoinUnits::separatorAlways));
+            ui->labelImmature->setText(UmkoinUnits::formatWithUnit(unit, balances.immature_balance, false, UmkoinUnits::separatorAlways));
+            ui->labelTotal->setText(UmkoinUnits::formatWithUnit(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, false, UmkoinUnits::separatorAlways));
+            ui->labelWatchAvailable->setText(UmkoinUnits::formatWithUnit(unit, balances.watch_only_balance, false, UmkoinUnits::separatorAlways));
+            ui->labelWatchPending->setText(UmkoinUnits::formatWithUnit(unit, balances.unconfirmed_watch_only_balance, false, UmkoinUnits::separatorAlways));
+            ui->labelWatchImmature->setText(UmkoinUnits::formatWithUnit(unit, balances.immature_watch_only_balance, false, UmkoinUnits::separatorAlways));
+            ui->labelWatchTotal->setText(UmkoinUnits::formatWithUnit(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, false, UmkoinUnits::separatorAlways));
+        }
     } else {
         ui->labelBalance->setText(UmkoinUnits::formatWithUnit(unit, balances.balance, false, UmkoinUnits::separatorAlways));
         ui->labelUnconfirmed->setText(UmkoinUnits::formatWithUnit(unit, balances.unconfirmed_balance, false, UmkoinUnits::separatorAlways));
         ui->labelImmature->setText(UmkoinUnits::formatWithUnit(unit, balances.immature_balance, false, UmkoinUnits::separatorAlways));
         ui->labelTotal->setText(UmkoinUnits::formatWithUnit(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, false, UmkoinUnits::separatorAlways));
-        ui->labelWatchAvailable->setText(UmkoinUnits::formatWithUnit(unit, balances.watch_only_balance, false, UmkoinUnits::separatorAlways));
-        ui->labelWatchPending->setText(UmkoinUnits::formatWithUnit(unit, balances.unconfirmed_watch_only_balance, false, UmkoinUnits::separatorAlways));
-        ui->labelWatchImmature->setText(UmkoinUnits::formatWithUnit(unit, balances.immature_watch_only_balance, false, UmkoinUnits::separatorAlways));
-        ui->labelWatchTotal->setText(UmkoinUnits::formatWithUnit(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, false, UmkoinUnits::separatorAlways));
     }
     // only show immature (newly mined) balance if it's non-zero, so as not to complicate things
     // for the non-mining users
