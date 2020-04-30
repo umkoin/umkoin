@@ -17,20 +17,18 @@ else
 fi
 END_FOLD
 
-DOCKER_EXEC mkdir -p build
-export P_CI_DIR="$P_CI_DIR/build"
+DOCKER_EXEC mkdir -p "${BASE_BUILD_DIR}"
+export P_CI_DIR="${BASE_BUILD_DIR}"
 
 BEGIN_FOLD configure
-DOCKER_EXEC ../configure --cache-file=config.cache $UMKOIN_CONFIG_ALL $UMKOIN_CONFIG || ( (DOCKER_EXEC cat config.log) && false)
+DOCKER_EXEC "${BASE_ROOT_DIR}/configure" --cache-file=config.cache $UMKOIN_CONFIG_ALL $UMKOIN_CONFIG || ( (DOCKER_EXEC cat config.log) && false)
 END_FOLD
 
 BEGIN_FOLD distdir
-# Create folder on host and docker, so that `cd` works
-mkdir -p "umkoin-$HOST"
 DOCKER_EXEC make distdir VERSION=$HOST
 END_FOLD
 
-export P_CI_DIR="$P_CI_DIR/umkoin-$HOST"
+export P_CI_DIR="${BASE_BUILD_DIR}/umkoin-$HOST"
 
 BEGIN_FOLD configure
 DOCKER_EXEC ./configure --cache-file=../config.cache $UMKOIN_CONFIG_ALL $UMKOIN_CONFIG || ( (DOCKER_EXEC cat config.log) && false)
