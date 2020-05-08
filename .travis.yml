@@ -106,7 +106,7 @@ jobs:
       env: >-
         DANGER_RUN_CI_ON_HOST=true
         CI_USE_APT_INSTALL=no
-        FILE_ENV="./ci/test/00_setup_env_s390x_host.sh"
+        FILE_ENV="./ci/test/00_setup_env_s390x.sh"
 
 # s390 build was disabled temporarily because of disk space issues on the Travis VM
 #
