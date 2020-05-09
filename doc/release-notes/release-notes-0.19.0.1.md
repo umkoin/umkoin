@@ -1,6 +1,6 @@
 Umkoin Core version 0.19.0.1 is now available from:
 
-  <https://bitcoincore.org/bin/bitcoin-core-0.19.0.1/>
+  <http://www.umkoin.org/bin/umkoin-core-0.19.0.1/>
 
 This release includes new features, various bug fixes and performance
 improvements, as well as updated translations.

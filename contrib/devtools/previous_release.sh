@@ -133,9 +133,9 @@ pushd "$TARGET" || exit 1
       else
         mkdir "$tag"
         if [[ "$tag" =~ v(.*)(rc[0-9]+)$ ]]; then
-            BIN_PATH="bin/bitcoin-core-${BASH_REMATCH[1]}/test.${BASH_REMATCH[2]}"
+            BIN_PATH="bin/umkoin-core-${BASH_REMATCH[1]}/test.${BASH_REMATCH[2]}"
         else
-            BIN_PATH="bin/bitcoin-core-${tag:1}"
+            BIN_PATH="bin/umkoin-core-${tag:1}"
         fi
         URL="http://umkoin.org/$BIN_PATH/umkoin-${tag:1}-$PLATFORM.tar.gz"
         echo "Fetching: $URL"
