@@ -17,7 +17,7 @@ class UmkoinAddressEntryValidator : public QValidator
 public:
     explicit UmkoinAddressEntryValidator(QObject *parent);
 
-    State validate(QString &input, int &pos) const;
+    State validate(QString &input, int &pos) const override;
 };
 
 /** Umkoin address widget validator, checks for a valid umkoin address.
@@ -29,7 +29,7 @@ class UmkoinAddressCheckValidator : public QValidator
 public:
     explicit UmkoinAddressCheckValidator(QObject *parent);
 
-    State validate(QString &input, int &pos) const;
+    State validate(QString &input, int &pos) const override;
 };
 
 #endif // UMKOIN_QT_UMKOINADDRESSVALIDATOR_H
