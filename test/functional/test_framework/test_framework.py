@@ -185,8 +185,18 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         config = configparser.ConfigParser()
         config.read_file(open(self.options.configfile))
         self.config = config
-        self.options.umkoind = os.getenv("UMKOIND", default=config["environment"]["BUILDDIR"] + '/src/umkoind' + config["environment"]["EXEEXT"])
-        self.options.umkoincli = os.getenv("UMKOINCLI", default=config["environment"]["BUILDDIR"] + '/src/umkoin-cli' + config["environment"]["EXEEXT"])
+        fname_umkoind = os.path.join(
+            config["environment"]["BUILDDIR"],
+            "src",
+            "umkoind" + config["environment"]["EXEEXT"]
+        )
+        fname_umkoincli = os.path.join(
+            config["environment"]["BUILDDIR"],
+            "src",
+            "umkoin-cli" + config["environment"]["EXEEXT"]
+        )
+        self.options.umkoind = os.getenv("UMKOIND", default=fname_umkoind)
+        self.options.umkoincli = os.getenv("UMKOINCLI", default=fname_umkoincli)
 
         self.options.previous_releases_path = os.getenv("PREVIOUS_RELEASES_DIR") or os.getcwd() + "/releases"
 
