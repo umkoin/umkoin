@@ -102,7 +102,9 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         self.bind_to_localhost_only = True
         self.set_test_params()
         self.parse_args()
-        self.rpc_timeout = int(self.rpc_timeout * self.options.factor) # optionally, increase timeout by a factor
+        if self.options.timeout_factor == 0 :
+            self.options.timeout_factor = 99999
+        self.rpc_timeout = int(self.rpc_timeout * self.options.timeout_factor) # optionally, increase timeout by a factor
 
     def main(self):
         """Main function. This should not be overridden by the subclass test scripts."""
@@ -169,7 +171,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
                             help="set a random seed for deterministically reproducing a previous test run")
         parser.add_argument("--descriptors", default=False, action="store_true",
                             help="Run test using a descriptor wallet")
-        parser.add_argument('--factor', type=float, default=1.0, help='adjust test timeouts by a factor')
+        parser.add_argument('--timeout-factor', dest="timeout_factor", type=float, default=1.0, help='adjust test timeouts by a factor. Setting it to 0 disables all timeouts')
         self.add_options(parser)
         self.options = parser.parse_args()
 
@@ -445,7 +447,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
                 chain=self.chain,
                 rpchost=rpchost,
                 timewait=self.rpc_timeout,
-                factor=self.options.factor,
+                timeout_factor=self.options.timeout_factor,
                 umkoind=binary[i],
                 umkoin_cli=binary_cli[i],
                 version=versions[i],
@@ -592,7 +594,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
                     extra_args=['-disablewallet'],
                     rpchost=None,
                     timewait=self.rpc_timeout,
-                    factor=self.options.factor,
+                    timeout_factor=self.options.timeout_factor,
                     umkoind=self.options.umkoind,
                     umkoin_cli=self.options.umkoincli,
                     coverage_dir=None,
