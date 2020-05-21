@@ -46,16 +46,7 @@ public:
     std::string GetCommand() const;
     bool IsValid(const MessageStartChars& messageStart) const;
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action)
-    {
-        READWRITE(pchMessageStart);
-        READWRITE(pchCommand);
-        READWRITE(nMessageSize);
-        READWRITE(pchChecksum);
-    }
+    SERIALIZE_METHODS(CMessageHeader, obj) { READWRITE(obj.pchMessageStart, obj.pchCommand, obj.nMessageSize, obj.pchChecksum); }
 
     char pchMessageStart[MESSAGE_START_SIZE];
     char pchCommand[COMMAND_SIZE];
@@ -72,100 +63,100 @@ namespace NetMsgType {
 /**
  * The version message provides information about the transmitting node to the
  * receiving node at the beginning of a connection.
- * @see http://www.umkoin.org/en/developer-reference.php#version
+ * @see http://umkoin.org/en/developer-reference#version
  */
 extern const char* VERSION;
 /**
  * The verack message acknowledges a previously-received version message,
  * informing the connecting node that it can begin to send other messages.
- * @see http://www.umkoin.org/en/developer-reference.php#verack
+ * @see http://umkoin.org/en/developer-reference#verack
  */
 extern const char* VERACK;
 /**
  * The addr (IP address) message relays connection information for peers on the
  * network.
- * @see http://www.umkoin.org/en/developer-reference.php#addr
+ * @see http://umkoin.org/en/developer-reference#addr
  */
 extern const char* ADDR;
 /**
  * The inv message (inventory message) transmits one or more inventories of
  * objects known to the transmitting peer.
- * @see http://www.umkoin.org/en/developer-reference.php#inv
+ * @see http://umkoin.org/en/developer-reference#inv
  */
 extern const char* INV;
 /**
  * The getdata message requests one or more data objects from another node.
- * @see http://www.umkoin.org/en/developer-reference.php#getdata
+ * @see http://umkoin.org/en/developer-reference#getdata
  */
 extern const char* GETDATA;
 /**
  * The merkleblock message is a reply to a getdata message which requested a
  * block using the inventory type MSG_MERKLEBLOCK.
  * @since protocol version 70001 as described by BIP37.
- * @see http://www.umkoin.org/en/developer-reference.php#merkleblock
+ * @see http://umkoin.org/en/developer-reference#merkleblock
  */
 extern const char* MERKLEBLOCK;
 /**
  * The getblocks message requests an inv message that provides block header
  * hashes starting from a particular point in the block chain.
- * @see http://www.umkoin.org/en/developer-reference.php#getblocks
+ * @see http://umkoin.org/en/developer-reference#getblocks
  */
 extern const char* GETBLOCKS;
 /**
  * The getheaders message requests a headers message that provides block
  * headers starting from a particular point in the block chain.
  * @since protocol version 31800.
- * @see http://www.umkoin.org/en/developer-reference.php#getheaders
+ * @see http://umkoin.org/en/developer-reference#getheaders
  */
 extern const char* GETHEADERS;
 /**
  * The tx message transmits a single transaction.
- * @see http://www.umkoin.org/en/developer-reference.php#tx
+ * @see http://umkoin.org/en/developer-reference#tx
  */
 extern const char* TX;
 /**
  * The headers message sends one or more block headers to a node which
  * previously requested certain headers with a getheaders message.
  * @since protocol version 31800.
- * @see http://www.umkoin.org/en/developer-reference.php#headers
+ * @see http://umkoin.org/en/developer-reference#headers
  */
 extern const char* HEADERS;
 /**
  * The block message transmits a single serialized block.
- * @see http://www.umkoin.org/en/developer-reference.php#block
+ * @see http://umkoin.org/en/developer-reference#block
  */
 extern const char* BLOCK;
 /**
  * The getaddr message requests an addr message from the receiving node,
  * preferably one with lots of IP addresses of other receiving nodes.
- * @see http://www.umkoin.org/en/developer-reference.php#getaddr
+ * @see http://umkoin.org/en/developer-reference#getaddr
  */
 extern const char* GETADDR;
 /**
  * The mempool message requests the TXIDs of transactions that the receiving
  * node has verified as valid but which have not yet appeared in a block.
  * @since protocol version 60002.
- * @see http://www.umkoin.org/en/developer-reference.php#mempool
+ * @see http://umkoin.org/en/developer-reference#mempool
  */
 extern const char* MEMPOOL;
 /**
  * The ping message is sent periodically to help confirm that the receiving
  * peer is still connected.
- * @see http://www.umkoin.org/en/developer-reference.php#ping
+ * @see http://umkoin.org/en/developer-reference#ping
  */
 extern const char* PING;
 /**
  * The pong message replies to a ping message, proving to the pinging node that
  * the ponging node is still alive.
  * @since protocol version 60001 as described by BIP31.
- * @see http://www.umkoin.org/en/developer-reference.php#pong
+ * @see http://umkoin.org/en/developer-reference#pong
  */
 extern const char* PONG;
 /**
  * The notfound message is a reply to a getdata message which requested an
  * object the receiving node does not have available for relay.
  * @since protocol version 70001.
- * @see http://www.umkoin.org/en/developer-reference.php#notfound
+ * @see http://umkoin.org/en/developer-reference#notfound
  */
 extern const char* NOTFOUND;
 /**
@@ -174,7 +165,7 @@ extern const char* NOTFOUND;
  * @since protocol version 70001 as described by BIP37.
  *   Only available with service bit NODE_BLOOM since protocol version
  *   70011 as described by BIP111.
- * @see http://www.umkoin.org/en/developer-reference.php#filterload
+ * @see http://umkoin.org/en/developer-reference#filterload
  */
 extern const char* FILTERLOAD;
 /**
@@ -183,7 +174,7 @@ extern const char* FILTERLOAD;
  * @since protocol version 70001 as described by BIP37.
  *   Only available with service bit NODE_BLOOM since protocol version
  *   70011 as described by BIP111.
- * @see http://www.umkoin.org/en/developer-reference.php#filteradd
+ * @see http://umkoin.org/en/developer-reference#filteradd
  */
 extern const char* FILTERADD;
 /**
@@ -192,14 +183,14 @@ extern const char* FILTERADD;
  * @since protocol version 70001 as described by BIP37.
  *   Only available with service bit NODE_BLOOM since protocol version
  *   70011 as described by BIP111.
- * @see http://www.umkoin.org/en/developer-reference.php#filterclear
+ * @see http://umkoin.org/en/developer-reference#filterclear
  */
 extern const char* FILTERCLEAR;
 /**
  * Indicates that a node prefers to receive new block announcements via a
  * "headers" message rather than an "inv".
  * @since protocol version 70012 as described by BIP130.
- * @see http://www.umkoin.org/en/developer-reference.php#sendheaders
+ * @see http://umkoin.org/en/developer-reference#sendheaders
  */
 extern const char* SENDHEADERS;
 /**
@@ -343,23 +334,19 @@ public:
 
     void Init();
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action)
+    SERIALIZE_METHODS(CAddress, obj)
     {
-        if (ser_action.ForRead())
-            Init();
+        SER_READ(obj, obj.Init());
         int nVersion = s.GetVersion();
-        if (s.GetType() & SER_DISK)
+        if (s.GetType() & SER_DISK) {
             READWRITE(nVersion);
+        }
         if ((s.GetType() & SER_DISK) ||
-            (nVersion >= CADDR_TIME_VERSION && !(s.GetType() & SER_GETHASH)))
-            READWRITE(nTime);
-        uint64_t nServicesInt = nServices;
-        READWRITE(nServicesInt);
-        nServices = static_cast<ServiceFlags>(nServicesInt);
-        READWRITEAS(CService, *this);
+            (nVersion >= CADDR_TIME_VERSION && !(s.GetType() & SER_GETHASH))) {
+            READWRITE(obj.nTime);
+        }
+        READWRITE(Using<CustomUintFormatter<8>>(obj.nServices));
+        READWRITEAS(CService, obj);
     }
 
     ServiceFlags nServices;
@@ -395,14 +382,7 @@ public:
     CInv();
     CInv(int typeIn, const uint256& hashIn);
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action)
-    {
-        READWRITE(type);
-        READWRITE(hash);
-    }
+    SERIALIZE_METHODS(CInv, obj) { READWRITE(obj.type, obj.hash); }
 
     friend bool operator<(const CInv& a, const CInv& b);
 
