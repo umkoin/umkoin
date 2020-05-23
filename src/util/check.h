@@ -5,6 +5,10 @@
 #ifndef UMKOIN_UTIL_CHECK_H
 #define UMKOIN_UTIL_CHECK_H
 
+#if defined(HAVE_CONFIG_H)
+#include <config/umkoin-config.h>
+#endif
+
 #include <tinyformat.h>
 
 #include <stdexcept>
