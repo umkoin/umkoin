@@ -84,5 +84,6 @@
         <file alias="zh_CN">locale/umkoin_zh_CN.qm</file>
         <file alias="zh_HK">locale/umkoin_zh_HK.qm</file>
         <file alias="zh_TW">locale/umkoin_zh_TW.qm</file>
+        <file alias="zu">locale/umkoin_zu.qm</file>
     </qresource>
 </RCC>

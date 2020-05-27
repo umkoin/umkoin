@@ -82,4 +82,5 @@ QT_TS = \
   qt/locale/umkoin_zh.ts \
   qt/locale/umkoin_zh_CN.ts \
   qt/locale/umkoin_zh_HK.ts \
-  qt/locale/umkoin_zh_TW.ts
+  qt/locale/umkoin_zh_TW.ts \
+  qt/locale/umkoin_zu.ts
