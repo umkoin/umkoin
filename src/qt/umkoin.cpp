@@ -212,8 +212,6 @@ UmkoinApplication::~UmkoinApplication()
 
     delete window;
     window = nullptr;
-    delete optionsModel;
-    optionsModel = nullptr;
     delete platformStyle;
     platformStyle = nullptr;
 }
@@ -227,7 +225,7 @@ void UmkoinApplication::createPaymentServer()
 
 void UmkoinApplication::createOptionsModel(bool resetSettings)
 {
-    optionsModel = new OptionsModel(m_node, nullptr, resetSettings);
+    optionsModel = new OptionsModel(m_node, this, resetSettings);
 }
 
 void UmkoinApplication::createWindow(const NetworkStyle *networkStyle)
