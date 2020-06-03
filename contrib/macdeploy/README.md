@@ -20,11 +20,11 @@ An Apple ID is needed to download this.
 
 `Xcode.app` is packaged in a `.xip` archive.
 This makes the SDK less-trivial to extract on non-macOS machines.
-One approach (tested on Debian Buster) is outlined below:
+One approach (tested on Ubuntu Focal) is outlined below:
 
 ```bash
 
-apt install clang cpio git liblzma-dev libxml2-dev libssl-dev make
+apt install clang cpio git libbz2-dev liblzma-dev libxml2-dev libssl-dev zlib1g-dev make
 
 git clone https://github.com/tpoechtrager/xar
 pushd xar/xar
