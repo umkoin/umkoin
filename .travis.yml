@@ -170,6 +170,6 @@ jobs:
           - ccache
           - zeromq
       env: >-
-        DANGER_RUN_CI_ON_HOST=false
+        DANGER_RUN_CI_ON_HOST=true
         CI_USE_APT_INSTALL=no
         FILE_ENV="./ci/test/00_setup_env_mac_host.sh"
