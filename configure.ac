@@ -158,7 +158,7 @@ AC_ARG_ENABLE([extended-functional-tests],
 
 AC_ARG_ENABLE([fuzz],
     AS_HELP_STRING([--enable-fuzz],
-    [Enable building of fuzz targets (default no). Enabling this will disable all other targets],
+    [Enable building of fuzz targets (default no). Enabling this will disable all other targets]),
     [enable_fuzz=$enableval],
     [enable_fuzz=no])
 
