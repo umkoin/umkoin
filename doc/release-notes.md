@@ -5,6 +5,9 @@ template to create the initial release notes draft.*
 [/doc/developer-notes.md#release-notes](/doc/developer-notes.md#release-notes)
 for the process.*
 
+*Create the draft, named* "*version* Release Notes Draft"
+*(e.g. "0.20.0 Release Notes Draft")*
+
 *Before the final release, move the notes back to this git repository.*
 
 *version* Release Notes Draft
@@ -84,6 +87,9 @@ Build System
 
 Updated settings
 ----------------
+
+- The `-debug=db` logging category, which was deprecated in 0.20 and replaced by
+  `-debug=walletdb` to distinguish it from `coindb`, has been removed. (#19202)
 
 Changes to Wallet or GUI related settings can be found in the GUI or Wallet  section below.
 
