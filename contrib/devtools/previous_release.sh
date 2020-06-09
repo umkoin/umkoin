@@ -137,7 +137,7 @@ pushd "$TARGET" || exit 1
         else
             BIN_PATH="bin/umkoin-core-${tag:1}"
         fi
-        URL="http://umkoin.org/$BIN_PATH/umkoin-${tag:1}-$PLATFORM.tar.gz"
+        URL="http://www.umkoin.org/$BIN_PATH/umkoin-${tag:1}-$PLATFORM.tar.gz"
         echo "Fetching: $URL"
         if ! curl -O -f $URL; then
             echo "Download failed."
