@@ -1139,7 +1139,7 @@ else
   UMKOIN_QT_INIT
 
   dnl sets $umkoin_enable_qt, $umkoin_enable_qt_test, $umkoin_enable_qt_dbus
-  UMKOIN_QT_CONFIGURE([$use_pkgconfig])
+  UMKOIN_QT_CONFIGURE
 fi
 
 if test x$enable_wallet != xno; then
