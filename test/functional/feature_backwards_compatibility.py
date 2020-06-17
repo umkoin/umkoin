@@ -6,7 +6,7 @@
 
 Test various backwards compatibility scenarios. Download the previous node binaries:
 
-contrib/devtools/previous_release.sh -b v0.19.1 v0.18.1 v0.17.1
+contrib/devtools/previous_release.sh -b v0.19.1 v0.18.1
 
 v0.15.2 is not required by this test, but it is used in wallet_upgradewallet.py.
 Due to a hardfork in regtest, it can't be used to sync nodes.
@@ -26,7 +26,6 @@ from test_framework.test_framework import UmkoinTestFramework
 from test_framework.descriptors import descsum_create
 
 from test_framework.util import (
-    adjust_umkoin_conf_for_pre_17,
     assert_equal,
     sync_blocks,
     sync_mempools,
@@ -60,8 +59,6 @@ class BackwardsCompatibilityTest(UmkoinTestFramework):
             170100,
             160300,
         ])
-        # adapt umkoin.conf, because older umkoind's don't recognize config sections
-        adjust_umkoin_conf_for_pre_17(self.nodes[5].umkoinconf)
 
         self.start_nodes()
 

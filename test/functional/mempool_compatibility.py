@@ -16,9 +16,7 @@ Only v0.15.2 is required by this test. The rest is used in other backwards compa
 import os
 
 from test_framework.test_framework import UmkoinTestFramework
-from test_framework.util import (
-    adjust_umkoin_conf_for_pre_17
-)
+
 
 class MempoolCompatibilityTest(UmkoinTestFramework):
     def set_test_params(self):
@@ -33,7 +31,6 @@ class MempoolCompatibilityTest(UmkoinTestFramework):
             150200, # oldest version supported by the test framework
             None,
         ])
-        adjust_umkoin_conf_for_pre_17(self.nodes[0].umkoinconf)
         self.start_nodes()
         self.import_deterministic_coinbase_privkeys()
 

@@ -6,7 +6,7 @@
 
 Test upgradewallet RPC. Download node binaries:
 
-contrib/devtools/previous_release.sh -b v0.19.1 v0.18.1 v0.17.1
+contrib/devtools/previous_release.sh -b v0.19.1 v0.18.1
 
 Only v0.15.2 and v0.16.3 are required by this test. The others are used in feature_backwards_compatibility.py
 """
@@ -16,7 +16,6 @@ import shutil
 
 from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import (
-    adjust_umkoin_conf_for_pre_17,
     assert_equal,
     assert_greater_than,
     assert_is_hex_string,
@@ -46,9 +45,6 @@ class UpgradeWalletTest(UmkoinTestFramework):
             160300,
             150200,
         ])
-        # adapt umkoin.conf, because older umkoind's don't recognize config sections
-        adjust_umkoin_conf_for_pre_17(self.nodes[1].umkoinconf)
-        adjust_umkoin_conf_for_pre_17(self.nodes[2].umkoinconf)
         self.start_nodes()
 
     def dumb_sync_blocks(self):
