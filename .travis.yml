@@ -103,22 +103,22 @@ jobs:
       env: >-
         FILE_ENV="./ci/test/00_setup_env_win64.sh"
 
-#    - stage: test
-#      name: '32-bit + dash  [GOAL: install]  [CentOS 7]  [gui]'
-#      env: >-
-#        FILE_ENV="./ci/test/00_setup_env_i686_centos.sh"
+    - stage: test
+      name: '32-bit + dash  [GOAL: install]  [CentOS 7]  [gui]'
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_i686_centos.sh"
 
     - stage: test
       name: 'x86_64 Linux  [GOAL: install]  [bionic]  [C++17, previous releases, uses qt5 dev package and some depends packages] [unsigned char]'
       env: >-
         FILE_ENV="./ci/test/00_setup_env_native_qt5.sh"
 
-#    - stage: test
-#      name: 'x86_64 Linux  [GOAL: install]  [focal]  [no depends, sanitizers: thread (TSan), no gui]'
-#      # Not enough memory on travis machines, so feature_block is excluded for now
-#      env: >-
-#        TEST_RUNNER_EXTRA="--exclude feature_block"
-#        FILE_ENV="./ci/test/00_setup_env_native_tsan.sh"
+    - stage: test
+      name: 'x86_64 Linux  [GOAL: install]  [focal]  [no depends, sanitizers: thread (TSan), no gui]'
+      # Not enough memory on travis machines, so feature_block is excluded for now
+      env: >-
+        TEST_RUNNER_EXTRA="--exclude feature_block"
+        FILE_ENV="./ci/test/00_setup_env_native_tsan.sh"
 
     - stage: test
       name: 'x86_64 Linux  [GOAL: install]  [bionic]  [no depends, only system libs, sanitizers: address/leak (ASan + LSan) + undefined (UBSan) + integer]'
