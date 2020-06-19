@@ -188,7 +188,7 @@ QString formatUmkoinURI(const SendCoinsRecipient &info)
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(UmkoinUnits::format(UmkoinUnits::UMK, info.amount, false, UmkoinUnits::separatorNever));
+        ret += QString("?amount=%1").arg(UmkoinUnits::format(UmkoinUnits::UMK, info.amount, false, UmkoinUnits::SeparatorStyle::NEVER));
         paramCount++;
     }
 

@@ -56,7 +56,7 @@ public:
 
         if (valid) {
             val = qBound(m_min_amount, val, m_max_amount);
-            input = UmkoinUnits::format(currentUnit, val, false, UmkoinUnits::separatorAlways);
+            input = UmkoinUnits::format(currentUnit, val, false, UmkoinUnits::SeparatorStyle::ALWAYS);
             lineEdit()->setText(input);
         }
     }
@@ -68,7 +68,7 @@ public:
 
     void setValue(const CAmount& value)
     {
-        lineEdit()->setText(UmkoinUnits::format(currentUnit, value, false, UmkoinUnits::separatorAlways));
+        lineEdit()->setText(UmkoinUnits::format(currentUnit, value, false, UmkoinUnits::SeparatorStyle::ALWAYS));
         Q_EMIT valueChanged();
     }
 
@@ -102,7 +102,7 @@ public:
         CAmount val = value(&valid);
 
         currentUnit = unit;
-        lineEdit()->setPlaceholderText(UmkoinUnits::format(currentUnit, m_min_amount, false, UmkoinUnits::separatorAlways));
+        lineEdit()->setPlaceholderText(UmkoinUnits::format(currentUnit, m_min_amount, false, UmkoinUnits::SeparatorStyle::ALWAYS));
         if(valid)
             setValue(val);
         else
@@ -122,7 +122,7 @@ public:
 
             const QFontMetrics fm(fontMetrics());
             int h = lineEdit()->minimumSizeHint().height();
-            int w = GUIUtil::TextWidth(fm, UmkoinUnits::format(UmkoinUnits::UMK, UmkoinUnits::maxMoney(), false, UmkoinUnits::separatorAlways));
+            int w = GUIUtil::TextWidth(fm, UmkoinUnits::format(UmkoinUnits::UMK, UmkoinUnits::maxMoney(), false, UmkoinUnits::SeparatorStyle::ALWAYS));
             w += 2; // cursor blinking space
 
             QStyleOptionSpinBox opt;

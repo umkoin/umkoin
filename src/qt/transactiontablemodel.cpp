@@ -524,7 +524,7 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
         case ToAddress:
             return formatTxToAddress(rec, false);
         case Amount:
-            return formatTxAmount(rec, true, UmkoinUnits::separatorAlways);
+            return formatTxAmount(rec, true, UmkoinUnits::SeparatorStyle::ALWAYS);
         }
         break;
     case Qt::EditRole:
@@ -614,14 +614,14 @@ QVariant TransactionTableModel::data(const QModelIndex &index, int role) const
                 details.append(QString::fromStdString(rec->address));
                 details.append(" ");
             }
-            details.append(formatTxAmount(rec, false, UmkoinUnits::separatorNever));
+            details.append(formatTxAmount(rec, false, UmkoinUnits::SeparatorStyle::NEVER));
             return details;
         }
     case ConfirmedRole:
         return rec->status.status == TransactionStatus::Status::Confirming || rec->status.status == TransactionStatus::Status::Confirmed;
     case FormattedAmountRole:
         // Used for copy/export, so don't include separators
-        return formatTxAmount(rec, false, UmkoinUnits::separatorNever);
+        return formatTxAmount(rec, false, UmkoinUnits::SeparatorStyle::NEVER);
     case StatusRole:
         return rec->status.status;
     }

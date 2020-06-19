@@ -88,7 +88,7 @@ public:
             foreground = option.palette.color(QPalette::Text);
         }
         painter->setPen(foreground);
-        QString amountText = UmkoinUnits::formatWithUnit(unit, amount, true, UmkoinUnits::separatorAlways);
+        QString amountText = UmkoinUnits::formatWithUnit(unit, amount, true, UmkoinUnits::SeparatorStyle::ALWAYS);
         if(!confirmed)
         {
             amountText = QString("[") + amountText + QString("]");
@@ -180,25 +180,25 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
     m_balances = balances;
     if (walletModel->wallet().isLegacy()) {
         if (walletModel->wallet().privateKeysDisabled()) {
-            ui->labelBalance->setText(UmkoinUnits::formatWithPrivacy(unit, balances.watch_only_balance, UmkoinUnits::separatorAlways, m_privacy));
-            ui->labelUnconfirmed->setText(UmkoinUnits::formatWithPrivacy(unit, balances.unconfirmed_watch_only_balance, UmkoinUnits::separatorAlways, m_privacy));
-            ui->labelImmature->setText(UmkoinUnits::formatWithPrivacy(unit, balances.immature_watch_only_balance, UmkoinUnits::separatorAlways, m_privacy));
-            ui->labelTotal->setText(UmkoinUnits::formatWithPrivacy(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, UmkoinUnits::separatorAlways, m_privacy));
+            ui->labelBalance->setText(UmkoinUnits::formatWithPrivacy(unit, balances.watch_only_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+            ui->labelUnconfirmed->setText(UmkoinUnits::formatWithPrivacy(unit, balances.unconfirmed_watch_only_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+            ui->labelImmature->setText(UmkoinUnits::formatWithPrivacy(unit, balances.immature_watch_only_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+            ui->labelTotal->setText(UmkoinUnits::formatWithPrivacy(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
         } else {
-            ui->labelBalance->setText(UmkoinUnits::formatWithPrivacy(unit, balances.balance, UmkoinUnits::separatorAlways, m_privacy));
-            ui->labelUnconfirmed->setText(UmkoinUnits::formatWithPrivacy(unit, balances.unconfirmed_balance, UmkoinUnits::separatorAlways, m_privacy));
-            ui->labelImmature->setText(UmkoinUnits::formatWithPrivacy(unit, balances.immature_balance, UmkoinUnits::separatorAlways, m_privacy));
-            ui->labelTotal->setText(UmkoinUnits::formatWithPrivacy(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, UmkoinUnits::separatorAlways, m_privacy));
-            ui->labelWatchAvailable->setText(UmkoinUnits::formatWithPrivacy(unit, balances.watch_only_balance, UmkoinUnits::separatorAlways, m_privacy));
-            ui->labelWatchPending->setText(UmkoinUnits::formatWithPrivacy(unit, balances.unconfirmed_watch_only_balance, UmkoinUnits::separatorAlways, m_privacy));
-            ui->labelWatchImmature->setText(UmkoinUnits::formatWithPrivacy(unit, balances.immature_watch_only_balance, UmkoinUnits::separatorAlways, m_privacy));
-            ui->labelWatchTotal->setText(UmkoinUnits::formatWithPrivacy(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, UmkoinUnits::separatorAlways, m_privacy));
+            ui->labelBalance->setText(UmkoinUnits::formatWithPrivacy(unit, balances.balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+            ui->labelUnconfirmed->setText(UmkoinUnits::formatWithPrivacy(unit, balances.unconfirmed_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+            ui->labelImmature->setText(UmkoinUnits::formatWithPrivacy(unit, balances.immature_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+            ui->labelTotal->setText(UmkoinUnits::formatWithPrivacy(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+            ui->labelWatchAvailable->setText(UmkoinUnits::formatWithPrivacy(unit, balances.watch_only_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+            ui->labelWatchPending->setText(UmkoinUnits::formatWithPrivacy(unit, balances.unconfirmed_watch_only_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+            ui->labelWatchImmature->setText(UmkoinUnits::formatWithPrivacy(unit, balances.immature_watch_only_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+            ui->labelWatchTotal->setText(UmkoinUnits::formatWithPrivacy(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
         }
     } else {
-        ui->labelBalance->setText(UmkoinUnits::formatWithPrivacy(unit, balances.balance, UmkoinUnits::separatorAlways, m_privacy));
-        ui->labelUnconfirmed->setText(UmkoinUnits::formatWithPrivacy(unit, balances.unconfirmed_balance, UmkoinUnits::separatorAlways, m_privacy));
-        ui->labelImmature->setText(UmkoinUnits::formatWithPrivacy(unit, balances.immature_balance, UmkoinUnits::separatorAlways, m_privacy));
-        ui->labelTotal->setText(UmkoinUnits::formatWithPrivacy(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, UmkoinUnits::separatorAlways, m_privacy));
+        ui->labelBalance->setText(UmkoinUnits::formatWithPrivacy(unit, balances.balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+        ui->labelUnconfirmed->setText(UmkoinUnits::formatWithPrivacy(unit, balances.unconfirmed_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+        ui->labelImmature->setText(UmkoinUnits::formatWithPrivacy(unit, balances.immature_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
+        ui->labelTotal->setText(UmkoinUnits::formatWithPrivacy(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, UmkoinUnits::SeparatorStyle::ALWAYS, m_privacy));
     }
     // only show immature (newly mined) balance if it's non-zero, so as not to complicate things
     // for the non-mining users

@@ -82,7 +82,7 @@ QVariant RecentRequestsTableModel::data(const QModelIndex &index, int role) cons
             if (rec->recipient.amount == 0 && role == Qt::DisplayRole)
                 return tr("(no amount requested)");
             else if (role == Qt::EditRole)
-                return UmkoinUnits::format(walletModel->getOptionsModel()->getDisplayUnit(), rec->recipient.amount, false, UmkoinUnits::separatorNever);
+                return UmkoinUnits::format(walletModel->getOptionsModel()->getDisplayUnit(), rec->recipient.amount, false, UmkoinUnits::SeparatorStyle::NEVER);
             else
                 return UmkoinUnits::format(walletModel->getOptionsModel()->getDisplayUnit(), rec->recipient.amount);
         }
