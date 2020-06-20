@@ -1,6 +1,6 @@
 <!-- This issue tracker is only for technical issues related to Umkoin Core.
 
-General bitcoin questions and/or support requests are best directed to the Umkoin at http://www.umkoin.org/
+General umkoin questions and/or support requests are best directed to the Umkoin at http://www.umkoin.org/
 
 For reporting security issues, please read instructions at http://www.umkoin.org/en/contact.php
 
