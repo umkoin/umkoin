@@ -41,7 +41,7 @@ install:
 before_script:
   # Temporary workaround for https://github.com/bitcoin/bitcoin/issues/16368
   - for i in {1..4}; do echo "$(sleep 500)" ; done &
-  - set -o errexit; source ./ci/test/05_before_script.sh &> "/dev/null"
+  - set -o errexit; source ./ci/test/05_before_script.sh
 script:
   - export CONTINUE=1
   - if [ $SECONDS -gt 1200 ]; then export CONTINUE=0; fi  # Likely the depends build took very long
@@ -70,19 +70,19 @@ jobs:
 
     - stage: test
       name: 'ARM  [GOAL: install]  [buster]  [no unit tests, no functional tests]'
-      arch: arm64  # Can disable QEMU_USER_CMD and run the tests natively without qemu
+      arch: arm64
       env: >-
         FILE_ENV="./ci/test/00_setup_env_arm.sh"
         QEMU_USER_CMD=""
 
 # s390 build was disabled temporarily because of disk space issues on the Travis VM
-#
-#    - stage: test
-#      name: 'S390x  [GOAL: install]  [buster]  [unit tests, functional tests]'
-#      arch: s390x  # Can disable QEMU_USER_CMD and run the tests natively without qemu
-#      env: >-
-#        FILE_ENV="./ci/test/00_setup_env_s390x.sh"
-#        QEMU_USER_CMD=""
+
+    - stage: test
+      name: 'S390x  [GOAL: install]  [buster]  [no unit tests, no functional tests]'
+      arch: s390x
+      env: >-
+        FILE_ENV="./ci/test/00_setup_env_s390x.sh"
+        QEMU_USER_CMD=""
 
     - stage: test
       name: 'Win64  [GOAL: deploy]  [no unit tests, no gui, no functional tests]'
