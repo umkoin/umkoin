@@ -70,7 +70,7 @@ jobs:
 
     - stage: test
       name: 'ARM  [GOAL: install]  [buster]  [no unit tests, no functional tests]'
-      arch: arm64
+      arch: arm64  # Can disable QEMU_USER_CMD and run the tests natively without qemu
       env: >-
         FILE_ENV="./ci/test/00_setup_env_arm.sh"
         QEMU_USER_CMD=""
@@ -78,8 +78,8 @@ jobs:
 # s390 build was disabled temporarily because of disk space issues on the Travis VM
 
     - stage: test
-      name: 'S390x  [GOAL: install]  [buster]  [no unit tests, no functional tests]'
-      arch: s390x
+      name: 'S390x  [GOAL: install]  [buster]  [unit tests, functional tests]'
+      arch: s390x  # Can disable QEMU_USER_CMD and run the tests natively without qemu
       env: >-
         FILE_ENV="./ci/test/00_setup_env_s390x.sh"
         QEMU_USER_CMD=""
@@ -101,9 +101,7 @@ jobs:
 
     - stage: test
       name: 'x86_64 Linux  [GOAL: install]  [focal]  [depends, sanitizers: thread (TSan), no gui]'
-      # Not enough memory on travis machines, so feature_block is excluded for now
       env: >-
-        TEST_RUNNER_EXTRA="--exclude feature_block"
         FILE_ENV="./ci/test/00_setup_env_native_tsan.sh"
 
     - stage: test
