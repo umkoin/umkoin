@@ -15,3 +15,9 @@ hist
 ser
 unselect
 lowercased
+Crypted
+Keypair
+Unser
+blockIn
+dedup
+inout
