@@ -37,6 +37,14 @@ END_FOLD
 set -o errtrace
 trap 'DOCKER_EXEC "cat ${BASE_SCRATCH_DIR}/sanitizer-output/* 2> /dev/null"' ERR
 
+if [[ ${USE_MEMORY_SANITIZER} == "true" ]]; then
+  # MemorySanitizer (MSAN) does not support tracking memory initialization done by
+  # using the Linux getrandom syscall. Avoid using getrandom by undefining
+  # HAVE_SYS_GETRANDOM. See https://github.com/google/sanitizers/issues/852 for
+  # details.
+  DOCKER_EXEC 'grep -v HAVE_SYS_GETRANDOM src/config/umkoin-config.h > src/config/umkoin-config.h.tmp && mv src/config/umkoin-config.h.tmp src/config/umkoin-config.h'
+fi
+
 BEGIN_FOLD build
 DOCKER_EXEC make $MAKEJOBS $GOAL || ( echo "Build failure. Verbose build follows." && DOCKER_EXEC make $GOAL V=1 ; false )
 END_FOLD
