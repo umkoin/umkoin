@@ -103,7 +103,7 @@ You may also need to take care of giving the correct path for `clang` and
 Full configure that was tested on macOS Catalina with `brew` installed `llvm`:
 
 ```sh
-./configure --enable-fuzz --with-sanitizers=fuzzer,address,undefined CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ --disable-asm --enable-c++17
+./configure --enable-fuzz --with-sanitizers=fuzzer,address,undefined CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ --disable-asm
 ```
 
 Read the [libFuzzer documentation](https://llvm.org/docs/LibFuzzer.html) for more information. This [libFuzzer tutorial](https://github.com/google/fuzzing/blob/master/tutorial/libFuzzerTutorial.md) might also be of interest.
@@ -121,6 +121,8 @@ $ git clone https://github.com/google/afl
 $ make -C afl/
 $ make -C afl/llvm_mode/
 $ ./autogen.sh
+# It is possible to compile with afl-gcc and afl-g++ instead of afl-clang. However, running afl-fuzz
+# may require more memory via the -m flag.
 $ CC=$(pwd)/afl/afl-clang-fast CXX=$(pwd)/afl/afl-clang-fast++ ./configure --enable-fuzz
 $ make
 # For macOS you may need to ignore x86 compilation checks when running "make". If so,
