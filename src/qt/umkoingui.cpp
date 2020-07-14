@@ -112,6 +112,8 @@ UmkoinGUI::UmkoinGUI(interfaces::Node& node, const PlatformStyle *_platformStyle
         Q_EMIT consoleShown(rpcConsole);
     }
 
+    modalOverlay = new ModalOverlay(enableWallet, this->centralWidget());
+
     // Accept D&D of URIs
     setAcceptDrops(true);
 
@@ -201,7 +203,6 @@ UmkoinGUI::UmkoinGUI(interfaces::Node& node, const PlatformStyle *_platformStyle
         openOptionsDialogWithTab(OptionsDialog::TAB_NETWORK);
     });
 
-    modalOverlay = new ModalOverlay(enableWallet, this->centralWidget());
     connect(labelBlocksIcon, &GUIUtil::ClickableLabel::clicked, this, &UmkoinGUI::showModalOverlay);
     connect(progressBar, &GUIUtil::ClickableProgressBar::clicked, this, &UmkoinGUI::showModalOverlay);
 #ifdef ENABLE_WALLET
@@ -238,6 +239,7 @@ UmkoinGUI::~UmkoinGUI()
 void UmkoinGUI::createActions()
 {
     QActionGroup *tabGroup = new QActionGroup(this);
+    connect(modalOverlay, &ModalOverlay::triggered, tabGroup, &QActionGroup::setEnabled);
 
     overviewAction = new QAction(platformStyle->SingleColorIcon(":/icons/overview"), tr("&Overview"), this);
     overviewAction->setStatusTip(tr("Show general overview of wallet"));
