@@ -55,7 +55,7 @@ after_build:
 - 7z a umkoin-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\build_msvc\%platform%\%configuration%\*.exe
 test_script:
 #- cmd: src\test_umkoin.exe -l test_suite
-- cmd: src\bench_umkoin.exe -evals=1 -scaling=0 > NUL
+- cmd: src\bench_umkoin.exe > NUL
 - ps:  python test\util\umkoin-util-test.py
 - cmd: python test\util\rpcauth-test.py
 # Fee estimation test failing on appveyor with: WinError 10048] Only one usage of each socket address (protocol/network address/port) is normally permitted.
