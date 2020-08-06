@@ -11,5 +11,5 @@ export DOCKER_NAME_TAG=ubuntu:20.04
 export PACKAGES="cmake python3"
 export DEP_OPTS="MULTIPROCESS=1"
 export GOAL="install"
-export UMKOIN_CONFIG=""
+export UMKOIN_CONFIG="--with-boost-process"
 export TEST_RUNNER_ENV="UMKOIND=umkoin-node"

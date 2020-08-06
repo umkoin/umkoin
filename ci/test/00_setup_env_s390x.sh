@@ -22,4 +22,4 @@ export DOCKER_NAME_TAG="debian:buster"
 export RUN_UNIT_TESTS=false
 export RUN_FUNCTIONAL_TESTS=false
 export GOAL="install"
-export UMKOIN_CONFIG="--enable-reduce-exports --with-incompatible-bdb"
+export UMKOIN_CONFIG="--enable-reduce-exports --with-incompatible-bdb --with-boost-process"
