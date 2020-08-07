@@ -37,17 +37,17 @@ def download_binary(tag, args) -> int:
             return 0
         shutil.rmtree(tag)
     Path(tag).mkdir()
-    bin_path = 'bin/bitcoin-core-{}'.format(tag[1:])
+    bin_path = 'bin/umkoin-core-{}'.format(tag[1:])
     match = re.compile('v(.*)(rc[0-9]+)$').search(tag)
     if match:
-        bin_path = 'bin/bitcoin-core-{}/test.{}'.format(
+        bin_path = 'bin/umkoin-core-{}/test.{}'.format(
             match.group(1), match.group(2))
     tarball = 'umkoin-{tag}-{platform}.tar.gz'.format(
         tag=tag[1:], platform=args.platform)
     sha256Sums = "SHA256SUMS-{tag}.asc".format(tag=tag[1:])
-    tarballUrl = 'https://bitcoincore.org/{bin_path}/{tarball}'.format(
+    tarballUrl = 'http://www.umkoin.org/{bin_path}/{tarball}'.format(
         bin_path=bin_path, tarball=tarball)
-    sha256SumsUrl = 'https://bitcoincore.org/{bin_path}/SHA256SUMS.asc'.format(
+    sha256SumsUrl = 'http://www.umkoin.org/{bin_path}/SHA256SUMS.asc'.format(
         bin_path=bin_path)
 
     print('Fetching: {tarballUrl}'.format(tarballUrl=tarballUrl))
@@ -84,7 +84,7 @@ def download_binary(tag, args) -> int:
     print("Checksum matched")
 
     # Umkoin Core Release Signing Keys v0.15.0+
-    signingKey = "56E270BDDEDF0118DCAD3B09F15D751647A2C44C"
+    signingKey = "A405D7A3AACB75AB1B8DC18A3B59F7F9F2B4FCF0"
 
     isKeyPresent = subprocess.run(
         ["gpg", "--list-keys", signingKey]).returncode
