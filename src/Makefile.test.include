@@ -1208,7 +1208,7 @@ nodist_test_test_umkoin_SOURCES = $(GENERATED_TEST_FILES)
 
 $(UMKOIN_TESTS): $(GENERATED_TEST_FILES)
 
-CLEAN_UMKOIN_TEST = test/*.gcda test/*.gcno $(GENERATED_TEST_FILES) $(UMKOIN_TESTS:=.log)
+CLEAN_UMKOIN_TEST = test/*.gcda test/*.gcno test/fuzz/*.gcda test/fuzz/*.gcno $(GENERATED_TEST_FILES) $(UMKOIN_TESTS:=.log)
 
 CLEANFILES += $(CLEAN_UMKOIN_TEST)
 
