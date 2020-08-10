@@ -139,7 +139,7 @@ the pull request affects. Valid areas as:
 Examples:
 
     consensus: Add new opcode for BIP-XXXX OP_CHECKAWESOMESIG
-    net: Automatically create hidden service, listen on Tor
+    net: Automatically create onion service, listen on Tor
     qt: Add feed bump button
     log: Fix typo in log message
 
@@ -384,11 +384,21 @@ Backporting
 Security and bug fixes can be backported from `master` to release
 branches.
 If the backport is non-trivial, it may be appropriate to open an
-additional PR, to backport the change, only after the original PR
+additional PR to backport the change, but only after the original PR
 has been merged.
 Otherwise, backports will be done in batches and
 the maintainers will use the proper `Needs backport (...)` labels
-when needed (the original author does not need to worry).
+when needed (the original author does not need to worry about it).
+
+A backport should contain the following metadata in the commit body:
+
+```
+Github-Pull: #<PR number>
+Rebased-From: <commit hash of the original commit>
+```
+
+Also see the [backport.py script](
+https://github.com/umkoin/bitcoin-maintainer-tools#backport).
 
 Release Policy
 --------------
