@@ -105,47 +105,24 @@ BOOST_AUTO_TEST_CASE(util_ParseHex)
 BOOST_AUTO_TEST_CASE(util_HexStr)
 {
     BOOST_CHECK_EQUAL(
-        HexStr(ParseHex_expected, ParseHex_expected + sizeof(ParseHex_expected)),
+        HexStr(ParseHex_expected),
         "04880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67");
 
     BOOST_CHECK_EQUAL(
-        HexStr(ParseHex_expected + sizeof(ParseHex_expected),
-               ParseHex_expected + sizeof(ParseHex_expected)),
+        HexStr(Span<const unsigned char>(
+               ParseHex_expected + sizeof(ParseHex_expected),
+               ParseHex_expected + sizeof(ParseHex_expected))),
         "");
 
     BOOST_CHECK_EQUAL(
-        HexStr(ParseHex_expected, ParseHex_expected),
+        HexStr(Span<const unsigned char>(ParseHex_expected, ParseHex_expected)),
         "");
 
     std::vector<unsigned char> ParseHex_vec(ParseHex_expected, ParseHex_expected + 5);
 
     BOOST_CHECK_EQUAL(
-        HexStr(ParseHex_vec.rbegin(), ParseHex_vec.rend()),
-        "b0fd8a6704"
-    );
-
-    BOOST_CHECK_EQUAL(
-        HexStr(std::reverse_iterator<const uint8_t *>(ParseHex_expected),
-               std::reverse_iterator<const uint8_t *>(ParseHex_expected)),
-        ""
-    );
-
-    BOOST_CHECK_EQUAL(
-        HexStr(std::reverse_iterator<const uint8_t *>(ParseHex_expected + 1),
-               std::reverse_iterator<const uint8_t *>(ParseHex_expected)),
-        "04"
-    );
-
-    BOOST_CHECK_EQUAL(
-        HexStr(std::reverse_iterator<const uint8_t *>(ParseHex_expected + 5),
-               std::reverse_iterator<const uint8_t *>(ParseHex_expected)),
-        "b0fd8a6704"
-    );
-
-    BOOST_CHECK_EQUAL(
-        HexStr(std::reverse_iterator<const uint8_t *>(ParseHex_expected + 65),
-               std::reverse_iterator<const uint8_t *>(ParseHex_expected)),
-        "5f1df16b2b704c8a578d0bbaf74d385cde12c11ee50455f3c438ef4c3fbcf649b6de611feae06279a60939e028a8d65c10b73071a6f16719274855feb0fd8a6704"
+        HexStr(ParseHex_vec),
+        "04678afdb0"
     );
 }
 
@@ -1022,7 +999,7 @@ BOOST_FIXTURE_TEST_CASE(util_ArgsMerge, ArgsMergeTestingSetup)
 
     unsigned char out_sha_bytes[CSHA256::OUTPUT_SIZE];
     out_sha.Finalize(out_sha_bytes);
-    std::string out_sha_hex = HexStr(std::begin(out_sha_bytes), std::end(out_sha_bytes));
+    std::string out_sha_hex = HexStr(out_sha_bytes);
 
     // If check below fails, should manually dump the results with:
     //
@@ -1125,7 +1102,7 @@ BOOST_FIXTURE_TEST_CASE(util_ChainMerge, ChainMergeTestingSetup)
 
     unsigned char out_sha_bytes[CSHA256::OUTPUT_SIZE];
     out_sha.Finalize(out_sha_bytes);
-    std::string out_sha_hex = HexStr(std::begin(out_sha_bytes), std::end(out_sha_bytes));
+    std::string out_sha_hex = HexStr(out_sha_bytes);
 
     // If check below fails, should manually dump the results with:
     //
