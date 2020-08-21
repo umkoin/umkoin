@@ -5,10 +5,8 @@
 #ifndef UMKOIN_INDEX_DISKTXPOS_H
 #define UMKOIN_INDEX_DISKTXPOS_H
 
-#include <chain.h>
 #include <flatfile.h>
-#include <primitives/block.h>
-#include <primitives/transaction.h>
+#include <serialize.h>
 
 struct CDiskTxPos : public FlatFilePos
 {
