@@ -6,7 +6,7 @@
 
 Test upgradewallet RPC. Download node binaries:
 
-contrib/devtools/previous_release.py -b v0.19.1
+test/get_previous_releases.py -b v0.19.1
 
 Only v0.15.2 and v0.16.3 are required by this test. The others are used in feature_backwards_compatibility.py
 """
