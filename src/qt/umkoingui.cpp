@@ -660,6 +660,11 @@ void UmkoinGUI::setWalletController(WalletController* wallet_controller)
     }
 }
 
+WalletController* UmkoinGUI::getWalletController()
+{
+    return m_wallet_controller;
+}
+
 void UmkoinGUI::addWallet(WalletModel* walletModel)
 {
     if (!walletFrame) return;
