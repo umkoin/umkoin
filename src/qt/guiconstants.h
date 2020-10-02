@@ -46,6 +46,7 @@ static const int TOOLTIP_WRAP_THRESHOLD = 80;
 #define QAPP_ORG_DOMAIN "umkoin.org"
 #define QAPP_APP_NAME_DEFAULT "Umkoin-Qt"
 #define QAPP_APP_NAME_TESTNET "Umkoin-Qt-testnet"
+#define QAPP_APP_NAME_SIGNET "Umkoin-Qt-signet"
 #define QAPP_APP_NAME_REGTEST "Umkoin-Qt-regtest"
 
 /* One gigabyte (GB) in bytes */

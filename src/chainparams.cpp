@@ -7,6 +7,7 @@
 
 #include <chainparamsseeds.h>
 #include <consensus/merkle.h>
+#include <hash.h> // for signet block challenge hash
 #include <tinyformat.h>
 #include <util/system.h>
 #include <util/strencodings.h>
@@ -63,6 +64,8 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = CBaseChainParams::MAIN;
+        consensus.signet_blocks = false;
+        consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP16Exception = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
         consensus.BIP34Height = 0;
@@ -84,10 +87,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000ea40dd727ee41c32"); //81250
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000eb639778eaa086c1"); //96428
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x0000000000060e42f96b7db0287526afb7dc33e9c7ec624029c02ed9d16c2ede"); //81250
+        consensus.defaultAssumeValid = uint256S("0x000000000039d6d37440cfe057b1d917bb778ce02fb79ad913435955dcbfced5"); //96428
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -110,7 +113,7 @@ public:
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
-        // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
+        // This is fine at runtime as we'll fall back to using them as an addrfetch if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
         vSeeds.emplace_back("dnsseed.umkoin.org"); // vmta
@@ -142,14 +145,15 @@ public:
                 { 23299, uint256S("0x000000000001937d0f8f9abf4c76e147daf4cf2149b66349fe29bac7f90eba16")},
                 { 39332, uint256S("0x0000000000003c265a3cf6a3a29e0ac6ab292a591eddf02f5e1d50abb7394c40")},
                 { 67999, uint256S("0x000000000001972d726acfed45ffb647f7a6da7bdc3ab5288c7b2a82948ac65c")},
+                { 96428, uint256S("0x000000000039d6d37440cfe057b1d917bb778ce02fb79ad913435955dcbfced5")},
             }
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 4096 0000000000060e42f96b7db0287526afb7dc33e9c7ec624029c02ed9d16c2ede
-            /* nTime    */ 1591068163,
-            /* nTxCount */ 339749,
-            /* dTxRate  */ 0.002494795245307003,
+            // Data from rpc: getchaintxstats 4096 000000000039d6d37440cfe057b1d917bb778ce02fb79ad913435955dcbfced5
+            /* nTime    */ 1600749526,
+            /* nTxCount */ 363624,
+            /* dTxRate  */ 0.002499873467693771,
         };
     }
 };
@@ -161,6 +165,8 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = CBaseChainParams::TESTNET;
+        consensus.signet_blocks = false;
+        consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP16Exception = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
         consensus.BIP34Height = 0;
@@ -242,12 +248,101 @@ public:
 };
 
 /**
+ * Signet
+ */
+class SigNetParams : public CChainParams {
+public:
+    explicit SigNetParams(const ArgsManager& args) {
+        std::vector<uint8_t> bin;
+        vSeeds.clear();
+
+        if (!args.IsArgSet("-signetchallenge")) {
+            LogPrintf("Using default signet network\n");
+            bin = ParseHex("512103ad5e0edad18cb1f0fc0d28a3d4f1f3e445640337489abb10404f2d1e086be430210359ef5021964fe22d6f8e05b2463c9540ce96883fe3b278760f048f5189f2e6c452ae");
+            vSeeds.emplace_back("dnsseed.umkoin.org");
+        } else {
+            const auto signet_challenge = args.GetArgs("-signetchallenge");
+            if (signet_challenge.size() != 1) {
+                throw std::runtime_error(strprintf("%s: -signetchallenge cannot be multiple values.", __func__));
+            }
+            bin = ParseHex(signet_challenge[0]);
+
+            LogPrintf("Signet with challenge %s\n", signet_challenge[0]);
+        }
+
+        if (args.IsArgSet("-signetseednode")) {
+            vSeeds = args.GetArgs("-signetseednode");
+        }
+
+        strNetworkID = CBaseChainParams::SIGNET;
+        consensus.signet_blocks = true;
+        consensus.signet_challenge.assign(bin.begin(), bin.end());
+        consensus.nSubsidyHalvingInterval = 210000;
+        consensus.BIP34Height = 1;
+        consensus.BIP65Height = 1;
+        consensus.BIP66Height = 1;
+        consensus.CSVHeight = 1;
+        consensus.SegwitHeight = 1;
+        consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
+        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.fPowAllowMinDifficultyBlocks = false;
+        consensus.fPowNoRetargeting = false;
+        consensus.nRuleChangeActivationThreshold = 1916;
+        consensus.nMinerConfirmationWindow = 144;
+        consensus.powLimit = uint256S("00000377ae000000000000000000000000000000000000000000000000000000");
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1511678228; // November 26, 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1514112600; // December 24, 2017
+
+        // message start is defined as the first 4 bytes of the sha256d of the block script
+        CHashWriter h(SER_DISK, 0);
+        h << consensus.signet_challenge;
+        uint256 hash = h.GetHash();
+        memcpy(pchMessageStart, hash.begin(), 4);
+        LogPrintf("Signet derived magic (message start): %s\n", HexStr({pchMessageStart, pchMessageStart + 4}));
+
+        nDefaultPort = 36333;
+        nPruneAfterHeight = 1000;
+        m_assumed_blockchain_size = 0;
+        m_assumed_chain_state_size = 0;
+
+        genesis = CreateGenesisBlock(1600041600, 243630, 0x1e0377ae, 1, 50 * COIN);
+        consensus.hashGenesisBlock = genesis.GetHash();
+        assert(consensus.hashGenesisBlock == uint256S("0x00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1"));
+        assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
+
+        vFixedSeeds.clear();
+
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
+        base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
+
+        bech32_hrp = "tb";
+
+        fDefaultConsistencyChecks = false;
+        fRequireStandard = true;
+        m_is_test_chain = true;
+        m_is_mockable_chain = false;
+
+        chainTxData = ChainTxData{
+            0,
+            0,
+            0
+        };
+    }
+};
+
+/**
  * Regression test
  */
 class CRegTestParams : public CChainParams {
 public:
     explicit CRegTestParams(const ArgsManager& args) {
         strNetworkID = CBaseChainParams::REGTEST;
+        consensus.signet_blocks = false;
+        consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 150;
         consensus.BIP16Exception = uint256();
         consensus.BIP34Height = 0; // BIP34 activated on regtest (Used in functional tests)
@@ -382,12 +477,15 @@ const CChainParams &Params() {
 
 std::unique_ptr<const CChainParams> CreateChainParams(const std::string& chain)
 {
-    if (chain == CBaseChainParams::MAIN)
+    if (chain == CBaseChainParams::MAIN) {
         return std::unique_ptr<CChainParams>(new CMainParams());
-    else if (chain == CBaseChainParams::TESTNET)
+    } else if (chain == CBaseChainParams::TESTNET) {
         return std::unique_ptr<CChainParams>(new CTestNetParams());
-    else if (chain == CBaseChainParams::REGTEST)
+    } else if (chain == CBaseChainParams::SIGNET) {
+        return std::unique_ptr<CChainParams>(new SigNetParams(gArgs));
+    } else if (chain == CBaseChainParams::REGTEST) {
         return std::unique_ptr<CChainParams>(new CRegTestParams(gArgs));
+    }
     throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
 }
 
