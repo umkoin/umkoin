@@ -20,7 +20,7 @@ class SignetBasicTest(UmkoinTestFramework):
         self.num_nodes = 6
         self.setup_clean_chain = True
         shared_args1 = ["-signetchallenge=51"] # OP_TRUE
-        shared_args2 = []                         # default challenge
+        shared_args2 = [] # default challenge
         # we use the exact same challenge except we do it as a 2-of-2, which means it should fail
         shared_args3 = ["-signetchallenge=522103ad5e0edad18cb1f0fc0d28a3d4f1f3e445640337489abb10404f2d1e086be430210359ef5021964fe22d6f8e05b2463c9540ce96883fe3b278760f048f5189f2e6c452ae"]
 
@@ -29,9 +29,6 @@ class SignetBasicTest(UmkoinTestFramework):
             shared_args2, shared_args2,
             shared_args3, shared_args3,
         ]
-
-    def skip_test_if_missing_module(self):
-        self.skip_if_no_wallet()
 
     def run_test(self):
         self.log.info("basic tests using OP_TRUE challenge")
@@ -45,14 +42,14 @@ class SignetBasicTest(UmkoinTestFramework):
         assert_equal(mining_info['networkhashps'], Decimal('0'))
         assert_equal(mining_info['pooledtx'], 0)
 
-        self.nodes[0].generatetoaddress(1, self.nodes[0].getnewaddress())
+        self.nodes[0].generate(1)
 
         self.log.info("pregenerated signet blocks check")
 
         height = 0
         for block in signet_blocks:
             assert_equal(self.nodes[2].submitblock(block), None)
-            height = height + 1
+            height += 1
             assert_equal(self.nodes[2].getblockcount(), height)
 
         self.log.info("pregenerated signet blocks check (incompatible solution)")
