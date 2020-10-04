@@ -260,6 +260,18 @@ public:
             LogPrintf("Using default signet network\n");
             bin = ParseHex("512103ad5e0edad18cb1f0fc0d28a3d4f1f3e445640337489abb10404f2d1e086be430210359ef5021964fe22d6f8e05b2463c9540ce96883fe3b278760f048f5189f2e6c452ae");
             vSeeds.emplace_back("dnsseed.umkoin.org");
+
+            consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000001");
+            consensus.defaultAssumeValid = uint256S("0x00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1"); // 0
+            m_assumed_blockchain_size = 1;
+            m_assumed_chain_state_size = 0;
+            chainTxData = ChainTxData{
+                // Data from RPC: getchaintxstats 4096 00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1
+                /* nTime    */ 16000041600,
+                /* nTxCount */ 1,
+                /* dTxRate  */ 0.001898346323372538,
+            };
+
         } else {
             const auto signet_challenge = args.GetArgs("-signetchallenge");
             if (signet_challenge.size() != 1) {
@@ -267,6 +279,13 @@ public:
             }
             bin = ParseHex(signet_challenge[0]);
 
+            m_assumed_blockchain_size = 0;
+            m_assumed_chain_state_size = 0;
+            chainTxData = ChainTxData{
+                0,
+                0,
+                0,
+            };
             LogPrintf("Signet with challenge %s\n", signet_challenge[0]);
         }
 
@@ -303,8 +322,6 @@ public:
 
         nDefaultPort = 36333;
         nPruneAfterHeight = 1000;
-        m_assumed_blockchain_size = 0;
-        m_assumed_chain_state_size = 0;
 
         genesis = CreateGenesisBlock(1600041600, 243630, 0x1e0377ae, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -325,12 +342,6 @@ public:
         fRequireStandard = true;
         m_is_test_chain = true;
         m_is_mockable_chain = false;
-
-        chainTxData = ChainTxData{
-            0,
-            0,
-            0
-        };
     }
 };
 
