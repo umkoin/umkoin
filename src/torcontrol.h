@@ -8,12 +8,17 @@
 #ifndef UMKOIN_TORCONTROL_H
 #define UMKOIN_TORCONTROL_H
 
+#include <string>
+
+class CService;
 
 extern const std::string DEFAULT_TOR_CONTROL;
 static const bool DEFAULT_LISTEN_ONION = true;
 
-void StartTorControl();
+void StartTorControl(CService onion_service_target);
 void InterruptTorControl();
 void StopTorControl();
+
+CService DefaultOnionServiceTarget();
 
 #endif /* UMKOIN_TORCONTROL_H */

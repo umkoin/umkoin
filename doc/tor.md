@@ -45,11 +45,12 @@ config file): *Needed for Tor version 0.2.7.0 and older versions of Tor only. Fo
 versions of Tor see [Section 3](#3-automatically-listen-on-tor).*
 
 	HiddenServiceDir /var/lib/tor/umkoin-service/
-	HiddenServicePort 6333 127.0.0.1:6333
-	HiddenServicePort 16333 127.0.0.1:16333
+	HiddenServicePort 6333 127.0.0.1:6334
+	HiddenServicePort 16333 127.0.0.1:16334
 
-The directory can be different of course, but (both) port numbers should be equal to
-your umkoind's P2P listen port (6333 by default).
+The directory can be different of course, but virtual port numbers should be equal to
+your umkoind's P2P listen port (6333 by default), and target addresses and ports
+should be equal to binding address and port for inbound Tor connections (127.0.0.1:6334 by default).
 
 	-externalip=X   You can tell umkoin about its publicly reachable address using
 	                this option, and this can be a .onion address. Given the above
