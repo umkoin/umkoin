@@ -27,6 +27,7 @@ QT_TS = \
   qt/locale/umkoin_fi.ts \
   qt/locale/umkoin_fil.ts \
   qt/locale/umkoin_fr.ts \
+  qt/locale/umkoin_gl_ES.ts \
   qt/locale/umkoin_he.ts \
   qt/locale/umkoin_hi.ts \
   qt/locale/umkoin_hr.ts \
@@ -71,7 +72,6 @@ QT_TS = \
   qt/locale/umkoin_ta.ts \
   qt/locale/umkoin_te.ts \
   qt/locale/umkoin_th.ts \
-  qt/locale/umkoin_tr.ts \
   qt/locale/umkoin_uk.ts \
   qt/locale/umkoin_ur.ts \
   qt/locale/umkoin_uz@Cyrl.ts \
@@ -82,4 +82,5 @@ QT_TS = \
   qt/locale/umkoin_zh.ts \
   qt/locale/umkoin_zh_CN.ts \
   qt/locale/umkoin_zh_HK.ts \
-  qt/locale/umkoin_zh_TW.ts
+  qt/locale/umkoin_zh_TW.ts \
+  qt/locale/umkoin_zu.ts
