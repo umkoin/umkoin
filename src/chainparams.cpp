@@ -92,10 +92,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000eb639778eaa086c1"); //96428
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000eb989e4a26f4bea2"); //100000
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000000039d6d37440cfe057b1d917bb778ce02fb79ad913435955dcbfced5"); //96428
+        consensus.defaultAssumeValid = uint256S("0x00000000001d1bc045e88dccc374d13641aa646b351cfabc3cd2943aff66e04b"); //100000
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -198,10 +198,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1514112600; // December 24, 2017
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000e3565667deb711"); //59750
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000e395f99bb0365e"); //62958
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000144fc7a4640e36bebc2cad42fef73bda8dc86638f094d725dacc0c76"); //59750
+        consensus.defaultAssumeValid = uint256S("0x000000000087b4d2ec7cacb608083b6b25fd3691b8fe64bff8f35d629d82962b"); //62958
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -270,7 +270,7 @@ public:
             bin = ParseHex("512103ad5e0edad18cb1f0fc0d28a3d4f1f3e445640337489abb10404f2d1e086be430210359ef5021964fe22d6f8e05b2463c9540ce96883fe3b278760f048f5189f2e6c452ae");
             vSeeds.emplace_back("dnsseed.umkoin.org");
 
-            consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000000001");
+            consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000000049d414");
             consensus.defaultAssumeValid = uint256S("0x00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1"); // 0
             m_assumed_blockchain_size = 1;
             m_assumed_chain_state_size = 0;
@@ -287,6 +287,8 @@ public:
             }
             bin = ParseHex(signet_challenge[0]);
 
+            consensus.nMinimumChainWork = uint256{};
+            consensus.defaultAssumeValid = uint256{};
             m_assumed_blockchain_size = 0;
             m_assumed_chain_state_size = 0;
             chainTxData = ChainTxData{
@@ -294,6 +296,7 @@ public:
                 0,
                 0,
             };
+            LogPrintf("Signet with challenge %s\n", signet_challenge[0]);
         }
 
         if (args.IsArgSet("-signetseednode")) {
@@ -304,7 +307,9 @@ public:
         consensus.signet_blocks = true;
         consensus.signet_challenge.assign(bin.begin(), bin.end());
         consensus.nSubsidyHalvingInterval = 210000;
+        consensus.BIP16Exception = uint256{};
         consensus.BIP34Height = 1;
+        consensus.BIP34Hash = uint256{};
         consensus.BIP65Height = 1;
         consensus.BIP66Height = 1;
         consensus.CSVHeight = 1;
@@ -315,6 +320,7 @@ public:
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1916;
         consensus.nMinerConfirmationWindow = 144;
+        consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("00000377ae000000000000000000000000000000000000000000000000000000");
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1511678228; // November 26, 2017
@@ -385,10 +391,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00");
+        consensus.nMinimumChainWork = uint256{};
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00");
+        consensus.defaultAssumeValid = uint256{};
 
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0xbf;
