@@ -98,6 +98,10 @@ class ToolWalletTest(UmkoinTestFramework):
         out = textwrap.dedent('''\
             Wallet info
             ===========
+            Name: \
+
+            Format: bdb
+            Descriptors: no
             Encrypted: no
             HD (hd seed available): yes
             Keypool Size: 2
@@ -137,6 +141,10 @@ class ToolWalletTest(UmkoinTestFramework):
         out = textwrap.dedent('''\
             Wallet info
             ===========
+            Name: \
+
+            Format: bdb
+            Descriptors: no
             Encrypted: no
             HD (hd seed available): yes
             Keypool Size: 2
@@ -164,6 +172,9 @@ class ToolWalletTest(UmkoinTestFramework):
             Topping up keypool...
             Wallet info
             ===========
+            Name: foo
+            Format: bdb
+            Descriptors: no
             Encrypted: no
             HD (hd seed available): yes
             Keypool Size: 2000
