@@ -356,7 +356,7 @@ endif
 
 # wallet: shared between umkoind and umkoin-qt, but only linked
 # when wallet enabled
-libumkoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+libumkoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(SQLITE_CFLAGS)
 libumkoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_wallet_a_SOURCES = \
   interfaces/wallet.cpp \
@@ -372,12 +372,15 @@ libumkoin_wallet_a_SOURCES = \
   wallet/rpcwallet.cpp \
   wallet/salvage.cpp \
   wallet/scriptpubkeyman.cpp \
-  wallet/sqlite.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
   wallet/walletutil.cpp \
   wallet/coinselection.cpp \
   $(UMKOIN_CORE_H)
+
+if USE_SQLITE
+libumkoin_wallet_a_SOURCES += wallet/sqlite.cpp
+endif
 
 libumkoin_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
