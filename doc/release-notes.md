@@ -286,15 +286,18 @@ Wallet
   changed from `-32601` (method not found) to `-18` (wallet not found).
   (#20101)
 
-### Default Wallet
+### Automatic wallet creation removed
 
-Umkoin Core will no longer create an unnamed `""` wallet by default when no
-wallet is specified on the command line or in the configuration files. For
-backwards compatibility, if an unnamed `""` wallet already exists and would
-have been loaded previously, then it will still be loaded. Users without an
-unnamed `""` wallet and without any other wallets to be loaded on startup will
-be prompted to either choose a wallet to load, or to create a new wallet.
-(#15454)
+Umkoin Core will no longer automatically create new wallets on startup. It will
+load existing wallets specified by `-wallet` options on the command line or in
+`umkoin.conf` or `settings.json` files. And by default it will also load a
+top-level unnamed ("") wallet. However, if specified wallets don't exist,
+Umkoin Core will now just log warnings instead of creating new wallets with
+new keys and addresses like previous releases did.
+
+New wallets can be created through the GUI (which has a more prominent create
+wallet option), through the `umkoin-cli createwallet` or `umkoin-wallet
+create` commands, or the `createwallet` RPC. (#15454)
 
 ### Experimental Descriptor Wallets
 
