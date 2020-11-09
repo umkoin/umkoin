@@ -256,7 +256,7 @@ AC_ARG_ENABLE([gprof],
     [enable_gprof=$enableval],
     [enable_gprof=no])
 
-dnl Pass compiler & linker flags that make builds deterministic
+dnl Pass compiler & liner flags that make builds deterministic
 AC_ARG_ENABLE([determinism],
     [AS_HELP_STRING([--enable-determinism],
                     [Enable compilation flags that make builds deterministic (default is no)])],
@@ -1140,7 +1140,7 @@ fi
 if test x$use_boost = xyes; then
 
 dnl Minimum required Boost version
-define(MINIMUM_REQUIRED_BOOST, 1.47.0)
+define(MINIMUM_REQUIRED_BOOST, 1.48.0)
 
 dnl Check for boost libs
 AX_BOOST_BASE([MINIMUM_REQUIRED_BOOST])
