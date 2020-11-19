@@ -1201,7 +1201,7 @@ void CWallet::transactionRemovedFromMempool(const CTransactionRef& tx, MemPoolRe
         // when improving this code in the future. The wallet's heuristics for
         // distinguishing between conflicted and unconfirmed transactions are
         // imperfect, and could be improved in general, see
-        // https://github.com/bitcoin-core/bitcoin-devwiki/wiki/Wallet-Transaction-Conflict-Tracking
+        // https://github.com/umkoin-core/umkoin-devwiki/wiki/Wallet-Transaction-Conflict-Tracking
         SyncTransaction(tx, {CWalletTx::Status::UNCONFIRMED, /* block height */ 0, /* block hash */ {}, /* index */ 0});
     }
 }
@@ -2818,7 +2818,7 @@ bool CWallet::CreateTransactionInternal(
             // Do not, ever, assume that it's fine to change the fee rate if the user has explicitly
             // provided one
             if (coin_control.m_feerate && nFeeRateNeeded > *coin_control.m_feerate) {
-                error = strprintf(_("Fee rate (%s) is lower than the minimum fee rate setting (%s)"), coin_control.m_feerate->ToString(), nFeeRateNeeded.ToString());
+                error = strprintf(_("Fee rate (%s) is lower than the minimum fee rate setting (%s)"), coin_control.m_feerate->ToString(FeeEstimateMode::SAT_VB), nFeeRateNeeded.ToString(FeeEstimateMode::SAT_VB));
                 return false;
             }
 
