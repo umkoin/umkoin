@@ -15,7 +15,7 @@ NSEEDS=512
 
 MAX_SEEDS_PER_ASN=2
 
-MIN_BLOCKS = 100000
+MIN_BLOCKS = 104900
 
 # These are hosts that have been observed to be behaving strangely (e.g.
 # aggressively connecting to every node).
@@ -136,7 +136,7 @@ def lookup_asn(net, ip):
             ipaddr = res.rstrip('.')            # 2.0.0.1.4.8.6.0.b.0.0.2.0.0.2.3
             prefix = '.origin6'
 
-        asn = int([x.to_text() for x in dns.resolver.query('.'.join(
+        asn = int([x.to_text() for x in dns.resolver.resolve('.'.join(
                    reversed(ipaddr.split('.'))) + prefix + '.asn.cymru.com',
                    'TXT').response.answer][0].split('\"')[1].split(' ')[0])
         return asn
