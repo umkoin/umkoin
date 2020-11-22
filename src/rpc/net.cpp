@@ -280,18 +280,18 @@ static RPCHelpMan addnode()
                 },
                 RPCResult{RPCResult::Type::NONE, "", ""},
                 RPCExamples{
-                    HelpExampleCli("addnode", "\"192.168.0.6:6333\" \"onetry\"")
-            + HelpExampleRpc("addnode", "\"192.168.0.6:6333\", \"onetry\"")
+                    HelpExampleCli("addnode", "\"192.166.0.6:6333\" \"onetry\"")
+            + HelpExampleRpc("addnode", "\"192.166.0.6:6333\", \"onetry\"")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
     std::string strCommand;
     if (!request.params[1].isNull())
         strCommand = request.params[1].get_str();
-    if (request.fHelp || request.params.size() != 2 ||
-        (strCommand != "onetry" && strCommand != "add" && strCommand != "remove"))
+    if (strCommand != "onetry" && strCommand != "add" && strCommand != "remove") {
         throw std::runtime_error(
             self.ToString());
+    }
 
     NodeContext& node = EnsureNodeContext(request.context);
     if(!node.connman)
@@ -334,9 +334,9 @@ static RPCHelpMan disconnectnode()
                 },
                 RPCResult{RPCResult::Type::NONE, "", ""},
                 RPCExamples{
-                    HelpExampleCli("disconnectnode", "\"192.168.0.6:6333\"")
+                    HelpExampleCli("disconnectnode", "\"192.166.0.6:6333\"")
             + HelpExampleCli("disconnectnode", "\"\" 1")
-            + HelpExampleRpc("disconnectnode", "\"192.168.0.6:6333\"")
+            + HelpExampleRpc("disconnectnode", "\"192.166.0.6:6333\"")
             + HelpExampleRpc("disconnectnode", "\"\", 1")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
@@ -628,7 +628,7 @@ static RPCHelpMan setban()
     std::string strCommand;
     if (!request.params[1].isNull())
         strCommand = request.params[1].get_str();
-    if (request.fHelp || !help.IsValidNumArgs(request.params.size()) || (strCommand != "add" && strCommand != "remove")) {
+    if (strCommand != "add" && strCommand != "remove") {
         throw std::runtime_error(help.ToString());
     }
     NodeContext& node = EnsureNodeContext(request.context);
