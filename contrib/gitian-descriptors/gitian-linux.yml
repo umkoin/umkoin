@@ -1,5 +1,5 @@
 ---
-name: "umkoin-core-linux-0.22"
+name: "umkoin-core-linux-22"
 enable_cache: true
 distro: "ubuntu"
 suites:
