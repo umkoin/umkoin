@@ -40,12 +40,12 @@ Compatibility
 ==============
 
 Umkoin Core is supported and extensively tested on operating systems
-using the Linux kernel, macOS 10.12+, and Windows 7 and newer.  Umkoin
+using the Linux kernel, macOS 10.14+, and Windows 7 and newer. Umkoin
 Core should also work on most other Unix-like systems but is not as
-frequently tested on them.  It is not recommended to use Umkoin Core on
+frequently tested on them. It is not recommended to use Umkoin Core on
 unsupported systems.
 
-From Umkoin Core 0.20.0 onwards, macOS versions earlier than 10.12 are no
+From Umkoin Core 0.22.0 onwards, macOS versions earlier than 10.14 are no
 longer supported. Additionally, Umkoin Core does not yet change appearance
 when macOS "dark mode" is activated.
 

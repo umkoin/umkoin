@@ -25,7 +25,7 @@ Common `host-platform-triplets` for cross compilation are:
 - `i686-pc-linux-gnu` for Linux 32 bit
 - `x86_64-pc-linux-gnu` for x86 Linux
 - `x86_64-w64-mingw32` for Win64
-- `x86_64-apple-darwin16` for macOS
+- `x86_64-apple-darwin18` for macOS
 - `arm-linux-gnueabihf` for Linux ARM 32 bit
 - `aarch64-linux-gnu` for Linux ARM 64 bit
 - `powerpc64-linux-gnu` for Linux POWER 64-bit (big endian)
@@ -72,7 +72,7 @@ For linux RISC-V 64-bit cross compilation (there are no packages for 32-bit):
 
     sudo apt-get install g++-riscv64-linux-gnu binutils-riscv64-linux-gnu
 
-RISC-V known issue: gcc-7.3.0 and gcc-7.3.1 result in a broken `test_umkoin` executable (see https://github.com/bitcoin/bitcoin/pull/13543),
+RISC-V known issue: gcc-7.3.0 and gcc-7.3.1 result in a broken `test_umkoin` executable,
 this is apparently fixed in gcc-8.1.0.
 
 For linux S390X cross compilation:
