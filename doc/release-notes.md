@@ -74,6 +74,8 @@ Updated settings
 
 Changes to Wallet or GUI related settings can be found in the GUI or Wallet section below.
 
+- Passing an invalid `-rpcauth` argument now cause umkoind to fail to start.  (#20461)
+
 Tools and Utilities
 -------------------
 
