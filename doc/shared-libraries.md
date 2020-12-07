@@ -41,6 +41,7 @@ The interface is defined in the C header `umkoinconsensus.h` located in `src/scr
 - `umkoinconsensus_ERR_TX_SIZE_MISMATCH` - `txToLen` did not match with the size of `txTo`
 - `umkoinconsensus_ERR_DESERIALIZE` - An error deserializing `txTo`
 - `umkoinconsensus_ERR_AMOUNT_REQUIRED` - Input amount is required if WITNESS is used
+- `umkoinconsensus_ERR_INVALID_FLAGS` - Script verification `flags` are invalid (i.e. not part of the libconsensus interface)
 
 ### Example Implementations
 - [NBitcoin](https://github.com/NicolasDorier/NBitcoin/blob/master/NBitcoin/Script.cs#L814) (.NET Bindings)
