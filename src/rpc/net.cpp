@@ -165,8 +165,9 @@ static RPCHelpMan getpeerinfo()
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
     NodeContext& node = EnsureNodeContext(request.context);
-    if(!node.connman)
+    if(!node.connman || !node.peerman) {
         throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
+    }
 
     std::vector<CNodeStats> vstats;
     node.connman->GetNodeStats(vstats);
@@ -176,7 +177,7 @@ static RPCHelpMan getpeerinfo()
     for (const CNodeStats& stats : vstats) {
         UniValue obj(UniValue::VOBJ);
         CNodeStateStats statestats;
-        bool fStateStats = GetNodeStateStats(stats.nodeid, statestats);
+        bool fStateStats = node.peerman->GetNodeStateStats(stats.nodeid, statestats);
         obj.pushKV("id", stats.nodeid);
         obj.pushKV("addr", stats.addrName);
         if (stats.addrBind.IsValid()) {
@@ -280,8 +281,8 @@ static RPCHelpMan addnode()
                 },
                 RPCResult{RPCResult::Type::NONE, "", ""},
                 RPCExamples{
-                    HelpExampleCli("addnode", "\"192.166.0.6:6333\" \"onetry\"")
-            + HelpExampleRpc("addnode", "\"192.166.0.6:6333\", \"onetry\"")
+                    HelpExampleCli("addnode", "\"192.168.0.6:6333\" \"onetry\"")
+            + HelpExampleRpc("addnode", "\"192.168.0.6:6333\", \"onetry\"")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
@@ -334,9 +335,9 @@ static RPCHelpMan disconnectnode()
                 },
                 RPCResult{RPCResult::Type::NONE, "", ""},
                 RPCExamples{
-                    HelpExampleCli("disconnectnode", "\"192.166.0.6:6333\"")
+                    HelpExampleCli("disconnectnode", "\"192.168.0.6:6333\"")
             + HelpExampleCli("disconnectnode", "\"\" 1")
-            + HelpExampleRpc("disconnectnode", "\"192.166.0.6:6333\"")
+            + HelpExampleRpc("disconnectnode", "\"192.168.0.6:6333\"")
             + HelpExampleRpc("disconnectnode", "\"\", 1")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
