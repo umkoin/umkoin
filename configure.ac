@@ -24,6 +24,9 @@ UMKOIN_GUI_NAME=umkoin-qt
 UMKOIN_CLI_NAME=umkoin-cli
 UMKOIN_TX_NAME=umkoin-tx
 UMKOIN_WALLET_TOOL_NAME=umkoin-wallet
+dnl Multi Process
+UMKOIN_MP_NODE_NAME=umkoin-node
+UMKOIN_MP_GUI_NAME=umkoin-gui
 
 dnl Unless the user specified ARFLAGS, force it to be cr
 AC_ARG_VAR(ARFLAGS, [Flags for the archiver, defaults to <cr> if not set])
@@ -1654,6 +1657,8 @@ AC_SUBST(UMKOIN_GUI_NAME)
 AC_SUBST(UMKOIN_CLI_NAME)
 AC_SUBST(UMKOIN_TX_NAME)
 AC_SUBST(UMKOIN_WALLET_TOOL_NAME)
+AC_SUBST(UMKOIN_MP_NODE_NAME)
+AC_SUBST(UMKOIN_MP_GUI_NAME)
 
 AC_SUBST(RELDFLAGS)
 AC_SUBST(DEBUG_CPPFLAGS)
