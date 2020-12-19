@@ -91,10 +91,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = 1511678228; // November 26, 2017
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1514112600; // December 24, 2017
 
-        // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000eb989e4a26f4bea2"); //100000
-
-        // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00000000001d1bc045e88dccc374d13641aa646b351cfabc3cd2943aff66e04b"); //100000
 
         /**
@@ -197,10 +194,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = 1511678228; // November 26, 2017
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1514112600; // December 24, 2017
 
-        // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000e395f99bb0365e"); //62958
-
-        // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x000000000087b4d2ec7cacb608083b6b25fd3691b8fe64bff8f35d629d82962b"); //62958
 
         pchMessageStart[0] = 0x0b;
@@ -394,10 +388,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
-        // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256{};
-
-        // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256{};
 
         pchMessageStart[0] = 0xfa;
