@@ -289,11 +289,11 @@ Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spur
 - Update umkoin.org version
 
   - First, check to see if the Umkoin.org maintainers have prepared a
-    release: http://github.com/umkoin/umkoin.org/releases
+    release: https://github.com/umkoin/umkoin.org/releases
 
-      - If they have, it will have previously failed their Travis CI
+      - If they have, it will have previously failed their CI
         checks because the final release files weren't uploaded.
-        Trigger a Travis CI rebuild---if it passes, merge.
+        Trigger a CI rebuild---if it passes, merge.
 
   - After the pull request is merged, the website will automatically show the newest version within 15 minutes, as well
     as update the OS download links.
@@ -308,7 +308,7 @@ Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spur
 
 ### Additional information
 
-#### How to calculate `m_assumed_blockchain_size` and `m_assumed_chain_state_size`
+#### <a name="how-to-calculate-assumed-blockchain-and-chain-state-size"></a>How to calculate `m_assumed_blockchain_size` and `m_assumed_chain_state_size`
 
 Both variables are used as a guideline for how much space the user needs on their drive in total, not just strictly for the blockchain.
 Note that all values should be taken from a **fully synced** node and have an overhead of 5-10% added on top of its base value.
