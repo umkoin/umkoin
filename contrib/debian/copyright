@@ -5,7 +5,7 @@ Upstream-Contact: Satoshi Nakamoto <satoshin@gmx.com>
 Source: https://github.com/umkoin/umkoin
 
 Files: *
-Copyright: 2017-2020, Umkoin Core Developers
+Copyright: 2017-2021, Umkoin Core Developers
 License: Expat
 Comment: The Umkoin Core Developers encompasses the current developers listed on umkoin.org,
          as well as the numerous contributors to the project.
