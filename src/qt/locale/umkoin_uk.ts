@@ -357,7 +357,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Reindexing blocks on disk...</source>
-        <translation>Переіндексація блоків на диску ...</translation>
+        <translation>Переіндексація блоків на диску...</translation>
     </message>
     <message>
         <source>Proxy is &lt;b&gt;enabled&lt;/b&gt;: %1</source>
@@ -445,7 +445,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Indexing blocks on disk...</source>
-        <translation>Індексація блоків на диску ...</translation>
+        <translation>Індексація блоків на диску...</translation>
     </message>
     <message>
         <source>Processing blocks on disk...</source>
@@ -529,7 +529,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Close Wallet...</source>
-        <translation>Закрити Гаманець ...</translation>
+        <translation>Закрити Гаманець...</translation>
     </message>
     <message>
         <source>Close wallet</source>
@@ -884,7 +884,11 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Create</source>
         <translation>Створити</translation>
     </message>
-    </context>
+    <message>
+        <source>Compiled without sqlite support (required for descriptor wallets)</source>
+        <translation>Зкомпільовано без підтримки sqlite (необхідно для гаманців з дексрипторами)</translation>
+    </message>
+</context>
 <context>
     <name>EditAddressDialog</name>
     <message>
@@ -1021,6 +1025,10 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation>Umkoin</translation>
     </message>
     <message>
+        <source>Discard blocks after verification, except most recent %1 GB (prune)</source>
+        <translation>Відкинути блоки після верифікації, за винятком останніх %1 GB (prune)</translation>
+    </message>
+    <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
         <translation>Принаймні, %1 ГБ даних буде збережено в цьому каталозі, і воно з часом зростатиме.</translation>
     </message>
@@ -1113,7 +1121,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Unknown. Syncing Headers (%1, %2%)...</source>
-        <translation>Невідомо. Синхронізація заголовків (%1, %2%) ...</translation>
+        <translation>Невідомо. Синхронізація заголовків (%1, %2%)...</translation>
     </message>
 </context>
 <context>
@@ -2252,8 +2260,8 @@ Signing is only possible with addresses of the type 'legacy'.</source>
 <context>
     <name>ReceiveRequestDialog</name>
     <message>
-        <source>Request payment to ...</source>
-        <translation>Запит на оплату до ...</translation>
+        <source>Request payment to...</source>
+        <translation>Запит на оплату до...</translation>
     </message>
     <message>
         <source>Address:</source>
@@ -2587,7 +2595,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee of "100 satoshis p
     </message>
     <message>
         <source>To review recipient list click "Show Details..."</source>
-        <translation>Щоб переглянути список одержувачів, натисніть "Показати деталі ..."</translation>
+        <translation>Щоб переглянути список одержувачів, натисніть "Показати деталі..."</translation>
     </message>
     <message>
         <source>Confirm send coins</source>
@@ -3696,6 +3704,10 @@ Go to File &gt; Open Wallet to load a wallet.
     <message>
         <source>Failed to verify database</source>
         <translation>Не вдалося перевірити базу даних</translation>
+    </message>
+    <message>
+        <source>Ignoring duplicate -wallet %s.</source>
+        <translation>Ігнорую диблікат -wallet %s.</translation>
     </message>
     <message>
         <source>Importing...</source>
