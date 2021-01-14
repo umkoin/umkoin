@@ -23,6 +23,7 @@ UMKOIN_DAEMON_NAME=umkoind
 UMKOIN_GUI_NAME=umkoin-qt
 UMKOIN_CLI_NAME=umkoin-cli
 UMKOIN_TX_NAME=umkoin-tx
+UMKOIN_UTIL_NAME=umkoin-util
 UMKOIN_WALLET_TOOL_NAME=umkoin-wallet
 dnl Multi Process
 UMKOIN_MP_NODE_NAME=umkoin-node
@@ -571,7 +572,7 @@ CPPFLAGS="$CPPFLAGS -DHAVE_BUILD_INFO -D__STDC_FORMAT_MACROS"
 
 AC_ARG_WITH([utils],
   [AS_HELP_STRING([--with-utils],
-  [build umkoin-cli umkoin-tx umkoin-wallet (default=yes)])],
+  [build umkoin-cli umkoin-tx umkoin-util umkoin-wallet (default=yes)])],
   [build_umkoin_utils=$withval],
   [build_umkoin_utils=yes])
 
@@ -592,6 +593,12 @@ AC_ARG_ENABLE([util-wallet],
   [build umkoin-wallet])],
   [build_umkoin_wallet=$enableval],
   [build_umkoin_wallet=$build_umkoin_utils])
+
+AC_ARG_ENABLE([util-util],
+  [AS_HELP_STRING([--enable-util-util],
+  [build umkoin-util])],
+  [build_umkoin_util=$enableval],
+  [build_umkoin_util=$build_umkoin_utils])
 
 AC_ARG_WITH([libs],
   [AS_HELP_STRING([--with-libs],
@@ -1209,6 +1216,7 @@ if test "x$enable_fuzz" = "xyes"; then
   build_umkoin_utils=no
   build_umkoin_cli=no
   build_umkoin_tx=no
+  build_umkoin_util=no
   build_umkoin_wallet=no
   build_umkoind=no
   build_umkoin_libs=no
@@ -1433,7 +1441,7 @@ fi
 dnl univalue check
 
 need_bundled_univalue=yes
-if test x$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnonononononono; then
+if test x$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoin_util$build_umkoind$umkoin_enable_qt$use_tests$use_bench = xnononononononono; then
   need_bundled_univalue=no
 else
   if test x$system_univalue != xno; then
@@ -1515,6 +1523,10 @@ AC_MSG_RESULT($build_umkoin_tx)
 AC_MSG_CHECKING([whether to build umkoin-wallet])
 AM_CONDITIONAL([BUILD_UMKOIN_WALLET], [test x$build_umkoin_wallet = xyes])
 AC_MSG_RESULT($build_umkoin_wallet)
+
+AC_MSG_CHECKING([whether to build umkoin-util])
+AM_CONDITIONAL([BUILD_UMKOIN_UTIL], [test x$build_umkoin_util = xyes])
+AC_MSG_RESULT($build_umkoin_util)
 
 AC_MSG_CHECKING([whether to build libraries])
 AM_CONDITIONAL([BUILD_UMKOIN_LIBS], [test x$build_umkoin_libs = xyes])
@@ -1717,6 +1729,7 @@ AC_SUBST(UMKOIN_DAEMON_NAME)
 AC_SUBST(UMKOIN_GUI_NAME)
 AC_SUBST(UMKOIN_CLI_NAME)
 AC_SUBST(UMKOIN_TX_NAME)
+AC_SUBST(UMKOIN_UTIL_NAME)
 AC_SUBST(UMKOIN_WALLET_TOOL_NAME)
 AC_SUBST(UMKOIN_MP_NODE_NAME)
 AC_SUBST(UMKOIN_MP_GUI_NAME)

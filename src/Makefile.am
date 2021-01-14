@@ -92,13 +92,19 @@ endif
 if BUILD_UMKOIN_CLI
   bin_PROGRAMS += umkoin-cli
 endif
+
 if BUILD_UMKOIN_TX
   bin_PROGRAMS += umkoin-tx
 endif
+
 if ENABLE_WALLET
 if BUILD_UMKOIN_WALLET
   bin_PROGRAMS += umkoin-wallet
 endif
+endif
+
+if BUILD_UMKOIN_UTIL
+  bin_PROGRAMS += umkoin-util
 endif
 
 .PHONY: FORCE check-symbols check-security
@@ -664,6 +670,27 @@ umkoin_wallet_LDADD = $(LIBUMKOIN_WALLET_TOOL) $(umkoin_bin_ldadd)
 if TARGET_WINDOWS
 umkoin_wallet_SOURCES += umkoin-wallet-res.rc
 endif
+#
+
+# umkoin-util binary #
+umkoin_util_SOURCES = umkoin-util.cpp
+umkoin_util_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+umkoin_util_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+umkoin_util_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+
+if TARGET_WINDOWS
+umkoin_util_SOURCES += umkoin-util-res.rc
+endif
+
+umkoin_util_LDADD = \
+  $(LIBUMKOIN_COMMON) \
+  $(LIBUMKOIN_UTIL) \
+  $(LIBUNIVALUE) \
+  $(LIBUMKOIN_CONSENSUS) \
+  $(LIBUMKOIN_CRYPTO) \
+  $(LIBSECP256K1)
+
+umkoin_util_LDADD += $(BOOST_LIBS)
 #
 
 # umkoinconsensus library #

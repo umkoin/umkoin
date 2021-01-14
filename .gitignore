@@ -8,6 +8,7 @@ src/umkoin-cli
 src/umkoin-gui
 src/umkoin-node
 src/umkoin-tx
+src/umkoin-util
 src/umkoin-wallet
 src/test/fuzz/*
 !src/test/fuzz/*.*

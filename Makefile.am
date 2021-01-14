@@ -25,6 +25,7 @@ UMKOIND_BIN=$(top_builddir)/src/$(UMKOIN_DAEMON_NAME)$(EXEEXT)
 UMKOIN_QT_BIN=$(top_builddir)/src/qt/$(UMKOIN_GUI_NAME)$(EXEEXT)
 UMKOIN_CLI_BIN=$(top_builddir)/src/$(UMKOIN_CLI_NAME)$(EXEEXT)
 UMKOIN_TX_BIN=$(top_builddir)/src/$(UMKOIN_TX_NAME)$(EXEEXT)
+UMKOIN_UTIL_BIN=$(top_builddir)/src/$(UMKOIN_UTIL_NAME)$(EXEEXT)
 UMKOIN_WALLET_BIN=$(top_builddir)/src/$(UMKOIN_WALLET_TOOL_NAME)$(EXEEXT)
 UMKOIN_NODE_BIN=$(top_builddir)/src/$(UMKOIN_MP_NODE_NAME)$(EXEEXT)
 UMKOIN_GUI_BIN=$(top_builddir)/src/$(UMKOIN_MP_GUI_NAME)$(EXEEXT)
@@ -81,6 +82,7 @@ $(UMKOIN_WIN_INSTALLER): all-recursive
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_CLI_BIN) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_TX_BIN) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_WALLET_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_UTIL_BIN) $(top_builddir)/release
 	@test -f $(MAKENSIS) && echo 'OutFile "$@"' | cat $(top_builddir)/share/setup.nsi - | $(MAKENSIS) -V2 - || \
 	  echo error: could not build $@
 	@echo built $@
@@ -175,6 +177,9 @@ $(UMKOIN_CLI_BIN): FORCE
 	$(MAKE) -C src $(@F)
 
 $(UMKOIN_TX_BIN): FORCE
+	$(MAKE) -C src $(@F)
+
+$(UMKOIN_UTIL_BIN): FORCE
 	$(MAKE) -C src $(@F)
 
 $(UMKOIN_WALLET_BIN): FORCE
