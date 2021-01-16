@@ -14,13 +14,14 @@ UMKOIND=${UMKOIND:-$BINDIR/umkoind}
 UMKOINCLI=${UMKOINCLI:-$BINDIR/umkoin-cli}
 UMKOINTX=${UMKOINTX:-$BINDIR/umkoin-tx}
 WALLET_TOOL=${WALLET_TOOL:-$BINDIR/umkoin-wallet}
+UMKOINUTIL=${UMKOINQT:-$BINDIR/umkoin-util}
 UMKOINQT=${UMKOINQT:-$BINDIR/qt/umkoin-qt}
 
 [ ! -x $UMKOIND ] && echo "$UMKOIND not found or not executable." && exit 1
 
 # Don't allow man pages to be generated for binaries built from a dirty tree
 DIRTY=""
-for cmd in $UMKOIND $UMKOINCLI $UMKOINTX $WALLET_TOOL $UMKOINQT; do
+for cmd in $UMKOIND $UMKOINCLI $UMKOINTX $WALLET_TOOL $UMKOINUTIL $UMKOINQT; do
   VERSION_OUTPUT=$($cmd --version)
   if [[ $VERSION_OUTPUT == *"dirty"* ]]; then
     DIRTY="${DIRTY}${cmd}\n"
@@ -43,7 +44,7 @@ read -r -a UMKVER <<< "$($UMKOINCLI --version | head -n1 | awk -F'[ -]' '{ print
 echo "[COPYRIGHT]" > footer.h2m
 $UMKOIND --version | sed -n '1!p' >> footer.h2m
 
-for cmd in $UMKOIND $UMKOINCLI $UMKOINTX $WALLET_TOOL $UMKOINQT; do
+for cmd in $UMKOIND $UMKOINCLI $UMKOINTX $WALLET_TOOL $UMKOINUTIL $UMKOINQT; do
   cmdname="${cmd##*/}"
   help2man -N --version-string=${UMKVER[0]} --include=footer.h2m -o ${MANDIR}/${cmdname}.1 ${cmd}
   sed -i "s/\\\-${UMKVER[1]}//g" ${MANDIR}/${cmdname}.1

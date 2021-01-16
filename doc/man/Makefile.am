@@ -16,6 +16,10 @@ if BUILD_UMKOIN_TX
   dist_man1_MANS+=umkoin-tx.1
 endif
 
+if BUILD_UMKOIN_UTIL
+  dist_man1_MANS+=umkoin-util.1
+endif
+
 if ENABLE_WALLET
 if BUILD_UMKOIN_WALLET
   dist_man1_MANS+=umkoin-wallet.1
