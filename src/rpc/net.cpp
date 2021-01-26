@@ -117,6 +117,10 @@ static UniValue getpeerinfo(const JSONRPCRequest& request)
                                 {RPCResult::Type::NUM, "n", "The heights of blocks we're currently asking from this peer"},
                             }},
                             {RPCResult::Type::BOOL, "whitelisted", "Whether the peer is whitelisted"},
+                            {RPCResult::Type::ARR, "permissions", "Any special permissions that have been granted to this peer",
+                            {
+                                {RPCResult::Type::STR, "permission_type", Join(NET_PERMISSIONS_DOC, ",\n") + ".\n"},
+                            }},
                             {RPCResult::Type::NUM, "minfeefilter", "The minimum fee rate for transactions this peer accepts"},
                             {RPCResult::Type::OBJ_DYN, "bytessent_per_msg", "",
                             {
@@ -243,8 +247,8 @@ static UniValue addnode(const JSONRPCRequest& request)
                 },
                 RPCResult{RPCResult::Type::NONE, "", ""},
                 RPCExamples{
-                    HelpExampleCli("addnode", "\"192.166.0.6:6333\" \"onetry\"")
-            + HelpExampleRpc("addnode", "\"192.166.0.6:6333\", \"onetry\"")
+                    HelpExampleCli("addnode", "\"192.168.0.6:6333\" \"onetry\"")
+            + HelpExampleRpc("addnode", "\"192.168.0.6:6333\", \"onetry\"")
                 },
             }.ToString());
 
@@ -286,9 +290,9 @@ static UniValue disconnectnode(const JSONRPCRequest& request)
                 },
                 RPCResult{RPCResult::Type::NONE, "", ""},
                 RPCExamples{
-                    HelpExampleCli("disconnectnode", "\"192.166.0.6:6333\"")
+                    HelpExampleCli("disconnectnode", "\"192.168.0.6:6333\"")
             + HelpExampleCli("disconnectnode", "\"\" 1")
-            + HelpExampleRpc("disconnectnode", "\"192.166.0.6:6333\"")
+            + HelpExampleRpc("disconnectnode", "\"192.168.0.6:6333\"")
             + HelpExampleRpc("disconnectnode", "\"\", 1")
                 },
             }.Check(request);
