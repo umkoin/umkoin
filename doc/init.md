@@ -53,11 +53,12 @@ Paths
 
 All three configurations assume several paths that might need to be adjusted.
 
-Binary:              `/usr/bin/umkoind`
-Configuration file:  `/etc/umkoin/umkoin.conf`
-Data directory:      `/var/lib/umkoind`
-PID file:            `/var/run/umkoind/umkoind.pid` (OpenRC and Upstart) or `/run/umkoind/umkoind.pid` (systemd)
-Lock file:           `/var/lock/subsys/umkoind` (CentOS)
+    Binary:              /usr/bin/umkoind
+    Configuration file:  /etc/umkoin/umkoin.conf
+    Data directory:      /var/lib/umkoind
+    PID file:            /var/run/umkoind/umkoind.pid (OpenRC and Upstart) or
+                         /run/umkoind/umkoind.pid (systemd)
+    Lock file:           /var/lock/subsys/umkoind (CentOS)
 
 The PID directory (if applicable) and data directory should both be owned by the
 umkoin user and group. It is advised for security reasons to make the
@@ -83,10 +84,10 @@ OpenRC).
 
 ### macOS
 
-Binary:              `/usr/local/bin/umkoind`
-Configuration file:  `~/Library/Application Support/Umkoin/umkoin.conf`
-Data directory:      `~/Library/Application Support/Umkoin`
-Lock file:           `~/Library/Application Support/Umkoin/.lock`
+    Binary:              /usr/local/bin/umkoind
+    Configuration file:  ~/Library/Application Support/Umkoin/umkoin.conf
+    Data directory:      ~/Library/Application Support/Umkoin
+    Lock file:           ~/Library/Application Support/Umkoin/.lock
 
 Installing Service Configuration
 -----------------------------------
