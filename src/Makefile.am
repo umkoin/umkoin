@@ -243,6 +243,7 @@ UMKOIN_CORE_H = \
   util/rbf.h \
   util/ref.h \
   util/settings.h \
+  util/sock.h \
   util/spanparsing.h \
   util/string.h \
   util/system.h \
@@ -559,6 +560,7 @@ libumkoin_util_a_SOURCES = \
   util/fees.cpp \
   util/getuniquepath.cpp \
   util/hasher.cpp \
+  util/sock.cpp \
   util/system.cpp \
   util/message.cpp \
   util/moneystr.cpp \
