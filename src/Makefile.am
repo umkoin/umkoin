@@ -687,7 +687,7 @@ endif
 umkoin_util_SOURCES = umkoin-util.cpp
 umkoin_util_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 umkoin_util_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-umkoin_util_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+umkoin_util_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
 umkoin_util_SOURCES += umkoin-util-res.rc
