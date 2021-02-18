@@ -9,7 +9,6 @@
 #include <consensus/merkle.h>
 #include <hash.h> // for signet block challenge hash
 #include <util/system.h>
-#include <util/strencodings.h>
 #include <versionbitsinfo.h>
 
 #include <assert.h>
@@ -127,7 +126,7 @@ public:
 
         bech32_hrp = "bc";
 
-        vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
+        vFixedSeeds = std::vector<SeedSpec6>(std::begin(pnSeed6_main), std::end(pnSeed6_main));
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
@@ -148,6 +147,10 @@ public:
                 { 67999, uint256S("0x000000000001972d726acfed45ffb647f7a6da7bdc3ab5288c7b2a82948ac65c")},
                 { 96428, uint256S("0x000000000039d6d37440cfe057b1d917bb778ce02fb79ad913435955dcbfced5")},
             }
+        };
+
+        m_assumeutxo_data = MapAssumeutxo{
+         // TODO to be specified in a future patch.
         };
 
         chainTxData = ChainTxData{
@@ -223,7 +226,7 @@ public:
 
         bech32_hrp = "tb";
 
-        vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
+        vFixedSeeds = std::vector<SeedSpec6>(std::begin(pnSeed6_test), std::end(pnSeed6_test));
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
@@ -239,6 +242,10 @@ public:
                 {16344, uint256S("0x000000001623f5d83e1cffec76ee446e02f67e5158daca342842e124a7af892b")},
                 {54999, uint256S("0x00000000015a7e3215de95ec1c0cad52c1de926f71f3f43ce4678a0050f8ed0b")},
             }
+        };
+
+        m_assumeutxo_data = MapAssumeutxo{
+            // TODO to be specified in a future patch.
         };
 
         chainTxData = ChainTxData{
