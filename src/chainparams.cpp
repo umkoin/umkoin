@@ -8,7 +8,6 @@
 #include <chainparamsseeds.h>
 #include <consensus/merkle.h>
 #include <hash.h> // for signet block challenge hash
-#include <tinyformat.h>
 #include <util/system.h>
 #include <util/strencodings.h>
 #include <versionbitsinfo.h>
@@ -91,8 +90,8 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = 1511678228; // November 26, 2017
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1514112600; // December 24, 2017
 
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000eb989e4a26f4bea2"); //100000
-        consensus.defaultAssumeValid = uint256S("0x00000000001d1bc045e88dccc374d13641aa646b351cfabc3cd2943aff66e04b"); //100000
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000ecbad6d88a6ef053");  // 117400
+        consensus.defaultAssumeValid = uint256S("0x000000000018c7ed29ccd0247a01fbfa0801de929d6e2806b7f6e028242e1989"); // 117400
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -421,6 +420,17 @@ public:
             }
         };
 
+        m_assumeutxo_data = MapAssumeutxo{
+            {
+                110,
+                {uint256S("0x76fd7334ac7c1baf57ddc0c626f073a655a35d98a4258cd1382c8cc2b8392e10"), 110},
+            },
+            {
+                210,
+                {uint256S("0x9c5ed99ef98544b34f8920b6d1802f72ac28ae6e2bd2bd4c316ff10c230df3f2"), 210},
+            },
+        };
+
         chainTxData = ChainTxData{
             0,
             0,
@@ -515,4 +525,10 @@ void SelectParams(const std::string& network)
 {
     SelectBaseParams(network);
     globalChainParams = CreateChainParams(gArgs, network);
+}
+
+std::ostream& operator<<(std::ostream& o, const AssumeutxoData& aud)
+{
+    o << strprintf("AssumeutxoData(%s, %s)", aud.hash_serialized.ToString(), aud.nChainTx);
+    return o;
 }
