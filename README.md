@@ -1,6 +1,13 @@
 Umkoin Core integration/staging tree
 =====================================
 
+http://www.umkoin.org
+
+For an immediately usable, binary version of the Umkoin Core software, see
+[http://www.umkoin.org/en/download.php](http://www.umkoin.org/en/download.php)
+
+Further information about Umkoin Core is available in the [doc folder](/doc).
+
 What is Umkoin?
 ----------------
 
@@ -10,8 +17,7 @@ with no central authority: managing transactions and issuing money are carried
 out collectively by the network. Umkoin Core is the name of open source
 software which enables the use of this currency.
 
-For more information, as well as an immediately usable, binary version of
-the Umkoin Core software, see http://www.umkoin.org/en/download.php.
+For more information read the Umkoin [website](http://www.umkoin.org).
 
 License
 -------
@@ -45,7 +51,7 @@ submit new unit tests for old code. Unit tests can be compiled and run
 and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
 
 There are also [regression and integration tests](/test), written
-in Python, that are run automatically on the build server.
+in Python.
 These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
 
 The CI (Continuous Integration) systems make sure that every pull request is built for Windows, Linux, and macOS,
