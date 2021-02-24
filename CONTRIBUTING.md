@@ -37,9 +37,6 @@ list or changes that are
 Some of them might no longer be applicable. So if you are interested, but
 unsure, you might want to leave a comment on the issue first.
 
-You may also participate in the weekly
-[Umkoin Core PR Review Club](https://bitcoincore.reviews/) meeting.
-
 ### Good First Issue Label
 
 The purpose of the `good first issue` label is to highlight which issues are
@@ -66,7 +63,6 @@ To contribute a patch, the workflow is as follows:
   1. Create topic branch
   1. Commit patches
 
-For GUI-related issues or pull requests, the https://github.com/umkoin/gui repository should be used.
 For all other issues and pull requests, the https://github.com/umkoin/umkoin node repository should be used.
 
 The master branch for all monotree repositories is identical.
@@ -178,7 +174,7 @@ Note: Code review is a burdensome but important part of the development process,
 
 If your pull request contains fixup commits (commits that change the same line of code repeatedly) or too fine-grained
 commits, you may be asked to [squash](https://git-scm.com/docs/git-rebase#_interactive_mode) your commits
-before it will be merged. The basic squashing workflow is shown below.
+before it will be reviewed. The basic squashing workflow is shown below.
 
     git checkout your_branch_name
     git rebase -i HEAD~n
@@ -396,9 +392,6 @@ A backport should contain the following metadata in the commit body:
 Github-Pull: #<PR number>
 Rebased-From: <commit hash of the original commit>
 ```
-
-Also see the [backport.py script](
-https://github.com/umkoin/bitcoin-maintainer-tools#backport).
 
 Release Policy
 --------------
