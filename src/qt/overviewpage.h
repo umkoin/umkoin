@@ -61,6 +61,7 @@ private Q_SLOTS:
     void updateAlerts(const QString &warnings);
     void updateWatchOnlyLabels(bool showWatchOnly);
     void handleOutOfSyncWarningClicks();
+    void setMonospacedFont(bool use_embedded_font);
 };
 
 #endif // UMKOIN_QT_OVERVIEWPAGE_H
