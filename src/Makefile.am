@@ -253,6 +253,7 @@ UMKOIN_CORE_H = \
   util/system.h \
   util/threadnames.h \
   util/time.h \
+  util/tokenpipe.h \
   util/trace.h \
   util/translation.h \
   util/ui_change_type.h \
@@ -584,6 +585,7 @@ libumkoin_util_a_SOURCES = \
   util/strencodings.cpp \
   util/string.cpp \
   util/time.cpp \
+  util/tokenpipe.cpp \
   $(UMKOIN_CORE_H)
 
 if USE_LIBEVENT
