@@ -7,7 +7,6 @@
 
 #include <tinyformat.h>
 #include <util/system.h>
-#include <util/memory.h>
 
 #include <assert.h>
 
@@ -38,19 +37,19 @@ const CBaseChainParams& BaseParams()
 }
 
 /**
- * Port numbers for incoming Tor connections (6334, 16334, 36334, 18445) have
+ * Port numbers for incoming Tor connections (6334, 16334, 36334, 16445) have
  * been chosen arbitrarily to keep ranges of used ports tight.
  */
 std::unique_ptr<CBaseChainParams> CreateBaseChainParams(const std::string& chain)
 {
     if (chain == CBaseChainParams::MAIN) {
-        return MakeUnique<CBaseChainParams>("", 6332, 6334);
+        return std::make_unique<CBaseChainParams>("", 6332, 6334);
     } else if (chain == CBaseChainParams::TESTNET) {
-        return MakeUnique<CBaseChainParams>("testnet3", 16332, 16334);
+        return std::make_unique<CBaseChainParams>("testnet3", 16332, 16334);
     } else if (chain == CBaseChainParams::SIGNET) {
-        return MakeUnique<CBaseChainParams>("signet", 36332, 36334);
+        return std::make_unique<CBaseChainParams>("signet", 36332, 36334);
     } else if (chain == CBaseChainParams::REGTEST) {
-        return MakeUnique<CBaseChainParams>("regtest", 16443, 16445);
+        return std::make_unique<CBaseChainParams>("regtest", 16443, 16445);
     }
     throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
 }
