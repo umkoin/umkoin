@@ -60,16 +60,17 @@ start_pre() {
 	"${UMKOIND_PIDDIR}"
 
 	checkpath -f \
-	-o ${UMKOIND_USER}:${UMKOIND_GROUP} \
+	-o "${UMKOIND_USER}:${UMKOIND_GROUP}" \
 	-m 0660 \
-	${UMKOIND_CONFIGFILE}
+	"${UMKOIND_CONFIGFILE}"
 
 	checkconfig || return 1
 }
 
 checkconfig()
 {
-	if ! grep -qs '^rpcpassword=' "${UMKOIND_CONFIGFILE}" ; then
+	if grep -qs '^rpcuser=' "${UMKOIND_CONFIGFILE}" && \
+		! grep -qs '^rpcpassword=' "${UMKOIND_CONFIGFILE}" ; then
 		eerror ""
 		eerror "ERROR: You must set a secure rpcpassword to run umkoind."
 		eerror "The setting must appear in ${UMKOIND_CONFIGFILE}"
