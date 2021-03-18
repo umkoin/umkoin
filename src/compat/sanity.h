@@ -5,7 +5,6 @@
 #ifndef UMKOIN_COMPAT_SANITY_H
 #define UMKOIN_COMPAT_SANITY_H
 
-bool glibc_sanity_test();
 bool glibcxx_sanity_test();
 
 #endif // UMKOIN_COMPAT_SANITY_H
