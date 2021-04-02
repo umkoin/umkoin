@@ -9,7 +9,11 @@ extern "C" {
 #endif
 
 /** This module implements a variant of Schnorr signatures compliant with
+<<<<<<< HEAD
  *  Umkoin Improvement Proposal 340 "Schnorr Signatures for secp256k1"
+=======
+ *  Bitcoin Improvement Proposal 340 "Schnorr Signatures for secp256k1"
+>>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
  *  (https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki).
  */
 
@@ -44,7 +48,11 @@ typedef int (*secp256k1_nonce_function_hardened)(
     void *data
 );
 
+<<<<<<< HEAD
 /** An implementation of the nonce generation function as defined in Umkoin
+=======
+/** An implementation of the nonce generation function as defined in Bitcoin
+>>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
  *  Improvement Proposal 340 "Schnorr Signatures for secp256k1"
  *  (https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki).
  *
