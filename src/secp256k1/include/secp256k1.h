@@ -539,21 +539,12 @@ SECP256K1_API extern const secp256k1_nonce_function secp256k1_nonce_function_def
  *
  *  Returns: 1: signature created
  *           0: the nonce generation function failed, or the secret key was invalid.
-<<<<<<< HEAD
- *  Args:    ctx:    pointer to a context object, initialized for signing (cannot be NULL)
- *  Out:     sig:    pointer to an array where the signature will be placed (cannot be NULL)
- *  In:      msg32:  the 32-byte message hash being signed (cannot be NULL)
- *           seckey: pointer to a 32-byte secret key (cannot be NULL)
- *           noncefp:pointer to a nonce generation function. If NULL, secp256k1_nonce_function_default is used
- *           ndata:  pointer to arbitrary data used by the nonce generation function (can be NULL)
-=======
  *  Args:    ctx:       pointer to a context object, initialized for signing (cannot be NULL)
  *  Out:     sig:       pointer to an array where the signature will be placed (cannot be NULL)
  *  In:      msghash32: the 32-byte message hash being signed (cannot be NULL)
  *           seckey:    pointer to a 32-byte secret key (cannot be NULL)
  *           noncefp:   pointer to a nonce generation function. If NULL, secp256k1_nonce_function_default is used
  *           ndata:     pointer to arbitrary data used by the nonce generation function (can be NULL)
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
  *
  * The created signature is always in lower-S form. See
  * secp256k1_ecdsa_signature_normalize for more details.
@@ -642,11 +633,7 @@ SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ec_pubkey_negate(
  *                  invalid according to secp256k1_ec_seckey_verify, this
  *                  function returns 0. seckey will be set to some unspecified
  *                  value if this function returns 0. (cannot be NULL)
-<<<<<<< HEAD
- *  In:      tweak: pointer to a 32-byte tweak. If the tweak is invalid according to
-=======
  *  In:    tweak32: pointer to a 32-byte tweak. If the tweak is invalid according to
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
  *                  secp256k1_ec_seckey_verify, this function returns 0. For
  *                  uniformly random 32-byte arrays the chance of being invalid
  *                  is negligible (around 1 in 2^128) (cannot be NULL).
@@ -654,11 +641,7 @@ SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ec_pubkey_negate(
 SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ec_seckey_tweak_add(
     const secp256k1_context* ctx,
     unsigned char *seckey,
-<<<<<<< HEAD
-    const unsigned char *tweak
-=======
     const unsigned char *tweak32
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 ) SECP256K1_ARG_NONNULL(1) SECP256K1_ARG_NONNULL(2) SECP256K1_ARG_NONNULL(3);
 
 /** Same as secp256k1_ec_seckey_tweak_add, but DEPRECATED. Will be removed in
@@ -678,11 +661,7 @@ SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ec_privkey_tweak_add(
  *                  (cannot be NULL).
  *  In/Out: pubkey: pointer to a public key object. pubkey will be set to an
  *                  invalid value if this function returns 0 (cannot be NULL).
-<<<<<<< HEAD
- *  In:      tweak: pointer to a 32-byte tweak. If the tweak is invalid according to
-=======
  *  In:    tweak32: pointer to a 32-byte tweak. If the tweak is invalid according to
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
  *                  secp256k1_ec_seckey_verify, this function returns 0. For
  *                  uniformly random 32-byte arrays the chance of being invalid
  *                  is negligible (around 1 in 2^128) (cannot be NULL).
@@ -701,11 +680,7 @@ SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ec_pubkey_tweak_add(
  *                  invalid according to secp256k1_ec_seckey_verify, this
  *                  function returns 0. seckey will be set to some unspecified
  *                  value if this function returns 0. (cannot be NULL)
-<<<<<<< HEAD
- *  In:      tweak: pointer to a 32-byte tweak. If the tweak is invalid according to
-=======
  *  In:    tweak32: pointer to a 32-byte tweak. If the tweak is invalid according to
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
  *                  secp256k1_ec_seckey_verify, this function returns 0. For
  *                  uniformly random 32-byte arrays the chance of being invalid
  *                  is negligible (around 1 in 2^128) (cannot be NULL).
@@ -713,11 +688,7 @@ SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ec_pubkey_tweak_add(
 SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ec_seckey_tweak_mul(
     const secp256k1_context* ctx,
     unsigned char *seckey,
-<<<<<<< HEAD
-    const unsigned char *tweak
-=======
     const unsigned char *tweak32
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 ) SECP256K1_ARG_NONNULL(1) SECP256K1_ARG_NONNULL(2) SECP256K1_ARG_NONNULL(3);
 
 /** Same as secp256k1_ec_seckey_tweak_mul, but DEPRECATED. Will be removed in
@@ -735,11 +706,7 @@ SECP256K1_API SECP256K1_WARN_UNUSED_RESULT int secp256k1_ec_privkey_tweak_mul(
  *                  (cannot be NULL).
  *  In/Out: pubkey: pointer to a public key object. pubkey will be set to an
  *                  invalid value if this function returns 0 (cannot be NULL).
-<<<<<<< HEAD
- *  In:      tweak: pointer to a 32-byte tweak. If the tweak is invalid according to
-=======
  *  In:    tweak32: pointer to a 32-byte tweak. If the tweak is invalid according to
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
  *                  secp256k1_ec_seckey_verify, this function returns 0. For
  *                  uniformly random 32-byte arrays the chance of being invalid
  *                  is negligible (around 1 in 2^128) (cannot be NULL).

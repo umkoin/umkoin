@@ -5,11 +5,7 @@ libsecp256k1
 
 Optimized C library for ECDSA signatures and secret/public key operations on curve secp256k1.
 
-<<<<<<< HEAD
-This library is intended to be the highest quality publicly available library for cryptography on the secp256k1 curve. However, the primary focus of its development has been for usage in the Umkoin system and usage unlike Umkoin's may be less well tested, verified, or suffer from a less well thought out interface. Correct usage requires some care and consideration that the library is fit for your application's purpose.
-=======
 This library is intended to be the highest quality publicly available library for cryptography on the secp256k1 curve. However, the primary focus of its development has been for usage in the Bitcoin system and usage unlike Bitcoin's may be less well tested, verified, or suffer from a less well thought out interface. Correct usage requires some care and consideration that the library is fit for your application's purpose.
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 
 Features:
 * secp256k1 ECDSA signing/verification and key generation.
@@ -38,10 +34,6 @@ Implementation details
   * Optimized implementation of arithmetic modulo the curve's field size (2^256 - 0x1000003D1).
     * Using 5 52-bit limbs (including hand-optimized assembly for x86_64, by Diederik Huys).
     * Using 10 26-bit limbs (including hand-optimized assembly for 32-bit ARM, by Wladimir J. van der Laan).
-<<<<<<< HEAD
-  * Field inverses and square roots using a sliding window over blocks of 1s (by Peter Dettman).
-=======
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 * Scalar operations
   * Optimized implementation without data-dependent branches of arithmetic modulo the curve's order.
     * Using 4 64-bit limbs (relying on __int128 support in the compiler).

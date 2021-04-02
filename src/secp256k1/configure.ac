@@ -22,10 +22,6 @@ PKG_PROG_PKG_CONFIG
 AC_PATH_TOOL(AR, ar)
 AC_PATH_TOOL(RANLIB, ranlib)
 AC_PATH_TOOL(STRIP, strip)
-<<<<<<< HEAD
-AX_PROG_CC_FOR_BUILD
-
-=======
 
 # Save definition of AC_PROG_CC because AM_PROG_CC_C_O in automake<=1.13 will
 # redefine AC_PROG_CC to exit with an error, which avoids the user calling it
@@ -33,7 +29,6 @@ AX_PROG_CC_FOR_BUILD
 # AC_PROG_CC later on in AX_PROG_CC_FOR_BUILD, where its usage is fine, and
 # we'll carefully make sure not to call AC_PROG_CC anywhere else.
 m4_copy([AC_PROG_CC], [saved_AC_PROG_CC])
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 AM_PROG_CC_C_O
 # Restore AC_PROG_CC
 m4_rename_force([saved_AC_PROG_CC], [AC_PROG_CC])
@@ -160,20 +155,10 @@ AC_ARG_ENABLE(external_default_callbacks,
     [use_external_default_callbacks=$enableval],
     [use_external_default_callbacks=no])
 
-<<<<<<< HEAD
-dnl Test-only override of the (autodetected by the C code) "widemul" setting.
-dnl Legal values are int64 (for [u]int64_t), int128 (for [unsigned] __int128), and auto (the default).
-AC_ARG_WITH([test-override-wide-multiply], [] ,[set_widemul=$withval], [set_widemul=auto])
-
-AC_ARG_WITH([bignum], [AS_HELP_STRING([--with-bignum=gmp|no|auto],
-[bignum implementation to use [default=auto]])],[req_bignum=$withval], [req_bignum=auto])
-
-=======
 # Test-only override of the (autodetected by the C code) "widemul" setting.
 # Legal values are int64 (for [u]int64_t), int128 (for [unsigned] __int128), and auto (the default).
 AC_ARG_WITH([test-override-wide-multiply], [] ,[set_widemul=$withval], [set_widemul=auto])
 
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 AC_ARG_WITH([asm], [AS_HELP_STRING([--with-asm=x86_64|arm|no|auto],
 [assembly optimizations to use (experimental: arm) [default=auto]])],[req_asm=$withval], [req_asm=auto])
 
@@ -198,74 +183,6 @@ AC_ARG_WITH([valgrind], [AS_HELP_STRING([--with-valgrind=yes|no|auto],
 )],
 [req_valgrind=$withval], [req_valgrind=auto])
 
-<<<<<<< HEAD
-if test x"$req_valgrind" = x"no"; then
-  enable_valgrind=no
-else
-  AC_CHECK_HEADER([valgrind/memcheck.h], [enable_valgrind=yes], [
-    if test x"$req_valgrind" = x"yes"; then
-      AC_MSG_ERROR([Valgrind support explicitly requested but valgrind/memcheck.h header not available])
-    fi
-    enable_valgrind=no
-  ], [])
-fi
-AM_CONDITIONAL([VALGRIND_ENABLED],[test "$enable_valgrind" = "yes"])
-
-if test x"$enable_coverage" = x"yes"; then
-    AC_DEFINE(COVERAGE, 1, [Define this symbol to compile out all VERIFY code])
-    CFLAGS="-O0 --coverage $CFLAGS"
-    LDFLAGS="--coverage $LDFLAGS"
-else
-    CFLAGS="-O2 $CFLAGS"
-fi
-
-if test x"$use_ecmult_static_precomputation" != x"no"; then
-  # Temporarily switch to an environment for the native compiler
-  save_cross_compiling=$cross_compiling
-  cross_compiling=no
-  SAVE_CC="$CC"
-  CC="$CC_FOR_BUILD"
-  SAVE_CFLAGS="$CFLAGS"
-  CFLAGS="$CFLAGS_FOR_BUILD"
-  SAVE_CPPFLAGS="$CPPFLAGS"
-  CPPFLAGS="$CPPFLAGS_FOR_BUILD"
-  SAVE_LDFLAGS="$LDFLAGS"
-  LDFLAGS="$LDFLAGS_FOR_BUILD"
-
-  warn_CFLAGS_FOR_BUILD="-Wall -Wextra -Wno-unused-function"
-  saved_CFLAGS="$CFLAGS"
-  CFLAGS="$warn_CFLAGS_FOR_BUILD $CFLAGS"
-  AC_MSG_CHECKING([if native ${CC_FOR_BUILD} supports ${warn_CFLAGS_FOR_BUILD}])
-  AC_COMPILE_IFELSE([AC_LANG_SOURCE([[char foo;]])],
-      [ AC_MSG_RESULT([yes]) ],
-      [ AC_MSG_RESULT([no])
-        CFLAGS="$saved_CFLAGS"
-      ])
-
-  AC_MSG_CHECKING([for working native compiler: ${CC_FOR_BUILD}])
-  AC_RUN_IFELSE(
-    [AC_LANG_PROGRAM([], [])],
-    [working_native_cc=yes],
-    [working_native_cc=no],[:])
-
-  CFLAGS_FOR_BUILD="$CFLAGS"
-
-  # Restore the environment
-  cross_compiling=$save_cross_compiling
-  CC="$SAVE_CC"
-  CFLAGS="$SAVE_CFLAGS"
-  CPPFLAGS="$SAVE_CPPFLAGS"
-  LDFLAGS="$SAVE_LDFLAGS"
-
-  if test x"$working_native_cc" = x"no"; then
-    AC_MSG_RESULT([no])
-    set_precomp=no
-    m4_define([please_set_for_build], [Please set CC_FOR_BUILD, CFLAGS_FOR_BUILD, CPPFLAGS_FOR_BUILD, and/or LDFLAGS_FOR_BUILD.])
-    if test x"$use_ecmult_static_precomputation" = x"yes";  then
-      AC_MSG_ERROR([native compiler ${CC_FOR_BUILD} does not produce working binaries. please_set_for_build])
-    else
-      AC_MSG_WARN([Disabling statically generated ecmult table because the native compiler ${CC_FOR_BUILD} does not produce working binaries. please_set_for_build])
-=======
 ###
 ### Handle config options (except for modules)
 ###
@@ -277,16 +194,10 @@ else
   if test x"$has_valgrind" != x"yes"; then
     if test x"$req_valgrind" = x"yes"; then
       AC_MSG_ERROR([Valgrind support explicitly requested but valgrind/memcheck.h header not available])
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
     fi
     enable_valgrind=no
   else
-<<<<<<< HEAD
-    AC_MSG_RESULT([yes])
-    set_precomp=yes
-=======
     enable_valgrind=yes
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
   fi
 fi
 AM_CONDITIONAL([VALGRIND_ENABLED],[test "$enable_valgrind" = "yes"])
@@ -326,37 +237,7 @@ else
   esac
 fi
 
-<<<<<<< HEAD
-if test x"$req_bignum" = x"auto"; then
-  SECP_GMP_CHECK
-  if test x"$has_gmp" = x"yes"; then
-    set_bignum=gmp
-  fi
-
-  if test x"$set_bignum" = x; then
-    set_bignum=no
-  fi
-else
-  set_bignum=$req_bignum
-  case $set_bignum in
-  gmp)
-    SECP_GMP_CHECK
-    if test x"$has_gmp" != x"yes"; then
-      AC_MSG_ERROR([gmp bignum explicitly requested but libgmp not available])
-    fi
-    ;;
-  no)
-    ;;
-  *)
-    AC_MSG_ERROR([invalid bignum implementation selection])
-    ;;
-  esac
-fi
-
-# select assembly optimization
-=======
 # Select assembly optimization
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 use_external_asm=no
 
 case $set_asm in
@@ -373,16 +254,12 @@ no)
   ;;
 esac
 
-<<<<<<< HEAD
-# select wide multiplication implementation
-=======
 if test x"$use_external_asm" = x"yes"; then
   AC_DEFINE(USE_EXTERNAL_ASM, 1, [Define this symbol if an external (non-inline) assembly implementation is used])
 fi
 
 
 # Select wide multiplication implementation
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 case $set_widemul in
 int128)
   AC_DEFINE(USE_FORCE_WIDEMUL_INT128, 1, [Define this symbol to force the use of the (unsigned) __int128 based wide multiplication implementation])
@@ -419,33 +296,7 @@ case $set_ecmult_window in
   ;;
 esac
 
-<<<<<<< HEAD
-#set ecmult window size
-if test x"$req_ecmult_window" = x"auto"; then
-  set_ecmult_window=15
-else
-  set_ecmult_window=$req_ecmult_window
-fi
-
-error_window_size=['window size for ecmult precomputation not an integer in range [2..24] or "auto"']
-case $set_ecmult_window in
-''|*[[!0-9]]*)
-  # no valid integer
-  AC_MSG_ERROR($error_window_size)
-  ;;
-*)
-  if test "$set_ecmult_window" -lt 2 -o "$set_ecmult_window" -gt 24 ; then
-    # not in range
-    AC_MSG_ERROR($error_window_size)
-  fi
-  AC_DEFINE_UNQUOTED(ECMULT_WINDOW_SIZE, $set_ecmult_window, [Set window size for ecmult precomputation])
-  ;;
-esac
-
-#set ecmult gen precision
-=======
 # Set ecmult gen precision
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 if test x"$req_ecmult_gen_precision" = x"auto"; then
   set_ecmult_gen_precision=4
 else
@@ -486,12 +337,6 @@ else
   fi
   enable_openssl_tests=no
 fi
-<<<<<<< HEAD
-
-if test x"$set_bignum" = x"gmp"; then
-  SECP_LIBS="$SECP_LIBS $GMP_LIBS"
-  SECP_INCLUDES="$SECP_INCLUDES $GMP_CPPFLAGS"
-=======
 
 if test x"$enable_valgrind" = x"yes"; then
   SECP_INCLUDES="$SECP_INCLUDES $VALGRIND_CPPFLAGS"
@@ -570,7 +415,6 @@ if test x"$use_ecmult_static_precomputation" != x"no"; then
   AC_SUBST(LDFLAGS_FOR_BUILD)
 else
   set_precomp=no
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 fi
 
 if test x"$set_precomp" = x"yes"; then
@@ -593,15 +437,6 @@ if test x"$enable_module_schnorrsig" = x"yes"; then
   AC_DEFINE(ENABLE_MODULE_SCHNORRSIG, 1, [Define this symbol to enable the schnorrsig module])
   enable_module_extrakeys=yes
 fi
-<<<<<<< HEAD
-
-# Test if extrakeys is set after the schnorrsig module to allow the schnorrsig
-# module to set enable_module_extrakeys=yes
-if test x"$enable_module_extrakeys" = x"yes"; then
-  AC_DEFINE(ENABLE_MODULE_EXTRAKEYS, 1, [Define this symbol to enable the extrakeys module])
-fi
-=======
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 
 # Test if extrakeys is set after the schnorrsig module to allow the schnorrsig
 # module to set enable_module_extrakeys=yes
@@ -613,15 +448,9 @@ if test x"$use_external_default_callbacks" = x"yes"; then
   AC_DEFINE(USE_EXTERNAL_DEFAULT_CALLBACKS, 1, [Define this symbol if an external implementation of the default callbacks is used])
 fi
 
-<<<<<<< HEAD
-if test x"$use_external_default_callbacks" = x"yes"; then
-  AC_DEFINE(USE_EXTERNAL_DEFAULT_CALLBACKS, 1, [Define this symbol if an external implementation of the default callbacks is used])
-fi
-=======
 ###
 ### Check for --enable-experimental if necessary
 ###
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 
 if test x"$enable_experimental" = x"yes"; then
   AC_MSG_NOTICE([******])
@@ -685,16 +514,9 @@ echo "  module extrakeys        = $enable_module_extrakeys"
 echo "  module schnorrsig       = $enable_module_schnorrsig"
 echo
 echo "  asm                     = $set_asm"
-<<<<<<< HEAD
-echo "  bignum                  = $set_bignum"
-echo "  ecmult window size      = $set_ecmult_window"
-echo "  ecmult gen prec. bits   = $set_ecmult_gen_precision"
-dnl Hide test-only options unless they're used.
-=======
 echo "  ecmult window size      = $set_ecmult_window"
 echo "  ecmult gen prec. bits   = $set_ecmult_gen_precision"
 # Hide test-only options unless they're used.
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
 if test x"$set_widemul" != xauto; then
 echo "  wide multiplication     = $set_widemul"
 fi
@@ -705,12 +527,9 @@ echo "  CFLAGS                  = $CFLAGS"
 echo "  CPPFLAGS                = $CPPFLAGS"
 echo "  LDFLAGS                 = $LDFLAGS"
 echo
-<<<<<<< HEAD
-=======
 if test x"$set_precomp" = x"yes"; then
 echo "  CC_FOR_BUILD            = $CC_FOR_BUILD"
 echo "  CFLAGS_FOR_BUILD        = $CFLAGS_FOR_BUILD"
 echo "  CPPFLAGS_FOR_BUILD      = $CPPFLAGS_FOR_BUILD"
 echo "  LDFLAGS_FOR_BUILD       = $LDFLAGS_FOR_BUILD"
 fi
->>>>>>> 69fd467a023cf74a029e4fff56a31fad2f6c782c
