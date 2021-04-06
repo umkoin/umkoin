@@ -1,3 +1,8 @@
+ /*********************************************************************
+ * Copyright (c) 2016 Pieter Wuille                                   *
+ * Distributed under the MIT software license, see the accompanying   *
+ * file COPYING or https://opensource.org/licenses/mit-license.php.   *
+ **********************************************************************/
 #include <stdio.h>
 #include <math.h>
 #include "sys/time.h"
@@ -98,7 +103,7 @@ static void bench_AES192_init(void* data) {
 
 static void bench_AES192_encrypt_setup(void* data) {
     AES192_ctx* ctx = (AES192_ctx*)data;
-    static const unsigned char key[16] = {0};
+    static const unsigned char key[24] = {0};
     AES192_init(ctx, key);
 }
 
@@ -131,7 +136,7 @@ static void bench_AES256_init(void* data) {
 
 static void bench_AES256_encrypt_setup(void* data) {
     AES256_ctx* ctx = (AES256_ctx*)data;
-    static const unsigned char key[16] = {0};
+    static const unsigned char key[32] = {0};
     AES256_init(ctx, key);
 }
 

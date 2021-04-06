@@ -1,18 +1,20 @@
  /*********************************************************************
  * Copyright (c) 2016 Pieter Wuille                                   *
  * Distributed under the MIT software license, see the accompanying   *
- * file COPYING or http://www.opensource.org/licenses/mit-license.php.*
+ * file COPYING or https://opensource.org/licenses/mit-license.php.   *
  **********************************************************************/
 
 /* Constant time, unoptimized, concise, plain C, AES implementation
  * Based On:
  *   Emilia Kasper and Peter Schwabe, Faster and Timing-Attack Resistant AES-GCM
- *   http://www.iacr.org/archive/ches2009/57470001/57470001.pdf
+ *   https://www.iacr.org/archive/ches2009/57470001/57470001.pdf
  * But using 8 16-bit integers representing a single AES state rather than 8 128-bit
  * integers representing 8 AES states.
  */
 
 #include "ctaes.h"
+
+#include <string.h>
 
 /* Slice variable slice_i contains the i'th bit of the 16 state variables in this order:
  *  0  1  2  3
@@ -25,7 +27,7 @@
 static void LoadByte(AES_state* s, unsigned char byte, int r, int c) {
     int i;
     for (i = 0; i < 8; i++) {
-        s->slice[i] |= (byte & 1) << (r * 4 + c);
+        s->slice[i] |= (uint16_t)(byte & 1) << (r * 4 + c);
         byte >>= 1;
     }
 }
@@ -255,7 +257,7 @@ static void SubBytes(AES_state *s, int inv) {
     }
 }
 
-#define BIT_RANGE(from,to) (((1 << ((to) - (from))) - 1) << (from))
+#define BIT_RANGE(from,to) ((uint16_t)((1 << ((to) - (from))) - 1) << (from))
 
 #define BIT_RANGE_LEFT(x,from,to,shift) (((x) & BIT_RANGE((from), (to))) << (shift))
 #define BIT_RANGE_RIGHT(x,from,to,shift) (((x) & BIT_RANGE((from), (to))) >> (shift))
@@ -553,4 +555,78 @@ void AES256_decrypt(const AES256_ctx* ctx, size_t blocks, unsigned char* plain16
         cipher16 += 16;
         plain16 += 16;
     }
+}
+
+static void Xor128(uint8_t* buf1, const uint8_t* buf2) {
+    size_t i;
+    for (i = 0; i < 16; i++) {
+        buf1[i] ^= buf2[i];
+    }
+}
+
+static void AESCBC_encrypt(const AES_state* rounds, uint8_t* iv, int nk, size_t blocks, unsigned char* encrypted, const unsigned char* plain) {
+    size_t i;
+    unsigned char buf[16];
+
+    for (i = 0; i < blocks; i++) {
+        memcpy(buf, plain, 16);
+        Xor128(buf, iv);
+        AES_encrypt(rounds, nk, encrypted, buf);
+        memcpy(iv, encrypted, 16);
+        plain += 16;
+        encrypted += 16;
+    }
+}
+
+static void AESCBC_decrypt(const AES_state* rounds, uint8_t* iv, int nk, size_t blocks, unsigned char* plain, const unsigned char* encrypted) {
+    size_t i;
+    uint8_t next_iv[16];
+
+    for (i = 0; i < blocks; i++) {
+        memcpy(next_iv, encrypted, 16);
+        AES_decrypt(rounds, nk, plain, encrypted);
+        Xor128(plain, iv);
+        memcpy(iv, next_iv, 16);
+        plain += 16;
+        encrypted += 16;
+    }
+}
+
+void AES128_CBC_init(AES128_CBC_ctx* ctx, const unsigned char* key16, const uint8_t* iv) {
+    AES128_init(&(ctx->ctx), key16);
+    memcpy(ctx->iv, iv, 16);
+}
+
+void AES192_CBC_init(AES192_CBC_ctx* ctx, const unsigned char* key16, const uint8_t* iv) {
+    AES192_init(&(ctx->ctx), key16);
+    memcpy(ctx->iv, iv, 16);
+}
+
+void AES256_CBC_init(AES256_CBC_ctx* ctx, const unsigned char* key16, const uint8_t* iv) {
+    AES256_init(&(ctx->ctx), key16);
+    memcpy(ctx->iv, iv, 16);
+}
+
+void AES128_CBC_encrypt(AES128_CBC_ctx* ctx, size_t blocks, unsigned char* encrypted, const unsigned char* plain) {
+    AESCBC_encrypt(ctx->ctx.rk, ctx->iv, 10, blocks, encrypted, plain);
+}
+
+void AES128_CBC_decrypt(AES128_CBC_ctx* ctx, size_t blocks, unsigned char* plain, const unsigned char *encrypted) {
+    AESCBC_decrypt(ctx->ctx.rk, ctx->iv, 10, blocks, plain, encrypted);
+}
+
+void AES192_CBC_encrypt(AES192_CBC_ctx* ctx, size_t blocks, unsigned char* encrypted, const unsigned char* plain) {
+    AESCBC_encrypt(ctx->ctx.rk, ctx->iv, 12, blocks, encrypted, plain);
+}
+
+void AES192_CBC_decrypt(AES192_CBC_ctx* ctx, size_t blocks, unsigned char* plain, const unsigned char *encrypted) {
+    AESCBC_decrypt(ctx->ctx.rk, ctx->iv, 12, blocks, plain, encrypted);
+}
+
+void AES256_CBC_encrypt(AES256_CBC_ctx* ctx, size_t blocks, unsigned char* encrypted, const unsigned char* plain) {
+    AESCBC_encrypt(ctx->ctx.rk, ctx->iv, 14, blocks, encrypted, plain);
+}
+
+void AES256_CBC_decrypt(AES256_CBC_ctx* ctx, size_t blocks, unsigned char* plain, const unsigned char *encrypted) {
+    AESCBC_decrypt(ctx->ctx.rk, ctx->iv, 14, blocks, plain, encrypted);
 }
