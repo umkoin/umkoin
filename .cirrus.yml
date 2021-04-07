@@ -113,8 +113,8 @@ task:
   << : *GLOBAL_TASK_TEMPLATE
   container:
     image: ubuntu:focal
-    cpu: 4  # Double CPU and increase Memory to avoid timeout
-    memory: 24G
+    cpu: 2  # Set CPU and Memory upper limits to avoid timeout
+    memory: 4G
   env:
     MAKEJOBS: "-j8"
     FILE_ENV: "./ci/test/00_setup_env_native_tsan.sh"
