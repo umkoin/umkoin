@@ -845,7 +845,7 @@ void UmkoinGUI::showDebugWindowActivateConsole()
 
 void UmkoinGUI::showHelpMessageClicked()
 {
-    helpMessageDialog->show();
+    GUIUtil::bringToFront(helpMessageDialog);
 }
 
 #ifdef ENABLE_WALLET
