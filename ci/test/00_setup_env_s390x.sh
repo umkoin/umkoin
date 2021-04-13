@@ -23,4 +23,4 @@ export RUN_UNIT_TESTS=false
 export TEST_RUNNER_ENV="LC_ALL=C"
 export RUN_FUNCTIONAL_TESTS=false
 export GOAL="install"
-export UMKOIN_CONFIG="--enable-reduce-exports --with-incompatible-bdb --with-boost-process"
+export UMKOIN_CONFIG="--enable-reduce-exports --with-incompatible-bdb --enable-external-signer"

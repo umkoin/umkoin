@@ -11,6 +11,6 @@ export DOCKER_NAME_TAG=ubuntu:20.04
 export PACKAGES="cmake python3"
 export DEP_OPTS="MULTIPROCESS=1"
 export GOAL="install"
-export UMKOIN_CONFIG="--with-boost-process"
+export UMKOIN_CONFIG="--enable-external-signer"
 export TEST_RUNNER_ENV="UMKOIND=umkoin-node"
 export RUN_SECURITY_TESTS="false"
