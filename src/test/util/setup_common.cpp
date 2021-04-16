@@ -120,6 +120,7 @@ BasicTestingSetup::BasicTestingSetup(const std::string& chainName, const std::ve
 
 BasicTestingSetup::~BasicTestingSetup()
 {
+    SetMockTime(0s); // Reset mocktime for following tests
     LogInstance().DisconnectTestLogger();
     fs::remove_all(m_path_root);
     gArgs.ClearArgs();
@@ -216,7 +217,7 @@ TestChain100Setup::TestChain100Setup()
         LOCK(::cs_main);
         assert(
             m_node.chainman->ActiveChain().Tip()->GetBlockHash().ToString() ==
-            "49c95db1e470fed04496d801c9d8fbb78155d2c7f855232c918823d2c17d0cf6");
+            "571d80a9967ae599cec0448b0b0ba1cfb606f584d8069bd7166b86854ba7a191");
     }
 }
 
@@ -303,7 +304,6 @@ CMutableTransaction TestChain100Setup::CreateValidMempoolTransaction(CTransactio
 TestChain100Setup::~TestChain100Setup()
 {
     gArgs.ForceSetArg("-segwitheight", "0");
-    SetMockTime(0);
 }
 
 CTxMemPoolEntry TestMemPoolEntryHelper::FromTx(const CMutableTransaction& tx) const
