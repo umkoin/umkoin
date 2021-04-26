@@ -8,6 +8,7 @@
         <file alias="fr">locale/umkoin_fr.qm</file>
         <file alias="it">locale/umkoin_it.qm</file>
         <file alias="nl">locale/umkoin_nl.qm</file>
+        <file alias="pl">locale/umkoin_pl.qm</file>
         <file alias="ru">locale/umkoin_ru.qm</file>
         <file alias="uk">locale/umkoin_uk.qm</file>
     </qresource>
