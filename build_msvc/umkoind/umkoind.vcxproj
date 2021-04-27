@@ -10,6 +10,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\umkoind.cpp" />
+    <ClCompile Include="..\..\src\init\umkoind.cpp">
+      <ObjectFileName>$(IntDir)init_umkoind.obj</ObjectFileName>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libumkoinconsensus\libumkoinconsensus.vcxproj">

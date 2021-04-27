@@ -74,6 +74,7 @@ EXTRA_LIBRARIES += \
   $(LIBUMKOIN_CONSENSUS) \
   $(LIBUMKOIN_SERVER) \
   $(LIBUMKOIN_CLI) \
+  $(LIBUMKOIN_IPC) \
   $(LIBUMKOIN_WALLET) \
   $(LIBUMKOIN_WALLET_TOOL) \
   $(LIBUMKOIN_ZMQ)
@@ -158,7 +159,10 @@ UMKOIN_CORE_H = \
   init.h \
   init/common.h \
   interfaces/chain.h \
+  interfaces/echo.h \
   interfaces/handler.h \
+  interfaces/init.h \
+  interfaces/ipc.h \
   interfaces/node.h \
   interfaces/wallet.h \
   key.h \
@@ -298,6 +302,8 @@ obj/build.h: FORCE
 	@$(top_srcdir)/share/genbuild.sh "$(abs_top_builddir)/src/obj/build.h" \
 	  "$(abs_top_srcdir)"
 libumkoin_util_a-clientversion.$(OBJEXT): obj/build.h
+
+ipc/capnp/libumkoin_ipc_a-ipc.$(OBJEXT): $(libumkoin_ipc_mpgen_input:=.h)
 
 # server: shared between umkoind and umkoin-qt
 # Contains code accessing mempool and chain state that is meant to be separated
@@ -558,7 +564,9 @@ libumkoin_util_a_SOURCES = \
   compat/glibcxx_sanity.cpp \
   compat/strnlen.cpp \
   fs.cpp \
+  interfaces/echo.cpp \
   interfaces/handler.cpp \
+  interfaces/init.cpp \
   logging.cpp \
   random.cpp \
   randomenv.cpp \
@@ -634,17 +642,17 @@ umkoin_bin_ldadd = \
 
 umkoin_bin_ldadd += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(NATPMP_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(SQLITE_LIBS)
 
-umkoind_SOURCES = $(umkoin_daemon_sources)
+umkoind_SOURCES = $(umkoin_daemon_sources) init/umkoind.cpp
 umkoind_CPPFLAGS = $(umkoin_bin_cppflags)
 umkoind_CXXFLAGS = $(umkoin_bin_cxxflags)
 umkoind_LDFLAGS = $(umkoin_bin_ldflags)
 umkoind_LDADD = $(LIBUMKOIN_SERVER) $(umkoin_bin_ldadd)
 
-umkoin_node_SOURCES = $(umkoin_daemon_sources)
+umkoin_node_SOURCES = $(umkoin_daemon_sources) init/umkoin-node.cpp
 umkoin_node_CPPFLAGS = $(umkoin_bin_cppflags)
 umkoin_node_CXXFLAGS = $(umkoin_bin_cxxflags)
 umkoin_node_LDFLAGS = $(umkoin_bin_ldflags)
-umkoin_node_LDADD = $(LIBUMKOIN_SERVER) $(umkoin_bin_ldadd)
+umkoin_node_LDADD = $(LIBUMKOIN_SERVER) $(umkoin_bin_ldadd) $(LIBUMKOIN_IPC) $(LIBMULTIPROCESS_LIBS)
 
 # umkoin-cli binary #
 umkoin_cli_SOURCES = umkoin-cli.cpp
@@ -806,6 +814,39 @@ check-security: $(bin_PROGRAMS)
 if HARDEN
 	@echo "Checking binary security..."
 	$(AM_V_at) OBJDUMP=$(OBJDUMP) OTOOL=$(OTOOL) $(PYTHON) $(top_srcdir)/contrib/devtools/security-check.py $(bin_PROGRAMS)
+endif
+
+libumkoin_ipc_mpgen_input = \
+  ipc/capnp/echo.capnp \
+  ipc/capnp/init.capnp
+EXTRA_DIST += $(libumkoin_ipc_mpgen_input)
+%.capnp:
+
+if BUILD_MULTIPROCESS
+LIBUMKOIN_IPC=libumkoin_ipc.a
+libumkoin_ipc_a_SOURCES = \
+  ipc/capnp/init-types.h \
+  ipc/capnp/protocol.cpp \
+  ipc/capnp/protocol.h \
+  ipc/exception.h \
+  ipc/interfaces.cpp \
+  ipc/process.cpp \
+  ipc/process.h \
+  ipc/protocol.h
+libumkoin_ipc_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+libumkoin_ipc_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(LIBMULTIPROCESS_CFLAGS)
+
+include $(MPGEN_PREFIX)/include/mpgen.mk
+libumkoin_ipc_mpgen_output = \
+  $(libumkoin_ipc_mpgen_input:=.c++) \
+  $(libumkoin_ipc_mpgen_input:=.h) \
+  $(libumkoin_ipc_mpgen_input:=.proxy-client.c++) \
+  $(libumkoin_ipc_mpgen_input:=.proxy-server.c++) \
+  $(libumkoin_ipc_mpgen_input:=.proxy-types.c++) \
+  $(libumkoin_ipc_mpgen_input:=.proxy-types.h) \
+  $(libumkoin_ipc_mpgen_input:=.proxy.h)
+nodist_libumkoin_ipc_a_SOURCES = $(libumkoin_ipc_mpgen_output)
+CLEANFILES += $(libumkoin_ipc_mpgen_output)
 endif
 
 if EMBEDDED_LEVELDB
