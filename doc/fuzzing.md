@@ -11,7 +11,7 @@ $ ./autogen.sh
 $ CC=clang CXX=clang++ ./configure --enable-fuzz --with-sanitizers=address,fuzzer,undefined
 # macOS users: If you have problem with this step then make sure to read "macOS hints for
 # libFuzzer" on https://github.com/umkoin/umkoin/blob/master/doc/fuzzing.md#macos-hints-for-libfuzzer
-$ make
+$ make 
 $ FUZZ=process_message src/test/fuzz/fuzz
 # abort fuzzing using ctrl-c
 ```
