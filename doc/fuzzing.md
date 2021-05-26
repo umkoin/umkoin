@@ -11,12 +11,12 @@ $ ./autogen.sh
 $ CC=clang CXX=clang++ ./configure --enable-fuzz --with-sanitizers=address,fuzzer,undefined
 # macOS users: If you have problem with this step then make sure to read "macOS hints for
 # libFuzzer" on https://github.com/umkoin/umkoin/blob/master/doc/fuzzing.md#macos-hints-for-libfuzzer
-$ make 
+$ make
 $ FUZZ=process_message src/test/fuzz/fuzz
 # abort fuzzing using ctrl-c
 ```
 
-## Fuzzing harnesses, fuzzing output and fuzzing corpora
+## Fuzzing harnesses and output
 
 [`process_message`](https://github.com/umkoin/umkoin/blob/master/src/test/fuzz/process_message.cpp) is a fuzzing harness for the [`ProcessMessage(...)` function (`net_processing`)](https://github.com/umkoin/umkoin/blob/master/src/net_processing.cpp). The available fuzzing harnesses are found in [`src/test/fuzz/`](https://github.com/umkoin/umkoin/tree/master/src/test/fuzz).
 
@@ -64,6 +64,8 @@ block^@M-^?M-^?M-^?M-^?M-^?nM-^?M-^?
 
 In this case the fuzzer managed to create a `block` message which when passed to `ProcessMessage(...)` increased coverage.
 
+## Fuzzing corpora
+
 The project's collection of seed corpora is found in the [`bitcoin-core/qa-assets`](https://github.com/bitcoin-core/qa-assets) repo.
 
 To fuzz `process_message` using the [`bitcoin-core/qa-assets`](https://github.com/bitcoin-core/qa-assets) seed corpus:
@@ -81,9 +83,23 @@ INFO: seed corpus: files: 991 min: 1b max: 1858b total: 288291b rss: 150Mb
 …
 ```
 
+## Reproduce a fuzzer crash reported by the CI
+
+- `cd` into the `qa-assets` directory and update it with `git pull qa-assets`
+- locate the crash case described in the CI output, e.g. `Test unit written to
+  ./crash-1bc91feec9fc00b107d97dc225a9f2cdaa078eb6`
+- make sure to compile with all sanitizers, if they are needed (fuzzing runs
+  more slowly with sanitizers enabled, but a crash should be reproducible very
+  quickly from a crash case)
+- run the fuzzer with the case number appended to the seed corpus path:
+  `FUZZ=process_message src/test/fuzz/fuzz
+  qa-assets/fuzz_seed_corpus/process_message/1bc91feec9fc00b107d97dc225a9f2cdaa078eb6`
+
+## Submit improved coverage
+
 If you find coverage increasing inputs when fuzzing you are highly encouraged to submit them for inclusion in the [`bitcoin-core/qa-assets`](https://github.com/bitcoin-core/qa-assets) repo.
 
-Every single pull request submitted against the Umkoin Core repo is automatically tested against all inputs in the [`bitcoin-core/qa-assets`](https://github.com/bitcoin-core/qa-assets) repo.
+Every single pull request submitted against the Umkoin Core repo is automatically tested against all inputs in the [`bitcoin-core/qa-assets`](https://github.com/bitcoin-core/qa-assets) repo. Contributing new coverage increasing inputs is an easy way to help make Umkoin Core more robust.
 
 ## macOS hints for libFuzzer
 
