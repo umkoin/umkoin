@@ -126,8 +126,8 @@ task:
   << : *GLOBAL_TASK_TEMPLATE
   container:
     image: ubuntu:hirsute
-    cpu: 2  # Increase CPU and Memory to avoid timeout
-    memory: 4G
+    cpu: 2
+    memory: 8G
   env:
     << : *CIRRUS_EPHEMERAL_WORKER_TEMPLATE_ENV
     MAKEJOBS: "-j8"
@@ -156,11 +156,11 @@ task:
   << : *GLOBAL_TASK_TEMPLATE
   container:
     image: ubuntu:focal
-    cpu: 2  # Increase CPU and memory to avoid timeout
+    cpu: 2
     memory: 8G
   env:
     << : *CIRRUS_EPHEMERAL_WORKER_TEMPLATE_ENV
-    MAKEJOBS: "-j4"
+    MAKEJOBS: "-j8"
     FILE_ENV: "./ci/test/00_setup_env_native_fuzz.sh"
 
 task:
@@ -168,8 +168,11 @@ task:
   << : *GLOBAL_TASK_TEMPLATE
   container:
     image: ubuntu:focal
+    cpu: 2
+    memory: 8G
   env:
     << : *CIRRUS_EPHEMERAL_WORKER_TEMPLATE_ENV
+    MAKEJOBS: "-j8"
     FILE_ENV: "./ci/test/00_setup_env_native_multiprocess.sh"
 
 task:
