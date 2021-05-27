@@ -288,7 +288,7 @@ RES_ANIMATION = $(wildcard $(srcdir)/qt/res/animation/spinner-*.png)
 
 UMKOIN_RC = qt/res/umkoin-qt-res.rc
 
-UMKOIN_QT_INCLUDES = -DQT_NO_KEYWORDS
+UMKOIN_QT_INCLUDES = -DQT_NO_KEYWORDS -DQT_USE_QSTRINGBUILDER
 
 qt_libumkoinqt_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(UMKOIN_QT_INCLUDES) \
   $(QT_INCLUDES) $(QT_DBUS_INCLUDES) $(QR_CFLAGS)
