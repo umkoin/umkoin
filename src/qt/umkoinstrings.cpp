@@ -75,12 +75,6 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 "Prune: last wallet synchronisation goes beyond pruned data. You need to -"
 "reindex (download the whole blockchain again in case of pruned node)"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
-"SQLiteDatabase: Failed to prepare the statement to fetch sqlite wallet "
-"schema version: %s"),
-QT_TRANSLATE_NOOP("umkoin-core", ""
-"SQLiteDatabase: Failed to prepare the statement to fetch the application id: "
-"%s"),
-QT_TRANSLATE_NOOP("umkoin-core", ""
 "SQLiteDatabase: Unknown sqlite wallet schema version %d. Only version %d is "
 "supported"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
@@ -201,8 +195,6 @@ QT_TRANSLATE_NOOP("umkoin-core", "Reducing -maxconnections from %d to %d, becaus
 QT_TRANSLATE_NOOP("umkoin-core", "Replaying blocks…"),
 QT_TRANSLATE_NOOP("umkoin-core", "Rescanning…"),
 QT_TRANSLATE_NOOP("umkoin-core", "SQLiteDatabase: Failed to execute statement to verify database: %s"),
-QT_TRANSLATE_NOOP("umkoin-core", "SQLiteDatabase: Failed to fetch sqlite wallet schema version: %s"),
-QT_TRANSLATE_NOOP("umkoin-core", "SQLiteDatabase: Failed to fetch the application id: %s"),
 QT_TRANSLATE_NOOP("umkoin-core", "SQLiteDatabase: Failed to prepare statement to verify database: %s"),
 QT_TRANSLATE_NOOP("umkoin-core", "SQLiteDatabase: Failed to read database verification error: %s"),
 QT_TRANSLATE_NOOP("umkoin-core", "SQLiteDatabase: Unexpected application id. Expected %u, got %u"),
@@ -222,7 +214,6 @@ QT_TRANSLATE_NOOP("umkoin-core", "This is the minimum transaction fee you pay on
 QT_TRANSLATE_NOOP("umkoin-core", "This is the transaction fee you will pay if you send a transaction."),
 QT_TRANSLATE_NOOP("umkoin-core", "Transaction amount too small"),
 QT_TRANSLATE_NOOP("umkoin-core", "Transaction amounts must not be negative"),
-QT_TRANSLATE_NOOP("umkoin-core", "Transaction fee and change calculation failed"),
 QT_TRANSLATE_NOOP("umkoin-core", "Transaction has too long of a mempool chain"),
 QT_TRANSLATE_NOOP("umkoin-core", "Transaction must have at least one recipient"),
 QT_TRANSLATE_NOOP("umkoin-core", "Transaction too large"),
