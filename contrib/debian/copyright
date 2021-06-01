@@ -1,7 +1,6 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Umkoin
 Upstream-Contact: Satoshi Nakamoto <satoshin@gmx.com>
- irc://#umkoin@freenode.net
 Source: https://github.com/umkoin/umkoin
 
 Files: *
