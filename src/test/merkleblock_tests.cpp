@@ -8,8 +8,10 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <set>
+#include <vector>
 
-BOOST_FIXTURE_TEST_SUITE(merkleblock_tests, BasicTestingSetup)
+BOOST_AUTO_TEST_SUITE(merkleblock_tests)
 
 /**
  * Create a CMerkleBlock using a list of txids which will be found in the
@@ -24,7 +26,11 @@ BOOST_AUTO_TEST_CASE(merkleblock_construct_from_txids_found)
     // Last txn in block.
     uint256 txhash1 = uint256S("0xd835b3569caa823c793b01b8c2070f03a1aaba90895cae57a7035c435b5dbd2a");
 
+    // Second txn in block.
+    uint256 txhash2 = uint256S("0xf9fc751cb7dc372406a9f8d738d5e6f8f63bab71986a39cf36ee70ee17036d07");
+
     txids.insert(txhash1);
+    txids.insert(txhash2);
 
     CMerkleBlock merkleBlock(block, txids);
 
@@ -37,11 +43,14 @@ BOOST_AUTO_TEST_CASE(merkleblock_construct_from_txids_found)
     std::vector<unsigned int> vIndex;
 
     BOOST_CHECK_EQUAL(merkleBlock.txn.ExtractMatches(vMatched, vIndex).GetHex(), block.hashMerkleRoot.GetHex());
-    BOOST_CHECK_EQUAL(vMatched.size(), 1U);
+    BOOST_CHECK_EQUAL(vMatched.size(), 2U);
 
     // Ordered by occurrence in depth-first tree traversal.
-    BOOST_CHECK_EQUAL(vMatched[0].ToString(), txhash1.ToString());
+    BOOST_CHECK_EQUAL(vMatched[0].ToString(), txhash2.ToString());
     BOOST_CHECK_EQUAL(vIndex[0], 1U);
+
+    BOOST_CHECK_EQUAL(vMatched[1].ToString(), txhash1.ToString());
+    BOOST_CHECK_EQUAL(vIndex[1], 8U);
 }
 
 
