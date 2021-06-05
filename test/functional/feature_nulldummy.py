@@ -40,18 +40,17 @@ def trueDummy(tx):
     tx.vin[0].scriptSig = CScript(newscript)
     tx.rehash()
 
-class NULLDUMMYTest(UmkoinTestFramework):
 
+class NULLDUMMYTest(UmkoinTestFramework):
     def set_test_params(self):
-        # Need two nodes so GBT (getblocktemplate) doesn't complain that it's not connected.
-        self.num_nodes = 2
+        self.num_nodes = 1
         self.setup_clean_chain = True
         # This script tests NULLDUMMY activation, which is part of the 'segwit' deployment, so we go through
         # normal segwit activation here (and don't use the default always-on behaviour).
         self.extra_args = [[
             f'-segwitheight={COINBASE_MATURITY + 5}',
             '-addresstype=legacy',
-        ]] * 2
+        ]]
 
     def skip_test_if_missing_module(self):
         self.skip_if_no_wallet()
