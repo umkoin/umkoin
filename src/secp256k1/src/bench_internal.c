@@ -5,8 +5,7 @@
  ***********************************************************************/
 #include <stdio.h>
 
-#include "secp256k1.c"
-#include "../include/secp256k1.h"
+#include "include/secp256k1.h"
 
 #include "assumptions.h"
 #include "util.h"
@@ -17,6 +16,7 @@
 #include "ecmult_const_impl.h"
 #include "ecmult_impl.h"
 #include "bench.h"
+#include "secp256k1.c"
 
 typedef struct {
     secp256k1_scalar scalar[2];

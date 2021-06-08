@@ -15,8 +15,8 @@
 #include <time.h>
 
 #include "secp256k1.c"
-#include "../include/secp256k1.h"
-#include "../include/secp256k1_preallocated.h"
+#include "include/secp256k1.h"
+#include "include/secp256k1_preallocated.h"
 #include "testrand_impl.h"
 #include "util.h"
 
@@ -30,8 +30,8 @@ void ECDSA_SIG_get0(const ECDSA_SIG *sig, const BIGNUM **pr, const BIGNUM **ps) 
 # endif
 #endif
 
-#include "../contrib/lax_der_parsing.c"
-#include "../contrib/lax_der_privatekey_parsing.c"
+#include "contrib/lax_der_parsing.c"
+#include "contrib/lax_der_privatekey_parsing.c"
 
 #include "modinv32_impl.h"
 #ifdef SECP256K1_WIDEMUL_INT128
@@ -2665,7 +2665,7 @@ void run_inverse_tests(void)
          SECP256K1_FE_CONST(0xb024fdc7, 0x5547451e, 0x426c585f, 0xbd481425, 0x73df6b75, 0xeef6d9d0, 0x389d87d4, 0xfbb440ba)},
         /* Input known to need 566 divsteps starting with delta=1/2. */
         {SECP256K1_FE_CONST(0xb595d81b, 0x2e3c1e2f, 0x482dbc65, 0xe4865af7, 0x9a0a50aa, 0x29f9e618, 0x6f87d7a5, 0x8d1063ae),
-         SECP256K1_FE_CONST(0xc983337c, 0x5d5c74e1, 0x49918330, 0x0b53afb5, 0xa0428a0b, 0xce6eef86, 0x059bd8ef, 0xe5b908de)},
+         SECP256K1_FE_CONST(0xc963337c, 0x5d5c74e1, 0x49918330, 0x0b53afb5, 0xa0428a0b, 0xce6eef86, 0x059bd8ef, 0xe5b908de)},
         /* Set of 10 inputs accessing all 128 entries in the modinv32 divsteps_var table */
         {SECP256K1_FE_CONST(0x00000000, 0x00000000, 0xe0ff1f80, 0x1f000000, 0x00000000, 0x00000000, 0xfeff0100, 0x00000000),
          SECP256K1_FE_CONST(0x9faf9316, 0x77e5049d, 0x0b5e7a1b, 0xef70b893, 0x18c9e30c, 0x045e7fd7, 0x29eddf8c, 0xd62e9e3d)},
@@ -2775,7 +2775,7 @@ void run_inverse_tests(void)
         {SECP256K1_SCALAR_CONST(0x1950d757, 0xb37a5809, 0x435059bb, 0x0bb8997e, 0x07e1e3c8, 0x5e5d7d2c, 0x6a0ed8e3, 0xdbde180e),
          SECP256K1_SCALAR_CONST(0xbf72af9b, 0x750309e2, 0x8dda230b, 0xfe432b93, 0x7e25e475, 0x4388251e, 0x633d894b, 0x3bcb6f8c)},
         {SECP256K1_SCALAR_CONST(0x9bccf4e7, 0xc5a515e3, 0x50637aa9, 0xbb65a13f, 0x391749a1, 0x62de7d4e, 0xf6d7eabb, 0x3cd10ce0),
-         SECP256K1_SCALAR_CONST(0xaf2d5623, 0xb6385a33, 0xcd0365be, 0x5e92a70d, 0x7f09179c, 0x3baaf30f, 0x8f9cc83b, 0x20092f67)},
+         SECP256K1_SCALAR_CONST(0xaf2d5623, 0xb6385a33, 0xcd0365be, 0x5e92a70d, 0x7f09179c, 0x3baaf30f, 0x8f9cc83b, 0x20172f67)},
         {SECP256K1_SCALAR_CONST(0x73a57111, 0xb242952a, 0x5c5dee59, 0xf3be2ace, 0xa30a7659, 0xa46e5f47, 0xd21267b1, 0x39e642c9),
          SECP256K1_SCALAR_CONST(0xa711df07, 0xcbcf13ef, 0xd61cc6be, 0xbcd058ce, 0xb02cf157, 0x272d4a18, 0x86d0feb3, 0xcd5fa004)},
         {SECP256K1_SCALAR_CONST(0x04884963, 0xce0580b1, 0xba547030, 0x3c691db3, 0x9cd2c84f, 0x24c7cebd, 0x97ebfdba, 0x3e785ec2),
@@ -3101,32 +3101,18 @@ void test_ge(void) {
 
     /* Test batch gej -> ge conversion with many infinities. */
     for (i = 0; i < 4 * runs + 1; i++) {
-        int odd;
         random_group_element_test(&ge[i]);
-        odd = secp256k1_fe_is_odd(&ge[i].x);
-        CHECK(odd == 0 || odd == 1);
         /* randomly set half the points to infinity */
-        if (odd == i % 2) {
+        if(secp256k1_fe_is_odd(&ge[i].x)) {
             secp256k1_ge_set_infinity(&ge[i]);
         }
         secp256k1_gej_set_ge(&gej[i], &ge[i]);
     }
-    /* batch convert */
+    /* batch invert */
     secp256k1_ge_set_all_gej_var(ge, gej, 4 * runs + 1);
     /* check result */
     for (i = 0; i < 4 * runs + 1; i++) {
         ge_equals_gej(&ge[i], &gej[i]);
-    }
-
-    /* Test batch gej -> ge conversion with all infinities. */
-    for (i = 0; i < 4 * runs + 1; i++) {
-        secp256k1_gej_set_infinity(&gej[i]);
-    }
-    /* batch convert */
-    secp256k1_ge_set_all_gej_var(ge, gej, 4 * runs + 1);
-    /* check result */
-    for (i = 0; i < 4 * runs + 1; i++) {
-        CHECK(secp256k1_ge_is_infinity(&ge[i]));
     }
 
     free(ge);
@@ -3176,7 +3162,7 @@ void test_add_neg_y_diff_x(void) {
      * of the sum to be wrong (since infinity has no xy coordinates).
      * HOWEVER, if the x-coordinates are different, infinity is the
      * wrong answer, and such degeneracies are exposed. This is the
-     * root of https://github.com/bitcoin-core/secp256k1/issues/257
+     * root of https://github.com/umkoin-core/secp256k1/issues/257
      * which this test is a regression test for.
      *
      * These points were generated in sage as
@@ -5448,55 +5434,6 @@ void test_random_pubkeys(void) {
     }
 }
 
-void run_pubkey_comparison(void) {
-    unsigned char pk1_ser[33] = {
-        0x02,
-        0x58, 0x84, 0xb3, 0xa2, 0x4b, 0x97, 0x37, 0x88, 0x92, 0x38, 0xa6, 0x26, 0x62, 0x52, 0x35, 0x11,
-        0xd0, 0x9a, 0xa1, 0x1b, 0x80, 0x0b, 0x5e, 0x93, 0x80, 0x26, 0x11, 0xef, 0x67, 0x4b, 0xd9, 0x23
-    };
-    const unsigned char pk2_ser[33] = {
-        0x02,
-        0xde, 0x36, 0x0e, 0x87, 0x59, 0x8f, 0x3c, 0x01, 0x36, 0x2a, 0x2a, 0xb8, 0xc6, 0xf4, 0x5e, 0x4d,
-        0xb2, 0xc2, 0xd5, 0x03, 0xa7, 0xf9, 0xf1, 0x4f, 0xa8, 0xfa, 0x95, 0xa8, 0xe9, 0x69, 0x76, 0x1c
-    };
-    secp256k1_pubkey pk1;
-    secp256k1_pubkey pk2;
-    int32_t ecount = 0;
-
-    CHECK(secp256k1_ec_pubkey_parse(ctx, &pk1, pk1_ser, sizeof(pk1_ser)) == 1);
-    CHECK(secp256k1_ec_pubkey_parse(ctx, &pk2, pk2_ser, sizeof(pk2_ser)) == 1);
-
-    secp256k1_context_set_illegal_callback(ctx, counting_illegal_callback_fn, &ecount);
-    CHECK(secp256k1_ec_pubkey_cmp(ctx, NULL, &pk2) < 0);
-    CHECK(ecount == 1);
-    CHECK(secp256k1_ec_pubkey_cmp(ctx, &pk1, NULL) > 0);
-    CHECK(ecount == 2);
-    CHECK(secp256k1_ec_pubkey_cmp(ctx, &pk1, &pk2) < 0);
-    CHECK(secp256k1_ec_pubkey_cmp(ctx, &pk2, &pk1) > 0);
-    CHECK(secp256k1_ec_pubkey_cmp(ctx, &pk1, &pk1) == 0);
-    CHECK(secp256k1_ec_pubkey_cmp(ctx, &pk2, &pk2) == 0);
-    CHECK(ecount == 2);
-    {
-        secp256k1_pubkey pk_tmp;
-        memset(&pk_tmp, 0, sizeof(pk_tmp)); /* illegal pubkey */
-        CHECK(secp256k1_ec_pubkey_cmp(ctx, &pk_tmp, &pk2) < 0);
-        CHECK(ecount == 3);
-        CHECK(secp256k1_ec_pubkey_cmp(ctx, &pk_tmp, &pk_tmp) == 0);
-        CHECK(ecount == 5);
-        CHECK(secp256k1_ec_pubkey_cmp(ctx, &pk2, &pk_tmp) > 0);
-        CHECK(ecount == 6);
-    }
-
-    secp256k1_context_set_illegal_callback(ctx, NULL, NULL);
-
-    /* Make pk2 the same as pk1 but with 3 rather than 2. Note that in
-     * an uncompressed encoding, these would have the opposite ordering */
-    pk1_ser[0] = 3;
-    CHECK(secp256k1_ec_pubkey_parse(ctx, &pk2, pk1_ser, sizeof(pk1_ser)) == 1);
-    CHECK(secp256k1_ec_pubkey_cmp(ctx, &pk1, &pk2) < 0);
-    CHECK(secp256k1_ec_pubkey_cmp(ctx, &pk2, &pk1) > 0);
-}
-
 void run_random_pubkeys(void) {
     int i;
     for (i = 0; i < 10*count; i++) {
@@ -6471,7 +6408,7 @@ int main(int argc, char **argv) {
         count = strtol(argv[1], NULL, 0);
     } else {
         const char* env = getenv("SECP256K1_TEST_ITERS");
-        if (env && strlen(env) > 0) {
+        if (env) {
             count = strtol(env, NULL, 0);
         }
     }
@@ -6548,7 +6485,6 @@ int main(int argc, char **argv) {
 #endif
 
     /* ecdsa tests */
-    run_pubkey_comparison();
     run_random_pubkeys();
     run_ecdsa_der_parse();
     run_ecdsa_sign_verify();

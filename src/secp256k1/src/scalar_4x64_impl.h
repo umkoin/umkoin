@@ -830,7 +830,7 @@ static void secp256k1_scalar_to_signed62(secp256k1_modinv64_signed62 *r, const s
 
 static const secp256k1_modinv64_modinfo secp256k1_const_modinfo_scalar = {
     {{0x3FD25E8CD0364141LL, 0x2ABB739ABD2280EELL, -0x15LL, 0, 256}},
-    0x34F20099AA774EC1LL
+    0x34F20179AA774EC1LL
 };
 
 static void secp256k1_scalar_inverse(secp256k1_scalar *r, const secp256k1_scalar *x) {

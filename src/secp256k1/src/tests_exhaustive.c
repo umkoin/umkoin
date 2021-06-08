@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <time.h>
 
 #undef USE_ECMULT_STATIC_PRECOMPUTATION
@@ -19,10 +20,10 @@
 #define EXHAUSTIVE_TEST_ORDER 13
 #endif
 
-#include "secp256k1.c"
-#include "../include/secp256k1.h"
+#include "include/secp256k1.h"
 #include "assumptions.h"
 #include "group.h"
+#include "secp256k1.c"
 #include "testrand_impl.h"
 
 static int count = 2;
