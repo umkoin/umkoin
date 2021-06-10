@@ -5,6 +5,8 @@
 #ifndef UMKOIN_ZMQ_ZMQUTIL_H
 #define UMKOIN_ZMQ_ZMQUTIL_H
 
-void zmqError(const char* str);
+#include <string>
+
+void zmqError(const std::string& str);
 
 #endif // UMKOIN_ZMQ_ZMQUTIL_H
