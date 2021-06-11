@@ -196,3 +196,141 @@ task:
     - rm /etc/ld.so.cache
     - ./ci/cirrus.sh
   << : *CAT_LOGS
+<<<<<<< HEAD
+=======
+
+task:
+  name: "ARM32: Linux (Debian stable, QEMU)"
+  container:
+    dockerfile: ci/linux-debian.Dockerfile
+    cpu: 1
+    memory: 1G
+  env:
+    WRAPPER_CMD: qemu-arm
+    TEST_ITERS: 16
+    HOST: arm-linux-gnueabihf
+    WITH_VALGRIND: no
+    ECDH: yes
+    RECOVERY: yes
+    EXPERIMENTAL: yes
+    SCHNORRSIG: yes
+    CTIMETEST: no
+  matrix:
+    - env: {}
+    - env: {ASM: arm}
+  << : *MERGE_BASE
+  test_script:
+    - ./ci/cirrus.sh
+  << : *CAT_LOGS
+
+task:
+  name: "ARM64: Linux (Debian stable, QEMU)"
+  container:
+    dockerfile: ci/linux-debian.Dockerfile
+    cpu: 1
+    memory: 1G
+  env:
+    WRAPPER_CMD: qemu-aarch64
+    TEST_ITERS: 16
+    HOST: aarch64-linux-gnu
+    WITH_VALGRIND: no
+    ECDH: yes
+    RECOVERY: yes
+    EXPERIMENTAL: yes
+    SCHNORRSIG: yes
+    CTIMETEST: no
+  << : *MERGE_BASE
+  test_script:
+    - ./ci/cirrus.sh
+  << : *CAT_LOGS
+
+task:
+  name: "ppc64le: Linux (Debian stable, QEMU)"
+  container:
+    dockerfile: ci/linux-debian.Dockerfile
+    cpu: 1
+    memory: 1G
+  env:
+    WRAPPER_CMD: qemu-ppc64le
+    TEST_ITERS: 16
+    HOST: powerpc64le-linux-gnu
+    WITH_VALGRIND: no
+    ECDH: yes
+    RECOVERY: yes
+    EXPERIMENTAL: yes
+    SCHNORRSIG: yes
+    CTIMETEST: no
+  << : *MERGE_BASE
+  test_script:
+    - ./ci/cirrus.sh
+  << : *CAT_LOGS
+
+task:
+  name: "x86_64 (mingw32-w64): Windows (Debian stable, Wine)"
+  container:
+    dockerfile: ci/linux-debian.Dockerfile
+    cpu: 1
+    memory: 1G
+  env:
+    WRAPPER_CMD: wine64-stable
+    TEST_ITERS: 16
+    HOST: x86_64-w64-mingw32
+    WITH_VALGRIND: no
+    ECDH: yes
+    RECOVERY: yes
+    EXPERIMENTAL: yes
+    SCHNORRSIG: yes
+    CTIMETEST: no
+  << : *MERGE_BASE
+  test_script:
+    - ./ci/cirrus.sh
+  << : *CAT_LOGS
+
+# Sanitizers
+task:
+  container:
+    dockerfile: ci/linux-debian.Dockerfile
+    cpu: 1
+    memory: 1G
+  env:
+    ECDH: yes
+    RECOVERY: yes
+    EXPERIMENTAL: yes
+    SCHNORRSIG: yes
+    CTIMETEST: no
+    EXTRAFLAGS: "--disable-openssl-tests"
+  matrix:
+    - name: "Valgrind (memcheck)"
+      env:
+        # The `--error-exitcode` is required to make the test fail if valgrind found errors, otherwise it'll return 0 (https://www.valgrind.org/docs/manual/manual-core.html)
+        WRAPPER_CMD: "valgrind --error-exitcode=42"
+        TEST_ITERS: 16
+    - name: "UBSan, ASan, LSan"
+      env:
+        CFLAGS: "-fsanitize=undefined,address"
+        CFLAGS_FOR_BUILD: "-fsanitize=undefined,address"
+        UBSAN_OPTIONS: "print_stacktrace=1:halt_on_error=1"
+        ASAN_OPTIONS: "strict_string_checks=1:detect_stack_use_after_return=1:detect_leaks=1"
+        LSAN_OPTIONS: "use_unaligned=1"
+        TEST_ITERS: 32
+  # Try to cover many configurations with just a tiny matrix.
+  matrix:
+    - env:
+        ASM: auto
+        STATICPRECOMPUTATION: yes
+    - env:
+        ASM: no
+        STATICPRECOMPUTATION: no
+        ECMULTGENPRECISION: 2
+  matrix:
+    - env:
+        CC: clang
+    - env:
+        HOST: i686-linux-gnu
+        CC: i686-linux-gnu-gcc
+  << : *MERGE_BASE
+  test_script:
+    - ./ci/cirrus.sh
+  << : *CAT_LOGS
+
+>>>>>>> 6d46dfbfa26f2e243b4eab1e8b34b7cc0e51401a
