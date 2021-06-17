@@ -11,7 +11,7 @@ export DOCKER_NAME_TAG=ubuntu:20.04
 export PACKAGES="cmake python3 python3-pip llvm clang"
 export DEP_OPTS="DEBUG=1 MULTIPROCESS=1"
 export GOAL="install"
-export UMKOIN_CONFIG="--enable-external-signer --enable-debug CC=clang CXX=clang++"  # Use clang to avoid OOM
+export UMKOIN_CONFIG="--enable-debug CC=clang CXX=clang++"  # Use clang to avoid OOM
 export TEST_RUNNER_ENV="UMKOIND=umkoin-node"
 export RUN_SECURITY_TESTS="false"
 export PIP_PACKAGES="lief"
