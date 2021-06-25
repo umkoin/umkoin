@@ -620,14 +620,14 @@ void ArgsManager::ForceSetArg(const std::string& strArg, const std::string& strV
     m_settings.forced_settings[SettingName(strArg)] = strValue;
 }
 
-void ArgsManager::AddCommand(const std::string& cmd, const std::string& help, const OptionsCategory& cat)
+void ArgsManager::AddCommand(const std::string& cmd, const std::string& help)
 {
     Assert(cmd.find('=') == std::string::npos);
     Assert(cmd.at(0) != '-');
 
     LOCK(cs_args);
     m_accept_any_command = false; // latch to false
-    std::map<std::string, Arg>& arg_map = m_available_args[cat];
+    std::map<std::string, Arg>& arg_map = m_available_args[OptionsCategory::COMMANDS];
     auto ret = arg_map.emplace(cmd, Arg{"", help, ArgsManager::COMMAND});
     Assert(ret.second); // Fail on duplicate commands
 }
@@ -1343,7 +1343,7 @@ std::string CopyrightHolders(const std::string& strPrefix)
 
     // Make sure Umkoin Core copyright is not removed by accident
     if (copyright_devs.find("Umkoin Core") == std::string::npos) {
-        strCopyrightHolders += "\n" + strPrefix + "The Umkoin Core developers";
+        strCopyrightHolders += "\n" + strPrefix + "The Bitcoin Core developers";
     }
     return strCopyrightHolders;
 }

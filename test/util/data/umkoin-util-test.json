@@ -1,4 +1,34 @@
 [
+  { "exec": "./umkoin-util",
+    "args": ["foo"],
+    "return_code": 1,
+    "error_txt": "Error parsing command line arguments: Invalid command 'foo'",
+    "description": ""
+  },
+  { "exec": "./umkoin-util",
+    "args": ["help"],
+    "return_code": 1,
+    "error_txt": "Error parsing command line arguments: Invalid command 'help'",
+    "description": "`help` raises an error. Use `-help`"
+  },
+  { "exec": "./umkoin-util",
+    "args": ["grind"],
+    "return_code": 1,
+    "error_txt": "Must specify block header to grind",
+    "description": ""
+  },
+  { "exec": "./umkoin-util",
+    "args": ["grind", "1", "2"],
+    "return_code": 1,
+    "error_txt": "Must specify block header to grind",
+    "description": ""
+  },
+  { "exec": "./umkoin-util",
+    "args": ["grind", "aa"],
+    "return_code": 1,
+    "error_txt": "Could not decode block header",
+    "description": ""
+  },
   { "exec": "./umkoin-tx",
     "args": ["-create", "nversion=1"],
     "output_cmp": "blanktxv1.hex",
