@@ -42,6 +42,9 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 "Error: Dumpfile version is not supported. This version of umkoin-wallet "
 "only supports version 1 dumpfiles. Got dumpfile with version %s"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
+"Error: Legacy wallets only support the \"legacy\", \"p2sh-segwit\", and "
+"\"bech32\" address types"),
+QT_TRANSLATE_NOOP("umkoin-core", ""
 "Error: Listening for incoming connections failed (listen returned error %s)"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -"
@@ -103,9 +106,6 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 "Total length of network version string (%i) exceeds maximum length (%i). "
 "Reduce the number or size of uacomments."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
-"Transaction needs a change address, but we can't generate it. Please call "
-"keypoolrefill first."),
-QT_TRANSLATE_NOOP("umkoin-core", ""
 "Unable to replay blocks. You will need to rebuild the database using -"
 "reindex-chainstate."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
@@ -160,6 +160,7 @@ QT_TRANSLATE_NOOP("umkoin-core", "Error: Got key that was not hex: %s"),
 QT_TRANSLATE_NOOP("umkoin-core", "Error: Got value that was not hex: %s"),
 QT_TRANSLATE_NOOP("umkoin-core", "Error: Keypool ran out, please call keypoolrefill first"),
 QT_TRANSLATE_NOOP("umkoin-core", "Error: Missing checksum"),
+QT_TRANSLATE_NOOP("umkoin-core", "Error: No %s addresses available."),
 QT_TRANSLATE_NOOP("umkoin-core", "Error: Unable to parse version %u as a uint32_t"),
 QT_TRANSLATE_NOOP("umkoin-core", "Error: Unable to write record to new wallet"),
 QT_TRANSLATE_NOOP("umkoin-core", "Failed to listen on any port. Use -listen=0 if you want this."),
@@ -216,6 +217,7 @@ QT_TRANSLATE_NOOP("umkoin-core", "Transaction amount too small"),
 QT_TRANSLATE_NOOP("umkoin-core", "Transaction amounts must not be negative"),
 QT_TRANSLATE_NOOP("umkoin-core", "Transaction has too long of a mempool chain"),
 QT_TRANSLATE_NOOP("umkoin-core", "Transaction must have at least one recipient"),
+QT_TRANSLATE_NOOP("umkoin-core", "Transaction needs a change address, but we can't generate it. %s"),
 QT_TRANSLATE_NOOP("umkoin-core", "Transaction too large"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unable to bind to %s on this computer (bind returned error %s)"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unable to bind to %s on this computer. %s is probably already running."),
@@ -228,6 +230,7 @@ QT_TRANSLATE_NOOP("umkoin-core", "Unknown -blockfilterindex value %s."),
 QT_TRANSLATE_NOOP("umkoin-core", "Unknown address type '%s'"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unknown change type '%s'"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unknown network specified in -onlynet: '%s'"),
+QT_TRANSLATE_NOOP("umkoin-core", "Unknown new rules activated (versionbit %i)"),
 QT_TRANSLATE_NOOP("umkoin-core", "Unsupported logging category %s=%s."),
 QT_TRANSLATE_NOOP("umkoin-core", "Upgrading UTXO database"),
 QT_TRANSLATE_NOOP("umkoin-core", "Upgrading txindex database"),
@@ -235,5 +238,4 @@ QT_TRANSLATE_NOOP("umkoin-core", "User Agent comment (%s) contains unsafe charac
 QT_TRANSLATE_NOOP("umkoin-core", "Verifying blocks…"),
 QT_TRANSLATE_NOOP("umkoin-core", "Verifying wallet(s)…"),
 QT_TRANSLATE_NOOP("umkoin-core", "Wallet needed to be rewritten: restart %s to complete"),
-QT_TRANSLATE_NOOP("umkoin-core", "Warning: unknown new rules activated (versionbit %i)"),
 };
