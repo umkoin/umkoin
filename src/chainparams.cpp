@@ -7,9 +7,9 @@
 
 #include <chainparamsseeds.h>
 #include <consensus/merkle.h>
+#include <deploymentinfo.h>
 #include <hash.h> // for signet block challenge hash
 #include <util/system.h>
-#include <versionbitsinfo.h>
 
 #include <assert.h>
 
@@ -156,10 +156,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 4096 000000000039d6d37440cfe057b1d917bb778ce02fb79ad913435955dcbfced5
-            /* nTime    */ 1600749526,
-            /* nTxCount */ 363624,
-            /* dTxRate  */ 0.002499873467693771,
+            // Data from RPC: getchaintxstats 4096 0000000000222ddc95c70a8c735222059f15859151262e801b04f3b445c006e0
+            /* nTime    */ 1625200904,
+            /* nTxCount */ 424750,
+            /* dTxRate  */ 0.002488388254104122,
         };
     }
 };
@@ -253,10 +253,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data from rpc: getchaintxstats 4096 00000000144fc7a4640e36bebc2cad42fef73bda8dc86638f094d725dacc0c76
-            /* nTime    */ 1590926779,
-            /* nTxCount */ 86417,
-            /* dTxRate  */ 0.002943393291464353,
+            // Data from RPC: getchaintxstats 4096 0000000002cb6ffdedf803397684d3c2c6260d7189aca011c2f33f10de4df176
+            /* nTime    */ 1625079135,
+            /* nTxCount */ 106389,
+            /* dTxRate  */ 0.0006872426457145127,
         };
     }
 };
