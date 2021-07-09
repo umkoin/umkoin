@@ -13,5 +13,4 @@ export DEP_OPTS="DEBUG=1 MULTIPROCESS=1"
 export GOAL="install"
 export UMKOIN_CONFIG="--enable-debug CC=clang CXX=clang++"  # Use clang to avoid OOM
 export TEST_RUNNER_ENV="UMKOIND=umkoin-node"
-export RUN_SECURITY_TESTS="false"
 export PIP_PACKAGES="lief"
