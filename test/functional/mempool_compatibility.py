@@ -7,10 +7,7 @@
 NOTE: The test is designed to prevent cases when compatibility is broken accidentally.
 In case we need to break mempool compatibility we can continue to use the test by just bumping the version number.
 
-Download node binaries:
-test/get_previous_releases.py -b v0.19.1
-
-Only v0.15.2 is required by this test. The rest is used in other backwards compatibility tests.
+The previous release v0.19.1 is required by this test, see test/README.md.
 """
 
 import os
