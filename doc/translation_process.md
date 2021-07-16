@@ -8,7 +8,7 @@ Transifex is setup to monitor the GitHub repo for updates, and when code contain
 
 Multiple language support is critical in assisting Umkoin’s global adoption, and growth. One of Umkoin’s greatest strengths is cross-border money transfers, any help making that easier is greatly appreciated.
 
-See the [Transifex Umkoin project](https://www.transifex.com/umkoin/umkoin-core/) to assist in translations.
+See the [Transifex Umkoin project](https://www.transifex.com/umkoin/umkoin-core/) to assist with translations.
 
 ### Writing code with translations
 We use automated scripts to help extract translations in both Qt, and non-Qt source files. It is rarely necessary to manually edit the files in `src/qt/locale/`. The translation source files must adhere to the following format:
