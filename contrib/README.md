@@ -3,7 +3,6 @@ Repository Tools
 
 ### [Developer tools](/contrib/devtools) ###
 Specific tools for developers working on this repository.
-Contains the script `github-merge.py` for merging GitHub pull requests securely and signing them using GPG.
 
 ### [Verify-Commits](/contrib/verify-commits) ###
 Tool to verify that every merge commit was signed by a developer using the `github-merge.py` script.
@@ -29,8 +28,8 @@ All other packaging related files can be found in the repository.
 ### [Gitian-descriptors](/contrib/gitian-descriptors) ###
 Files used during the gitian build process. For more information about gitian, see the [the Umkoin Core documentation repository](https://github.com/umkoin/umkoin/doc/gitian-building).
 
-### [Gitian-keys](/contrib/gitian-keys)
-PGP keys used for signing Umkoin Core [Gitian release](/doc/release-process.md) results.
+### [Builder keys](/contrib/builder-keys)
+PGP keys used for signing Umkoin Core [release](/doc/release-process.md) results.
 
 ### [MacDeploy](/contrib/macdeploy) ###
 Scripts and notes for Mac builds.
