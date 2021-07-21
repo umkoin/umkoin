@@ -91,8 +91,8 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1628640000; // August 11th, 2021
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 155843; // Approximately November 12th, 2021
 
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000ecbad6d88a6ef053");  // 117400
-        consensus.defaultAssumeValid = uint256S("0x000000000018c7ed29ccd0247a01fbfa0801de929d6e2806b7f6e028242e1989"); // 117400
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000edf7350dd785800c");  // 139082
+        consensus.defaultAssumeValid = uint256S("0x0000000000636e8b400406531d31a46c25cfe015ee56421e8e24bfc38ee33e0b"); // 139082
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -156,10 +156,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data from RPC: getchaintxstats 4096 0000000000222ddc95c70a8c735222059f15859151262e801b04f3b445c006e0
-            /* nTime    */ 1625200904,
-            /* nTxCount */ 424750,
-            /* dTxRate  */ 0.002488388254104122,
+            // Data from RPC: getchaintxstats 4096 000000000000000000000000000000000000000000000000edf7350dd785800c
+            /* nTime    */ 1626843372,
+            /* nTxCount */ 428686,
+            /* dTxRate  */ 0.002431284867489914,
         };
     }
 };
