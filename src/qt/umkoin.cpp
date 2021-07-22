@@ -7,12 +7,19 @@
 #endif
 
 #include <qt/umkoin.h>
-#include <qt/umkoingui.h>
 
 #include <chainparams.h>
+#include <init.h>
+#include <interfaces/handler.h>
+#include <interfaces/node.h>
+#include <node/context.h>
+#include <node/ui_interface.h>
+#include <noui.h>
+#include <qt/umkoingui.h>
 #include <qt/clientmodel.h>
 #include <qt/guiconstants.h>
 #include <qt/guiutil.h>
+#include <qt/initexecutor.h>
 #include <qt/intro.h>
 #include <qt/networkstyle.h>
 #include <qt/optionsmodel.h>
@@ -20,24 +27,17 @@
 #include <qt/splashscreen.h>
 #include <qt/utilitydialog.h>
 #include <qt/winshutdownmonitor.h>
+#include <uint256.h>
+#include <util/system.h>
+#include <util/threadnames.h>
+#include <util/translation.h>
+#include <validation.h>
 
 #ifdef ENABLE_WALLET
 #include <qt/paymentserver.h>
 #include <qt/walletcontroller.h>
 #include <qt/walletmodel.h>
 #endif // ENABLE_WALLET
-
-#include <init.h>
-#include <interfaces/handler.h>
-#include <interfaces/node.h>
-#include <node/context.h>
-#include <node/ui_interface.h>
-#include <noui.h>
-#include <uint256.h>
-#include <util/system.h>
-#include <util/threadnames.h>
-#include <util/translation.h>
-#include <validation.h>
 
 #include <boost/signals2/connection.hpp>
 #include <memory>
@@ -155,54 +155,11 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 }
 
-UmkoinCore::UmkoinCore(interfaces::Node& node) :
-    QObject(), m_node(node)
-{
-}
-
-void UmkoinCore::handleRunawayException(const std::exception *e)
-{
-    PrintExceptionContinue(e, "Runaway exception");
-    Q_EMIT runawayException(QString::fromStdString(m_node.getWarnings().translated));
-}
-
-void UmkoinCore::initialize()
-{
-    try
-    {
-        util::ThreadRename("qt-init");
-        qDebug() << __func__ << ": Running initialization in thread";
-        interfaces::BlockAndHeaderTipInfo tip_info;
-        bool rv = m_node.appInitMain(&tip_info);
-        Q_EMIT initializeResult(rv, tip_info);
-    } catch (const std::exception& e) {
-        handleRunawayException(&e);
-    } catch (...) {
-        handleRunawayException(nullptr);
-    }
-}
-
-void UmkoinCore::shutdown()
-{
-    try
-    {
-        qDebug() << __func__ << ": Running Shutdown in thread";
-        m_node.appShutdown();
-        qDebug() << __func__ << ": Shutdown finished";
-        Q_EMIT shutdownResult();
-    } catch (const std::exception& e) {
-        handleRunawayException(&e);
-    } catch (...) {
-        handleRunawayException(nullptr);
-    }
-}
-
 static int qt_argc = 1;
 static const char* qt_argv = "umkoin-qt";
 
 UmkoinApplication::UmkoinApplication():
     QApplication(qt_argc, const_cast<char **>(&qt_argv)),
-    coreThread(nullptr),
     optionsModel(nullptr),
     clientModel(nullptr),
     window(nullptr),
@@ -230,13 +187,7 @@ void UmkoinApplication::setupPlatformStyle()
 
 UmkoinApplication::~UmkoinApplication()
 {
-    if(coreThread)
-    {
-        qDebug() << __func__ << ": Stopping thread";
-        coreThread->quit();
-        coreThread->wait();
-        qDebug() << __func__ << ": Stopped thread";
-    }
+    m_executor.reset();
 
     delete window;
     window = nullptr;
@@ -291,22 +242,15 @@ bool UmkoinApplication::baseInitialize()
 
 void UmkoinApplication::startThread()
 {
-    if(coreThread)
-        return;
-    coreThread = new QThread(this);
-    UmkoinCore *executor = new UmkoinCore(node());
-    executor->moveToThread(coreThread);
+    assert(!m_executor);
+    m_executor.emplace(node());
 
     /*  communication to and from thread */
-    connect(executor, &UmkoinCore::initializeResult, this, &UmkoinApplication::initializeResult);
-    connect(executor, &UmkoinCore::shutdownResult, this, &UmkoinApplication::shutdownResult);
-    connect(executor, &UmkoinCore::runawayException, this, &UmkoinApplication::handleRunawayException);
-    connect(this, &UmkoinApplication::requestedInitialize, executor, &UmkoinCore::initialize);
-    connect(this, &UmkoinApplication::requestedShutdown, executor, &UmkoinCore::shutdown);
-    /*  make sure executor object is deleted in its own thread */
-    connect(coreThread, &QThread::finished, executor, &QObject::deleteLater);
-
-    coreThread->start();
+    connect(&m_executor.value(), &InitExecutor::initializeResult, this, &UmkoinApplication::initializeResult);
+    connect(&m_executor.value(), &InitExecutor::shutdownResult, this, &UmkoinApplication::shutdownResult);
+    connect(&m_executor.value(), &InitExecutor::runawayException, this, &UmkoinApplication::handleRunawayException);
+    connect(this, &UmkoinApplication::requestedInitialize, &m_executor.value(), &InitExecutor::initialize);
+    connect(this, &UmkoinApplication::requestedShutdown, &m_executor.value(), &InitExecutor::shutdown);
 }
 
 void UmkoinApplication::parameterSetup()
@@ -339,7 +283,6 @@ void UmkoinApplication::requestShutdown()
     shutdownWindow.reset(ShutdownWindow::showShutdownWindow(window));
 
     qDebug() << __func__ << ": Requesting shutdown";
-    startThread();
     window->hide();
     // Must disconnect node signals otherwise current thread can deadlock since
     // no event loop is running.

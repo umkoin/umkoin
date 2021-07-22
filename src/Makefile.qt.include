@@ -40,9 +40,9 @@ QT_MOC_CPP = \
   qt/moc_askpassphrasedialog.cpp \
   qt/moc_createwalletdialog.cpp \
   qt/moc_bantablemodel.cpp \
+  qt/moc_umkoin.cpp \
   qt/moc_umkoinaddressvalidator.cpp \
   qt/moc_umkoinamountfield.cpp \
-  qt/moc_umkoin.cpp \
   qt/moc_umkoingui.cpp \
   qt/moc_umkoinunits.cpp \
   qt/moc_clientmodel.cpp \
@@ -51,6 +51,7 @@ QT_MOC_CPP = \
   qt/moc_csvmodelwriter.cpp \
   qt/moc_editaddressdialog.cpp \
   qt/moc_guiutil.cpp \
+  qt/moc_initexecutor.cpp \
   qt/moc_intro.cpp \
   qt/moc_macdockiconhandler.cpp \
   qt/moc_macnotificationhandler.cpp \
@@ -109,9 +110,9 @@ UMKOIN_QT_H = \
   qt/addresstablemodel.h \
   qt/askpassphrasedialog.h \
   qt/bantablemodel.h \
+  qt/umkoin.h \
   qt/umkoinaddressvalidator.h \
   qt/umkoinamountfield.h \
-  qt/umkoin.h \
   qt/umkoingui.h \
   qt/umkoinunits.h \
   qt/clientmodel.h \
@@ -122,6 +123,7 @@ UMKOIN_QT_H = \
   qt/editaddressdialog.h \
   qt/guiconstants.h \
   qt/guiutil.h \
+  qt/initexecutor.h \
   qt/intro.h \
   qt/macdockiconhandler.h \
   qt/macnotificationhandler.h \
@@ -227,6 +229,7 @@ UMKOIN_QT_BASE_CPP = \
   qt/clientmodel.cpp \
   qt/csvmodelwriter.cpp \
   qt/guiutil.cpp \
+  qt/initexecutor.cpp \
   qt/intro.cpp \
   qt/modaloverlay.cpp \
   qt/networkstyle.cpp \
