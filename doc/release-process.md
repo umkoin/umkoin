@@ -5,8 +5,8 @@ Release Process
 
 ### Before every release candidate
 
-* Update translations, see [translation_process.md](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md#synchronising-translations)
-* Update manpages, see [gen-manpages.sh](https://github.com/umkoin/umkoin/blob/master/contrib/devtools/README.md#gen-manpagessh)
+* Update translations, see [translation_process.md](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md#synchronising-translations).
+* Update manpages, see [gen-manpages.sh](https://github.com/umkoin/umkoin/blob/master/contrib/devtools/README.md#gen-manpagessh).
 * Update release candidate version in `configure.ac` (`CLIENT_VERSION_RC`).
 
 ### Before every major and minor release
@@ -37,154 +37,109 @@ Release Process
   - This update should be reviewed with a reindex-chainstate with assumevalid=0 to catch any defect
      that causes rejection of blocks in the past history.
 - Clear the release notes and move them to the wiki (see "Write the release notes" below).
-
-#### After branch-off (on master)
-
-- Update the version of `contrib/gitian-descriptors/*.yml`.
+- Translations on Transifex
+    - Create [a new resource](https://www.transifex.com/umkoin/umkoin-core/content/) named after the major version with the slug `[umkoin.qt-translation-<RRR>x]`, where `RRR` is the major branch number padded with zeros. Use `src/qt/locale/umkoin_en.xlf` to create it.
+    - In the project workflow settings, ensure that [Translation Memory Fill-up](https://docs.transifex.com/translation-memory/enabling-autofill) is enabled and that [Translation Memory Context Matching](https://docs.transifex.com/translation-memory/translation-memory-with-context) is disabled.
+    - Update the Transifex slug in [`.tx/config`](/.tx/config) to the slug of the resource created in the first step. This identifies which resource the translations will be synchronized from.
+    - Make an announcement that translators can start translating for the new version.
+    - Change the auto-update URL for the resource to `master`, e.g. `https://raw.githubusercontent.com/umkoin/umkoin/master/src/qt/locale/umkoin_en.xlf`. (Do this only after the previous steps, to prevent an auto-update from interfering.)
 
 #### After branch-off (on the major release branch)
 
 - Update the versions.
 - Create a pinned meta-issue for testing the release candidate and provide a link to it in the release announcements where useful.
+- Translations on Transifex
+    - Change the auto-update URL for the new major version's resource away from `master` and to the branch, e.g. `https://raw.githubusercontent.com/umkoin/umkoin/<branch>/src/qt/locale/umkoin_en.xlf`. Do not forget this or it will keep tracking the translations on master instead, drifting away from the specific major release.
 
 #### Before final release
 
 - Merge the release notes from the wiki into the branch.
 - Ensure the "Needs release note" label is removed from all relevant pull requests and issues.
 
+#### Tagging a release (candidate)
+
+To tag the version (or release candidate) in git, use the `make-tag.py` script from [contrib/devtools](/contrib/devtools/make-tag.py). From the root of the repository run:
+
+    ./contrib/devtools/make-tag.py v(new version, e.g. 0.20.0)
+
+This will perform a few last-minute consistency checks in the build system files, and if they pass, create a signed tag.
 
 ## Building
 
 ### First time / New builders
 
-If you're using the automated script (found in [contrib/gitian-build.py](/contrib/gitian-build.py)), then at this point you should run it with the "--setup" command. Otherwise ignore this.
+Install Guix using one of the installation methods detailed in
+[contrib/guix/INSTALL.md](/contrib/guix/INSTALL.md).
 
 Check out the source code in the following directory hierarchy.
 
     cd /path/to/your/toplevel/build
-    git clone https://github.com/umkoin/gitian.sigs.git
+    git clone https://github.com/umkoin/guix.sigs.git
     git clone https://github.com/umkoin/umkoin-detached-sigs.git
-    git clone https://github.com/devrandom/gitian-builder.git
     git clone https://github.com/umkoin/umkoin.git
 
 ### Write the release notes
 
-Write the release notes. `git shortlog` helps a lot, for example:
+Open a draft of the release notes for collaborative editing.
 
-    git shortlog --no-merges v(current version, e.g. 0.19.2)..v(new version, e.g. 0.20.0)
+For the period during which the notes are being edited on the wiki, the version on the branch should be wiped and replaced with a link to the wiki which should be used for all announcements until `-final`.
+
+Generate the change log. As this is a huge amount of work to do manually, there is the `list-pulls` script to do a pre-sorting step based on github PR metadata.
 
 Generate list of authors:
 
     git log --format='- %aN' v(current version, e.g. 0.20.0)..v(new version, e.g. 0.20.1) | sort -fiu
 
-Tag the version (or release candidate) in git:
+### Setup and perform Guix builds
 
-    git tag -s v(new version, e.g. 0.20.0)
+Checkout the Umkoin Core version you'd like to build:
 
-### Setup and perform Gitian builds
+```sh
+pushd ./umkoin
+SIGNER='(your builder key, i.e. vmta, etc)'
+VERSION='(new version without v-prefix, e.g. 0.20.0)'
+git fetch "v${VERSION}"
+git checkout "v${VERSION}"
+popd
+```
 
-If you're using the automated script (found in [contrib/gitian-build.py](/contrib/gitian-build.py)), then at this point you should run it with the "--build" command. Otherwise ignore this.
+Ensure your guix.sigs are up-to-date if you wish to `guix-verify` your builds
+against other `guix-attest` signatures.
 
-Setup Gitian descriptors:
+```sh
+git -C ./guix.sigs pull
+```
 
-    pushd ./umkoin
-    export SIGNER="(your Gitian key, ie bluematt, sipa, vmta, etc)"
-    export VERSION=(new version, e.g. 0.20.0)
-    git fetch
-    git checkout v${VERSION}
-    popd
+### Create the macOS SDK tarball: (first time, or when SDK version changes)
 
-Ensure your gitian.sigs are up-to-date if you wish to gverify your builds against other Gitian signatures.
+Create the macOS SDK tarball, see the [macdeploy
+instructions](/contrib/macdeploy/README.md#deterministic-macos-dmg-notes) for
+details.
 
-    pushd ./gitian.sigs
-    git pull
-    popd
+### Build and attest to build outputs:
 
-Ensure gitian-builder is up-to-date:
+Follow the relevant Guix README.md sections:
+- [Performing a build](/contrib/guix/README.md#performing-a-build)
+- [Attesting to build outputs](/contrib/guix/README.md#attesting-to-build-outputs)
 
-    pushd ./gitian-builder
-    git pull
-    popd
+### Verify other builders' signatures to your own. (Optional)
 
-### Fetch and create inputs: (first time, or when dependency versions change)
+Add other builders keys to your gpg keyring, and/or refresh keys: See `../umkoin/contrib/builder-keys/README.md`.
 
-    pushd ./gitian-builder
-    mkdir -p inputs
-    wget -O inputs/osslsigncode-2.0.tar.gz https://github.com/mtrojnar/osslsigncode/archive/2.0.tar.gz
-    echo '5a60e0a4b3e0b4d655317b2f12a810211c50242138322b16e7e01c6fbb89d92f inputs/osslsigncode-2.0.tar.gz' | sha256sum -c
-    popd
-
-Create the macOS SDK tarball, see the [macdeploy instructions](/contrib/macdeploy/README.md#deterministic-macos-dmg-notes) for details, and copy it into the inputs directory.
-
-### Optional: Seed the Gitian sources cache and offline git repositories
-
-NOTE: Gitian is sometimes unable to download files. If you have errors, try the step below.
-
-By default, Gitian will fetch source files as needed. To cache them ahead of time, make sure you have checked out the tag you want to build in umkoin, then:
-
-    pushd ./gitian-builder
-    make -C ../umkoin/depends download SOURCES_PATH=`pwd`/cache/common
-    popd
-
-Only missing files will be fetched, so this is safe to re-run for each build.
-
-NOTE: Offline builds must use the --url flag to ensure Gitian fetches only from local URLs. For example:
-
-    pushd ./gitian-builder
-    ./bin/gbuild --url umkoin=/path/to/umkoin,signature=/path/to/sigs {rest of arguments}
-    popd
-
-The gbuild invocations below <b>DO NOT DO THIS</b> by default.
-
-### Build and sign Umkoin Core for Linux, Windows, and macOS:
-
-    pushd ./gitian-builder
-    ./bin/gbuild --num-make 2 --memory 3000 --commit umkoin=v${VERSION} ../umkoin/contrib/gitian-descriptors/gitian-linux.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-linux --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-linux.yml
-    mv build/out/umkoin-*.tar.gz build/out/src/umkoin-*.tar.gz ../
-
-    ./bin/gbuild --num-make 2 --memory 3000 --commit umkoin=v${VERSION} ../umkoin/contrib/gitian-descriptors/gitian-win.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-win.yml
-    mv build/out/umkoin-*-win-unsigned.tar.gz inputs/umkoin-win-unsigned.tar.gz
-    mv build/out/umkoin-*.zip build/out/umkoin-*.exe ../
-
-    ./bin/gbuild --num-make 2 --memory 3000 --commit umkoin=v${VERSION} ../umkoin/contrib/gitian-descriptors/gitian-osx.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-osx.yml
-    mv build/out/umkoin-*-osx-unsigned.tar.gz inputs/umkoin-osx-unsigned.tar.gz
-    mv build/out/umkoin-*.tar.gz build/out/umkoin-*.dmg ../
-    popd
-
-Build output expected:
-
-  1. source tarball (`umkoin-${VERSION}.tar.gz`)
-  2. linux 32-bit and 64-bit dist tarballs (`umkoin-${VERSION}-linux[32|64].tar.gz`)
-  3. windows 32-bit and 64-bit unsigned installers and dist zips (`umkoin-${VERSION}-win[32|64]-setup-unsigned.exe`, `umkoin-${VERSION}-win[32|64].zip`)
-  4. macOS unsigned installer and dist tarball (`umkoin-${VERSION}-osx-unsigned.dmg`, `umkoin-${VERSION}-osx64.tar.gz`)
-  5. Gitian signatures (in `gitian.sigs/${VERSION}-<linux|{win,osx}-unsigned>/(your Gitian key)/`)
-
-### Verify other gitian builders signatures to your own. (Optional)
-
-Add other gitian builders keys to your gpg keyring, and/or refresh keys: See `../umkoin/contrib/gitian-keys/README.md`.
-
-Verify the signatures
-
-    pushd ./gitian-builder
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../umkoin/contrib/gitian-descriptors/gitian-linux.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../umkoin/contrib/gitian-descriptors/gitian-win.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../umkoin/contrib/gitian-descriptors/gitian-osx.yml
-    popd
+Follow the relevant Guix README.md sections:
+- [Verifying build output attestations](/contrib/guix/README.md#verifying-build-output-attestations)
 
 ### Next steps:
 
-Commit your signature to gitian.sigs:
+Commit your signature to guix.sigs:
 
-    pushd gitian.sigs
-    git add ${VERSION}-linux/"${SIGNER}"
-    git add ${VERSION}-win-unsigned/"${SIGNER}"
-    git add ${VERSION}-osx-unsigned/"${SIGNER}"
-    git commit -m "Add ${VERSION} unsigned sigs for ${SIGNER}"
-    git push  # Assuming you can push to the gitian.sigs tree
-    popd
+```sh
+pushd ./guix.sigs
+git add "${VERSION}/${SIGNER}"/noncodesigned.SHA256SUMS{,.asc}
+git commit -m "Add attestations by ${SIGNER} for ${VERSION} non-codesigned"
+git push  # Assuming you can push to the guix.sigs tree
+popd
+```
 
 Codesigner only: Create Windows/macOS detached signatures:
 - Only one person handles codesigning. Everyone else should skip to the next step.
@@ -196,7 +151,7 @@ Codesigner only: Sign the macOS binary:
     tar xf umkoin-osx-unsigned.tar.gz
     ./detached-sig-create.sh -s "Key ID"
     Enter the keychain password and authorize the signature
-    Move signature-osx.tar.gz back to the gitian host
+    Move signature-osx.tar.gz back to the guix-build host
 
 Codesigner only: Sign the windows binaries:
 
@@ -207,102 +162,88 @@ Codesigner only: Sign the windows binaries:
 
 Codesigner only: Commit the detached codesign payloads:
 
-    cd ~/umkoin-detached-sigs
-    checkout the appropriate branch for this release series
-    rm -rf *
-    tar xf signature-osx.tar.gz
-    tar xf signature-win.tar.gz
-    git add -A
-    git commit -m "point to ${VERSION}"
-    git tag -s v${VERSION} HEAD
-    git push the current branch and new tag
+```sh
+pushd ./umkoin-detached-sigs
+# checkout the appropriate branch for this release series
+rm -rf ./*
+tar xf signature-osx.tar.gz
+tar xf signature-win.tar.gz
+git add -A
+git commit -m "point to ${VERSION}"
+git tag -s "v${VERSION}" HEAD
+git push the current branch and new tag
+popd
+```
 
 Non-codesigners: wait for Windows/macOS detached signatures:
 
 - Once the Windows/macOS builds each have 3 matching signatures, they will be signed with their respective release keys.
 - Detached signatures will then be committed to the [umkoin-detached-sigs](https://github.com/umkoin/umkoin-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
 
-Create (and optionally verify) the signed macOS binary:
+Create (and optionally verify) the codesigned outputs:
 
-    pushd ./gitian-builder
-    ./bin/gbuild -i --commit signature=v${VERSION} ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../umkoin/contrib/gitian-descriptors/gitian-osx-signer.yml
-    mv build/out/umkoin-osx-signed.dmg ../umkoin-${VERSION}-osx.dmg
-    popd
-
-Create (and optionally verify) the signed Windows binaries:
-
-    pushd ./gitian-builder
-    ./bin/gbuild -i --commit signature=v${VERSION} ../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../umkoin/contrib/gitian-descriptors/gitian-win-signer.yml
-    mv build/out/umkoin-*win64-setup.exe ../umkoin-${VERSION}-win64-setup.exe
-    popd
+- [Codesigning](/contrib/guix/README.md#codesigning)
 
 Commit your signature for the signed macOS/Windows binaries:
 
-    pushd gitian.sigs
-    git add ${VERSION}-osx-signed/"${SIGNER}"
-    git add ${VERSION}-win-signed/"${SIGNER}"
-    git commit -m "Add ${SIGNER} ${VERSION} signed binaries signatures"
-    git push  # Assuming you can push to the gitian.sigs tree
-    popd
+```sh
+pushd ./guix.sigs
+git add "${VERSION}/${SIGNER}"/all.SHA256SUMS{,.asc}
+git commit -m "Add attestations by ${SIGNER} for ${VERSION} codesigned"
+git push  # Assuming you can push to the guix.sigs tree
+popd
+```
 
-### After 3 or more people have gitian-built and their results match:
+### After 3 or more people have guix-built and their results match:
 
-- Create `SHA256SUMS.asc` for the builds, and GPG-sign it:
+Combine `all.SHA256SUMS` and `all.SHA256SUMS.asc` into a clear-signed
+`SHA256SUMS.asc` message:
+
+```sh
+echo -e "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA256\n\n$(cat all.SHA256SUMS)\n$(cat filename.txt.asc)" > SHA256SUMS.asc
+```
+
+Here's an equivalent, more readable command if you're confident that you won't
+mess up whitespaces when copy-pasting:
 
 ```bash
-sha256sum * > SHA256SUMS
+cat << EOF > SHA256SUMS.asc
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+$(cat all.SHA256SUMS)
+$(cat all.SHA256SUMS.asc)
+EOF
 ```
 
-The list of files should be:
-```
-umkoin-${VERSION}-aarch64-linux-gnu.tar.gz
-umkoin-${VERSION}-arm-linux-gnueabihf.tar.gz
-umkoin-${VERSION}-riscv64-linux-gnu.tar.gz
-umkoin-${VERSION}-x86_64-linux-gnu.tar.gz
-umkoin-${VERSION}-osx64.tar.gz
-umkoin-${VERSION}-osx.dmg
-umkoin-${VERSION}.tar.gz
-umkoin-${VERSION}-win64-setup.exe
-umkoin-${VERSION}-win64.zip
-```
-The `*-debug*` files generated by the gitian build contain debug symbols
-for troubleshooting by developers. It is assumed that anyone that is interested
-in debugging can run gitian to generate the files for themselves. To avoid
-end-user confusion about which file to pick, as well as save storage
-space *do not upload these to the umkoin.org server, nor put them in the torrent*.
+- Upload to the www.umkoin.org server:
+    1. The contents of `./umkoin/guix-build-${VERSION}/output`, except for
+       `*-debug*` files.
 
-- GPG-sign it, delete the unsigned file:
-```
-gpg --digest-algo sha256 --clearsign SHA256SUMS # outputs SHA256SUMS.asc
-rm SHA256SUMS
-```
-(the digest algorithm is forced to sha256 to avoid confusion of the `Hash:` header that GPG adds with the SHA256 used for the files)
-Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spurious/nonsensical entry.
+       The `*-debug*` files generated by the guix build contain debug symbols
+       for troubleshooting by developers. It is assumed that anyone that is
+       interested in debugging can run guix to generate the files for
+       themselves. To avoid end-user confusion about which file to pick, as well
+       as save storage space *do not upload these to the bitcoincore.org server,
+       nor put them in the torrent*.
 
-- Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the umkoin.org server
-  into `/var/www/bin/umkoin-core-${VERSION}`
+    2. The combined clear-signed message you just created `SHA256SUMS.asc`
 
-- Update umkoin.org version
+- Create a torrent of the `/var/www/bin/umkoin-core-${VERSION}` directory such
+  that at the top level there is only one file: the `umkoin-core-${VERSION}`
+  directory containing everything else. Name the torrent
+  `umkoin-${VERSION}.torrent` (note that there is no `-core-` in this name).
 
-  - First, check to see if the Umkoin.org maintainers have prepared a
-    release: https://github.com/umkoin/umkoin.org/releases
+  Optionally help seed this torrent. To get the `magnet:` URI use:
 
-      - If they have, it will have previously failed their CI
-        checks because the final release files weren't uploaded.
-        Trigger a CI rebuild---if it passes, merge.
+  ```sh
+  transmission-show -m <torrent file>
+  ```
 
-  - After the pull request is merged, the website will automatically show the newest version within 15 minutes, as well
-    as update the OS download links.
-
-- Announce the release:
-
-  - Archive release notes for the new version to `doc/release-notes/` (branch `master` and branch of the release)
-
-  - Create a [new GitHub release](https://github.com/umkoin/umkoin/releases/new) with a link to the archived release notes.
+  Insert the magnet URI into the announcement sent to mailing lists. This permits
+  people without access to `www.umkoin.org` to download the binary distribution.
+  Also put it into the `optional_magnetlink:` slot in the YAML file for
+  www.umkoin.org.
 
   - Celebrate
 
