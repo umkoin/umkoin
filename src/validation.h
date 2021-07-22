@@ -446,10 +446,6 @@ public:
      */
     std::multimap<CBlockIndex*, CBlockIndex*> m_blocks_unlinked;
 
-    std::unique_ptr<CBlockTreeDB> m_block_tree_db GUARDED_BY(::cs_main);
-
-    bool LoadBlockIndexDB(std::set<CBlockIndex*, CBlockIndexWorkComparator>& setBlockIndexCandidates) EXCLUSIVE_LOCKS_REQUIRED(::cs_main);
-
     /**
      * Load the blocktree off disk and into memory. Populate certain metadata
      * per index entry (nStatus, nChainWork, nTimeMax, etc.) as well as peripheral
@@ -460,6 +456,7 @@ public:
      */
     bool LoadBlockIndex(
         const Consensus::Params& consensus_params,
+        CBlockTreeDB& blocktree,
         std::set<CBlockIndex*, CBlockIndexWorkComparator>& block_index_candidates)
         EXCLUSIVE_LOCKS_REQUIRED(cs_main);
 
@@ -801,6 +798,8 @@ private:
     void CheckForkWarningConditions() EXCLUSIVE_LOCKS_REQUIRED(cs_main);
     void InvalidChainFound(CBlockIndex* pindexNew) EXCLUSIVE_LOCKS_REQUIRED(cs_main);
 
+    bool LoadBlockIndexDB() EXCLUSIVE_LOCKS_REQUIRED(cs_main);
+
     //! Indirection necessary to make lock annotations work with an optional mempool.
     RecursiveMutex* MempoolMutex() const LOCK_RETURNED(m_mempool->cs)
     {
@@ -1047,6 +1046,9 @@ public:
         Reset();
     }
 };
+
+/** Global variable that points to the active block tree (protected by cs_main) */
+extern std::unique_ptr<CBlockTreeDB> pblocktree;
 
 using FopenFn = std::function<FILE*(const fs::path&, const char*)>;
 

@@ -39,7 +39,8 @@ enum
  *  All flags are intended to be soft forks: the set of acceptable scripts under
  *  flags (A | B) is a subset of the acceptable scripts under flag (A).
  */
-enum : uint32_t {
+enum
+{
     SCRIPT_VERIFY_NONE      = 0,
 
     // Evaluate P2SH subscripts (BIP16).
