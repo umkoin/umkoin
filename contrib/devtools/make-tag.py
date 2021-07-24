@@ -10,8 +10,6 @@ import re
 import sys
 import collections
 
-import treehash512
-
 GIT = os.getenv("GIT", "git")
 
 # Full version specification
@@ -72,6 +70,7 @@ def check_configure_ac(spec):
     filename = 'configure.ac'
     with open(filename) as f:
         for line in f:
+            print(line)
             m = re.match("define\(_CLIENT_VERSION_([A-Z_]+), ([0-9a-z]+)\)", line)
             if m:
                 info[m.group(1)] = m.group(2)
@@ -94,7 +93,7 @@ def check_configure_ac(spec):
 
 def check_msvc_config_h(spec):
     info = {}
-    filename = 'build_msvc/bitcoin_config.h'
+    filename = 'build_msvc/umkoin_config.h'
     with open(filename) as f:
         for line in f:
             m = re.match("#define ([A-Z_]+) (.+)$", line)
@@ -163,11 +162,10 @@ def main():
         version += f" release candidate {spec.rc}"
     else:
         version += " final"
-    msg = 'Bitcoin Core ' + version + '\n'
+    msg = 'Umkoin Core ' + version + '\n'
 
     # Add treehash header
     msg += "\n"
-    msg += 'Tree-SHA512: ' + treehash512.tree_sha512sum() + '\n'
 
     # Finally, make the tag
     print(msg)
