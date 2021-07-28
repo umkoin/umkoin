@@ -2,7 +2,7 @@
 # Copyright (c) 2020 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-"""Script for verifying Bitoin Core release binaries
+"""Script for verifying Umkoin Core release binaries
 
 This script attempts to download the signature file SHA256SUMS.asc from
 www.umkoin.org and razor.umkoin.org and compares them.
@@ -112,8 +112,8 @@ def main(args):
     sigfile2 = SIGNATUREFILENAME + ".2"
     success, output = download_with_wget(HOST2 + remote_sigfile, sigfile2)
     if not success:
-        print(f"{HOST2} failed to provide signature file, "
-              "but {HOST1} did?")
+        print("umkoin.org failed to provide signature file, "
+              "but razor.umkoin.org did?")
         print("wget output:")
         print(indent(output, '\t'))
         remove_files([sigfile1])
@@ -121,7 +121,7 @@ def main(args):
 
     # ensure that both signature files are equal
     if not files_are_equal(sigfile1, sigfile2):
-        print(f"{HOST1} and {HOST2} signature files were not equal?")
+        print("umkoin.org and razor.umkoin.org signature files were not equal?")
         print(f"See files {WORKINGDIR}/{sigfile1} and {WORKINGDIR}/{sigfile2}")
         return 6
 
