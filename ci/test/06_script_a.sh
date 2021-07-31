@@ -6,7 +6,10 @@
 
 export LC_ALL=C.UTF-8
 
-UMKOIN_CONFIG_ALL="--disable-dependency-tracking --prefix=$DEPENDS_DIR/$HOST --bindir=$BASE_OUTDIR/bin --libdir=$BASE_OUTDIR/lib"
+UMKOIN_CONFIG_ALL="--enable-suppress-external-warnings --disable-dependency-tracking --prefix=$DEPENDS_DIR/$HOST --bindir=$BASE_OUTDIR/bin --libdir=$BASE_OUTDIR/lib"
+if [ -z "$NO_WERROR" ]; then
+  UMKOIN_CONFIG_ALL="${UMKOIN_CONFIG_ALL} --enable-werror"
+fi
 DOCKER_EXEC "ccache --zero-stats --max-size=$CCACHE_SIZE"
 
 BEGIN_FOLD autogen
