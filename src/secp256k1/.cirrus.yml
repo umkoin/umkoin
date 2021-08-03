@@ -1,21 +1,28 @@
 env:
-  WIDEMUL: auto
+  ### compiler options
+  HOST:
+  # Specific warnings can be disabled with -Wno-error=foo.
+  # -pedantic-errors is not equivalent to -Werror=pedantic and thus not implied by -Werror according to the GCC manual.
+  WERROR_CFLAGS: -Werror -pedantic-errors
+  MAKEFLAGS: -j2
+  BUILD: check
+  ### secp256k1 config
   STATICPRECOMPUTATION: yes
   ECMULTGENPRECISION: auto
   ASM: no
-  BUILD: check
+  WIDEMUL: auto
   WITH_VALGRIND: yes
-  RUN_VALGRIND: no
   EXTRAFLAGS:
-  HOST:
+  ### secp256k1 modules
+  EXPERIMENTAL: no
   ECDH: no
   RECOVERY: no
   SCHNORRSIG: no
-  EXPERIMENTAL: no
-  CTIMETEST: yes
+  ### test options
+  TEST_ITERS:
   BENCH: yes
-  ITERS: 2
-  MAKEFLAGS: -j2
+  BENCH_ITERS: 2
+  CTIMETEST: yes
 
 cat_logs_snippet: &CAT_LOGS
   always:
@@ -63,27 +70,8 @@ task:
     - env: {BUILD: distcheck, WITH_VALGRIND: no, CTIMETEST: no, BENCH: no}
     - env: {CPPFLAGS: -DDETERMINISTIC}
     - env: {CFLAGS: -O0, CTIMETEST: no}
-    - env:
-        CFLAGS:  "-fsanitize=undefined -fno-omit-frame-pointer"
-        LDFLAGS: "-fsanitize=undefined -fno-omit-frame-pointer"
-        UBSAN_OPTIONS: "print_stacktrace=1:halt_on_error=1"
-        ASM: x86_64
-        ECDH: yes
-        RECOVERY: yes
-        EXPERIMENTAL: yes
-        SCHNORRSIG: yes
-        CTIMETEST: no
     - env: { ECMULTGENPRECISION: 2 }
     - env: { ECMULTGENPRECISION: 8 }
-    - env:
-        RUN_VALGRIND: yes
-        ASM: x86_64
-        ECDH: yes
-        RECOVERY: yes
-        EXPERIMENTAL: yes
-        SCHNORRSIG: yes
-        EXTRAFLAGS: "--disable-openssl-tests"
-        BUILD:
   matrix:
     - env:
         CC: gcc
@@ -111,6 +99,7 @@ task:
         CC: i686-linux-gnu-gcc
     - env:
         CC: clang --target=i686-pc-linux-gnu -isystem /usr/i686-linux-gnu/include
+  << : *MERGE_BASE
   test_script:
     - ./ci/cirrus.sh
   << : *CAT_LOGS
@@ -181,9 +170,9 @@ task:
     cpu: 1
     memory: 1G
   env:
-    QEMU_CMD: qemu-s390x
+    WRAPPER_CMD: qemu-s390x
+    TEST_ITERS: 16
     HOST: s390x-linux-gnu
-    BUILD:
     WITH_VALGRIND: no
     ECDH: yes
     RECOVERY: yes
@@ -196,8 +185,6 @@ task:
     - rm /etc/ld.so.cache
     - ./ci/cirrus.sh
   << : *CAT_LOGS
-<<<<<<< HEAD
-=======
 
 task:
   name: "ARM32: Linux (Debian stable, QEMU)"
@@ -333,4 +320,23 @@ task:
     - ./ci/cirrus.sh
   << : *CAT_LOGS
 
->>>>>>> 6d46dfbfa26f2e243b4eab1e8b34b7cc0e51401a
+task:
+  name: "C++ -fpermissive"
+  container:
+    dockerfile: ci/linux-debian.Dockerfile
+    cpu: 1
+    memory: 1G
+  env:
+    # ./configure correctly errors out when given CC=g++.
+    # We hack around this by passing CC=g++ only to make.
+    CC: gcc
+    MAKEFLAGS: -j2 CC=g++ CFLAGS=-fpermissive
+    WERROR_CFLAGS:
+    EXPERIMENTAL: yes
+    ECDH: yes
+    RECOVERY: yes
+    SCHNORRSIG: yes
+  << : *MERGE_BASE
+  test_script:
+    - ./ci/cirrus.sh
+  << : *CAT_LOGS
