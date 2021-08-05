@@ -51,6 +51,10 @@ Notable changes
 P2P and network changes
 -----------------------
 
+- A umkoind node will no longer rumour addresses to inbound peers by default.
+  They will become eligible for address gossip after sending an ADDR, ADDRV2,
+  or GETADDR message. (#21528)
+
 Updated RPCs
 ------------
 
