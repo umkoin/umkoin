@@ -682,8 +682,6 @@ void UmkoinGUI::addWallet(WalletModel* walletModel)
         m_wallet_selector_label_action->setVisible(true);
         m_wallet_selector_action->setVisible(true);
     }
-    const QString display_name = walletModel->getDisplayName();
-    m_wallet_selector->addItem(display_name, QVariant::fromValue(walletModel));
 
     connect(wallet_view, &WalletView::outOfSyncWarningClicked, this, &UmkoinGUI::showModalOverlay);
     connect(wallet_view, &WalletView::transactionClicked, this, &UmkoinGUI::gotoHistoryPage);
@@ -696,6 +694,8 @@ void UmkoinGUI::addWallet(WalletModel* walletModel)
     connect(wallet_view, &WalletView::hdEnabledStatusChanged, this, &UmkoinGUI::updateWalletStatus);
     connect(this, &UmkoinGUI::setPrivacy, wallet_view, &WalletView::setPrivacy);
     wallet_view->setPrivacy(isPrivacyModeActivated());
+    const QString display_name = walletModel->getDisplayName();
+    m_wallet_selector->addItem(display_name, QVariant::fromValue(walletModel));
 }
 
 void UmkoinGUI::removeWallet(WalletModel* walletModel)
