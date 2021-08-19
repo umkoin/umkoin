@@ -62,7 +62,7 @@ def cltv_invalidate(tx, failure_reason):
         # +-------------------------------------------------+------------+--------------+
         [[OP_CHECKLOCKTIMEVERIFY],                            None,       None],
         [[OP_1NEGATE, OP_CHECKLOCKTIMEVERIFY, OP_DROP],       None,       None],
-        [[CScriptNum(1000), OP_CHECKLOCKTIMEVERIFY, OP_DROP], 0,          1511512200],  # timestamp of regtest genesis block
+        [[CScriptNum(1000), OP_CHECKLOCKTIMEVERIFY, OP_DROP], 0,          1511512200],  # timestamp of genesis block
         [[CScriptNum(1000), OP_CHECKLOCKTIMEVERIFY, OP_DROP], 0,          500],
         [[CScriptNum(500),  OP_CHECKLOCKTIMEVERIFY, OP_DROP], 0xffffffff, 500],
     ][failure_reason]
@@ -135,7 +135,7 @@ class BIP65Test(UmkoinTestFramework):
         block.nVersion = 3
         block.solve()
 
-        with self.nodes[0].assert_debug_log(expected_msgs=['{}, bad-version(0x00000003)'.format(block.hash)]):
+        with self.nodes[0].assert_debug_log(expected_msgs=[f'{block.hash}, bad-version(0x00000003)']):
             peer.send_and_ping(msg_block(block))
             assert_equal(int(self.nodes[0].getbestblockhash(), 16), tip)
             peer.sync_with_ping()
@@ -173,8 +173,7 @@ class BIP65Test(UmkoinTestFramework):
             block.hashMerkleRoot = block.calc_merkle_root()
             block.solve()
 
-            with self.nodes[0].assert_debug_log(expected_msgs=['CheckInputScripts on {} failed with {}'.format(
-                                                block.vtx[-1].hash, expected_cltv_reject_reason)]):
+            with self.nodes[0].assert_debug_log(expected_msgs=[f'CheckInputScripts on {block.vtx[-1].hash} failed with {expected_cltv_reject_reason}']):
                 peer.send_and_ping(msg_block(block))
                 assert_equal(int(self.nodes[0].getbestblockhash(), 16), tip)
                 peer.sync_with_ping()
