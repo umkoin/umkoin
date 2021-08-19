@@ -29,8 +29,7 @@ base_template: &BASE_TEMPLATE
     - git merge FETCH_HEAD  # Merge base to detect silent merge conflicts
   stateful: false  # https://cirrus-ci.org/guide/writing-tasks/#stateful-tasks
 
-global_task_template: &GLOBAL_TASK_TEMPLATE
-  << : *BASE_TEMPLATE
+task_template: &TASK_TEMPLATE
   timeout_in: 120m  # https://cirrus-ci.org/faq/#instance-timed-out
   container:
     # https://cirrus-ci.org/faq/#are-there-any-limits
@@ -41,8 +40,13 @@ global_task_template: &GLOBAL_TASK_TEMPLATE
     folder: "/tmp/ccache_dir"
   depends_built_cache:
     folder: "depends/built"
+    fingerprint_script: echo $CIRRUS_TASK_NAME $(git rev-list -1 HEAD ./depends)
   ci_script:
     - ./ci/test_run_all.sh
+
+global_task_template: &GLOBAL_TASK_TEMPLATE
+  << : *BASE_TEMPLATE
+  << : *TASK_TEMPLATE
 
 depends_sdk_cache_template: &DEPENDS_SDK_CACHE_TEMPLATE
   depends_sdk_cache:
@@ -126,8 +130,8 @@ task:
   << : *GLOBAL_TASK_TEMPLATE
   container:
     image: ubuntu:hirsute
-    cpu: 2
-    memory: 8G
+    cpu: 4  # Increase CPU and Memory to avoid timeout
+    memory: 16G
   env:
     << : *CIRRUS_EPHEMERAL_WORKER_TEMPLATE_ENV
     MAKEJOBS: "-j8"
@@ -156,8 +160,8 @@ task:
   << : *GLOBAL_TASK_TEMPLATE
   container:
     image: ubuntu:focal
-    cpu: 2
-    memory: 8G
+    cpu: 4  # Increase CPU and memory to avoid timeout
+    memory: 16G
   env:
     << : *CIRRUS_EPHEMERAL_WORKER_TEMPLATE_ENV
     MAKEJOBS: "-j8"
@@ -168,8 +172,8 @@ task:
   << : *GLOBAL_TASK_TEMPLATE
   container:
     image: ubuntu:focal
-    cpu: 2
-    memory: 8G
+    cpu: 4
+    memory: 16G  # The default memory is sometimes just a bit too small, so double everything
   env:
     << : *CIRRUS_EPHEMERAL_WORKER_TEMPLATE_ENV
     MAKEJOBS: "-j8"
@@ -211,9 +215,11 @@ task:
 task:
   name: 'ARM64 Android APK [focal]'
   << : *DEPENDS_SDK_CACHE_TEMPLATE
+  << : *BASE_TEMPLATE
   depends_sources_cache:
     folder: "depends/sources"
-  << : *GLOBAL_TASK_TEMPLATE
+    fingerprint_script: git rev-list -1 HEAD ./depends
+  << : *TASK_TEMPLATE
   container:
     image: ubuntu:focal
   env:
