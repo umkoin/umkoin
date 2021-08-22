@@ -217,6 +217,10 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
        as save storage space *do not upload these to the bitcoincore.org server,
        nor put them in the torrent*.
 
+       ```sh
+       find guix-build-${VERSION}/output/ -maxdepth 2 -type f -not -name "SHA256SUMS.part" -and -not -name "*debug*" -exec scp {} user@umkoin.org:/var/www/bin/umkoin-core-${VERSION} \;
+       ```
+
     2. The `SHA256SUMS` file
 
     3. The `SHA256SUMS.asc` combined signature file you just created
