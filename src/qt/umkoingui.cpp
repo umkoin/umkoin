@@ -594,8 +594,8 @@ void UmkoinGUI::setClientModel(ClientModel *_clientModel, interfaces::BlockAndHe
         connect(_clientModel, &ClientModel::numConnectionsChanged, this, &UmkoinGUI::setNumConnections);
         connect(_clientModel, &ClientModel::networkActiveChanged, this, &UmkoinGUI::setNetworkActive);
 
-        modalOverlay->setKnownBestHeight(tip_info->header_height, QDateTime::fromTime_t(tip_info->header_time));
-        setNumBlocks(tip_info->block_height, QDateTime::fromTime_t(tip_info->block_time), tip_info->verification_progress, false, SynchronizationState::INIT_DOWNLOAD);
+        modalOverlay->setKnownBestHeight(tip_info->header_height, QDateTime::fromSecsSinceEpoch(tip_info->header_time));
+        setNumBlocks(tip_info->block_height, QDateTime::fromSecsSinceEpoch(tip_info->block_time), tip_info->verification_progress, false, SynchronizationState::INIT_DOWNLOAD);
         connect(_clientModel, &ClientModel::numBlocksChanged, this, &UmkoinGUI::setNumBlocks);
 
         // Receive and report messages from client model
