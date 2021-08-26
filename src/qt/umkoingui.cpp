@@ -113,6 +113,7 @@ UmkoinGUI::UmkoinGUI(interfaces::Node& node, const PlatformStyle *_platformStyle
         connect(walletFrame, &WalletFrame::message, [this](const QString& title, const QString& message, unsigned int style) {
             this->message(title, message, style);
         });
+        connect(walletFrame, &WalletFrame::currentWalletSet, [this] { updateWalletStatus(); });
         setCentralWidget(walletFrame);
     } else
 #endif // ENABLE_WALLET
@@ -694,7 +695,6 @@ void UmkoinGUI::addWallet(WalletModel* walletModel)
     });
     connect(wallet_view, &WalletView::encryptionStatusChanged, this, &UmkoinGUI::updateWalletStatus);
     connect(wallet_view, &WalletView::incomingTransaction, this, &UmkoinGUI::incomingTransaction);
-    connect(wallet_view, &WalletView::hdEnabledStatusChanged, this, &UmkoinGUI::updateWalletStatus);
     connect(this, &UmkoinGUI::setPrivacy, wallet_view, &WalletView::setPrivacy);
     wallet_view->setPrivacy(isPrivacyModeActivated());
     const QString display_name = walletModel->getDisplayName();
@@ -1340,9 +1340,8 @@ void UmkoinGUI::setEncryptionStatus(int status)
 
 void UmkoinGUI::updateWalletStatus()
 {
-    if (!walletFrame) {
-        return;
-    }
+    assert(walletFrame);
+
     WalletView * const walletView = walletFrame->currentWalletView();
     if (!walletView) {
         return;
