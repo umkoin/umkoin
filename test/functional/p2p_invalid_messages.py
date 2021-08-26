@@ -57,6 +57,7 @@ class InvalidMessagesTest(UmkoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
+        self.extra_args = [["-whitelist=addr@127.0.0.1"]]
 
     def run_test(self):
         self.test_buffer()
@@ -188,7 +189,7 @@ class InvalidMessagesTest(UmkoinTestFramework):
             ],
             hex_str_to_bytes(
                 '01' +       # number of entries
-                '61bc6649' + # time, Fri Jan  9 02:54:25 UTC 2009
+                '61bc6649' + # time, Fri Jan  9 02:54:25 UTC 2017
                 '00' +       # service flags, COMPACTSIZE(NODE_NONE)
                 '01' +       # network type (IPv4)
                 'fd0102' +   # address length (COMPACTSIZE(513))
