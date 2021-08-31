@@ -47,7 +47,6 @@ $UMKOIND --version | sed -n '1!p' >> footer.h2m
 for cmd in $UMKOIND $UMKOINCLI $UMKOINTX $WALLET_TOOL $UMKOINUTIL $UMKOINQT; do
   cmdname="${cmd##*/}"
   help2man -N --version-string=${UMKVER[0]} --include=footer.h2m -o ${MANDIR}/${cmdname}.1 ${cmd}
-  sed -i "s/\\\-${UMKVER[1]}//g" ${MANDIR}/${cmdname}.1
 done
 
 rm -f footer.h2m
