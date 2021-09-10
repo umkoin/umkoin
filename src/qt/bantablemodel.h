@@ -5,6 +5,7 @@
 #ifndef UMKOIN_QT_BANTABLEMODEL_H
 #define UMKOIN_QT_BANTABLEMODEL_H
 
+#include <addrdb.h>
 #include <net.h>
 
 #include <memory>

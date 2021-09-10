@@ -6,7 +6,6 @@
 #ifndef UMKOIN_NET_H
 #define UMKOIN_NET_H
 
-#include <addrdb.h>
 #include <addrman.h>
 #include <amount.h>
 #include <bloom.h>
