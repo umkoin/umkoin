@@ -567,6 +567,4 @@ public:
     }
 };
 
-bool SanityCheckASMap(const std::vector<bool>& asmap);
-
 #endif // UMKOIN_NETADDRESS_H
