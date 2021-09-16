@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\qt\main.cpp" />
+    <ClCompile Include="..\..\src\init\umkoind.cpp" />
     <ResourceCompile Include="..\..\src\qt\res\umkoin-qt-res.rc" />
   </ItemGroup>
   <ItemGroup>

@@ -338,14 +338,14 @@ umkoin_qt_libtoolflags = $(AM_LIBTOOLFLAGS) --tag CXX
 
 qt_umkoin_qt_CPPFLAGS = $(umkoin_qt_cppflags)
 qt_umkoin_qt_CXXFLAGS = $(umkoin_qt_cxxflags)
-qt_umkoin_qt_SOURCES = $(umkoin_qt_sources)
+qt_umkoin_qt_SOURCES = $(umkoin_qt_sources) init/umkoind.cpp
 qt_umkoin_qt_LDADD = $(umkoin_qt_ldadd)
 qt_umkoin_qt_LDFLAGS = $(umkoin_qt_ldflags)
 qt_umkoin_qt_LIBTOOLFLAGS = $(umkoin_qt_libtoolflags)
 
 umkoin_gui_CPPFLAGS = $(umkoin_qt_cppflags)
 umkoin_gui_CXXFLAGS = $(umkoin_qt_cxxflags)
-umkoin_gui_SOURCES = $(umkoin_qt_sources)
+umkoin_gui_SOURCES = $(umkoin_qt_sources) init/umkoind.cpp
 umkoin_gui_LDADD = $(umkoin_qt_ldadd)
 umkoin_gui_LDFLAGS = $(umkoin_qt_ldflags)
 umkoin_gui_LIBTOOLFLAGS = $(umkoin_qt_libtoolflags)

@@ -28,6 +28,7 @@ qt_test_test_umkoin_qt_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(UMKOIN_QT_
   $(QT_INCLUDES) $(QT_TEST_INCLUDES)
 
 qt_test_test_umkoin_qt_SOURCES = \
+  init/umkoind.cpp \
   qt/test/apptests.cpp \
   qt/test/rpcnestedtests.cpp \
   qt/test/test_main.cpp \
