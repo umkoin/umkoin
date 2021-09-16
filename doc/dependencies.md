@@ -12,6 +12,7 @@ These are the dependencies currently used by Umkoin Core. You can find instructi
 | fontconfig | [2.12.1](https://www.freedesktop.org/software/fontconfig/release/) |  | No | Yes |  |
 | FreeType | [2.7.1](https://download.savannah.gnu.org/releases/freetype) |  | No |  | [Yes](https://github.com/umkoin/umkoin/blob/master/depends/packages/qt.mk) (Android only) |
 | GCC |  | [7+](https://gcc.gnu.org/) (C++17 support) |  |  |  |
+| glibc | | [2.17](https://www.gnu.org/software/libc/) |  |  |  |  |
 | HarfBuzz-NG |  |  |  |  | [Yes](https://github.com/umkoin/umkoin/blob/master/depends/packages/qt.mk) |
 | libevent | [2.1.12-stable](https://github.com/libevent/libevent/releases) | [2.0.21](https://github.com/bitcoin/bitcoin/pull/18676) | No |  |  |
 | libnatpmp | git commit [4536032...](https://github.com/miniupnp/libnatpmp/tree/4536032ae32268a45c073a4d5e91bbab4534773a) |  | No |  |  |
@@ -42,7 +43,7 @@ Some dependencies are not needed in all configurations. The following are some f
 * SQLite is not needed with `--disable-wallet` or `--without-sqlite`.
 * Qt is not needed with `--without-gui`.
 * If the qrencode dependency is absent, QR support won't be added. To force an error when that happens, pass `--with-qrencode`.
-* If the systemtap dependency is absent, USDT support won't be compiled.
+* If the systemtap dependency is absent, USDT support won't get compiled in.
 * ZeroMQ is needed only with the `--with-zmq` option.
 
 #### Other

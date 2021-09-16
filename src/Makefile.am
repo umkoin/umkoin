@@ -571,7 +571,7 @@ libumkoin_common_a_SOURCES = \
 
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
-# backward-compatibility objects and their sanity checks are linked.
+# sanity checks are linked.
 libumkoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_util_a_SOURCES = \
@@ -617,11 +617,6 @@ libumkoin_util_a_SOURCES = \
 
 if USE_LIBEVENT
 libumkoin_util_a_SOURCES += util/url.cpp
-endif
-
-if GLIBC_BACK_COMPAT
-libumkoin_util_a_SOURCES += compat/glibc_compat.cpp
-AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
 # cli: shared between umkoin-cli and umkoin-qt
@@ -750,10 +745,6 @@ umkoin_util_LDADD += $(BOOST_LIBS)
 if BUILD_UMKOIN_LIBS
 include_HEADERS = script/umkoinconsensus.h
 libumkoinconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libumkoin_crypto_base_a_SOURCES) $(libumkoin_consensus_a_SOURCES)
-
-if GLIBC_BACK_COMPAT
-  libumkoinconsensus_la_SOURCES += compat/glibc_compat.cpp
-endif
 
 libumkoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
 libumkoinconsensus_la_LIBADD = $(LIBSECP256K1)

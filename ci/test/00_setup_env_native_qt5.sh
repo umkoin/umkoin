@@ -14,6 +14,6 @@ export TEST_RUNNER_EXTRA="--previous-releases --coverage --extended --exclude fe
 export RUN_UNIT_TESTS_SEQUENTIAL="false"
 export RUN_UNIT_TESTS="false"
 export GOAL="install"
-export PREVIOUS_RELEASES_TO_DOWNLOAD="v0.19.1"
-export UMKOIN_CONFIG="--enable-zmq --with-libs=no --with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports
+export PREVIOUS_RELEASES_TO_DOWNLOAD="v0.19.1 v0.20.1"
+export UMKOIN_CONFIG="--enable-zmq --with-libs=no --with-gui=qt5 --enable-reduce-exports
 --enable-debug --disable-fuzz-binary  CFLAGS=\"-g0 -O2 -funsigned-char\" CXXFLAGS=\"-g0 -O2 -funsigned-char\""
