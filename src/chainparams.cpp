@@ -91,8 +91,8 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1628640000; // August 11th, 2021
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 155843; // Approximately November 12th, 2021
 
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000edf7350dd785800c");  // 139082
-        consensus.defaultAssumeValid = uint256S("0x0000000000636e8b400406531d31a46c25cfe015ee56421e8e24bfc38ee33e0b"); // 139082
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000ee3fe9cb5e534962");  // 148500
+        consensus.defaultAssumeValid = uint256S("0x00000000004dc516268221c61c6d00e3f2510bfb3115ea9774d27786eb6b0369"); // 148500
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -148,6 +148,8 @@ public:
                 { 39332, uint256S("0x0000000000003c265a3cf6a3a29e0ac6ab292a591eddf02f5e1d50abb7394c40")},
                 { 67999, uint256S("0x000000000001972d726acfed45ffb647f7a6da7bdc3ab5288c7b2a82948ac65c")},
                 { 96428, uint256S("0x000000000039d6d37440cfe057b1d917bb778ce02fb79ad913435955dcbfced5")},
+                {131105, uint256S("0x00000000001fd629be483b16e42ded9e6055ba0a249dd0bfc0a3cb3736b96bf0")},
+                {148000, uint256S("0x000000000065b1a4a38ff7057ec2c80bbde98eea5a4141a3312ca2c4d0f5b850")},
             }
         };
 
@@ -156,10 +158,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            // Data from RPC: getchaintxstats 4096 000000000000000000000000000000000000000000000000edf7350dd785800c
-            /* nTime    */ 1626843372,
-            /* nTxCount */ 428686,
-            /* dTxRate  */ 0.002431284867489914,
+            // Data from RPC: getchaintxstats 4096 00000000005bac5427ed8acc1fe37cb3aa309c44f48959dfcf6d0c6ef96a6b26
+            /* nTime    */ 1632566216,
+            /* nTxCount */ 443200,
+            /* dTxRate  */ 0.0025566308453337,
         };
     }
 };
@@ -380,12 +382,12 @@ public:
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 150;
         consensus.BIP16Exception = uint256();
-        consensus.BIP34Height = 2; // BIP34 activated on regtest (Block at height 1 not enforced for testing purposes)
+        consensus.BIP34Height = 1;  // Always active unless overridden
         consensus.BIP34Hash = uint256();
-        consensus.BIP65Height = 111; // BIP65 activated on regtest (Block at height 110 and earlier not enforced for testing purposes)
-        consensus.BIP66Height = 102; // BIP66 activated on regtest (Block at height 101 and earlier not enforced for testing purposes)
-        consensus.CSVHeight = 432; // CSV activated on regtest (Used in rpc activation tests)
-        consensus.SegwitHeight = 0; // SEGWIT is always activated on regtest unless overridden
+        consensus.BIP65Height = 1;  // Always active unless overridden
+        consensus.BIP66Height = 1;  // Always active unless overridden
+        consensus.CSVHeight = 1;    // Always active unless overridden
+        consensus.SegwitHeight = 1; // Always active unless overridden
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
@@ -477,15 +479,38 @@ public:
     void UpdateActivationParametersFromArgs(const ArgsManager& args);
 };
 
+static void MaybeUpdateHeights(const ArgsManager& args, Consensus::Params& consensus)
+{
+    for (const std::string& arg : args.GetArgs("-testactivationheight")) {
+        const auto found{arg.find('@')};
+        if (found == std::string::npos) {
+            throw std::runtime_error(strprintf("Invalid format (%s) for -testactivationheight=name@height.", arg));
+        }
+        const auto name{arg.substr(0, found)};
+        const auto value{arg.substr(found + 1)};
+        int32_t height;
+        if (!ParseInt32(value, &height) || height < 0 || height >= std::numeric_limits<int>::max()) {
+            throw std::runtime_error(strprintf("Invalid height value (%s) for -testactivationheight=name@height.", arg));
+        }
+        if (name == "segwit") {
+            consensus.SegwitHeight = int{height};
+        } else if (name == "bip34") {
+            consensus.BIP34Height = int{height};
+        } else if (name == "dersig") {
+            consensus.BIP66Height = int{height};
+        } else if (name == "cltv") {
+            consensus.BIP65Height = int{height};
+        } else if (name == "csv") {
+            consensus.CSVHeight = int{height};
+        } else {
+            throw std::runtime_error(strprintf("Invalid name (%s) for -testactivationheight=name@height.", arg));
+        }
+    }
+}
+
 void CRegTestParams::UpdateActivationParametersFromArgs(const ArgsManager& args)
 {
-    if (args.IsArgSet("-segwitheight")) {
-        int64_t height = args.GetArg("-segwitheight", consensus.SegwitHeight);
-        if (height < 0 || height >= std::numeric_limits<int>::max()) {
-            throw std::runtime_error(strprintf("Activation height %ld for segwit is out of valid range.", height));
-        }
-        consensus.SegwitHeight = static_cast<int>(height);
-    }
+    MaybeUpdateHeights(args, consensus);
 
     if (!args.IsArgSet("-vbparams")) return;
 
