@@ -89,7 +89,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 2;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = 1619222400; // April 24th, 2021
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1628640000; // August 11th, 2021
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 155843; // Approximately November 12th, 2021
+        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 155843; // Appr. Nov 12th, 2021
 
         consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000ee3fe9cb5e534962");  // 148500
         consensus.defaultAssumeValid = uint256S("0x00000000004dc516268221c61c6d00e3f2510bfb3115ea9774d27786eb6b0369"); // 148500
@@ -105,8 +105,8 @@ public:
         pchMessageStart[3] = 0xd9;
         nDefaultPort = 6333;
         nPruneAfterHeight = 100000;
-        m_assumed_blockchain_size = 2;
-        m_assumed_chain_state_size = 1;
+        m_assumed_blockchain_size = 4;
+        m_assumed_chain_state_size = 2;
 
         genesis = CreateGenesisBlock(1511563812, 4263252653, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
