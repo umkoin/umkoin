@@ -107,7 +107,6 @@ UmkoinGUI::UmkoinGUI(interfaces::Node& node, const PlatformStyle *_platformStyle
         walletFrame = new WalletFrame(_platformStyle, this);
         connect(walletFrame, &WalletFrame::createWalletButtonClicked, [this] {
             auto activity = new CreateWalletActivity(getWalletController(), this);
-            connect(activity, &CreateWalletActivity::finished, activity, &QObject::deleteLater);
             activity->create();
         });
         connect(walletFrame, &WalletFrame::message, [this](const QString& title, const QString& message, unsigned int style) {
@@ -418,7 +417,6 @@ void UmkoinGUI::createActions()
                 connect(action, &QAction::triggered, [this, path] {
                     auto activity = new OpenWalletActivity(m_wallet_controller, this);
                     connect(activity, &OpenWalletActivity::opened, this, &UmkoinGUI::setCurrentWallet);
-                    connect(activity, &OpenWalletActivity::finished, activity, &QObject::deleteLater);
                     activity->open(path);
                 });
             }
@@ -433,7 +431,6 @@ void UmkoinGUI::createActions()
         connect(m_create_wallet_action, &QAction::triggered, [this] {
             auto activity = new CreateWalletActivity(m_wallet_controller, this);
             connect(activity, &CreateWalletActivity::created, this, &UmkoinGUI::setCurrentWallet);
-            connect(activity, &CreateWalletActivity::finished, activity, &QObject::deleteLater);
             activity->create();
         });
         connect(m_close_all_wallets_action, &QAction::triggered, [this] {
@@ -664,9 +661,8 @@ void UmkoinGUI::setWalletController(WalletController* wallet_controller)
     GUIUtil::ExceptionSafeConnect(wallet_controller, &WalletController::walletAdded, this, &UmkoinGUI::addWallet);
     connect(wallet_controller, &WalletController::walletRemoved, this, &UmkoinGUI::removeWallet);
 
-    for (WalletModel* wallet_model : m_wallet_controller->getOpenWallets()) {
-        addWallet(wallet_model);
-    }
+    auto activity = new LoadWalletsActivity(m_wallet_controller, this);
+    activity->load();
 }
 
 WalletController* UmkoinGUI::getWalletController()
