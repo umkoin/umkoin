@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(bloom_create_insert_key)
     CBloomFilter filter(2, 0.001, 0, BLOOM_UPDATE_ALL);
     filter.insert(vchPubKey);
     uint160 hash = pubkey.GetID();
-    filter.insert(std::vector<unsigned char>(hash.begin(), hash.end()));
+    filter.insert(hash);
 
     CDataStream stream(SER_NETWORK, PROTOCOL_VERSION);
     stream << filter;
@@ -167,8 +167,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_1)
     CBlock block = getBlockeb0d0();
     CBloomFilter filter(10, 0.000001, 0, BLOOM_UPDATE_ALL);
     // Match the last transaction
-//    filter.insert(uint256S("0xd835b3569caa823c793b01b8c2070f03a1aaba90895cae57a7035c435b5dbd2a"));
-    filter.insert(uint256S("0xeed0abf80a54a6c6880af1c5fa650b16d4dd89f4f5343a407ef57d911332784c")); // d835b3569caa823c793b01b8c2070f03a1aaba90895cae57a7035c435b5dbd2a
+    filter.insert(uint256S("0xd835b3569caa823c793b01b8c2070f03a1aaba90895cae57a7035c435b5dbd2a"));
 
     CMerkleBlock merkleBlock(block, filter);
     BOOST_CHECK_EQUAL(merkleBlock.header.GetHash().GetHex(), block.GetHash().GetHex());
@@ -189,10 +188,9 @@ BOOST_AUTO_TEST_CASE(merkle_block_1)
     // Also match the 8th transaction
     filter.insert(uint256S("0xdd1fd2a6fc16404faf339881a90adbde7f4f728691ac62e8f168809cdfae1053"));
     merkleBlock = CMerkleBlock(block, filter);
-
     BOOST_CHECK(merkleBlock.header.GetHash() == block.GetHash());
 
-    BOOST_CHECK(merkleBlock.vMatchedTxn.size() == 1);
+    BOOST_CHECK(merkleBlock.vMatchedTxn.size() == 2);
 
     BOOST_CHECK(merkleBlock.vMatchedTxn[1] == pair);
 
