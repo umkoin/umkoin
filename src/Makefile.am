@@ -499,9 +499,9 @@ crypto_libumkoin_crypto_shani_a_SOURCES = crypto/sha256_shani.cpp
 libumkoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_consensus_a_SOURCES = \
-  amount.h \
   arith_uint256.cpp \
   arith_uint256.h \
+  consensus/amount.h \
   consensus/merkle.cpp \
   consensus/merkle.h \
   consensus/params.h \

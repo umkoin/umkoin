@@ -5,7 +5,7 @@
 #ifndef UMKOIN_WALLET_RECEIVE_H
 #define UMKOIN_WALLET_RECEIVE_H
 
-#include <amount.h>
+#include <consensus/amount.h>
 #include <wallet/ismine.h>
 #include <wallet/transaction.h>
 #include <wallet/wallet.h>

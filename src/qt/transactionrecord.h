@@ -5,7 +5,7 @@
 #ifndef UMKOIN_QT_TRANSACTIONRECORD_H
 #define UMKOIN_QT_TRANSACTIONRECORD_H
 
-#include <amount.h>
+#include <consensus/amount.h>
 #include <uint256.h>
 
 #include <QList>

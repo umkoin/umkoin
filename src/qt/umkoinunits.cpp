@@ -4,6 +4,8 @@
 
 #include <qt/umkoinunits.h>
 
+#include <consensus/amount.h>
+
 #include <QStringList>
 
 #include <cassert>

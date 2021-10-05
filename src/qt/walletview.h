@@ -5,7 +5,7 @@
 #ifndef UMKOIN_QT_WALLETVIEW_H
 #define UMKOIN_QT_WALLETVIEW_H
 
-#include <amount.h>
+#include <consensus/amount.h>
 
 #include <QStackedWidget>
 

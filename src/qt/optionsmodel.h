@@ -5,7 +5,6 @@
 #ifndef UMKOIN_QT_OPTIONSMODEL_H
 #define UMKOIN_QT_OPTIONSMODEL_H
 
-#include <amount.h>
 #include <cstdint>
 #include <qt/guiconstants.h>
 

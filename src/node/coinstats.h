@@ -6,9 +6,9 @@
 #ifndef UMKOIN_NODE_COINSTATS_H
 #define UMKOIN_NODE_COINSTATS_H
 
-#include <amount.h>
 #include <chain.h>
 #include <coins.h>
+#include <consensus/amount.h>
 #include <streams.h>
 #include <uint256.h>
 

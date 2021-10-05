@@ -6,7 +6,7 @@
 #ifndef UMKOIN_WALLET_FEES_H
 #define UMKOIN_WALLET_FEES_H
 
-#include <amount.h>
+#include <consensus/amount.h>
 
 class CCoinControl;
 class CFeeRate;

@@ -5,7 +5,7 @@
 #ifndef UMKOIN_QT_UMKOINUNITS_H
 #define UMKOIN_QT_UMKOINUNITS_H
 
-#include <amount.h>
+#include <consensus/amount.h>
 
 #include <QAbstractListModel>
 #include <QString>

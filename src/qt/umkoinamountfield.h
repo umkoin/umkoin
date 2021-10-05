@@ -5,7 +5,7 @@
 #ifndef UMKOIN_QT_UMKOINAMOUNTFIELD_H
 #define UMKOIN_QT_UMKOINAMOUNTFIELD_H
 
-#include <amount.h>
+#include <consensus/amount.h>
 
 #include <QWidget>
 
