@@ -118,7 +118,7 @@ public:
         // This is fine at runtime as we'll fall back to using them as an addrfetch if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        vSeeds.emplace_back("dnsseed.umkoin.org"); // vmta
+        vSeeds.emplace_back("dnsseed.umkoin.org."); // vmta
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
@@ -222,7 +222,7 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("dnsseed.umkoin.org"); // vmta
+        vSeeds.emplace_back("dnsseed.umkoin.org."); // vmta
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
@@ -274,7 +274,7 @@ public:
 
         if (!args.IsArgSet("-signetchallenge")) {
             bin = ParseHex("512103ad5e0edad18cb1f0fc0d28a3d4f1f3e445640337489abb10404f2d1e086be430210359ef5021964fe22d6f8e05b2463c9540ce96883fe3b278760f048f5189f2e6c452ae");
-            vSeeds.emplace_back("dnsseed.umkoin.org");
+            vSeeds.emplace_back("dnsseed.umkoin.org.");
 
             consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000000049d414");
             consensus.defaultAssumeValid = uint256S("0x00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1"); // 0
