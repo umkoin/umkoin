@@ -25,9 +25,9 @@ class TransactionTimeRescanTest(UmkoinTestFramework):
     def run_test(self):
         self.log.info('Prepare nodes and wallet')
 
-        minernode = self.nodes[0]   # node used to mine UMK and create transactions
-        usernode = self.nodes[1]    # user node with correct time
-        restorenode = self.nodes[2] # node used to restore user wallet and check time determination in ComputeSmartTime (wallet.cpp)
+        minernode = self.nodes[0]  # node used to mine UMK and create transactions
+        usernode = self.nodes[1]  # user node with correct time
+        restorenode = self.nodes[2]  # node used to restore user wallet and check time determination in ComputeSmartTime (wallet.cpp)
 
         # time constant
         cur_time = int(time.time())
@@ -63,7 +63,7 @@ class TransactionTimeRescanTest(UmkoinTestFramework):
 
         # generate some umk to create transactions and check blockcount
         initial_mine = COINBASE_MATURITY + 1
-        minernode.generatetoaddress(initial_mine, m1)
+        self.generatetoaddress(minernode, initial_mine, m1)
         assert_equal(minernode.getblockcount(), initial_mine + 200)
 
         # synchronize nodes and time
@@ -76,7 +76,7 @@ class TransactionTimeRescanTest(UmkoinTestFramework):
         miner_wallet.sendtoaddress(wo1, 10)
 
         # generate blocks and check blockcount
-        minernode.generatetoaddress(COINBASE_MATURITY, m1)
+        self.generatetoaddress(minernode, COINBASE_MATURITY, m1)
         assert_equal(minernode.getblockcount(), initial_mine + 300)
 
         # synchronize nodes and time
@@ -89,7 +89,7 @@ class TransactionTimeRescanTest(UmkoinTestFramework):
         miner_wallet.sendtoaddress(wo2, 5)
 
         # generate blocks and check blockcount
-        minernode.generatetoaddress(COINBASE_MATURITY, m1)
+        self.generatetoaddress(minernode, COINBASE_MATURITY, m1)
         assert_equal(minernode.getblockcount(), initial_mine + 400)
 
         # synchronize nodes and time
@@ -102,7 +102,7 @@ class TransactionTimeRescanTest(UmkoinTestFramework):
         miner_wallet.sendtoaddress(wo3, 1)
 
         # generate more blocks and check blockcount
-        minernode.generatetoaddress(COINBASE_MATURITY, m1)
+        self.generatetoaddress(minernode, COINBASE_MATURITY, m1)
         assert_equal(minernode.getblockcount(), initial_mine + 500)
 
         self.log.info('Check user\'s final balance and transaction count')
