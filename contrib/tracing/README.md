@@ -2,7 +2,7 @@ Example scripts for User-space, Statically Defined Tracing (USDT)
 =================================================================
 
 This directory contains scripts showcasing User-space, Statically Defined
-Tracing (USDT) support for using Umkoin Core on Linux. For more information on
+Tracing (USDT) support for Umkoin Core on Linux using. For more information on
 USDT support in Umkoin Core see the [USDT documentation].
 
 [USDT documentation]: ../../doc/tracing.md
@@ -176,17 +176,12 @@ third acts as a duration threshold in milliseconds. When the `ConnectBlock()`
 function takes longer than the threshold, information about the block, is
 printed. For more details, see the header comment in the script.
 
-By default, `bpftrace` limits strings to 64 bytes due to the limited stack size
-in the kernel VM. Block hashes as zero-terminated hex strings are 65 bytes which
-exceed the string limit. The string size limit can be set to 65 bytes with the
-environment variable `BPFTRACE_STRLEN`.
-
 The following command can be used to benchmark, for example, `ConnectBlock()`
 between height 20000 and 38000 on SigNet while logging all blocks that take
 longer than 25ms to connect.
 
 ```
-$ BPFTRACE_STRLEN=65 bpftrace contrib/tracing/connectblock_benchmark.bt 20000 38000 25
+$ bpftrace contrib/tracing/connectblock_benchmark.bt 20000 38000 25
 ```
 
 In a different terminal, starting Umkoin Core in SigNet mode and with
@@ -233,9 +228,9 @@ Histogram of block connection times in milliseconds (ms).
 @durations:
 [0]                16838 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
 [1]                  882 |@@                                                  |
-[2, 4]               236 |                                                    |
-[4, 8]                23 |                                                    |
-[8, 16]                9 |                                                    |
-[16, 32]               9 |                                                    |
-[32, 64]               4 |                                                    |
+[2, 4)               236 |                                                    |
+[4, 8)                23 |                                                    |
+[8, 16)                9 |                                                    |
+[16, 32)               9 |                                                    |
+[32, 64)               4 |                                                    |
 ```
