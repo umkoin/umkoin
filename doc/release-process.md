@@ -223,7 +223,7 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
        nor put them in the torrent*.
 
        ```sh
-       find guix-build-${VERSION}/output/ -maxdepth 2 -type f -not -name "SHA256SUMS.part" -and -not -name "*debug*" -exec scp {} user@umkoin.org:/var/www/bin/umkoin-core-${VERSION} \;
+       find guix-build-${VERSION}/output/ -maxdepth 2 -type f -not -name "SHA256SUMS.part" -and -not -name "*debug*" -exec scp {} user@umkoin.org:/var/www/bin/umkoin-core-${VERSION} \; 
        ```
 
     2. The `SHA256SUMS` file
