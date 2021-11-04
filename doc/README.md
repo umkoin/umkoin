@@ -38,7 +38,6 @@ The following are developer notes on how to build Umkoin Core on your native pla
 - [OpenBSD Build Notes](build-openbsd.md)
 - [NetBSD Build Notes](build-netbsd.md)
 - [Android Build Notes](build-android.md)
-- [Gitian Building Guide](gitian-building.md)
 
 Development
 ---------------------
@@ -60,6 +59,7 @@ The Umkoin repo's [root README](/README.md) contains relevant information on the
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)
+- [Assumeutxo design](assumeutxo.md)
 - [umkoin.conf Configuration File](umkoin-conf.md)
 - [Files](files.md)
 - [Fuzz-testing](fuzzing.md)
