@@ -36,12 +36,12 @@ def assert_approx(v, vexp, vspan=0.00001):
 
 def assert_fee_amount(fee, tx_size, feerate_UMK_kvB):
     """Assert the fee is in range."""
-    feerate_UMK_vB = feerate_UMK_kvB / 1000
-    target_fee = satoshi_round(tx_size * feerate_UMK_vB)
+    target_fee = get_fee(tx_size, feerate_UMK_kvB)
     if fee < target_fee:
         raise AssertionError("Fee of %s UMK too low! (Should be %s UMK)" % (str(fee), str(target_fee)))
     # allow the wallet's estimation to be at most 2 bytes off
-    if fee > (tx_size + 2) * feerate_UMK_vB:
+    high_fee = get_fee(tx_size + 2, feerate_UMK_kvB)
+    if fee > high_fee:
         raise AssertionError("Fee of %s UMK too high! (Should be %s UMK)" % (str(fee), str(target_fee)))
 
 
@@ -216,6 +216,18 @@ def count_bytes(hex_string):
 
 def str_to_b64str(string):
     return b64encode(string.encode('utf-8')).decode('ascii')
+
+
+def ceildiv(a, b):
+    """Divide 2 ints and round up to next int rather than round down"""
+    return -(-a // b)
+
+
+def get_fee(tx_size, feerate_umk_kvb):
+    """Calculate the fee in UMK given a feerate is UMK/kvB. Reflects CFeeRate::GetFee"""
+    feerate_sat_kvb = int(feerate_umk_kvb * Decimal(1e8)) # Fee in sat/kvb as an int to avoid float precision errors
+    target_fee_sat = ceildiv(feerate_sat_kvb * tx_size, 1000) # Round calculated fee up to nearest sat
+    return satoshi_round(target_fee_sat / Decimal(1e8)) # Truncate UMK result to nearest sat
 
 
 def satoshi_round(amount):
