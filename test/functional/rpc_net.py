@@ -106,7 +106,7 @@ class NetTest(UmkoinTestFramework):
         assert_equal(peer_info[1][1]['connection_type'], 'inbound')
 
         # Check dynamically generated networks list in getpeerinfo help output.
-        assert "(ipv4, ipv6, onion, i2p, not_publicly_routable)" in self.nodes[0].help("getpeerinfo")
+        assert "(ipv4, ipv6, onion, i2p, cjdns, not_publicly_routable)" in self.nodes[0].help("getpeerinfo")
 
     def test_getnettotals(self):
         self.log.info("Test getnettotals")
@@ -157,7 +157,7 @@ class NetTest(UmkoinTestFramework):
             assert_net_servicesnames(int(info["localservices"], 0x10), info["localservicesnames"])
 
         # Check dynamically generated networks list in getnetworkinfo help output.
-        assert "(ipv4, ipv6, onion, i2p)" in self.nodes[0].help("getnetworkinfo")
+        assert "(ipv4, ipv6, onion, i2p, cjdns)" in self.nodes[0].help("getnetworkinfo")
 
     def test_getaddednodeinfo(self):
         self.log.info("Test getaddednodeinfo")
@@ -228,8 +228,8 @@ class NetTest(UmkoinTestFramework):
         assert_equal(res[0]["port"], 6333)
         assert_equal(res[0]["services"], P2P_SERVICES)
 
-        # Test for the absence of onion and I2P addresses.
-        for network in ["onion", "i2p"]:
+        # Test for the absence of onion, I2P and CJDNS addresses.
+        for network in ["onion", "i2p", "cjdns"]:
             assert_equal(self.nodes[0].getnodeaddresses(0, network), [])
 
         # Test invalid arguments.
@@ -241,7 +241,7 @@ class NetTest(UmkoinTestFramework):
         If an address with the same /16 as an existing new entry is passed, it will be
         placed in the same new bucket and have a 1/64 chance of the bucket positions
         colliding (depending on the value of nKey in the addrman), in which case the
-        new address won't be added. The probability of collision can be reduced to
+        new address won't be added.  The probability of collision can be reduced to
         1/2^16 = 1/65536 by using an address from a different /16.  We avoid this here
         by first testing adding a tried table entry before testing adding a new table one.
         """
