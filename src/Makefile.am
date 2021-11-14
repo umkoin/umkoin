@@ -15,7 +15,7 @@ AM_LIBTOOLFLAGS = --preserve-dup-deps
 PTHREAD_FLAGS = $(PTHREAD_CFLAGS) $(PTHREAD_LIBS)
 EXTRA_LIBRARIES =
 
-UMKOIN_INCLUDES=-I$(builddir) -I$(srcdir)/secp256k1/include -I$(srcdir)/$(UNIVALUE_INCLUDE_DIR_INT) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
+UMKOIN_INCLUDES=-I$(builddir) -I$(srcdir)/$(MINISKETCH_INCLUDE_DIR_INT) -I$(srcdir)/secp256k1/include -I$(srcdir)/$(UNIVALUE_INCLUDE_DIR_INT) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
 
 LIBUMKOIN_SERVER=libumkoin_server.a
 LIBUMKOIN_COMMON=libumkoin_common.a
@@ -167,6 +167,7 @@ UMKOIN_CORE_H = \
   memusage.h \
   merkleblock.h \
   miner.h \
+  minisketchwrapper.h \
   net.h \
   net_permissions.h \
   net_processing.h \
@@ -334,6 +335,7 @@ libumkoin_server_a_SOURCES = \
   init.cpp \
   mapport.cpp \
   miner.cpp \
+  minisketchwrapper.cpp \
   net.cpp \
   net_processing.cpp \
   node/blockstorage.cpp \
@@ -842,8 +844,11 @@ nodist_libumkoin_ipc_a_SOURCES = $(libumkoin_ipc_mpgen_output)
 CLEANFILES += $(libumkoin_ipc_mpgen_output)
 endif
 
+include Makefile.minisketch.include
+
 include Makefile.crc32c.include
 include Makefile.leveldb.include
+
 include Makefile.test_util.include
 include Makefile.test_fuzz.include
 
