@@ -1352,6 +1352,12 @@ if test x$use_ebpf != xno; then
   )
 fi
 
+if test x$build_umkoin_cli$build_umkoin_tx$build_umkoin_util$build_umkoind$umkoin_enable_qt$use_bench$use_tests = xnonononononono; then
+  use_upnp=no
+  use_natpmp=no
+  use_zmq=no
+fi
+
 dnl Check for libminiupnpc (optional)
 if test x$use_upnp != xno; then
   AC_CHECK_HEADERS(

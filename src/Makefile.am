@@ -709,7 +709,18 @@ umkoin_wallet_SOURCES += init/umkoin-wallet.cpp
 umkoin_wallet_CPPFLAGS = $(umkoin_bin_cppflags)
 umkoin_wallet_CXXFLAGS = $(umkoin_bin_cxxflags)
 umkoin_wallet_LDFLAGS = $(umkoin_bin_ldflags)
-umkoin_wallet_LDADD = $(LIBUMKOIN_WALLET_TOOL) $(umkoin_bin_ldadd)
+umkoin_wallet_LDADD = \
+  $(LIBUMKOIN_WALLET_TOOL) \
+  $(LIBUMKOIN_WALLET) \
+  $(LIBUMKOIN_COMMON) \
+  $(LIBUMKOIN_UTIL) \
+  $(LIBUNIVALUE) \
+  $(LIBUMKOIN_CONSENSUS) \
+  $(LIBUMKOIN_CRYPTO) \
+  $(LIBSECP256K1) \
+  $(BOOST_LIBS) \
+  $(BDB_LIBS) \
+  $(SQLITE_LIBS)
 
 if TARGET_WINDOWS
 umkoin_wallet_SOURCES += umkoin-wallet-res.rc
