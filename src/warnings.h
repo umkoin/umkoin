@@ -20,4 +20,4 @@ void SetfLargeWorkInvalidChainFound(bool flag);
  */
 bilingual_str GetWarnings(bool verbose);
 
-#endif //  UMKOIN_WARNINGS_H
+#endif // UMKOIN_WARNINGS_H

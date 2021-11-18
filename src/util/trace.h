@@ -42,4 +42,4 @@
 #endif
 
 
-#endif /* UMKOIN_UTIL_TRACE_H */
+#endif // UMKOIN_UTIL_TRACE_H

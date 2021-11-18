@@ -146,4 +146,4 @@ public:
     size_t CallbacksPending();
 };
 
-#endif
+#endif // UMKOIN_SCHEDULER_H

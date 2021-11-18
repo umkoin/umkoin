@@ -267,4 +267,4 @@ private:
 } // namespace sam
 } // namespace i2p
 
-#endif /* UMKOIN_I2P_H */
+#endif // UMKOIN_I2P_H

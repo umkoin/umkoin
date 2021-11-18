@@ -9,4 +9,4 @@ class CRPCTable;
 
 void RegisterZMQRPCCommands(CRPCTable& t);
 
-#endif // UMKOIN_ZMQ_ZMRRPC_H
+#endif // UMKOIN_ZMQ_ZMQRPC_H

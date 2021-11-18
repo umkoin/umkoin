@@ -179,4 +179,4 @@ private:
 };
 
 
-#endif // UMKOIN_TEST_BIGNUM_H
+#endif // UMKOIN_TEST_SCRIPTNUM10_H

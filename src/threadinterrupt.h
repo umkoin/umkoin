@@ -33,4 +33,4 @@ private:
     std::atomic<bool> flag;
 };
 
-#endif //UMKOIN_THREADINTERRUPT_H
+#endif // UMKOIN_THREADINTERRUPT_H

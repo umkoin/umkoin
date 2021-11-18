@@ -31,4 +31,4 @@ void InterruptREST();
  */
 void StopREST();
 
-#endif
+#endif // UMKOIN_HTTPRPC_H

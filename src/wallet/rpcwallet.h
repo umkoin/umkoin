@@ -38,4 +38,4 @@ const LegacyScriptPubKeyMan& EnsureConstLegacyScriptPubKeyMan(const CWallet& wal
 
 RPCHelpMan getaddressinfo();
 RPCHelpMan signrawtransactionwithwallet();
-#endif //UMKOIN_WALLET_RPCWALLET_H
+#endif // UMKOIN_WALLET_RPCWALLET_H
