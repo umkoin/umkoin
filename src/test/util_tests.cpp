@@ -142,13 +142,11 @@ BOOST_AUTO_TEST_CASE(util_HexStr)
         "04880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67");
 
     BOOST_CHECK_EQUAL(
-        HexStr(Span<const unsigned char>(
-               ParseHex_expected + sizeof(ParseHex_expected),
-               ParseHex_expected + sizeof(ParseHex_expected))),
+        HexStr(Span{ParseHex_expected}.last(0)),
         "");
 
     BOOST_CHECK_EQUAL(
-        HexStr(Span<const unsigned char>(ParseHex_expected, ParseHex_expected)),
+        HexStr(Span{ParseHex_expected}.first(0)),
         "");
 
     {
