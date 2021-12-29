@@ -5,7 +5,7 @@ libsecp256k1
 
 Optimized C library for ECDSA signatures and secret/public key operations on curve secp256k1.
 
-This library is intended to be the highest quality publicly available library for cryptography on the secp256k1 curve. However, the primary focus of its development has been for usage in the Bitcoin system and usage unlike Bitcoin's may be less well tested, verified, or suffer from a less well thought out interface. Correct usage requires some care and consideration that the library is fit for your application's purpose.
+This library is intended to be the highest quality publicly available library for cryptography on the secp256k1 curve. However, the primary focus of its development has been for usage in the Umkoin system and usage unlike Umkoin's may be less well tested, verified, or suffer from a less well thought out interface. Correct usage requires some care and consideration that the library is fit for your application's purpose.
 
 Features:
 * secp256k1 ECDSA signing/verification and key generation.
@@ -66,17 +66,8 @@ libsecp256k1 is built using autotools:
     $ ./autogen.sh
     $ ./configure
     $ make
-    $ make check
+    $ make check  # run the test suite
     $ sudo make install  # optional
-
-Exhaustive tests
------------
-
-    $ ./exhaustive_tests
-
-With valgrind, you might need to increase the max stack size:
-
-    $ valgrind --max-stackframe=2500000 ./exhaustive_tests
 
 Test coverage
 -----------
@@ -99,6 +90,18 @@ To create a HTML report with coloured and annotated source code:
 
     $ mkdir -p coverage
     $ gcovr --exclude 'src/bench*' --html --html-details -o coverage/coverage.html
+
+Benchmark
+------------
+If configured with `--enable-benchmark` (which is the default), binaries for benchmarking the libsecp256k1 functions will be present in the root directory after the build.
+
+To print the benchmark result to the command line:
+
+    $ ./bench_name
+
+To create a CSV file for the benchmark result :
+
+    $ ./bench_name | sed '2d;s/ \{1,\}//g' > bench_name.csv
 
 Reporting a vulnerability
 ------------
