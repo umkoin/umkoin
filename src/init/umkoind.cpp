@@ -12,6 +12,8 @@
 
 #include <memory>
 
+using node::NodeContext;
+
 namespace init {
 namespace {
 class UmkoindInit : public interfaces::Init
