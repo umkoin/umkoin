@@ -17,7 +17,7 @@ EXTRA_LIBRARIES =
 
 UMKOIN_INCLUDES=-I$(builddir) -I$(srcdir)/$(MINISKETCH_INCLUDE_DIR_INT) -I$(srcdir)/secp256k1/include -I$(srcdir)/$(UNIVALUE_INCLUDE_DIR_INT) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
 
-LIBUMKOIN_SERVER=libumkoin_server.a
+LIBUMKOIN_NODE=libumkoin_node.a
 LIBUMKOIN_COMMON=libumkoin_common.a
 LIBUMKOIN_CONSENSUS=libumkoin_consensus.a
 LIBUMKOIN_CLI=libumkoin_cli.a
@@ -61,7 +61,7 @@ EXTRA_LIBRARIES += \
   $(LIBUMKOIN_UTIL) \
   $(LIBUMKOIN_COMMON) \
   $(LIBUMKOIN_CONSENSUS) \
-  $(LIBUMKOIN_SERVER) \
+  $(LIBUMKOIN_NODE) \
   $(LIBUMKOIN_CLI) \
   $(LIBUMKOIN_IPC) \
   $(LIBUMKOIN_WALLET) \
@@ -317,9 +317,9 @@ ipc/capnp/libumkoin_ipc_a-ipc.$(OBJEXT): $(libumkoin_ipc_mpgen_input:=.h)
 # Contains code accessing mempool and chain state that is meant to be separated
 # from wallet and gui code (see node/README.md). Shared code should go in
 # libumkoin_common or libumkoin_util libraries, instead.
-libumkoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(NATPMP_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
-libumkoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libumkoin_server_a_SOURCES = \
+libumkoin_node_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(NATPMP_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libumkoin_node_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libumkoin_node_a_SOURCES = \
   addrdb.cpp \
   addrman.cpp \
   banman.cpp \
@@ -382,10 +382,10 @@ libumkoin_server_a_SOURCES = \
   $(UMKOIN_CORE_H)
 
 if ENABLE_WALLET
-libumkoin_server_a_SOURCES += wallet/init.cpp
+libumkoin_node_a_SOURCES += wallet/init.cpp
 endif
 if !ENABLE_WALLET
-libumkoin_server_a_SOURCES += dummywallet.cpp
+libumkoin_node_a_SOURCES += dummywallet.cpp
 endif
 
 if ENABLE_ZMQ
@@ -670,13 +670,13 @@ umkoind_SOURCES = $(umkoin_daemon_sources) init/umkoind.cpp
 umkoind_CPPFLAGS = $(umkoin_bin_cppflags)
 umkoind_CXXFLAGS = $(umkoin_bin_cxxflags)
 umkoind_LDFLAGS = $(umkoin_bin_ldflags)
-umkoind_LDADD = $(LIBUMKOIN_SERVER) $(umkoin_bin_ldadd)
+umkoind_LDADD = $(LIBUMKOIN_NODE) $(umkoin_bin_ldadd)
 
 umkoin_node_SOURCES = $(umkoin_daemon_sources) init/umkoin-node.cpp
 umkoin_node_CPPFLAGS = $(umkoin_bin_cppflags)
 umkoin_node_CXXFLAGS = $(umkoin_bin_cxxflags)
 umkoin_node_LDFLAGS = $(umkoin_bin_ldflags)
-umkoin_node_LDADD = $(LIBUMKOIN_SERVER) $(umkoin_bin_ldadd) $(LIBUMKOIN_IPC) $(LIBMULTIPROCESS_LIBS)
+umkoin_node_LDADD = $(LIBUMKOIN_NODE) $(umkoin_bin_ldadd) $(LIBUMKOIN_IPC) $(LIBMULTIPROCESS_LIBS)
 
 # umkoin-cli binary #
 umkoin_cli_SOURCES = umkoin-cli.cpp

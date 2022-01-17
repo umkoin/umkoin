@@ -13,7 +13,7 @@ packages/*
 libumkoin_cli/libumkoin_cli.vcxproj
 libumkoin_common/libumkoin_common.vcxproj
 libumkoin_crypto/libumkoin_crypto.vcxproj
-libumkoin_server/libumkoin_server.vcxproj
+libumkoin_node/libumkoin_node.vcxproj
 libumkoin_util/libumkoin_util.vcxproj
 libumkoin_wallet_tool/libumkoin_wallet_tool.vcxproj
 libumkoin_wallet/libumkoin_wallet.vcxproj

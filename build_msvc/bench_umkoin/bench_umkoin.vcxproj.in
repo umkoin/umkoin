@@ -21,7 +21,7 @@
     <ProjectReference Include="..\libumkoin_crypto\libumkoin_crypto.vcxproj">
       <Project>{6190199c-6cf4-4dad-bfbd-93fa72a760c1}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\libumkoin_server\libumkoin_server.vcxproj">
+    <ProjectReference Include="..\libumkoin_node\libumkoin_node.vcxproj">
       <Project>{460fee33-1fe1-483f-b3bf-931ff8e969a5}</Project>
     </ProjectReference>
     <ProjectReference Include="..\libumkoin_util\libumkoin_util.vcxproj">
