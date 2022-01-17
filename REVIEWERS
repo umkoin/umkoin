@@ -15,5 +15,10 @@
 # information on working mechanism and semantics can be found at:
 # https://help.github.com/articles/about-codeowners/
 
+# Absence from this list should not be interpreted as a discouragement to
+# review a pull request. Peer review is always welcome and is a critical
+# component of the progress of the codebase. Information on peer review
+# guidelines can be found in the CONTRIBUTING.md doc.
+
 # Maintainers
 *    @vmta
