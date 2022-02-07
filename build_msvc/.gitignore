@@ -21,6 +21,8 @@ libumkoin_zmq/libumkoin_zmq.vcxproj
 bench_umkoin/bench_umkoin.vcxproj
 libtest_util/libtest_util.vcxproj
 
+/umkoin_config.h
+
 */Win32
 libumkoin_qt/QtGeneratedFiles/*
 test_umkoin-qt/QtGeneratedFiles/*
