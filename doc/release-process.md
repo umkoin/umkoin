@@ -19,8 +19,7 @@ Release Process
 
 * On both the master branch and the new release branch:
   - update `CLIENT_VERSION_MAJOR` in [`configure.ac`](../configure.ac)
-  - update `CLIENT_VERSION_MAJOR`, `PACKAGE_VERSION`, and `PACKAGE_STRING` in [`build_msvc/umkoin_config.h`](/build_msvc/umkoin_config.h)
-* On the new release branch in [`configure.ac`](../configure.ac) and [`build_msvc/umkoin_config.h`](/build_msvc/umkoin_config.h):
+* On the new release branch in [`configure.ac`](../configure.ac):
   - set `CLIENT_VERSION_MINOR` to `0`
   - set `CLIENT_VERSION_BUILD` to `0`
   - set `CLIENT_VERSION_IS_RELEASE` to `true`
@@ -60,7 +59,7 @@ Release Process
 
 To tag the version (or release candidate) in git, use the `make-tag.py` script from [contrib/devtools](/contrib/devtools/make-tag.py). From the root of the repository run:
 
-    ./contrib/devtools/make-tag.py v(new version, e.g. 0.20.0)
+    ./contrib/devtools/make-tag.py v(new version, e.g. 23.0)
 
 This will perform a few last-minute consistency checks in the build system files, and if they pass, create a signed tag.
 
@@ -98,7 +97,7 @@ Checkout the Umkoin Core version you'd like to build:
 pushd ./umkoin
 SIGNER='(your builder key, i.e. vmta, etc)'
 VERSION='(new version without v-prefix, e.g. 0.20.0)'
-git fetch "v${VERSION}"
+git fetch origin "v${VERSION}"
 git checkout "v${VERSION}"
 popd
 ```
