@@ -268,7 +268,11 @@ void UmkoinApplication::createWindow(const NetworkStyle *networkStyle)
     connect(window, &UmkoinGUI::quitRequested, this, &UmkoinApplication::requestShutdown);
 
     pollShutdownTimer = new QTimer(window);
-    connect(pollShutdownTimer, &QTimer::timeout, window, &UmkoinGUI::detectShutdown);
+    connect(pollShutdownTimer, &QTimer::timeout, [this]{
+        if (!QApplication::activeModalWidget()) {
+            window->detectShutdown();
+        }
+    });
 }
 
 void UmkoinApplication::createSplashScreen(const NetworkStyle *networkStyle)
