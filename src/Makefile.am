@@ -665,7 +665,7 @@ umkoin_bin_ldadd = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-umkoin_bin_ldadd += $(BOOST_LIBS) $(BDB_LIBS) $(MINIUPNPC_LIBS) $(NATPMP_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(SQLITE_LIBS)
+umkoin_bin_ldadd += $(BDB_LIBS) $(MINIUPNPC_LIBS) $(NATPMP_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(SQLITE_LIBS)
 
 umkoind_SOURCES = $(umkoin_daemon_sources) init/umkoind.cpp
 umkoind_CPPFLAGS = $(umkoin_bin_cppflags)
@@ -695,7 +695,7 @@ umkoin_cli_LDADD = \
   $(LIBUMKOIN_UTIL) \
   $(LIBUMKOIN_CRYPTO)
 
-umkoin_cli_LDADD += $(BOOST_LIBS) $(EVENT_LIBS)
+umkoin_cli_LDADD += $(EVENT_LIBS)
 #
 
 # umkoin-tx binary #
@@ -715,8 +715,6 @@ umkoin_tx_LDADD = \
   $(LIBUMKOIN_CONSENSUS) \
   $(LIBUMKOIN_CRYPTO) \
   $(LIBSECP256K1)
-
-umkoin_tx_LDADD += $(BOOST_LIBS)
 #
 
 # umkoin-wallet binary #
@@ -734,7 +732,6 @@ umkoin_wallet_LDADD = \
   $(LIBUMKOIN_CONSENSUS) \
   $(LIBUMKOIN_CRYPTO) \
   $(LIBSECP256K1) \
-  $(BOOST_LIBS) \
   $(BDB_LIBS) \
   $(SQLITE_LIBS)
 
@@ -760,8 +757,6 @@ umkoin_util_LDADD = \
   $(LIBUMKOIN_CONSENSUS) \
   $(LIBUMKOIN_CRYPTO) \
   $(LIBSECP256K1)
-
-umkoin_util_LDADD += $(BOOST_LIBS)
 #
 
 # umkoinconsensus library #
