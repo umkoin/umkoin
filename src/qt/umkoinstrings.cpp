@@ -23,7 +23,7 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 "Cannot obtain a lock on data directory %s. %s is probably already running."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "Cannot provide specific connections and have addrman find outgoing "
-"connections at the same."),
+"connections at the same time."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "Cannot upgrade a non HD split wallet from version %i to version %i without "
 "upgrading to support pre-split keypool. Please use version %i or no version "
@@ -31,6 +31,9 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "Distributed under the MIT software license, see the accompanying file %s or "
 "%s"),
+QT_TRANSLATE_NOOP("umkoin-core", ""
+"Error loading %s: External signer wallet being loaded without external "
+"signer support compiled"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "Error reading %s! All keys read correctly, but transaction data or address "
 "book entries might be missing or incorrect."),
@@ -88,7 +91,7 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 "SQLiteDatabase: Unknown sqlite wallet schema version %d. Only version %d is "
 "supported"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
-"The -txindex upgrade started by a previous version can not be completed. "
+"The -txindex upgrade started by a previous version cannot be completed. "
 "Restart with the previous version or run a full -reindex."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "The block database contains a block which appears to be from the future. "
