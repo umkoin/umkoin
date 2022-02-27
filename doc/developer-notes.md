@@ -145,7 +145,7 @@ Refer to [/test/functional/README.md#style-guidelines](/test/functional/README.m
 Coding Style (Doxygen-compatible comments)
 ------------------------------------------
 
-Umkoin Core uses [Doxygen](http://www.doxygen.nl/) to generate its official documentation.
+Bitcoin Core uses [Doxygen](https://www.doxygen.nl/) to generate its official documentation.
 
 Use Doxygen-compatible comment blocks for functions, methods, and fields.
 
@@ -331,7 +331,7 @@ other input.
   failure, it will throw an exception, which can be caught to recover from the
   error.
    - For example, a nullptr dereference or any other logic bug in RPC code
-     means that the RPC code is faulty and can not be executed. However, the
+     means that the RPC code is faulty and cannot be executed. However, the
      logic bug can be shown to the user and the program can continue to run.
 * `Assume` should be used to document assumptions when program execution can
   safely continue even if the assumption is violated. In debug builds it
@@ -347,7 +347,7 @@ other input.
 
 Valgrind is a programming tool for memory debugging, memory leak detection, and
 profiling. The repo contains a Valgrind suppressions file
-([`valgrind.supp`](https://github.com/umkoin/umkoin/blob/master/contrib/valgrind.supp))
+([`valgrind.supp`](https://github.com/bitcoin/bitcoin/blob/master/contrib/valgrind.supp))
 which includes known Valgrind warnings in our dependencies that cannot be fixed
 in-tree. Example use:
 
@@ -490,51 +490,51 @@ and its `cs_KeyStore` lock for example).
 Threads
 -------
 
-- [Main thread (`umkoind`)]
+- [Main thread (`bitcoind`)](https://doxygen.bitcoincore.org/bitcoind_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97)
   : Started from `main()` in `umkoind.cpp`. Responsible for starting up and
   shutting down the application.
 
-- [ThreadImport (`b-loadblk`)]
+- [ThreadImport (`b-loadblk`)](https://doxygen.bitcoincore.org/init_8cpp.html#ae9e290a0e829ec0198518de2eda579d1)
   : Loads blocks from `blk*.dat` files or `-loadblock=<file>` on startup.
 
-- [ThreadScriptCheck (`b-scriptch.x`)]
+- [ThreadScriptCheck (`b-scriptch.x`)](https://doxygen.bitcoincore.org/validation_8cpp.html#a925a33e7952a157922b0bbb8dab29a20)
   : Parallel script validation threads for transactions in blocks.
 
-- [ThreadHTTP (`b-http`)]
+- [ThreadHTTP (`b-http`)](https://doxygen.bitcoincore.org/httpserver_8cpp.html#abb9f6ea8819672bd9a62d3695070709c)
   : Libevent thread to listen for RPC and REST connections.
 
-- [HTTP worker threads(`b-httpworker.x`)]
+- [HTTP worker threads(`b-httpworker.x`)](https://doxygen.bitcoincore.org/httpserver_8cpp.html#aa6a7bc27265043bc0193220c5ae3a55f)
   : Threads to service RPC and REST requests.
 
-- [Indexer threads (`b-txindex`, etc)]
+- [Indexer threads (`b-txindex`, etc)](https://doxygen.bitcoincore.org/class_base_index.html#a96a7407421fbf877509248bbe64f8d87)
   : One thread per indexer.
 
-- [SchedulerThread (`b-scheduler`)]
+- [SchedulerThread (`b-scheduler`)](https://doxygen.bitcoincore.org/class_c_scheduler.html#a14d2800815da93577858ea078aed1fba)
   : Does asynchronous background tasks like dumping wallet contents, dumping
   addrman and running asynchronous validationinterface callbacks.
 
-- [TorControlThread (`b-torcontrol`)]
+- [TorControlThread (`b-torcontrol`)](https://doxygen.bitcoincore.org/torcontrol_8cpp.html#a4faed3692d57a0d7bdbecf3b37f72de0)
   : Libevent thread for tor connections.
 
 - Net threads:
 
-  - [ThreadMessageHandler (`b-msghand`)]
+  - [ThreadMessageHandler (`b-msghand`)](https://doxygen.bitcoincore.org/class_c_connman.html#aacdbb7148575a31bb33bc345e2bf22a9)
     : Application level message handling (sending and receiving). Almost
     all net_processing and validation logic runs on this thread.
 
-  - [ThreadDNSAddressSeed (`b-dnsseed`)]
+  - [ThreadDNSAddressSeed (`b-dnsseed`)](https://doxygen.bitcoincore.org/class_c_connman.html#aa7c6970ed98a4a7bafbc071d24897d13)
     : Loads addresses of peers from the DNS.
 
-  - [ThreadMapPort (`b-upnp`)]
+  - [ThreadMapPort (`b-upnp`)](https://doxygen.bitcoincore.org/net_8cpp.html#a63f82a71c4169290c2db1651a9bbe249)
     : Universal plug-and-play startup/shutdown.
 
-  - [ThreadSocketHandler (`b-net`)]
+  - [ThreadSocketHandler (`b-net`)](https://doxygen.bitcoincore.org/class_c_connman.html#a765597cbfe99c083d8fa3d61bb464e34)
     : Sends/Receives data from peers on port 6333.
 
-  - [ThreadOpenAddedConnections (`b-addcon`)]
+  - [ThreadOpenAddedConnections (`b-addcon`)](https://doxygen.bitcoincore.org/class_c_connman.html#a0b787caf95e52a346a2b31a580d60a62)
     : Opens network connections to added nodes.
 
-  - [ThreadOpenConnections (`b-opencon`)]
+  - [ThreadOpenConnections (`b-opencon`)](https://doxygen.bitcoincore.org/class_c_connman.html#a55e9feafc3bab78e5c9d408c207faa45)
     : Initiates new connections to peers.
 
 Ignoring IDE/editor files
@@ -1008,7 +1008,7 @@ to check a subtree directory for consistency with its upstream repository.
 Current subtrees include:
 
 - src/leveldb
-  - Subtree at https://github.com/bitcoin-core/leveldb-subtree ; maintained by Core contributors.
+  - Subtree at https://github.com/umkoin-core/leveldb-subtree ; maintained by Core contributors.
   - Upstream at https://github.com/google/leveldb ; maintained by Google. Open
     important PRs to the subtree to avoid delay.
   - **Note**: Follow the instructions in [Upgrading LevelDB](#upgrading-leveldb) when
@@ -1016,17 +1016,17 @@ Current subtrees include:
 
 - src/crc32c
   - Used by leveldb for hardware acceleration of CRC32C checksums for data integrity.
-  - Subtree at https://github.com/bitcoin-core/crc32c-subtree ; maintained by Core contributors.
+  - Subtree at https://github.com/umkoin-core/crc32c-subtree ; maintained by Core contributors.
   - Upstream at https://github.com/google/crc32c ; maintained by Google.
 
 - src/secp256k1
-  - Upstream at https://github.com/bitcoin-core/secp256k1/ ; maintained by Core contributors.
+  - Upstream at https://github.com/umkoin-core/secp256k1/ ; maintained by Core contributors.
 
 - src/crypto/ctaes
-  - Upstream at https://github.com/bitcoin-core/ctaes ; maintained by Core contributors.
+  - Upstream at https://github.com/umkoin-core/ctaes ; maintained by Core contributors.
 
 - src/univalue
-  - Subtree at https://github.com/bitcoin-core/univalue-subtree ; maintained by Core contributors.
+  - Subtree at https://github.com/umkoin-core/univalue-subtree ; maintained by Core contributors.
   - Deviates from upstream https://github.com/jgarzik/univalue.
 
 - src/minisketch
@@ -1121,13 +1121,13 @@ introduce accidental changes.
 
 Some good examples of scripted-diff:
 
-- [scripted-diff: Rename InitInterfaces to NodeContext](https://github.com/bitcoin/bitcoin/commit/301bd41a2e6765b185bd55f4c541f9e27aeea29d)
+- [scripted-diff: Rename InitInterfaces to NodeContext](https://github.com/umkoin/umkoin/commit/301bd41a2e6765b185bd55f4c541f9e27aeea29d)
 uses an elegant script to replace occurrences of multiple terms in all source files.
 
-- [scripted-diff: Remove g_connman, g_banman globals](https://github.com/bitcoin/bitcoin/commit/8922d7f6b751a3e6b3b9f6fb7961c442877fb65a)
+- [scripted-diff: Remove g_connman, g_banman globals](https://github.com/umkoin/umkoin/commit/8922d7f6b751a3e6b3b9f6fb7961c442877fb65a)
 replaces specific terms in a list of specific source files.
 
-- [scripted-diff: Replace fprintf with tfm::format](https://github.com/bitcoin/bitcoin/commit/fac03ec43a15ad547161e37e53ea82482cc508f9)
+- [scripted-diff: Replace fprintf with tfm::format](https://github.com/umkoin/umkoin/commit/fac03ec43a15ad547161e37e53ea82482cc508f9)
 does a global replacement but excludes certain directories.
 
 To find all previous uses of scripted diffs in the repository, do:
@@ -1199,7 +1199,7 @@ A few guidelines for introducing and reviewing new RPC interfaces:
 
 - Don't forget to fill in the argument names correctly in the RPC command table.
 
-  - *Rationale*: If not, the call can not be used with name-based arguments.
+  - *Rationale*: If not, the call cannot be used with name-based arguments.
 
 - Add every non-string RPC argument `(method, idx, name)` to the table `vRPCConvertParams` in `rpc/client.cpp`.
 
