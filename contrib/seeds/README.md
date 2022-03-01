@@ -12,6 +12,7 @@ The seeds compiled into the release are created like this:
 
     curl -s http://www.umkoin.org/seeds.txt.gz | gzip -dc > seeds_main.txt
     python3 makeseeds.py < seeds_main.txt > nodes_main.txt
+    cat nodes_main_manual.txt >> nodes_main.txt
     python3 generate-seeds.py . > ../../src/chainparamsseeds.h
 
 ## Dependencies
