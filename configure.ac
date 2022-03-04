@@ -24,6 +24,7 @@ UMKOIN_GUI_NAME=umkoin-qt
 UMKOIN_CLI_NAME=umkoin-cli
 UMKOIN_TX_NAME=umkoin-tx
 UMKOIN_UTIL_NAME=umkoin-util
+UMKOIN_CHAINSTATE_NAME=umkoin-chainstate
 UMKOIN_WALLET_TOOL_NAME=umkoin-wallet
 dnl Multi Process
 UMKOIN_MP_NODE_NAME=umkoin-node
@@ -644,6 +645,12 @@ AC_ARG_ENABLE([util-util],
   [build umkoin-util])],
   [build_umkoin_util=$enableval],
   [build_umkoin_util=$build_umkoin_utils])
+
+AC_ARG_ENABLE([experimental-util-chainstate],
+  [AS_HELP_STRING([--enable-experimental-util-chainstate],
+  [build experimental umkoin-chainstate executable (default=no)])],
+  [build_umkoin_chainstate=$enableval],
+  [build_umkoin_chainstate=no])
 
 AC_ARG_WITH([libs],
   [AS_HELP_STRING([--with-libs],
@@ -1268,6 +1275,7 @@ if test "$enable_fuzz" = "yes"; then
   build_umkoin_cli=no
   build_umkoin_tx=no
   build_umkoin_util=no
+  build_umkoin_chainstate=no
   build_umkoin_wallet=no
   build_umkoind=no
   build_umkoin_libs=no
@@ -1624,6 +1632,10 @@ AC_MSG_CHECKING([whether to build umkoin-util])
 AM_CONDITIONAL([BUILD_UMKOIN_UTIL], [test $build_umkoin_util = "yes"])
 AC_MSG_RESULT($build_umkoin_util)
 
+AC_MSG_CHECKING([whether to build experimental umkoin-chainstate])
+AM_CONDITIONAL([BUILD_UMKOIN_CHAINSTATE], [test $build_umkoin_chainstate = "yes"])
+AC_MSG_RESULT($build_umkoin_chainstate)
+
 AC_MSG_CHECKING([whether to build libraries])
 AM_CONDITIONAL([BUILD_UMKOIN_LIBS], [test $build_umkoin_libs = "yes"])
 if test "$build_umkoin_libs" = "yes"; then
@@ -1843,6 +1855,7 @@ AC_SUBST(UMKOIN_GUI_NAME)
 AC_SUBST(UMKOIN_CLI_NAME)
 AC_SUBST(UMKOIN_TX_NAME)
 AC_SUBST(UMKOIN_UTIL_NAME)
+AC_SUBST(UMKOIN_CHAINSTATE_NAME)
 AC_SUBST(UMKOIN_WALLET_TOOL_NAME)
 AC_SUBST(UMKOIN_MP_NODE_NAME)
 AC_SUBST(UMKOIN_MP_GUI_NAME)
