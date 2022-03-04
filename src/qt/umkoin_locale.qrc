@@ -1,6 +1,5 @@
 <!DOCTYPE RCC><RCC version="1.0">
     <qresource prefix="/translations">
-        <file alias="be">locale/umkoin_be.qm</file>
         <file alias="da">locale/umkoin_da.qm</file>
         <file alias="de">locale/umkoin_de.qm</file>
         <file alias="en">locale/umkoin_en.qm</file>
@@ -8,7 +7,6 @@
         <file alias="fr">locale/umkoin_fr.qm</file>
         <file alias="it">locale/umkoin_it.qm</file>
         <file alias="nl">locale/umkoin_nl.qm</file>
-        <file alias="ru">locale/umkoin_ru.qm</file>
         <file alias="uk">locale/umkoin_uk.qm</file>
     </qresource>
 </RCC>
