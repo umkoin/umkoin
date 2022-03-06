@@ -1,9 +1,9 @@
-0.21.2rc2 Release Notes
+0.21.2 Release Notes
 ====================
 
-Umkoin Core version 0.21.2rc2 is now available from:
+Umkoin Core version 0.21.2 is now available from:
 
-  <http://www.umkoin.org/bin/umkoin-core-0.21.2rc2/>
+  <http://www.umkoin.org/bin/umkoin-core-0.21.2/>
 
 This minor release includes various bug fixes and performance
 improvements, as well as updated translations.
@@ -38,7 +38,7 @@ longer supported. Additionally, Umkoin Core does not yet change appearance
 when macOS "dark mode" is activated.
 
 
-0.21.2rc2 change log
+0.21.2 change log
 =================
 
 ### P2P protocol and network code
