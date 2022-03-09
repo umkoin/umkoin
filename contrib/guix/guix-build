@@ -192,7 +192,7 @@ fi
 
 if ! getent services http https ftp > /dev/null 2>&1; then
 cat << EOF
-ERR: Your system's C library can not find service database entries for at least
+ERR: Your system's C library cannot find service database entries for at least
      one of the following services: http, https, ftp.
 
 Hint: Most likely, /etc/services does not exist yet (common for docker images
@@ -233,21 +233,6 @@ host_to_commonname() {
 
 # Determine the reference time used for determinism (overridable by environment)
 SOURCE_DATE_EPOCH="${SOURCE_DATE_EPOCH:-$(git -c log.showSignature=false log --format=%at -1)}"
-
-# Execute "$@" in a pinned, possibly older version of Guix, for reproducibility
-# across time.
-time-machine() {
-    # shellcheck disable=SC2086
-    guix time-machine --url=https://git.savannah.gnu.org/git/guix.git \
-                      --commit=ae03f401381e956c4c41b4cf495cbde964fa43d0 \
-                      --cores="$JOBS" \
-                      --keep-failed \
-                      --fallback \
-                      ${SUBSTITUTE_URLS:+--substitute-urls="$SUBSTITUTE_URLS"} \
-                      ${ADDITIONAL_GUIX_COMMON_FLAGS} ${ADDITIONAL_GUIX_TIMEMACHINE_FLAGS} \
-                      -- "$@"
-}
-
 
 # Precious directories are those which should not be cleaned between successive
 # guix builds
