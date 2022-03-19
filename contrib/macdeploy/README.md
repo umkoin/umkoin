@@ -30,7 +30,7 @@ approach (tested on Debian Buster) is outlined below:
 ```bash
 # Install/clone tools needed for extracting Xcode.app
 apt install cpio
-git clone https://github.com/umkoin-core/apple-sdk-tools.git
+git clone https://github.com/bitcoin-core/apple-sdk-tools.git
 
 # Unpack Xcode_12.2.xip and place the resulting Xcode.app in your current
 # working directory
