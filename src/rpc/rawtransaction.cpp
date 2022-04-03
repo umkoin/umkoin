@@ -380,7 +380,7 @@ static RPCHelpMan verifytxoutproof()
                 RPCResult{
                     RPCResult::Type::ARR, "", "",
                     {
-                        {RPCResult::Type::STR_HEX, "txid", "The txid(s) which the proof commits to, or empty array if the proof can not be validated."},
+                        {RPCResult::Type::STR_HEX, "txid", "The txid(s) which the proof commits to, or empty array if the proof cannot be validated."},
                     }
                 },
                 RPCExamples{""},
@@ -1121,6 +1121,7 @@ static RPCHelpMan decodepsbt()
                                     {RPCResult::Type::OBJ, "scriptPubKey", "",
                                     {
                                         {RPCResult::Type::STR, "asm", "The asm"},
+                                        {RPCResult::Type::STR, "desc", "Inferred descriptor for the output"},
                                         {RPCResult::Type::STR_HEX, "hex", "The hex"},
                                         {RPCResult::Type::STR, "type", "The type, eg 'pubkeyhash'"},
                                         {RPCResult::Type::STR, "address", /*optional=*/true, "The Umkoin address (only if a well-defined address exists)"},
