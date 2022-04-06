@@ -22,6 +22,7 @@ bench_umkoin/bench_umkoin.vcxproj
 libtest_util/libtest_util.vcxproj
 
 /umkoin_config.h
+/common.init.vcxproj
 
 */Win32
 libumkoin_qt/QtGeneratedFiles/*
