@@ -1381,6 +1381,7 @@ if test "$use_usdt" != "no"; then
     [AC_MSG_RESULT([no]); use_usdt=no;]
   )
 fi
+AM_CONDITIONAL([ENABLE_USDT_TRACEPOINTS], [test "$use_usdt" = "yes"])
 
 if test "$build_umkoin_cli$build_umkoin_tx$build_umkoin_util$build_umkoind$umkoin_enable_qt$use_bench$use_tests" = "nonononononono"; then
   use_upnp=no
