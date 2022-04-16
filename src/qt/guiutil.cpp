@@ -178,8 +178,7 @@ bool parseUmkoinURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!UmkoinUnits::parse(UmkoinUnits::UMK, i->second, &rv.amount))
-                {
+                if (!UmkoinUnits::parse(UmkoinUnit::UMK, i->second, &rv.amount)) {
                     return false;
                 }
             }
@@ -211,7 +210,7 @@ QString formatUmkoinURI(const SendCoinsRecipient &info)
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(UmkoinUnits::format(UmkoinUnits::UMK, info.amount, false, UmkoinUnits::SeparatorStyle::NEVER));
+        ret += QString("?amount=%1").arg(UmkoinUnits::format(UmkoinUnit::UMK, info.amount, false, UmkoinUnits::SeparatorStyle::NEVER));
         paramCount++;
     }
 

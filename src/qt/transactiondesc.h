@@ -5,6 +5,8 @@
 #ifndef UMKOIN_QT_TRANSACTIONDESC_H
 #define UMKOIN_QT_TRANSACTIONDESC_H
 
+#include <qt/umkoinunits.h>
+
 #include <QObject>
 #include <QString>
 
@@ -24,7 +26,7 @@ class TransactionDesc: public QObject
     Q_OBJECT
 
 public:
-    static QString toHTML(interfaces::Node& node, interfaces::Wallet& wallet, TransactionRecord *rec, int unit);
+    static QString toHTML(interfaces::Node& node, interfaces::Wallet& wallet, TransactionRecord* rec, UmkoinUnit unit);
 
 private:
     TransactionDesc() {}

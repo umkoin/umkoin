@@ -6,6 +6,7 @@
 #define UMKOIN_QT_OPTIONSMODEL_H
 
 #include <cstdint>
+#include <qt/umkoinunits.h>
 #include <qt/guiconstants.h>
 
 #include <QAbstractListModel>
@@ -55,7 +56,7 @@ public:
         ProxyUseTor,            // bool
         ProxyIPTor,             // QString
         ProxyPortTor,           // int
-        DisplayUnit,            // UmkoinUnits::Unit
+        DisplayUnit,            // UmkoinUnit
         ThirdPartyTxUrls,       // QString
         Language,               // QString
         UseEmbeddedMonospacedFont, // bool
@@ -79,14 +80,14 @@ public:
     int rowCount(const QModelIndex & parent = QModelIndex()) const override;
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole) override;
-    /** Updates current unit in memory, settings and emits displayUnitChanged(newUnit) signal */
-    void setDisplayUnit(const QVariant &value);
+    /** Updates current unit in memory, settings and emits displayUnitChanged(new_unit) signal */
+    void setDisplayUnit(const QVariant& new_unit);
 
     /* Explicit getters */
     bool getShowTrayIcon() const { return m_show_tray_icon; }
     bool getMinimizeToTray() const { return fMinimizeToTray; }
     bool getMinimizeOnClose() const { return fMinimizeOnClose; }
-    int getDisplayUnit() const { return nDisplayUnit; }
+    UmkoinUnit getDisplayUnit() const { return m_display_umkoin_unit; }
     QString getThirdPartyTxUrls() const { return strThirdPartyTxUrls; }
     bool getUseEmbeddedMonospacedFont() const { return m_use_embedded_monospaced_font; }
     bool getCoinControlFeatures() const { return fCoinControlFeatures; }
@@ -112,7 +113,7 @@ private:
     bool fMinimizeToTray;
     bool fMinimizeOnClose;
     QString language;
-    int nDisplayUnit;
+    UmkoinUnit m_display_umkoin_unit;
     QString strThirdPartyTxUrls;
     bool m_use_embedded_monospaced_font;
     bool fCoinControlFeatures;
@@ -127,7 +128,7 @@ private:
     // Check settings version and upgrade default values if required
     void checkAndMigrate();
 Q_SIGNALS:
-    void displayUnitChanged(int unit);
+    void displayUnitChanged(UmkoinUnit unit);
     void coinControlFeaturesChanged(bool);
     void showTrayIconChanged(bool);
     void useEmbeddedMonospacedFontChanged(bool);
