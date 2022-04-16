@@ -244,8 +244,14 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
             "src",
             "umkoin-cli" + config["environment"]["EXEEXT"],
         )
+        fname_umkoinutil = os.path.join(
+            config["environment"]["BUILDDIR"],
+            "src",
+            "umkoin-util" + config["environment"]["EXEEXT"],
+        )
         self.options.umkoind = os.getenv("UMKOIND", default=fname_umkoind)
         self.options.umkoincli = os.getenv("UMKOINCLI", default=fname_umkoincli)
+        self.options.umkoinutil = os.getenv("UMKOINUTIL", default=fname_umkoinutil)
 
         os.environ['PATH'] = os.pathsep.join([
             os.path.join(config['environment']['BUILDDIR'], 'src'),
@@ -880,6 +886,11 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         if not self.is_wallet_tool_compiled():
             raise SkipTest("umkoin-wallet has not been compiled")
 
+    def skip_if_no_umkoin_util(self):
+        """Skip the running test if umkoin-util has not been compiled."""
+        if not self.is_umkoin_util_compiled():
+            raise SkipTest("umkoin-util has not been compiled")
+
     def skip_if_no_cli(self):
         """Skip the running test if umkoin-cli has not been compiled."""
         if not self.is_cli_compiled():
@@ -926,6 +937,10 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
     def is_wallet_tool_compiled(self):
         """Checks whether umkoin-wallet was compiled."""
         return self.config["components"].getboolean("ENABLE_WALLET_TOOL")
+
+    def is_umkoin_util_compiled(self):
+        """Checks whether umkoin-util was compiled."""
+        return self.config["components"].getboolean("ENABLE_UMKOIN_UTIL")
 
     def is_zmq_compiled(self):
         """Checks whether the zmq module was compiled."""
