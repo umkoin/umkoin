@@ -19,13 +19,7 @@ MAX_SEEDS_PER_ASN = {
     'ipv6': 10,
 }
 
-MIN_BLOCKS = 152500
-
-# These are hosts that have been observed to be behaving strangely (e.g.
-# aggressively connecting to every node).
-with open("suspicious_hosts.txt", mode="r", encoding="utf-8") as f:
-    SUSPICIOUS_HOSTS = {s.strip() for s in f if s.strip()}
-
+MIN_BLOCKS = 153500
 
 PATTERN_IPV4 = re.compile(r"^((\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})):(\d+)$")
 PATTERN_IPV6 = re.compile(r"^\[([0-9a-z:]+)\]:(\d+)$")
@@ -213,9 +207,6 @@ def main():
     # Skip duplicates (in case multiple seeds files were concatenated)
     ips = dedup(ips)
     print(f'{ip_stats(ips):s} After removing duplicates', file=sys.stderr)
-    # Skip entries from suspicious hosts.
-    ips = [ip for ip in ips if ip['ip'] not in SUSPICIOUS_HOSTS]
-    print(f'{ip_stats(ips):s} Skip entries from suspicious hosts', file=sys.stderr)
     # Enforce minimal number of blocks.
     ips = [ip for ip in ips if ip['blocks'] >= MIN_BLOCKS]
     print(f'{ip_stats(ips):s} Enforce minimal number of blocks', file=sys.stderr)
