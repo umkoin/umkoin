@@ -77,7 +77,6 @@ src/qt/umkoin-qt.includes
 *.log
 *.trs
 *.dmg
-*.iso
 
 *.json.h
 *.raw.h
