@@ -180,6 +180,7 @@ UMKOIN_CORE_H = \
   net_types.h \
   netaddress.h \
   netbase.h \
+  netgroup.h \
   netmessagemaker.h \
   node/blockstorage.h \
   node/caches.h \
@@ -352,6 +353,7 @@ libumkoin_node_a_SOURCES = \
   init.cpp \
   mapport.cpp \
   net.cpp \
+  netgroup.cpp \
   net_processing.cpp \
   node/blockstorage.cpp \
   node/caches.cpp \
