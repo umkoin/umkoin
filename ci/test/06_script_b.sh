@@ -37,6 +37,8 @@ fi
 if [ "${RUN_TIDY}" = "true" ]; then
   export P_CI_DIR="${BASE_BUILD_DIR}/umkoin-$HOST/src/"
   CI_EXEC run-clang-tidy "${MAKEJOBS}"
+  export P_CI_DIR="${BASE_BUILD_DIR}/umkoin-$HOST/"
+  CI_EXEC "python3 ${BASE_SCRATCH_DIR}/iwyu/include-what-you-use/iwyu_tool.py src/compat src/init -p . ${MAKEJOBS} -- -Xiwyu --cxx17ns -Xiwyu --mapping_file=${BASE_BUILD_DIR}/umkoin-$HOST/contrib/devtools/iwyu/umkoin.core.imp"
 fi
 
 if [ "$RUN_SECURITY_TESTS" = "true" ]; then
