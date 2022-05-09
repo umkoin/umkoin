@@ -663,6 +663,12 @@ AC_ARG_WITH([libs],
   [build_umkoin_libs=$withval],
   [build_umkoin_libs=yes])
 
+AC_ARG_WITH([experimental-kernel-lib],
+  [AS_HELP_STRING([--with-experimental-kernel-lib],
+  [build experimental umkoinkernel library (default is to build if we're building libraries and the experimental build-chainstate executable)])],
+  [build_experimental_kernel_lib=$withval],
+  [build_experimental_kernel_lib=auto])
+
 AC_ARG_WITH([daemon],
   [AS_HELP_STRING([--with-daemon],
   [build umkoind daemon (default=yes)])],
@@ -1656,15 +1662,23 @@ AM_CONDITIONAL([BUILD_UMKOIN_UTIL], [test $build_umkoin_util = "yes"])
 AC_MSG_RESULT($build_umkoin_util)
 
 AC_MSG_CHECKING([whether to build experimental umkoin-chainstate])
-AM_CONDITIONAL([BUILD_UMKOIN_CHAINSTATE], [test $build_umkoin_chainstate = "yes"])
+if test "$build_experimental_kernel_lib" = "no"; then
+AC_MSG_ERROR([experimental umkoin-chainstate cannot be built without the experimental umkoinkernel library. Use --with-experimental-kernel-lib]);
+else
+  AM_CONDITIONAL([BUILD_UMKOIN_CHAINSTATE], [test $build_umkoin_chainstate = "yes"])
+fi
 AC_MSG_RESULT($build_umkoin_chainstate)
 
 AC_MSG_CHECKING([whether to build libraries])
 AM_CONDITIONAL([BUILD_UMKOIN_LIBS], [test $build_umkoin_libs = "yes"])
+
 if test "$build_umkoin_libs" = "yes"; then
   AC_DEFINE([HAVE_CONSENSUS_LIB], [1], [Define this symbol if the consensus lib has been built])
   AC_CONFIG_FILES([libumkoinconsensus.pc:libumkoinconsensus.pc.in])
 fi
+
+AM_CONDITIONAL([BUILD_UMKOIN_KERNEL_LIB], [test "$build_experimental_kernel_lib" != "no" && ( test "$build_experimental_kernel_lib" = "yes" || test "$build_umkoin_chainstate" = "yes" )])
+
 AC_MSG_RESULT($build_umkoin_libs)
 
 AC_LANG_POP

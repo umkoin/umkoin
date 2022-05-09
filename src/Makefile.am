@@ -15,14 +15,23 @@ AM_LIBTOOLFLAGS = --preserve-dup-deps
 PTHREAD_FLAGS = $(PTHREAD_CFLAGS) $(PTHREAD_LIBS)
 EXTRA_LIBRARIES =
 
+lib_LTLIBRARIES =
+noinst_LTLIBRARIES =
+
+bin_PROGRAMS =
+noinst_PROGRAMS =
+TESTS =
+BENCHMARKS =
+
 UMKOIN_INCLUDES=-I$(builddir) -I$(srcdir)/$(MINISKETCH_INCLUDE_DIR_INT) -I$(srcdir)/secp256k1/include -I$(srcdir)/$(UNIVALUE_INCLUDE_DIR_INT) $(BDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
 
 LIBUMKOIN_NODE=libumkoin_node.a
 LIBUMKOIN_COMMON=libumkoin_common.a
 LIBUMKOIN_CONSENSUS=libumkoin_consensus.a
 LIBUMKOIN_CLI=libumkoin_cli.a
+LIBUMKOIN_KERNEL=libumkoin_kernel.a
 LIBUMKOIN_UTIL=libumkoin_util.a
-LIBUMKOIN_CRYPTO_BASE=crypto/libumkoin_crypto_base.a
+LIBUMKOIN_CRYPTO_BASE=crypto/libumkoin_crypto_base.la
 LIBUMKOINQT=qt/libumkoinqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 
@@ -32,28 +41,32 @@ endif
 if BUILD_UMKOIN_LIBS
 LIBUMKOINCONSENSUS=libumkoinconsensus.la
 endif
+if BUILD_UMKOIN_KERNEL_LIB
+LIBUMKOINKERNEL=libumkoinkernel.la
+endif
 if ENABLE_WALLET
 LIBUMKOIN_WALLET=libumkoin_wallet.a
 LIBUMKOIN_WALLET_TOOL=libumkoin_wallet_tool.a
 endif
 
-LIBUMKOIN_CRYPTO= $(LIBUMKOIN_CRYPTO_BASE)
+LIBUMKOIN_CRYPTO = $(LIBUMKOIN_CRYPTO_BASE)
 if ENABLE_SSE41
-LIBUMKOIN_CRYPTO_SSE41 = crypto/libumkoin_crypto_sse41.a
+LIBUMKOIN_CRYPTO_SSE41 = crypto/libumkoin_crypto_sse41.la
 LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_SSE41)
 endif
 if ENABLE_AVX2
-LIBUMKOIN_CRYPTO_AVX2 = crypto/libumkoin_crypto_avx2.a
+LIBUMKOIN_CRYPTO_AVX2 = crypto/libumkoin_crypto_avx2.la
 LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_AVX2)
 endif
 if ENABLE_X86_SHANI
-LIBUMKOIN_CRYPTO_X86_SHANI = crypto/libumkoin_crypto_x86_shani.a
+LIBUMKOIN_CRYPTO_X86_SHANI = crypto/libumkoin_crypto_x86_shani.la
 LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_X86_SHANI)
 endif
 if ENABLE_ARM_SHANI
-LIBUMKOIN_CRYPTO_ARM_SHANI = crypto/libumkoin_crypto_arm_shani.a
+LIBUMKOIN_CRYPTO_ARM_SHANI = crypto/libumkoin_crypto_arm_shani.la
 LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_ARM_SHANI)
 endif
+noinst_LTLIBRARIES += $(LIBUMKOIN_CRYPTO)
 
 $(LIBSECP256K1): $(wildcard secp256k1/src/*.h) $(wildcard secp256k1/src/*.c) $(wildcard secp256k1/include/*)
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C $(@D) $(@F)
@@ -61,7 +74,6 @@ $(LIBSECP256K1): $(wildcard secp256k1/src/*.h) $(wildcard secp256k1/src/*.c) $(w
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
-  $(LIBUMKOIN_CRYPTO) \
   $(LIBUMKOIN_UTIL) \
   $(LIBUMKOIN_COMMON) \
   $(LIBUMKOIN_CONSENSUS) \
@@ -71,14 +83,6 @@ EXTRA_LIBRARIES += \
   $(LIBUMKOIN_WALLET) \
   $(LIBUMKOIN_WALLET_TOOL) \
   $(LIBUMKOIN_ZMQ)
-
-lib_LTLIBRARIES = $(LIBUMKOINCONSENSUS)
-noinst_LTLIBRARIES =
-
-bin_PROGRAMS =
-noinst_PROGRAMS =
-TESTS =
-BENCHMARKS =
 
 if BUILD_UMKOIND
   bin_PROGRAMS += umkoind
@@ -464,9 +468,16 @@ libumkoin_wallet_tool_a_SOURCES = \
   $(UMKOIN_CORE_H)
 
 # crypto primitives library
-crypto_libumkoin_crypto_base_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libumkoin_crypto_base_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libumkoin_crypto_base_a_SOURCES = \
+crypto_libumkoin_crypto_base_la_CPPFLAGS = $(AM_CPPFLAGS)
+
+# Specify -static in both CXXFLAGS and LDFLAGS so libtool will only build a
+# static version of this library. We don't need a dynamic version, and a dynamic
+# version can't be used on windows anyway because the library doesn't currently
+# export DLL symbols.
+crypto_libumkoin_crypto_base_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) -static
+crypto_libumkoin_crypto_base_la_LDFLAGS = $(AM_LDFLAGS) -static
+
+crypto_libumkoin_crypto_base_la_SOURCES = \
   crypto/aes.cpp \
   crypto/aes.h \
   crypto/chacha_poly_aead.h \
@@ -498,32 +509,44 @@ crypto_libumkoin_crypto_base_a_SOURCES = \
   crypto/siphash.h
 
 if USE_ASM
-crypto_libumkoin_crypto_base_a_SOURCES += crypto/sha256_sse4.cpp
+crypto_libumkoin_crypto_base_la_SOURCES += crypto/sha256_sse4.cpp
 endif
 
-crypto_libumkoin_crypto_sse41_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libumkoin_crypto_sse41_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libumkoin_crypto_sse41_a_CXXFLAGS += $(SSE41_CXXFLAGS)
-crypto_libumkoin_crypto_sse41_a_CPPFLAGS += -DENABLE_SSE41
-crypto_libumkoin_crypto_sse41_a_SOURCES = crypto/sha256_sse41.cpp
+# See explanation for -static in crypto_libumkoin_crypto_base_la's LDFLAGS and
+# CXXFLAGS above
+crypto_libumkoin_crypto_sse41_la_LDFLAGS = $(AM_LDFLAGS) -static
+crypto_libumkoin_crypto_sse41_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) -static
+crypto_libumkoin_crypto_sse41_la_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libumkoin_crypto_sse41_la_CXXFLAGS += $(SSE41_CXXFLAGS)
+crypto_libumkoin_crypto_sse41_la_CPPFLAGS += -DENABLE_SSE41
+crypto_libumkoin_crypto_sse41_la_SOURCES = crypto/sha256_sse41.cpp
 
-crypto_libumkoin_crypto_avx2_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libumkoin_crypto_avx2_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libumkoin_crypto_avx2_a_CXXFLAGS += $(AVX2_CXXFLAGS)
-crypto_libumkoin_crypto_avx2_a_CPPFLAGS += -DENABLE_AVX2
-crypto_libumkoin_crypto_avx2_a_SOURCES = crypto/sha256_avx2.cpp
+# See explanation for -static in crypto_libumkoin_crypto_base_la's LDFLAGS and
+# CXXFLAGS above
+crypto_libumkoin_crypto_avx2_la_LDFLAGS = $(AM_LDFLAGS) -static
+crypto_libumkoin_crypto_avx2_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) -static
+crypto_libumkoin_crypto_avx2_la_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libumkoin_crypto_avx2_la_CXXFLAGS += $(AVX2_CXXFLAGS)
+crypto_libumkoin_crypto_avx2_la_CPPFLAGS += -DENABLE_AVX2
+crypto_libumkoin_crypto_avx2_la_SOURCES = crypto/sha256_avx2.cpp
 
-crypto_libumkoin_crypto_x86_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libumkoin_crypto_x86_shani_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libumkoin_crypto_x86_shani_a_CXXFLAGS += $(X86_SHANI_CXXFLAGS)
-crypto_libumkoin_crypto_x86_shani_a_CPPFLAGS += -DENABLE_X86_SHANI
-crypto_libumkoin_crypto_x86_shani_a_SOURCES = crypto/sha256_x86_shani.cpp
+# See explanation for -static in crypto_libumkoin_crypto_base_la's LDFLAGS and
+# CXXFLAGS above
+crypto_libumkoin_crypto_x86_shani_la_LDFLAGS = $(AM_LDFLAGS) -static
+crypto_libumkoin_crypto_x86_shani_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) -static
+crypto_libumkoin_crypto_x86_shani_la_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libumkoin_crypto_x86_shani_la_CXXFLAGS += $(X86_SHANI_CXXFLAGS)
+crypto_libumkoin_crypto_x86_shani_la_CPPFLAGS += -DENABLE_X86_SHANI
+crypto_libumkoin_crypto_x86_shani_la_SOURCES = crypto/sha256_x86_shani.cpp
 
-crypto_libumkoin_crypto_arm_shani_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libumkoin_crypto_arm_shani_a_CPPFLAGS = $(AM_CPPFLAGS)
-crypto_libumkoin_crypto_arm_shani_a_CXXFLAGS += $(ARM_SHANI_CXXFLAGS)
-crypto_libumkoin_crypto_arm_shani_a_CPPFLAGS += -DENABLE_ARM_SHANI
-crypto_libumkoin_crypto_arm_shani_a_SOURCES = crypto/sha256_arm_shani.cpp
+# See explanation for -static in crypto_libumkoin_crypto_base_la's LDFLAGS and
+# CXXFLAGS above
+crypto_libumkoin_crypto_arm_shani_la_LDFLAGS = $(AM_LDFLAGS) -static
+crypto_libumkoin_crypto_arm_shani_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) -static
+crypto_libumkoin_crypto_arm_shani_la_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libumkoin_crypto_arm_shani_la_CXXFLAGS += $(ARM_SHANI_CXXFLAGS)
+crypto_libumkoin_crypto_arm_shani_la_CPPFLAGS += -DENABLE_ARM_SHANI
+crypto_libumkoin_crypto_arm_shani_la_SOURCES = crypto/sha256_arm_shani.cpp
 
 # consensus: shared between all executables that validate any consensus rules.
 libumkoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
@@ -683,7 +706,6 @@ umkoin_bin_ldadd = \
   $(LIBUMKOIN_CONSENSUS) \
   $(LIBUMKOIN_CRYPTO) \
   $(LIBLEVELDB) \
-  $(LIBLEVELDB_SSE42) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
@@ -782,8 +804,48 @@ umkoin_util_LDADD = \
 #
 
 # umkoin-chainstate binary #
-umkoin_chainstate_SOURCES = \
-  umkoin-chainstate.cpp \
+umkoin_chainstate_SOURCES = umkoin-chainstate.cpp
+umkoin_chainstate_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+umkoin_chainstate_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+
+# $(LIBTOOL_APP_LDFLAGS) deliberately omitted here so that we can test linking
+# umkoin-chainstate against libumkoinkernel as a shared or static library by
+# setting --{en,dis}able-shared.
+umkoin_chainstate_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(PTHREAD_FLAGS)
+umkoin_chainstate_LDADD = $(LIBUMKOINKERNEL)
+#
+
+# umkoinkernel library #
+if BUILD_UMKOIN_KERNEL_LIB
+lib_LTLIBRARIES += $(LIBUMKOINKERNEL)
+
+libumkoinkernel_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS) $(PTHREAD_FLAGS)
+libumkoinkernel_la_LIBADD = $(LIBUMKOIN_CRYPTO) $(LIBUNIVALUE) $(LIBLEVELDB) $(LIBMEMENV) $(LIBSECP256K1)
+libumkoinkernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_UMKOIN_INTERNAL $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) -I$(srcdir)/$(UNIVALUE_INCLUDE_DIR_INT)
+
+# libumkoinkernel requires default symbol visibility, explicitly specify that
+# here so that things still work even when user configures with
+#   --enable-reduce-exports
+#
+# Note this is a quick hack that will be removed as we incrementally define what
+# to export from the library.
+libumkoinkernel_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) -fvisibility=default
+
+# TODO: For now, Specify -static in both CXXFLAGS and LDFLAGS when building for
+#       windows targets so libtool will only build a static version of this
+#       library. There are unresolved problems when building dll's for mingw-w64
+#       and attempting to statically embed libstdc++, libpthread, etc.
+if TARGET_WINDOWS
+libumkoinkernel_la_LDFLAGS += -static
+libumkoinkernel_la_CXXFLAGS += -static
+endif
+
+# TODO: libumkoinkernel is a work in progress consensus engine library, as more
+#       and more modules are decoupled from the consensus engine, this list will
+#       shrink to only those which are absolutely necessary. For example, things
+#       like index/*.cpp will be removed.
+libumkoinkernel_la_SOURCES = \
+  kernel/umkoinkernel.cpp \
   arith_uint256.cpp \
   blockfilter.cpp \
   chain.cpp \
@@ -862,26 +924,19 @@ umkoin_chainstate_SOURCES = \
   validationinterface.cpp \
   versionbits.cpp \
   warnings.cpp
-umkoin_chainstate_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
-umkoin_chainstate_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-umkoin_chainstate_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
-umkoin_chainstate_LDADD = \
-  $(LIBUMKOIN_CRYPTO) \
-  $(LIBUNIVALUE) \
-  $(LIBSECP256K1) \
-  $(LIBLEVELDB) \
-  $(LIBLEVELDB_SSE42) \
-  $(LIBMEMENV)
 
 # Required for obj/build.h to be generated first.
 # More details: https://www.gnu.org/software/automake/manual/html_node/Built-Sources-Example.html
-umkoin_chainstate-clientversion.$(OBJEXT): obj/build.h
+libumkoinkernel_la-clientversion.l$(OBJEXT): obj/build.h
+endif # BUILD_UMKOIN_KERNEL_LIB
 #
 
 # umkoinconsensus library #
 if BUILD_UMKOIN_LIBS
+lib_LTLIBRARIES += $(LIBUMKOINCONSENSUS)
+
 include_HEADERS = script/umkoinconsensus.h
-libumkoinconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libumkoin_crypto_base_a_SOURCES) $(libumkoin_consensus_a_SOURCES)
+libumkoinconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libumkoin_crypto_base_la_SOURCES) $(libumkoin_consensus_a_SOURCES)
 
 libumkoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
 libumkoinconsensus_la_LIBADD = $(LIBSECP256K1)
