@@ -380,7 +380,7 @@ public:
             if (m_derive == DeriveType::UNHARDENED) der = parent_extkey.Derive(final_extkey, pos);
             assert(m_derive != DeriveType::HARDENED);
         }
-        assert(der);
+//        assert(der);
 
         final_info_out = final_info_out_tmp;
         key_out = final_extkey.pubkey;
