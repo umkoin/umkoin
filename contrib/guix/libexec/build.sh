@@ -368,6 +368,10 @@ mkdir -p "$DISTSRC"
                 ;;
         esac
 
+        # copy over the example umkoin.conf file. if contrib/devtools/gen-umkoin-conf.sh
+        # has not been run before buildling, this file will be a stub
+        cp "${DISTSRC}/share/examples/umkoin.conf" "${DISTNAME}/"
+
         # Finally, deterministically produce {non-,}debug binary tarballs ready
         # for release
         case "$HOST" in
