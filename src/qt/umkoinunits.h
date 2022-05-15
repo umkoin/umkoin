@@ -8,6 +8,7 @@
 #include <consensus/amount.h>
 
 #include <QAbstractListModel>
+#include <QDataStream>
 #include <QString>
 
 // U+2009 THIN SPACE = UTF-8 E2 80 89
