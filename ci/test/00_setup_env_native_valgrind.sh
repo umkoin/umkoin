@@ -13,4 +13,5 @@ export USE_VALGRIND=1
 export NO_DEPENDS=1
 export TEST_RUNNER_EXTRA="--nosandbox --exclude feature_init,rpc_bind,feature_bind_extra"  # Excluded for now
 export GOAL="install"
-export UMKOIN_CONFIG="--enable-zmq --with-incompatible-bdb --with-gui=no CC=clang CXX=clang++"  # TODO enable GUI
+# Temporarily pin dwarf 4, until valgrind can understand clang's dwarf 5
+export UMKOIN_CONFIG="--enable-zmq --with-incompatible-bdb --with-gui=no CC=clang CXX=clang++ CXXFLAGS='-fdebug-default-version=4'"  # TODO enable GUI

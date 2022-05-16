@@ -47,6 +47,7 @@
 #include <QGuiApplication>
 #include <QJsonObject>
 #include <QKeyEvent>
+#include <QKeySequence>
 #include <QLatin1String>
 #include <QLineEdit>
 #include <QList>
@@ -59,6 +60,7 @@
 #include <QSettings>
 #include <QShortcut>
 #include <QSize>
+#include <QStandardPaths>
 #include <QString>
 #include <QTextDocument> // for Qt::mightBeRichText
 #include <QThread>
@@ -78,6 +80,8 @@
 
 void ForceActivation();
 #endif
+
+using namespace std::chrono_literals;
 
 namespace GUIUtil {
 
@@ -174,8 +178,7 @@ bool parseUmkoinURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!UmkoinUnits::parse(UmkoinUnits::UMK, i->second, &rv.amount))
-                {
+                if (!UmkoinUnits::parse(UmkoinUnit::UMK, i->second, &rv.amount)) {
                     return false;
                 }
             }
@@ -207,7 +210,7 @@ QString formatUmkoinURI(const SendCoinsRecipient &info)
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(UmkoinUnits::format(UmkoinUnits::UMK, info.amount, false, UmkoinUnits::SeparatorStyle::NEVER));
+        ret += QString("?amount=%1").arg(UmkoinUnits::format(UmkoinUnit::UMK, info.amount, false, UmkoinUnits::SeparatorStyle::NEVER));
         paramCount++;
     }
 
@@ -414,7 +417,7 @@ void bringToFront(QWidget* w)
 
 void handleCloseWindowShortcut(QWidget* w)
 {
-    QObject::connect(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), w), &QShortcut::activated, w, &QWidget::close);
+    QObject::connect(new QShortcut(QKeySequence(QObject::tr("Ctrl+W")), w), &QShortcut::activated, w, &QWidget::close);
 }
 
 void openDebugLogfile()
@@ -505,7 +508,7 @@ fs::path static StartupShortcutPath()
         return GetSpecialFolderPath(CSIDL_STARTUP) / "Umkoin.lnk";
     if (chain == CBaseChainParams::TESTNET) // Remove this special case when CBaseChainParams::TESTNET = "testnet4"
         return GetSpecialFolderPath(CSIDL_STARTUP) / "Umkoin (testnet).lnk";
-    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("Umkoin (%s).lnk", chain);
+    return GetSpecialFolderPath(CSIDL_STARTUP) / fs::u8path(strprintf("Umkoin (%s).lnk", chain));
 }
 
 bool GetStartOnSystemStartup()
@@ -586,7 +589,7 @@ fs::path static GetAutostartFilePath()
     std::string chain = gArgs.GetChainName();
     if (chain == CBaseChainParams::MAIN)
         return GetAutostartDir() / "umkoin.desktop";
-    return GetAutostartDir() / strprintf("umkoin-%s.desktop", chain);
+    return GetAutostartDir() / fs::u8path(strprintf("umkoin-%s.desktop", chain));
 }
 
 bool GetStartOnSystemStartup()
@@ -713,23 +716,28 @@ QString ConnectionTypeToQString(ConnectionType conn_type, bool prepend_direction
 
 QString formatDurationStr(std::chrono::seconds dur)
 {
-    const auto secs = count_seconds(dur);
-    QStringList strList;
-    int days = secs / 86400;
-    int hours = (secs % 86400) / 3600;
-    int mins = (secs % 3600) / 60;
-    int seconds = secs % 60;
+    using days = std::chrono::duration<int, std::ratio<86400>>; // can remove this line after C++20
+    const auto d{std::chrono::duration_cast<days>(dur)};
+    const auto h{std::chrono::duration_cast<std::chrono::hours>(dur - d)};
+    const auto m{std::chrono::duration_cast<std::chrono::minutes>(dur - d - h)};
+    const auto s{std::chrono::duration_cast<std::chrono::seconds>(dur - d - h - m)};
+    QStringList str_list;
+    if (auto d2{d.count()}) str_list.append(QObject::tr("%1 d").arg(d2));
+    if (auto h2{h.count()}) str_list.append(QObject::tr("%1 h").arg(h2));
+    if (auto m2{m.count()}) str_list.append(QObject::tr("%1 m").arg(m2));
+    const auto s2{s.count()};
+    if (s2 || str_list.empty()) str_list.append(QObject::tr("%1 s").arg(s2));
+    return str_list.join(" ");
+}
 
-    if (days)
-        strList.append(QObject::tr("%1 d").arg(days));
-    if (hours)
-        strList.append(QObject::tr("%1 h").arg(hours));
-    if (mins)
-        strList.append(QObject::tr("%1 m").arg(mins));
-    if (seconds || (!days && !hours && !mins))
-        strList.append(QObject::tr("%1 s").arg(seconds));
-
-    return strList.join(" ");
+QString FormatPeerAge(std::chrono::seconds time_connected)
+{
+    const auto time_now{GetTime<std::chrono::seconds>()};
+    const auto age{time_now - time_connected};
+    if (age >= 24h) return QObject::tr("%1 d").arg(age / 24h);
+    if (age >= 1h) return QObject::tr("%1 h").arg(age / 1h);
+    if (age >= 1min) return QObject::tr("%1 m").arg(age / 1min);
+    return QObject::tr("%1 s").arg(age / 1s);
 }
 
 QString formatServicesStr(quint64 mask)
@@ -888,11 +896,7 @@ void PolishProgressDialog(QProgressDialog* dialog)
 
 int TextWidth(const QFontMetrics& fm, const QString& text)
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
     return fm.horizontalAdvance(text);
-#else
-    return fm.width(text);
-#endif
 }
 
 void LogQtInfo()

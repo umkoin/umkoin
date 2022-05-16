@@ -14,14 +14,13 @@
 #include <key_io.h>
 #include <node/context.h>
 #include <outputtype.h>
-#include <rpc/blockchain.h>
 #include <rpc/server.h>
 #include <rpc/server_util.h>
 #include <rpc/util.h>
 #include <scheduler.h>
 #include <script/descriptor.h>
+#include <univalue.h>
 #include <util/check.h>
-#include <util/message.h> // For MessageSign(), MessageVerify()
 #include <util/strencodings.h>
 #include <util/syscall_sandbox.h>
 #include <util/system.h>
@@ -32,8 +31,6 @@
 #ifdef HAVE_MALLOC_INFO
 #include <malloc.h>
 #endif
-
-#include <univalue.h>
 
 using node::NodeContext;
 
@@ -116,7 +113,7 @@ static RPCHelpMan createmultisig()
                         {RPCResult::Type::STR, "address", "The value of the new multisig address."},
                         {RPCResult::Type::STR_HEX, "redeemScript", "The string value of the hex-encoded redemption script."},
                         {RPCResult::Type::STR, "descriptor", "The descriptor for this multisig"},
-                        {RPCResult::Type::ARR, "warnings", /* optional */ true, "Any warnings resulting from the creation of this multisig",
+                        {RPCResult::Type::ARR, "warnings", /*optional=*/true, "Any warnings resulting from the creation of this multisig",
                         {
                             {RPCResult::Type::STR, "", ""},
                         }},
@@ -311,95 +308,6 @@ static RPCHelpMan deriveaddresses()
     };
 }
 
-static RPCHelpMan verifymessage()
-{
-    return RPCHelpMan{"verifymessage",
-                "Verify a signed message.",
-                {
-                    {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The umkoin address to use for the signature."},
-                    {"signature", RPCArg::Type::STR, RPCArg::Optional::NO, "The signature provided by the signer in base 64 encoding (see signmessage)."},
-                    {"message", RPCArg::Type::STR, RPCArg::Optional::NO, "The message that was signed."},
-                },
-                RPCResult{
-                    RPCResult::Type::BOOL, "", "If the signature is verified or not."
-                },
-                RPCExamples{
-            "\nUnlock the wallet for 30 seconds\n"
-            + HelpExampleCli("walletpassphrase", "\"mypassphrase\" 30") +
-            "\nCreate the signature\n"
-            + HelpExampleCli("signmessage", "\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\" \"my message\"") +
-            "\nVerify the signature\n"
-            + HelpExampleCli("verifymessage", "\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\" \"signature\" \"my message\"") +
-            "\nAs a JSON-RPC call\n"
-            + HelpExampleRpc("verifymessage", "\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\", \"signature\", \"my message\"")
-                },
-        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
-{
-    LOCK(cs_main);
-
-    std::string strAddress  = request.params[0].get_str();
-    std::string strSign     = request.params[1].get_str();
-    std::string strMessage  = request.params[2].get_str();
-
-    switch (MessageVerify(strAddress, strSign, strMessage)) {
-    case MessageVerificationResult::ERR_INVALID_ADDRESS:
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid address");
-    case MessageVerificationResult::ERR_ADDRESS_NO_KEY:
-        throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to key");
-    case MessageVerificationResult::ERR_MALFORMED_SIGNATURE:
-        throw JSONRPCError(RPC_TYPE_ERROR, "Malformed base64 encoding");
-    case MessageVerificationResult::ERR_PUBKEY_NOT_RECOVERED:
-    case MessageVerificationResult::ERR_NOT_SIGNED:
-        return false;
-    case MessageVerificationResult::OK:
-        return true;
-    }
-
-    return false;
-},
-    };
-}
-
-static RPCHelpMan signmessagewithprivkey()
-{
-    return RPCHelpMan{"signmessagewithprivkey",
-                "\nSign a message with the private key of an address\n",
-                {
-                    {"privkey", RPCArg::Type::STR, RPCArg::Optional::NO, "The private key to sign the message with."},
-                    {"message", RPCArg::Type::STR, RPCArg::Optional::NO, "The message to create a signature of."},
-                },
-                RPCResult{
-                    RPCResult::Type::STR, "signature", "The signature of the message encoded in base 64"
-                },
-                RPCExamples{
-            "\nCreate the signature\n"
-            + HelpExampleCli("signmessagewithprivkey", "\"privkey\" \"my message\"") +
-            "\nVerify the signature\n"
-            + HelpExampleCli("verifymessage", "\"1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XX\" \"signature\" \"my message\"") +
-            "\nAs a JSON-RPC call\n"
-            + HelpExampleRpc("signmessagewithprivkey", "\"privkey\", \"my message\"")
-                },
-        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
-{
-    std::string strPrivkey = request.params[0].get_str();
-    std::string strMessage = request.params[1].get_str();
-
-    CKey key = DecodeSecret(strPrivkey);
-    if (!key.IsValid()) {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid private key");
-    }
-
-    std::string signature;
-
-    if (!MessageSign(key, strMessage, signature)) {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Sign failed");
-    }
-
-    return signature;
-},
-    };
-}
-
 static RPCHelpMan setmocktime()
 {
     return RPCHelpMan{"setmocktime",
@@ -426,7 +334,7 @@ static RPCHelpMan setmocktime()
     RPCTypeCheck(request.params, {UniValue::VNUM});
     const int64_t time{request.params[0].get_int64()};
     if (time < 0) {
-        throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Mocktime can not be negative: %s.", time));
+        throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Mocktime cannot be negative: %s.", time));
     }
     SetMockTime(time);
     auto node_context = util::AnyPtr<NodeContext>(request.context);
@@ -484,9 +392,8 @@ static RPCHelpMan mockscheduler()
         throw std::runtime_error("delta_time must be between 1 and 3600 seconds (1 hr)");
     }
 
-    auto node_context = util::AnyPtr<NodeContext>(request.context);
+    auto node_context = CHECK_NONFATAL(util::AnyPtr<NodeContext>(request.context));
     // protect against null pointer dereference
-    CHECK_NONFATAL(node_context);
     CHECK_NONFATAL(node_context->scheduler);
     node_context->scheduler->MockForward(std::chrono::seconds(delta_seconds));
 
@@ -646,17 +553,8 @@ static RPCHelpMan logging()
     uint32_t changed_log_categories = original_log_categories ^ updated_log_categories;
 
     // Update libevent logging if BCLog::LIBEVENT has changed.
-    // If the library version doesn't allow it, UpdateHTTPServerLogging() returns false,
-    // in which case we should clear the BCLog::LIBEVENT flag.
-    // Throw an error if the user has explicitly asked to change only the libevent
-    // flag and it failed.
     if (changed_log_categories & BCLog::LIBEVENT) {
-        if (!UpdateHTTPServerLogging(LogInstance().WillLogCategory(BCLog::LIBEVENT))) {
-            LogInstance().DisableCategory(BCLog::LIBEVENT);
-            if (changed_log_categories == BCLog::LIBEVENT) {
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "libevent logging cannot be updated when using libevent before v2.1.1.");
-            }
-        }
+        UpdateHTTPServerLogging(LogInstance().WillLogCategory(BCLog::LIBEVENT));
     }
 
     UniValue result(UniValue::VOBJ);
@@ -800,33 +698,25 @@ static RPCHelpMan getindexinfo()
     };
 }
 
-void RegisterMiscRPCCommands(CRPCTable &t)
+void RegisterMiscRPCCommands(CRPCTable& t)
 {
-// clang-format off
-static const CRPCCommand commands[] =
-{ //  category              actor (function)
-  //  --------------------- ------------------------
-    { "control",            &getmemoryinfo,           },
-    { "control",            &logging,                 },
-    { "util",               &validateaddress,         },
-    { "util",               &createmultisig,          },
-    { "util",               &deriveaddresses,         },
-    { "util",               &getdescriptorinfo,       },
-    { "util",               &verifymessage,           },
-    { "util",               &signmessagewithprivkey,  },
-    { "util",               &getindexinfo,            },
-
-    /* Not shown in help */
-    { "hidden",             &setmocktime,             },
-    { "hidden",             &mockscheduler,           },
-    { "hidden",             &echo,                    },
-    { "hidden",             &echojson,                },
-    { "hidden",             &echoipc,                 },
+    static const CRPCCommand commands[]{
+        {"control", &getmemoryinfo},
+        {"control", &logging},
+        {"util", &validateaddress},
+        {"util", &createmultisig},
+        {"util", &deriveaddresses},
+        {"util", &getdescriptorinfo},
+        {"util", &getindexinfo},
+        {"hidden", &setmocktime},
+        {"hidden", &mockscheduler},
+        {"hidden", &echo},
+        {"hidden", &echojson},
+        {"hidden", &echoipc},
 #if defined(USE_SYSCALL_SANDBOX)
-    { "hidden",             &invokedisallowedsyscall, },
+        {"hidden", &invokedisallowedsyscall},
 #endif // USE_SYSCALL_SANDBOX
-};
-// clang-format on
+    };
     for (const auto& c : commands) {
         t.appendCommand(c.name, &c);
     }

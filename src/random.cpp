@@ -13,9 +13,10 @@
 #include <compat.h> // for Windows API
 #include <wincrypt.h>
 #endif
-#include <logging.h>  // for LogPrintf()
+#include <logging.h>
 #include <randomenv.h>
 #include <support/allocators/secure.h>
+#include <span.h>
 #include <sync.h>     // for Mutex
 #include <util/time.h> // for GetTimeMicros()
 
@@ -578,27 +579,22 @@ static void ProcRand(unsigned char* out, int num, RNGLevel level) noexcept
     }
 }
 
-void GetRandBytes(unsigned char* buf, int num) noexcept { ProcRand(buf, num, RNGLevel::FAST); }
-void GetStrongRandBytes(unsigned char* buf, int num) noexcept { ProcRand(buf, num, RNGLevel::SLOW); }
+void GetRandBytes(Span<unsigned char> bytes) noexcept { ProcRand(bytes.data(), bytes.size(), RNGLevel::FAST); }
+void GetStrongRandBytes(Span<unsigned char> bytes) noexcept { ProcRand(bytes.data(), bytes.size(), RNGLevel::SLOW); }
 void RandAddPeriodic() noexcept { ProcRand(nullptr, 0, RNGLevel::PERIODIC); }
 void RandAddEvent(const uint32_t event_info) noexcept { GetRNGState().AddEvent(event_info); }
 
 bool g_mock_deterministic_tests{false};
 
-uint64_t GetRand(uint64_t nMax) noexcept
+uint64_t GetRandInternal(uint64_t nMax) noexcept
 {
     return FastRandomContext(g_mock_deterministic_tests).randrange(nMax);
-}
-
-int GetRandInt(int nMax) noexcept
-{
-    return GetRand(nMax);
 }
 
 uint256 GetRandHash() noexcept
 {
     uint256 hash;
-    GetRandBytes((unsigned char*)&hash, sizeof(hash));
+    GetRandBytes(hash);
     return hash;
 }
 

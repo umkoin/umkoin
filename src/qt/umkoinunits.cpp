@@ -18,94 +18,75 @@ UmkoinUnits::UmkoinUnits(QObject *parent):
 {
 }
 
-QList<UmkoinUnits::Unit> UmkoinUnits::availableUnits()
+QList<UmkoinUnit> UmkoinUnits::availableUnits()
 {
-    QList<UmkoinUnits::Unit> unitlist;
-    unitlist.append(UMK);
-    unitlist.append(mUMK);
-    unitlist.append(uUMK);
-    unitlist.append(SAT);
+    QList<UmkoinUnit> unitlist;
+    unitlist.append(Unit::UMK);
+    unitlist.append(Unit::mUMK);
+    unitlist.append(Unit::uUMK);
+    unitlist.append(Unit::SAT);
     return unitlist;
 }
 
-bool UmkoinUnits::valid(int unit)
+QString UmkoinUnits::longName(Unit unit)
 {
-    switch(unit)
-    {
-    case UMK:
-    case mUMK:
-    case uUMK:
-    case SAT:
-        return true;
-    default:
-        return false;
-    }
+    switch (unit) {
+    case Unit::UMK: return QString("UMK");
+    case Unit::mUMK: return QString("mUMK");
+    case Unit::uUMK: return QString::fromUtf8("µUMK (bits)");
+    case Unit::SAT: return QString("Satoshi (sat)");
+    } // no default case, so the compiler can warn about missing cases
+    assert(false);
 }
 
-QString UmkoinUnits::longName(int unit)
+QString UmkoinUnits::shortName(Unit unit)
 {
-    switch(unit)
-    {
-    case UMK: return QString("UMK");
-    case mUMK: return QString("mUMK");
-    case uUMK: return QString::fromUtf8("µUMK (bits)");
-    case SAT: return QString("Satoshi (sat)");
-    default: return QString("???");
-    }
+    switch (unit) {
+    case Unit::UMK: return longName(unit);
+    case Unit::mUMK: return longName(unit);
+    case Unit::uUMK: return QString("bits");
+    case Unit::SAT: return QString("sat");
+    } // no default case, so the compiler can warn about missing cases
+    assert(false);
 }
 
-QString UmkoinUnits::shortName(int unit)
+QString UmkoinUnits::description(Unit unit)
 {
-    switch(unit)
-    {
-    case uUMK: return QString::fromUtf8("bits");
-    case SAT: return QString("sat");
-    default: return longName(unit);
-    }
+    switch (unit) {
+    case Unit::UMK: return QString("Umkoins");
+    case Unit::mUMK: return QString("Milli-Umkoins (1 / 1" THIN_SP_UTF8 "000)");
+    case Unit::uUMK: return QString("Micro-Umkoins (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    case Unit::SAT: return QString("Satoshi (sat) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+    } // no default case, so the compiler can warn about missing cases
+    assert(false);
 }
 
-QString UmkoinUnits::description(int unit)
+qint64 UmkoinUnits::factor(Unit unit)
 {
-    switch(unit)
-    {
-    case UMK: return QString("Umkoins");
-    case mUMK: return QString("Milli-Umkoins (1 / 1" THIN_SP_UTF8 "000)");
-    case uUMK: return QString("Micro-Umkoins (bits) (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-    case SAT: return QString("Satoshi (sat) (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-    default: return QString("???");
-    }
+    switch (unit) {
+    case Unit::UMK: return 100'000'000;
+    case Unit::mUMK: return 100'000;
+    case Unit::uUMK: return 100;
+    case Unit::SAT: return 1;
+    } // no default case, so the compiler can warn about missing cases
+    assert(false);
 }
 
-qint64 UmkoinUnits::factor(int unit)
+int UmkoinUnits::decimals(Unit unit)
 {
-    switch(unit)
-    {
-    case UMK: return 100000000;
-    case mUMK: return 100000;
-    case uUMK: return 100;
-    case SAT: return 1;
-    default: return 100000000;
-    }
+    switch (unit) {
+    case Unit::UMK: return 8;
+    case Unit::mUMK: return 5;
+    case Unit::uUMK: return 2;
+    case Unit::SAT: return 0;
+    } // no default case, so the compiler can warn about missing cases
+    assert(false);
 }
 
-int UmkoinUnits::decimals(int unit)
-{
-    switch(unit)
-    {
-    case UMK: return 8;
-    case mUMK: return 5;
-    case uUMK: return 2;
-    case SAT: return 0;
-    default: return 0;
-    }
-}
-
-QString UmkoinUnits::format(int unit, const CAmount& nIn, bool fPlus, SeparatorStyle separators, bool justify)
+QString UmkoinUnits::format(Unit unit, const CAmount& nIn, bool fPlus, SeparatorStyle separators, bool justify)
 {
     // Note: not using straight sprintf here because we do NOT want
     // localized number formatting.
-    if(!valid(unit))
-        return QString(); // Refuse to format invalid unit
     qint64 n = (qint64)nIn;
     qint64 coin = factor(unit);
     int num_decimals = decimals(unit);
@@ -147,19 +128,19 @@ QString UmkoinUnits::format(int unit, const CAmount& nIn, bool fPlus, SeparatorS
 // Please take care to use formatHtmlWithUnit instead, when
 // appropriate.
 
-QString UmkoinUnits::formatWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
+QString UmkoinUnits::formatWithUnit(Unit unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
 {
     return format(unit, amount, plussign, separators) + QString(" ") + shortName(unit);
 }
 
-QString UmkoinUnits::formatHtmlWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
+QString UmkoinUnits::formatHtmlWithUnit(Unit unit, const CAmount& amount, bool plussign, SeparatorStyle separators)
 {
     QString str(formatWithUnit(unit, amount, plussign, separators));
     str.replace(QChar(THIN_SP_CP), QString(THIN_SP_HTML));
     return QString("<span style='white-space: nowrap;'>%1</span>").arg(str);
 }
 
-QString UmkoinUnits::formatWithPrivacy(int unit, const CAmount& amount, SeparatorStyle separators, bool privacy)
+QString UmkoinUnits::formatWithPrivacy(Unit unit, const CAmount& amount, SeparatorStyle separators, bool privacy)
 {
     assert(amount >= 0);
     QString value;
@@ -171,10 +152,11 @@ QString UmkoinUnits::formatWithPrivacy(int unit, const CAmount& amount, Separato
     return value + QString(" ") + shortName(unit);
 }
 
-bool UmkoinUnits::parse(int unit, const QString &value, CAmount *val_out)
+bool UmkoinUnits::parse(Unit unit, const QString& value, CAmount* val_out)
 {
-    if(!valid(unit) || value.isEmpty())
+    if (value.isEmpty()) {
         return false; // Refuse to parse invalid unit or empty string
+    }
     int num_decimals = decimals(unit);
 
     // Ignore spaces and thin spaces when parsing
@@ -210,14 +192,9 @@ bool UmkoinUnits::parse(int unit, const QString &value, CAmount *val_out)
     return ok;
 }
 
-QString UmkoinUnits::getAmountColumnTitle(int unit)
+QString UmkoinUnits::getAmountColumnTitle(Unit unit)
 {
-    QString amountTitle = QObject::tr("Amount");
-    if (UmkoinUnits::valid(unit))
-    {
-        amountTitle += " ("+UmkoinUnits::shortName(unit) + ")";
-    }
-    return amountTitle;
+    return QObject::tr("Amount") + " (" + shortName(unit) + ")";
 }
 
 int UmkoinUnits::rowCount(const QModelIndex &parent) const
@@ -240,7 +217,7 @@ QVariant UmkoinUnits::data(const QModelIndex &index, int role) const
         case Qt::ToolTipRole:
             return QVariant(description(unit));
         case UnitRole:
-            return QVariant(static_cast<int>(unit));
+            return QVariant::fromValue(unit);
         }
     }
     return QVariant();
@@ -249,4 +226,41 @@ QVariant UmkoinUnits::data(const QModelIndex &index, int role) const
 CAmount UmkoinUnits::maxMoney()
 {
     return MAX_MONEY;
+}
+
+namespace {
+qint8 ToQint8(UmkoinUnit unit)
+{
+    switch (unit) {
+    case UmkoinUnit::UMK: return 0;
+    case UmkoinUnit::mUMK: return 1;
+    case UmkoinUnit::uUMK: return 2;
+    case UmkoinUnit::SAT: return 3;
+    } // no default case, so the compiler can warn about missing cases
+    assert(false);
+}
+
+UmkoinUnit FromQint8(qint8 num)
+{
+    switch (num) {
+    case 0: return UmkoinUnit::UMK;
+    case 1: return UmkoinUnit::mUMK;
+    case 2: return UmkoinUnit::uUMK;
+    case 3: return UmkoinUnit::SAT;
+    }
+    assert(false);
+}
+} // namespace
+
+QDataStream& operator<<(QDataStream& out, const UmkoinUnit& unit)
+{
+    return out << ToQint8(unit);
+}
+
+QDataStream& operator>>(QDataStream& in, UmkoinUnit& unit)
+{
+    qint8 input;
+    in >> input;
+    unit = FromQint8(input);
+    return in;
 }

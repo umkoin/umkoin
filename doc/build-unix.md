@@ -26,30 +26,7 @@ make install # optional
 
 This will build umkoin-qt as well, if the dependencies are met.
 
-Dependencies
----------------------
-
-These dependencies are required:
-
- Library     | Purpose          | Description
- ------------|------------------|----------------------
- libboost    | Utility          | Library for threading, data structures, etc
- libevent    | Networking       | OS independent asynchronous networking
-
-Optional dependencies:
-
- Library     | Purpose          | Description
- ------------|------------------|----------------------
- miniupnpc   | UPnP Support     | Firewall-jumping support
- libnatpmp   | NAT-PMP Support  | Firewall-jumping support
- libdb4.8    | Berkeley DB      | Wallet storage (only needed when legacy wallet enabled)
- qt          | GUI              | GUI toolkit (only needed when GUI enabled)
- libqrencode | QR codes in GUI  | QR code generation (only needed when GUI enabled)
- libzmq3     | ZMQ notification | ZMQ notifications (requires ZMQ version >= 4.0.0)
- sqlite3     | SQLite DB        | Wallet storage (only needed when descriptor wallet enabled)
- systemtap   | Tracing (USDT)   | Statically defined tracepoints
-
-For the versions used, see [dependencies.md](dependencies.md)
+See [dependencies.md](dependencies.md) for a complete overview.
 
 Memory Requirements
 --------------------
@@ -232,7 +209,7 @@ from the root of the repository.
 
 Otherwise, you can build Umkoin Core from self-compiled [depends](/depends/README.md).
 
-**Note**: You only need Berkeley DB if the wallet is enabled (see [*Disable-wallet mode*](#disable-wallet-mode)).
+**Note**: You only need Berkeley DB if the legacy wallet is enabled (see [*Disable-wallet mode*](#disable-wallet-mode)).
 
 Security
 --------
@@ -282,12 +259,12 @@ Hardening enables the following features:
 
 Disable-wallet mode
 --------------------
-When the intention is to run only a P2P node without a wallet, Umkoin Core may be compiled in
-disable-wallet mode with:
+When the intention is to only run a P2P node, without a wallet, Umkoin Core can
+be compiled in disable-wallet mode with:
 
     ./configure --disable-wallet
 
-In this case there is no dependency on Berkeley DB 4.8 and SQLite.
+In this case there is no dependency on SQLite or Berkeley DB.
 
 Mining is also possible in disable-wallet mode using the `getblocktemplate` RPC call.
 
@@ -312,7 +289,7 @@ This example lists the steps necessary to setup and build a command line only, n
 Note:
 Enabling wallet support requires either compiling against a Berkeley DB newer than 4.8 (package `db`) using `--with-incompatible-bdb`,
 or building and depending on a local version of Berkeley DB 4.8. The readily available Arch Linux packages are currently built using
-`--with-incompatible-bdb` according to the [PKGBUILD].
+`--with-incompatible-bdb` according to the [PKGBUILD](https://github.com/archlinux/svntogit-community/blob/packages/umkoin/trunk/PKGBUILD).
 As mentioned above, when maintaining portability of the wallet between the standard Umkoin Core distributions and independently built
 node software is desired, Berkeley DB 4.8 must be used.
 

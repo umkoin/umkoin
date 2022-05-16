@@ -32,8 +32,6 @@ std::optional<ChainstateLoadingError> LoadChainstate(bool fReset,
     chainman.m_total_coinstip_cache = nCoinCacheUsage;
     chainman.m_total_coinsdb_cache = nCoinDBCache;
 
-    UnloadBlockIndex(mempool, chainman);
-
     auto& pblocktree{chainman.m_blockman.m_block_tree_db};
     // new CBlockTreeDB tries to delete the existing file, which
     // fails if it's still open from the previous loop. Close it first:
@@ -49,7 +47,7 @@ std::optional<ChainstateLoadingError> LoadChainstate(bool fReset,
 
     if (shutdown_requested && shutdown_requested()) return ChainstateLoadingError::SHUTDOWN_PROBED;
 
-    // LoadBlockIndex will load fHavePruned if we've ever removed a
+    // LoadBlockIndex will load m_have_pruned if we've ever removed a
     // block file from disk.
     // Note that it also sets fReindex based on the disk flag!
     // From here on out fReindex and fReset mean something different!
@@ -65,7 +63,7 @@ std::optional<ChainstateLoadingError> LoadChainstate(bool fReset,
 
     // Check for changed -prune state.  What we are concerned about is a user who has pruned blocks
     // in the past, but is now trying to run unpruned.
-    if (fHavePruned && !fPruneMode) {
+    if (chainman.m_blockman.m_have_pruned && !fPruneMode) {
         return ChainstateLoadingError::ERROR_PRUNED_NEEDS_REINDEX;
     }
 
@@ -82,17 +80,17 @@ std::optional<ChainstateLoadingError> LoadChainstate(bool fReset,
 
     for (CChainState* chainstate : chainman.GetAll()) {
         chainstate->InitCoinsDB(
-            /* cache_size_bytes */ nCoinDBCache,
-            /* in_memory */ coins_db_in_memory,
-            /* should_wipe */ fReset || fReindexChainState);
+            /*cache_size_bytes=*/nCoinDBCache,
+            /*in_memory=*/coins_db_in_memory,
+            /*should_wipe=*/fReset || fReindexChainState);
 
         if (coins_error_cb) {
             chainstate->CoinsErrorCatcher().AddReadErrCallback(coins_error_cb);
         }
 
-        // If necessary, upgrade from older database format.
+        // Refuse to load unsupported database format.
         // This is a no-op if we cleared the coinsviewdb with -reindex or -reindex-chainstate
-        if (!chainstate->CoinsDB().Upgrade()) {
+        if (chainstate->CoinsDB().NeedsUpgrade()) {
             return ChainstateLoadingError::ERROR_CHAINSTATE_UPGRADE_FAILED;
         }
 

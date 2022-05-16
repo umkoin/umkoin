@@ -24,10 +24,6 @@
 #include <set>
 #include <vector>
 
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/replace.hpp>
-#include <boost/algorithm/string/split.hpp>
-
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
 #include <event2/event.h>
@@ -53,6 +49,7 @@ static const float RECONNECT_TIMEOUT_EXP = 1.5;
  * this is belt-and-suspenders sanity limit to prevent memory exhaustion.
  */
 static const int MAX_LINE_LENGTH = 100000;
+static const uint16_t DEFAULT_TOR_SOCKS_PORT = 9050;
 
 /****** Low-level TorControlConnection ********/
 
@@ -307,7 +304,7 @@ std::map<std::string,std::string> ParseTorReplyMapping(const std::string &s)
 
 TorController::TorController(struct event_base* _base, const std::string& tor_control_center, const CService& target):
     base(_base),
-    m_tor_control_center(tor_control_center), conn(base), reconnect(true), reconnect_ev(0),
+    m_tor_control_center(tor_control_center), conn(base), reconnect(true), reconnect_ev(nullptr),
     reconnect_timeout(RECONNECT_TIMEOUT_START),
     m_target(target)
 {
@@ -335,6 +332,73 @@ TorController::~TorController()
     }
     if (service.IsValid()) {
         RemoveLocal(service);
+    }
+}
+
+void TorController::get_socks_cb(TorControlConnection& _conn, const TorControlReply& reply)
+{
+    // NOTE: We can only get here if -onion is unset
+    std::string socks_location;
+    if (reply.code == 250) {
+        for (const auto& line : reply.lines) {
+            if (0 == line.compare(0, 20, "net/listeners/socks=")) {
+                const std::string port_list_str = line.substr(20);
+                std::vector<std::string> port_list = SplitString(port_list_str, ' ');
+
+                for (auto& portstr : port_list) {
+                    if (portstr.empty()) continue;
+                    if ((portstr[0] == '"' || portstr[0] == '\'') && portstr.size() >= 2 && (*portstr.rbegin() == portstr[0])) {
+                        portstr = portstr.substr(1, portstr.size() - 2);
+                        if (portstr.empty()) continue;
+                    }
+                    socks_location = portstr;
+                    if (0 == portstr.compare(0, 10, "127.0.0.1:")) {
+                        // Prefer localhost - ignore other ports
+                        break;
+                    }
+                }
+            }
+        }
+        if (!socks_location.empty()) {
+            LogPrint(BCLog::TOR, "tor: Get SOCKS port command yielded %s\n", socks_location);
+        } else {
+            LogPrintf("tor: Get SOCKS port command returned nothing\n");
+        }
+    } else if (reply.code == 510) {  // 510 Unrecognized command
+        LogPrintf("tor: Get SOCKS port command failed with unrecognized command (You probably should upgrade Tor)\n");
+    } else {
+        LogPrintf("tor: Get SOCKS port command failed; error code %d\n", reply.code);
+    }
+
+    CService resolved;
+    Assume(!resolved.IsValid());
+    if (!socks_location.empty()) {
+        resolved = LookupNumeric(socks_location, DEFAULT_TOR_SOCKS_PORT);
+    }
+    if (!resolved.IsValid()) {
+        // Fallback to old behaviour
+        resolved = LookupNumeric("127.0.0.1", DEFAULT_TOR_SOCKS_PORT);
+    }
+
+    Assume(resolved.IsValid());
+    LogPrint(BCLog::TOR, "tor: Configuring onion proxy for %s\n", resolved.ToStringIPPort());
+    Proxy addrOnion = Proxy(resolved, true);
+    SetProxy(NET_ONION, addrOnion);
+
+    const auto onlynets = gArgs.GetArgs("-onlynet");
+
+    const bool onion_allowed_by_onlynet{
+        !gArgs.IsArgSet("-onlynet") ||
+        std::any_of(onlynets.begin(), onlynets.end(), [](const auto& n) {
+            return ParseNetwork(n) == NET_ONION;
+        })};
+
+    if (onion_allowed_by_onlynet) {
+        // If NET_ONION is reachable, then the below is a noop.
+        //
+        // If NET_ONION is not reachable, then none of -proxy or -onion was given.
+        // Since we are here, then -torcontrol and -torpassword were given.
+        SetReachable(NET_ONION, true);
     }
 }
 
@@ -381,25 +445,7 @@ void TorController::auth_cb(TorControlConnection& _conn, const TorControlReply& 
         // Now that we know Tor is running setup the proxy for onion addresses
         // if -onion isn't set to something else.
         if (gArgs.GetArg("-onion", "") == "") {
-            CService resolved(LookupNumeric("127.0.0.1", 9050));
-            Proxy addrOnion = Proxy(resolved, true);
-            SetProxy(NET_ONION, addrOnion);
-
-            const auto onlynets = gArgs.GetArgs("-onlynet");
-
-            const bool onion_allowed_by_onlynet{
-                !gArgs.IsArgSet("-onlynet") ||
-                std::any_of(onlynets.begin(), onlynets.end(), [](const auto& n) {
-                    return ParseNetwork(n) == NET_ONION;
-                })};
-
-            if (onion_allowed_by_onlynet) {
-                // If NET_ONION is reachable, then the below is a noop.
-                //
-                // If NET_ONION is not reachable, then none of -proxy or -onion was given.
-                // Since we are here, then -torcontrol and -torpassword were given.
-                SetReachable(NET_ONION, true);
-            }
+            _conn.Command("GETINFO net/listeners/socks", std::bind(&TorController::get_socks_cb, this, std::placeholders::_1, std::placeholders::_2));
         }
 
         // Finally - now create the service
@@ -492,8 +538,10 @@ void TorController::protocolinfo_cb(TorControlConnection& _conn, const TorContro
             if (l.first == "AUTH") {
                 std::map<std::string,std::string> m = ParseTorReplyMapping(l.second);
                 std::map<std::string,std::string>::iterator i;
-                if ((i = m.find("METHODS")) != m.end())
-                    boost::split(methods, i->second, boost::is_any_of(","));
+                if ((i = m.find("METHODS")) != m.end()) {
+                    std::vector<std::string> m_vec = SplitString(i->second, ',');
+                    methods = std::set<std::string>(m_vec.begin(), m_vec.end());
+                }
                 if ((i = m.find("COOKIEFILE")) != m.end())
                     cookiefile = i->second;
             } else if (l.first == "VERSION") {
@@ -516,7 +564,7 @@ void TorController::protocolinfo_cb(TorControlConnection& _conn, const TorContro
         if (!torpassword.empty()) {
             if (methods.count("HASHEDPASSWORD")) {
                 LogPrint(BCLog::TOR, "tor: Using HASHEDPASSWORD authentication\n");
-                boost::replace_all(torpassword, "\"", "\\\"");
+                ReplaceAll(torpassword, "\"", "\\\"");
                 _conn.Command("AUTHENTICATE \"" + torpassword + "\"", std::bind(&TorController::auth_cb, this, std::placeholders::_1, std::placeholders::_2));
             } else {
                 LogPrintf("tor: Password provided with -torpassword, but HASHEDPASSWORD authentication is not available\n");
@@ -532,7 +580,7 @@ void TorController::protocolinfo_cb(TorControlConnection& _conn, const TorContro
                 // _conn.Command("AUTHENTICATE " + HexStr(status_cookie.second), std::bind(&TorController::auth_cb, this, std::placeholders::_1, std::placeholders::_2));
                 cookie = std::vector<uint8_t>(status_cookie.second.begin(), status_cookie.second.end());
                 clientNonce = std::vector<uint8_t>(TOR_NONCE_SIZE, 0);
-                GetRandBytes(clientNonce.data(), TOR_NONCE_SIZE);
+                GetRandBytes(clientNonce);
                 _conn.Command("AUTHCHALLENGE SAFECOOKIE " + HexStr(clientNonce), std::bind(&TorController::authchallenge_cb, this, std::placeholders::_1, std::placeholders::_2));
             } else {
                 if (status_cookie.first) {

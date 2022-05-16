@@ -10,10 +10,9 @@ First, in terms of structure, there is no particular concept of "Umkoin Core
 developers" in the sense of privileged people. Open source often naturally
 revolves around a meritocracy where contributors earn trust from the developer
 community over time. Nevertheless, some hierarchy is necessary for practical
-purposes. As such, there are repository "maintainers" who are responsible for
-merging pull requests, as well as a "lead maintainer" who is responsible for the
-[release cycle](/doc/release-process.md) as well as overall merging, moderation
-and appointment of maintainers.
+purposes. As such, there are repository maintainers who are responsible for
+merging pull requests, the [release cycle](/doc/release-process.md), and
+moderation.
 
 Getting Started
 ---------------
@@ -54,12 +53,12 @@ Contributor Workflow
 --------------------
 
 The codebase is maintained using the "contributor workflow" where everyone
-without exception contributes patch proposals using "pull requests". This
+without exception contributes patch proposals using "pull requests" (PRs). This
 facilitates social contribution, easy testing and peer review.
 
 To contribute a patch, the workflow is as follows:
 
-  1. Fork repository ([only for the first time](https://help.github.com/en/articles/fork-a-repo))
+  1. Fork repository ([only for the first time](https://docs.github.com/en/get-started/quickstart/fork-a-repo))
   1. Create topic branch
   1. Commit patches
 
@@ -130,7 +129,8 @@ the pull request affects. Valid areas as:
   - `test`, `qa` or `ci` for changes to the unit tests, QA tests or CI code
   - `util` or `lib` for changes to the utils or libraries
   - `wallet` for changes to the wallet code
-  - `build` for changes to the GNU Autotools or reproducible builds
+  - `build` for changes to the GNU Autotools or MSVC builds
+  - `guix` for changes to the GUIX reproducible builds
 
 Examples:
 
@@ -298,6 +298,14 @@ test out the patch set and opine on the technical merits of the patch. Project
 maintainers take into account the peer review when determining if there is
 consensus to merge a pull request (remember that discussions may have been
 spread out over GitHub, mailing list and IRC discussions).
+
+Code review is a burdensome but important part of the development process, and
+as such, certain types of pull requests are rejected. In general, if the
+**improvements** do not warrant the **review effort** required, the PR has a
+high chance of being rejected. It is up to the PR author to convince the
+reviewers that the changes warrant the review effort, and if reviewers are
+"Concept NACK'ing" the PR, the author may need to present arguments and/or do
+research backing their suggested changes.
 
 #### Conceptual Review
 

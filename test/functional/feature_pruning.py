@@ -125,6 +125,7 @@ class PruneTest(UmkoinTestFramework):
         self.sync_blocks(self.nodes[0:5])
 
     def test_invalid_command_line_options(self):
+        self.stop_node(0)
         self.nodes[0].assert_start_raises_init_error(
             expected_msg='Error: Prune cannot be configured with a negative value.',
             extra_args=['-prune=-1'],
@@ -138,8 +139,8 @@ class PruneTest(UmkoinTestFramework):
             extra_args=['-prune=550', '-txindex'],
         )
         self.nodes[0].assert_start_raises_init_error(
-            expected_msg='Error: Prune mode is incompatible with -coinstatsindex.',
-            extra_args=['-prune=550', '-coinstatsindex'],
+            expected_msg='Error: Prune mode is incompatible with -reindex-chainstate. Use full -reindex instead.',
+            extra_args=['-prune=550', '-reindex-chainstate'],
         )
 
     def test_height_min(self):

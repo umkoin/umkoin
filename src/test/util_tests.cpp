@@ -17,6 +17,7 @@
 #include <util/message.h> // For MessageSign(), MessageVerify(), MESSAGE_MAGIC
 #include <util/moneystr.h>
 #include <util/overflow.h>
+#include <util/readwritefile.h>
 #include <util/spanparsing.h>
 #include <util/strencodings.h>
 #include <util/string.h>
@@ -24,9 +25,10 @@
 #include <util/vector.h>
 
 #include <array>
-#include <optional>
+#include <fstream>
 #include <limits>
 #include <map>
+#include <optional>
 #include <stdint.h>
 #include <string.h>
 #include <thread>
@@ -76,6 +78,31 @@ BOOST_AUTO_TEST_CASE(util_datadir)
     BOOST_CHECK_EQUAL(dd_norm, args.GetDataDirBase());
 }
 
+namespace {
+class NoCopyOrMove
+{
+public:
+    int i;
+    explicit NoCopyOrMove(int i) : i{i} { }
+
+    NoCopyOrMove() = delete;
+    NoCopyOrMove(const NoCopyOrMove&) = delete;
+    NoCopyOrMove(NoCopyOrMove&&) = delete;
+    NoCopyOrMove& operator=(const NoCopyOrMove&) = delete;
+    NoCopyOrMove& operator=(NoCopyOrMove&&) = delete;
+
+    operator bool() const { return i != 0; }
+
+    int get_ip1() { return i + 1; }
+    bool test()
+    {
+        // Check that Assume can be used within a lambda and still call methods
+        [&]() { Assume(get_ip1()); }();
+        return Assume(get_ip1() != 5);
+    }
+};
+} // namespace
+
 BOOST_AUTO_TEST_CASE(util_check)
 {
     // Check that Assert can forward
@@ -87,6 +114,14 @@ BOOST_AUTO_TEST_CASE(util_check)
     // Check that Assume can be used as unary expression
     const bool result{Assume(two == 2)};
     Assert(result);
+
+    // Check that Assert doesn't require copy/move
+    NoCopyOrMove x{9};
+    Assert(x).i += 3;
+    Assert(x).test();
+
+    // Check nested Asserts
+    BOOST_CHECK_EQUAL(Assert((Assert(x).test() ? 3 : 0)), 3);
 }
 
 BOOST_AUTO_TEST_CASE(util_criticalsection)
@@ -163,6 +198,24 @@ BOOST_AUTO_TEST_CASE(util_HexStr)
         BOOST_CHECK_EQUAL(HexStr(in_s), out_exp);
         BOOST_CHECK_EQUAL(HexStr(in_b), out_exp);
     }
+
+    {
+        auto input = std::string();
+        for (size_t i=0; i<256; ++i) {
+            input.push_back(static_cast<char>(i));
+        }
+
+        auto hex = HexStr(input);
+        BOOST_TEST_REQUIRE(hex.size() == 512);
+        static constexpr auto hexmap = std::string_view("0123456789abcdef");
+        for (size_t i = 0; i < 256; ++i) {
+            auto upper = hexmap.find(hex[i * 2]);
+            auto lower = hexmap.find(hex[i * 2 + 1]);
+            BOOST_TEST_REQUIRE(upper != std::string_view::npos);
+            BOOST_TEST_REQUIRE(lower != std::string_view::npos);
+            BOOST_TEST_REQUIRE(i == upper*16 + lower);
+        }
+    }
 }
 
 BOOST_AUTO_TEST_CASE(span_write_bytes)
@@ -191,17 +244,17 @@ BOOST_AUTO_TEST_CASE(util_Join)
 BOOST_AUTO_TEST_CASE(util_TrimString)
 {
     BOOST_CHECK_EQUAL(TrimString(" foo bar "), "foo bar");
-    BOOST_CHECK_EQUAL(TrimString("\t \n  \n \f\n\r\t\v\tfoo \n \f\n\r\t\v\tbar\t  \n \f\n\r\t\v\t\n "), "foo \n \f\n\r\t\v\tbar");
+    BOOST_CHECK_EQUAL(TrimStringView("\t \n  \n \f\n\r\t\v\tfoo \n \f\n\r\t\v\tbar\t  \n \f\n\r\t\v\t\n "), "foo \n \f\n\r\t\v\tbar");
     BOOST_CHECK_EQUAL(TrimString("\t \n foo \n\tbar\t \n "), "foo \n\tbar");
-    BOOST_CHECK_EQUAL(TrimString("\t \n foo \n\tbar\t \n ", "fobar"), "\t \n foo \n\tbar\t \n ");
+    BOOST_CHECK_EQUAL(TrimStringView("\t \n foo \n\tbar\t \n ", "fobar"), "\t \n foo \n\tbar\t \n ");
     BOOST_CHECK_EQUAL(TrimString("foo bar"), "foo bar");
-    BOOST_CHECK_EQUAL(TrimString("foo bar", "fobar"), " ");
+    BOOST_CHECK_EQUAL(TrimStringView("foo bar", "fobar"), " ");
     BOOST_CHECK_EQUAL(TrimString(std::string("\0 foo \0 ", 8)), std::string("\0 foo \0", 7));
-    BOOST_CHECK_EQUAL(TrimString(std::string(" foo ", 5)), std::string("foo", 3));
+    BOOST_CHECK_EQUAL(TrimStringView(std::string(" foo ", 5)), std::string("foo", 3));
     BOOST_CHECK_EQUAL(TrimString(std::string("\t\t\0\0\n\n", 6)), std::string("\0\0", 2));
-    BOOST_CHECK_EQUAL(TrimString(std::string("\x05\x04\x03\x02\x01\x00", 6)), std::string("\x05\x04\x03\x02\x01\x00", 6));
+    BOOST_CHECK_EQUAL(TrimStringView(std::string("\x05\x04\x03\x02\x01\x00", 6)), std::string("\x05\x04\x03\x02\x01\x00", 6));
     BOOST_CHECK_EQUAL(TrimString(std::string("\x05\x04\x03\x02\x01\x00", 6), std::string("\x05\x04\x03\x02\x01", 5)), std::string("\0", 1));
-    BOOST_CHECK_EQUAL(TrimString(std::string("\x05\x04\x03\x02\x01\x00", 6), std::string("\x05\x04\x03\x02\x01\x00", 6)), "");
+    BOOST_CHECK_EQUAL(TrimStringView(std::string("\x05\x04\x03\x02\x01\x00", 6), std::string("\x05\x04\x03\x02\x01\x00", 6)), "");
 }
 
 BOOST_AUTO_TEST_CASE(util_FormatParseISO8601DateTime)
@@ -212,9 +265,6 @@ BOOST_AUTO_TEST_CASE(util_FormatParseISO8601DateTime)
     BOOST_CHECK_EQUAL(ParseISO8601DateTime("1970-01-01T00:00:00Z"), 0);
     BOOST_CHECK_EQUAL(ParseISO8601DateTime("1960-01-01T00:00:00Z"), 0);
     BOOST_CHECK_EQUAL(ParseISO8601DateTime("2017-11-24T22:50:12Z"), 1511563812);
-
-    auto time = GetTimeSeconds();
-    BOOST_CHECK_EQUAL(ParseISO8601DateTime(FormatISO8601DateTime(time)), time);
 }
 
 BOOST_AUTO_TEST_CASE(util_FormatISO8601Date)
@@ -1286,7 +1336,7 @@ BOOST_AUTO_TEST_CASE(util_ParseMoney)
     BOOST_CHECK_EQUAL(ParseMoney("0.00000001 ").value(), COIN/100000000);
     BOOST_CHECK_EQUAL(ParseMoney(" 0.00000001").value(), COIN/100000000);
 
-    // Parsing amount that can not be represented should fail
+    // Parsing amount that cannot be represented should fail
     BOOST_CHECK(!ParseMoney("100000000.00"));
     BOOST_CHECK(!ParseMoney("0.000000001"));
 
@@ -1435,8 +1485,8 @@ BOOST_AUTO_TEST_CASE(util_time_GetTime)
 {
     SetMockTime(111);
     // Check that mock time does not change after a sleep
-    for (const auto& num_sleep : {0, 1}) {
-        UninterruptibleSleep(std::chrono::milliseconds{num_sleep});
+    for (const auto& num_sleep : {0ms, 1ms}) {
+        UninterruptibleSleep(num_sleep);
         BOOST_CHECK_EQUAL(111, GetTime()); // Deprecated time getter
         BOOST_CHECK_EQUAL(111, GetTime<std::chrono::seconds>().count());
         BOOST_CHECK_EQUAL(111000, GetTime<std::chrono::milliseconds>().count());
@@ -1444,10 +1494,14 @@ BOOST_AUTO_TEST_CASE(util_time_GetTime)
     }
 
     SetMockTime(0);
-    // Check that system time changes after a sleep
+    // Check that steady time and system time changes after a sleep
+    const auto steady_ms_0 = Now<SteadyMilliseconds>();
+    const auto steady_0 = std::chrono::steady_clock::now();
     const auto ms_0 = GetTime<std::chrono::milliseconds>();
     const auto us_0 = GetTime<std::chrono::microseconds>();
-    UninterruptibleSleep(std::chrono::milliseconds{1});
+    UninterruptibleSleep(1ms);
+    BOOST_CHECK(steady_ms_0 < Now<SteadyMilliseconds>());
+    BOOST_CHECK(steady_0 + 1ms <= std::chrono::steady_clock::now());
     BOOST_CHECK(ms_0 < GetTime<std::chrono::milliseconds>());
     BOOST_CHECK(us_0 < GetTime<std::chrono::microseconds>());
 }
@@ -2014,7 +2068,7 @@ BOOST_AUTO_TEST_CASE(test_ParseFixedPoint)
     BOOST_CHECK(!ParseFixedPoint("31.999999999999999999999", 3, &amount));
 }
 
-static void TestOtherThread(fs::path dirname, std::string lockname, bool *result)
+static void TestOtherThread(fs::path dirname, fs::path lockname, bool *result)
 {
     *result = LockDirectory(dirname, lockname);
 }
@@ -2024,7 +2078,7 @@ static constexpr char LockCommand = 'L';
 static constexpr char UnlockCommand = 'U';
 static constexpr char ExitCommand = 'X';
 
-[[noreturn]] static void TestOtherProcess(fs::path dirname, std::string lockname, int fd)
+[[noreturn]] static void TestOtherProcess(fs::path dirname, fs::path lockname, int fd)
 {
     char ch;
     while (true) {
@@ -2055,7 +2109,7 @@ static constexpr char ExitCommand = 'X';
 BOOST_AUTO_TEST_CASE(test_LockDirectory)
 {
     fs::path dirname = m_args.GetDataDirBase() / "lock_dir";
-    const std::string lockname = ".lock";
+    const fs::path lockname = ".lock";
 #ifndef WIN32
     // Revert SIGCHLD to default, otherwise boost.test will catch and fail on
     // it: there is BOOST_TEST_IGNORE_SIGCHLD but that only works when defined
@@ -2314,6 +2368,68 @@ BOOST_AUTO_TEST_CASE(test_spanparsing)
     BOOST_CHECK_EQUAL(SpanToStr(results[3]), "");
 }
 
+BOOST_AUTO_TEST_CASE(test_SplitString)
+{
+    // Empty string.
+    {
+        std::vector<std::string> result = SplitString("", '-');
+        BOOST_CHECK_EQUAL(result.size(), 1);
+        BOOST_CHECK_EQUAL(result[0], "");
+    }
+
+    // Empty items.
+    {
+        std::vector<std::string> result = SplitString("-", '-');
+        BOOST_CHECK_EQUAL(result.size(), 2);
+        BOOST_CHECK_EQUAL(result[0], "");
+        BOOST_CHECK_EQUAL(result[1], "");
+    }
+
+    // More empty items.
+    {
+        std::vector<std::string> result = SplitString("--", '-');
+        BOOST_CHECK_EQUAL(result.size(), 3);
+        BOOST_CHECK_EQUAL(result[0], "");
+        BOOST_CHECK_EQUAL(result[1], "");
+        BOOST_CHECK_EQUAL(result[2], "");
+    }
+
+    // Separator is not present.
+    {
+        std::vector<std::string> result = SplitString("abc", '-');
+        BOOST_CHECK_EQUAL(result.size(), 1);
+        BOOST_CHECK_EQUAL(result[0], "abc");
+    }
+
+    // Basic behavior.
+    {
+        std::vector<std::string> result = SplitString("a-b", '-');
+        BOOST_CHECK_EQUAL(result.size(), 2);
+        BOOST_CHECK_EQUAL(result[0], "a");
+        BOOST_CHECK_EQUAL(result[1], "b");
+    }
+
+    // Case-sensitivity of the separator.
+    {
+        std::vector<std::string> result = SplitString("AAA", 'a');
+        BOOST_CHECK_EQUAL(result.size(), 1);
+        BOOST_CHECK_EQUAL(result[0], "AAA");
+    }
+
+    // multiple split characters
+    {
+        using V = std::vector<std::string>;
+        BOOST_TEST(SplitString("a,b.c:d;e", ",;") == V({"a", "b.c:d", "e"}));
+        BOOST_TEST(SplitString("a,b.c:d;e", ",;:.") == V({"a", "b", "c", "d", "e"}));
+        BOOST_TEST(SplitString("a,b.c:d;e", "") == V({"a,b.c:d;e"}));
+        BOOST_TEST(SplitString("aaa", "bcdefg") == V({"aaa"}));
+        BOOST_TEST(SplitString("x\0a,b"s, "\0"s) == V({"x", "a,b"}));
+        BOOST_TEST(SplitString("x\0a,b"s, '\0') == V({"x", "a,b"}));
+        BOOST_TEST(SplitString("x\0a,b"s, "\0,"s) == V({"x", "a", "b"}));
+        BOOST_TEST(SplitString("abcdefg", "bcd") == V({"a", "", "", "efg"}));
+    }
+}
+
 BOOST_AUTO_TEST_CASE(test_LogEscapeMessage)
 {
     // ASCII and UTF-8 must pass through unaltered.
@@ -2534,13 +2650,13 @@ BOOST_AUTO_TEST_CASE(message_hash)
 BOOST_AUTO_TEST_CASE(remove_prefix)
 {
     BOOST_CHECK_EQUAL(RemovePrefix("./util/system.h", "./"), "util/system.h");
-    BOOST_CHECK_EQUAL(RemovePrefix("foo", "foo"), "");
+    BOOST_CHECK_EQUAL(RemovePrefixView("foo", "foo"), "");
     BOOST_CHECK_EQUAL(RemovePrefix("foo", "fo"), "o");
-    BOOST_CHECK_EQUAL(RemovePrefix("foo", "f"), "oo");
+    BOOST_CHECK_EQUAL(RemovePrefixView("foo", "f"), "oo");
     BOOST_CHECK_EQUAL(RemovePrefix("foo", ""), "foo");
-    BOOST_CHECK_EQUAL(RemovePrefix("fo", "foo"), "fo");
+    BOOST_CHECK_EQUAL(RemovePrefixView("fo", "foo"), "fo");
     BOOST_CHECK_EQUAL(RemovePrefix("f", "foo"), "f");
-    BOOST_CHECK_EQUAL(RemovePrefix("", "foo"), "");
+    BOOST_CHECK_EQUAL(RemovePrefixView("", "foo"), "");
     BOOST_CHECK_EQUAL(RemovePrefix("", ""), "");
 }
 
@@ -2592,4 +2708,49 @@ BOOST_AUTO_TEST_CASE(util_ParseByteUnits)
     BOOST_CHECK(!ParseByteUnits("1x", noop));
 }
 
+BOOST_AUTO_TEST_CASE(util_ReadBinaryFile)
+{
+    fs::path tmpfolder = m_args.GetDataDirBase();
+    fs::path tmpfile = tmpfolder / "read_binary.dat";
+    std::string expected_text;
+    for (int i = 0; i < 30; i++) {
+        expected_text += "0123456789";
+    }
+    {
+        std::ofstream file{tmpfile};
+        file << expected_text;
+    }
+    {
+        // read all contents in file
+        auto [valid, text] = ReadBinaryFile(tmpfile);
+        BOOST_CHECK(valid);
+        BOOST_CHECK_EQUAL(text, expected_text);
+    }
+    {
+        // read half contents in file
+        auto [valid, text] = ReadBinaryFile(tmpfile, expected_text.size() / 2);
+        BOOST_CHECK(valid);
+        BOOST_CHECK_EQUAL(text, expected_text.substr(0, expected_text.size() / 2));
+    }
+    {
+        // read from non-existent file
+        fs::path invalid_file = tmpfolder / "invalid_binary.dat";
+        auto [valid, text] = ReadBinaryFile(invalid_file);
+        BOOST_CHECK(!valid);
+        BOOST_CHECK(text.empty());
+    }
+}
+
+BOOST_AUTO_TEST_CASE(util_WriteBinaryFile)
+{
+    fs::path tmpfolder = m_args.GetDataDirBase();
+    fs::path tmpfile = tmpfolder / "write_binary.dat";
+    std::string expected_text = "umkoin";
+    auto valid = WriteBinaryFile(tmpfile, expected_text);
+    std::string actual_text;
+    std::ifstream file{tmpfile};
+    file >> actual_text;
+    BOOST_CHECK(valid);
+    BOOST_CHECK_EQUAL(actual_text, expected_text);
+}
 BOOST_AUTO_TEST_SUITE_END()

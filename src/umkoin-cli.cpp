@@ -9,23 +9,26 @@
 
 #include <chainparamsbase.h>
 #include <clientversion.h>
+#include <compat/stdin.h>
 #include <policy/feerate.h>
 #include <rpc/client.h>
 #include <rpc/mining.h>
 #include <rpc/protocol.h>
 #include <rpc/request.h>
 #include <tinyformat.h>
+#include <univalue.h>
 #include <util/strencodings.h>
 #include <util/system.h>
 #include <util/translation.h>
 #include <util/url.h>
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
+#include <cstdio>
 #include <functional>
 #include <memory>
 #include <optional>
-#include <stdio.h>
 #include <string>
 #include <tuple>
 
@@ -37,8 +40,11 @@
 #include <event2/keyvalq_struct.h>
 #include <support/events.h>
 
-#include <univalue.h>
-#include <compat/stdin.h>
+// The server returns time values from a mockable system clock, but it is not
+// trivial to get the mocked time from the server, nor is it needed for now, so
+// just use a plain system_clock.
+using CliClock = std::chrono::system_clock;
+using CliSeconds = std::chrono::time_point<CliClock, std::chrono::seconds>;
 
 const std::function<std::string(const char*)> G_TRANSLATION_FUN = nullptr;
 UrlDecodeFn* const URL_DECODE = urlDecode;
@@ -184,7 +190,6 @@ struct HTTPReply
 static std::string http_errorstring(int code)
 {
     switch(code) {
-#if LIBEVENT_VERSION_NUMBER >= 0x02010300
     case EVREQ_HTTP_TIMEOUT:
         return "timeout reached";
     case EVREQ_HTTP_EOF:
@@ -197,7 +202,6 @@ static std::string http_errorstring(int code)
         return "request was canceled";
     case EVREQ_HTTP_DATA_TOO_LONG:
         return "response body is larger than allowed";
-#endif
     default:
         return "unknown";
     }
@@ -228,13 +232,11 @@ static void http_request_done(struct evhttp_request *req, void *ctx)
     }
 }
 
-#if LIBEVENT_VERSION_NUMBER >= 0x02010300
 static void http_error_cb(enum evhttp_request_error err, void *ctx)
 {
     HTTPReply *reply = static_cast<HTTPReply*>(ctx);
     reply->error = err;
 }
-#endif
 
 /** Class that handles the conversion from a command-line to a JSON-RPC request,
  * as well as converting back to a JSON object that can be shown as result.
@@ -437,7 +439,7 @@ private:
         if (conn_type == "addr-fetch") return "addr";
         return "";
     }
-    const int64_t m_time_now{GetTimeSeconds()};
+    const int64_t m_time_now{count_seconds(Now<CliSeconds>())};
 
 public:
     static constexpr int ID_PEERINFO = 0;
@@ -745,11 +747,11 @@ static UniValue CallRPC(BaseRequestHandler* rh, const std::string& strMethod, co
 
     HTTPReply response;
     raii_evhttp_request req = obtain_evhttp_request(http_request_done, (void*)&response);
-    if (req == nullptr)
+    if (req == nullptr) {
         throw std::runtime_error("create http request failed");
-#if LIBEVENT_VERSION_NUMBER >= 0x02010300
+    }
+
     evhttp_request_set_error_cb(req.get(), http_error_cb);
-#endif
 
     // Get credentials
     std::string strRPCUserColonPass;
@@ -1059,7 +1061,9 @@ static void ParseGetInfoResult(UniValue& result)
         result_string += "\n";
     }
 
-    result_string += strprintf("%sWarnings:%s %s", YELLOW, RESET, result["warnings"].getValStr());
+    const std::string warnings{result["warnings"].getValStr()};
+    result_string += strprintf("%sWarnings:%s %s", YELLOW, RESET, warnings.empty() ? "(none)" : warnings);
+
     result.setStr(result_string);
 }
 

@@ -93,7 +93,7 @@ static RPCHelpMan getpeerinfo()
 {
     return RPCHelpMan{
         "getpeerinfo",
-        "\nReturns data about each connected network node as a json array of objects.\n",
+        "Returns data about each connected network peer as a json array of objects.",
         {},
         RPCResult{
             RPCResult::Type::ARR, "", "",
@@ -105,7 +105,7 @@ static RPCHelpMan getpeerinfo()
                     {RPCResult::Type::STR, "addr", "(host:port) The IP address and port of the peer"},
                     {RPCResult::Type::STR, "addrbind", /*optional=*/true, "(ip:port) Bind address of the connection to the peer"},
                     {RPCResult::Type::STR, "addrlocal", /*optional=*/true, "(ip:port) Local address as reported by the peer"},
-                    {RPCResult::Type::STR, "network", "Network (" + Join(GetNetworkNames(/* append_unroutable */ true), ", ") + ")"},
+                    {RPCResult::Type::STR, "network", "Network (" + Join(GetNetworkNames(/*append_unroutable=*/true), ", ") + ")"},
                     {RPCResult::Type::NUM, "mapped_as", /*optional=*/true, "The AS in the BGP route to the peer used for diversifying\n"
                                                         "peer selection (only available if the asmap config flag is set)"},
                     {RPCResult::Type::STR_HEX, "services", "The services offered"},
@@ -113,7 +113,7 @@ static RPCHelpMan getpeerinfo()
                     {
                         {RPCResult::Type::STR, "SERVICE_NAME", "the service name if it is recognised"}
                     }},
-                    {RPCResult::Type::BOOL, "relaytxes", "Whether peer has asked us to relay transactions to it"},
+                    {RPCResult::Type::BOOL, "relaytxes", /*optional=*/true, "Whether peer has asked us to relay transactions to it"},
                     {RPCResult::Type::NUM_TIME, "lastsend", "The " + UNIX_EPOCH_TIME + " of the last send"},
                     {RPCResult::Type::NUM_TIME, "lastrecv", "The " + UNIX_EPOCH_TIME + " of the last receive"},
                     {RPCResult::Type::NUM_TIME, "last_transaction", "The " + UNIX_EPOCH_TIME + " of the last valid transaction received from this peer"},
@@ -144,7 +144,7 @@ static RPCHelpMan getpeerinfo()
                     {
                         {RPCResult::Type::STR, "permission_type", Join(NET_PERMISSIONS_DOC, ",\n") + ".\n"},
                     }},
-                    {RPCResult::Type::NUM, "minfeefilter", "The minimum fee rate for transactions this peer accepts"},
+                    {RPCResult::Type::NUM, "minfeefilter", /*optional=*/true, "The minimum fee rate for transactions this peer accepts"},
                     {RPCResult::Type::OBJ_DYN, "bytessent_per_msg", "",
                     {
                         {RPCResult::Type::NUM, "msg", "The total bytes sent aggregated by message type\n"
@@ -156,7 +156,7 @@ static RPCHelpMan getpeerinfo()
                         {RPCResult::Type::NUM, "msg", "The total bytes received aggregated by message type\n"
                                                       "When a message type is not listed in this json object, the bytes received are 0.\n"
                                                       "Only known message types can appear as keys in the object and all bytes received\n"
-                                                      "of unknown message types are listed under '"+NET_MESSAGE_COMMAND_OTHER+"'."}
+                                                      "of unknown message types are listed under '"+NET_MESSAGE_TYPE_OTHER+"'."}
                     }},
                     {RPCResult::Type::STR, "connection_type", "Type of connection: \n" + Join(CONNECTION_TYPE_DOC, ",\n") + ".\n"
                                                               "Please note this output is unlikely to be stable in upcoming releases as we iterate to\n"
@@ -197,7 +197,6 @@ static RPCHelpMan getpeerinfo()
         }
         obj.pushKV("services", strprintf("%016x", stats.nServices));
         obj.pushKV("servicesnames", GetServicesNames(stats.nServices));
-        obj.pushKV("relaytxes", stats.fRelayTxes);
         obj.pushKV("lastsend", count_seconds(stats.m_last_send));
         obj.pushKV("lastrecv", count_seconds(stats.m_last_recv));
         obj.pushKV("last_transaction", count_seconds(stats.m_last_tx_time));
@@ -232,6 +231,8 @@ static RPCHelpMan getpeerinfo()
                 heights.push_back(height);
             }
             obj.pushKV("inflight", heights);
+            obj.pushKV("relaytxes", statestats.m_relay_txs);
+            obj.pushKV("minfeefilter", ValueFromAmount(statestats.m_fee_filter_received));
             obj.pushKV("addr_relay_enabled", statestats.m_addr_relay_enabled);
             obj.pushKV("addr_processed", statestats.m_addr_processed);
             obj.pushKV("addr_rate_limited", statestats.m_addr_rate_limited);
@@ -241,21 +242,20 @@ static RPCHelpMan getpeerinfo()
             permissions.push_back(permission);
         }
         obj.pushKV("permissions", permissions);
-        obj.pushKV("minfeefilter", ValueFromAmount(stats.minFeeFilter));
 
-        UniValue sendPerMsgCmd(UniValue::VOBJ);
-        for (const auto& i : stats.mapSendBytesPerMsgCmd) {
+        UniValue sendPerMsgType(UniValue::VOBJ);
+        for (const auto& i : stats.mapSendBytesPerMsgType) {
             if (i.second > 0)
-                sendPerMsgCmd.pushKV(i.first, i.second);
+                sendPerMsgType.pushKV(i.first, i.second);
         }
-        obj.pushKV("bytessent_per_msg", sendPerMsgCmd);
+        obj.pushKV("bytessent_per_msg", sendPerMsgType);
 
-        UniValue recvPerMsgCmd(UniValue::VOBJ);
-        for (const auto& i : stats.mapRecvBytesPerMsgCmd) {
+        UniValue recvPerMsgType(UniValue::VOBJ);
+        for (const auto& i : stats.mapRecvBytesPerMsgType) {
             if (i.second > 0)
-                recvPerMsgCmd.pushKV(i.first, i.second);
+                recvPerMsgType.pushKV(i.first, i.second);
         }
-        obj.pushKV("bytesrecv_per_msg", recvPerMsgCmd);
+        obj.pushKV("bytesrecv_per_msg", recvPerMsgType);
         obj.pushKV("connection_type", ConnectionTypeAsString(stats.m_conn_type));
 
         ret.push_back(obj);
@@ -888,7 +888,7 @@ static RPCHelpMan getnodeaddresses()
     }
 
     // returns a shuffled list of CAddress
-    const std::vector<CAddress> vAddr{connman.GetAddresses(count, /* max_pct */ 0, network)};
+    const std::vector<CAddress> vAddr{connman.GetAddresses(count, /*max_pct=*/0, network)};
     UniValue ret(UniValue::VARR);
 
     for (const CAddress& addr : vAddr) {
@@ -959,30 +959,25 @@ static RPCHelpMan addpeeraddress()
     };
 }
 
-void RegisterNetRPCCommands(CRPCTable &t)
+void RegisterNetRPCCommands(CRPCTable& t)
 {
-// clang-format off
-static const CRPCCommand commands[] =
-{ //  category              actor
-  //  --------------------- -----------------------
-    { "network",             &getconnectioncount,      },
-    { "network",             &ping,                    },
-    { "network",             &getpeerinfo,             },
-    { "network",             &addnode,                 },
-    { "network",             &disconnectnode,          },
-    { "network",             &getaddednodeinfo,        },
-    { "network",             &getnettotals,            },
-    { "network",             &getnetworkinfo,          },
-    { "network",             &setban,                  },
-    { "network",             &listbanned,              },
-    { "network",             &clearbanned,             },
-    { "network",             &setnetworkactive,        },
-    { "network",             &getnodeaddresses,        },
-
-    { "hidden",              &addconnection,           },
-    { "hidden",              &addpeeraddress,          },
-};
-// clang-format on
+    static const CRPCCommand commands[]{
+        {"network", &getconnectioncount},
+        {"network", &ping},
+        {"network", &getpeerinfo},
+        {"network", &addnode},
+        {"network", &disconnectnode},
+        {"network", &getaddednodeinfo},
+        {"network", &getnettotals},
+        {"network", &getnetworkinfo},
+        {"network", &setban},
+        {"network", &listbanned},
+        {"network", &clearbanned},
+        {"network", &setnetworkactive},
+        {"network", &getnodeaddresses},
+        {"hidden", &addconnection},
+        {"hidden", &addpeeraddress},
+    };
     for (const auto& c : commands) {
         t.appendCommand(c.name, &c);
     }

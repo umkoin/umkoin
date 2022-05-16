@@ -138,10 +138,56 @@ public:
 } // namespace foo
 ```
 
+Coding Style (C++ named arguments)
+------------------------------
+
+When passing named arguments, use a format that clang-tidy understands. The
+argument names can otherwise not be verified by clang-tidy.
+
+For example:
+
+```c++
+void function(Addrman& addrman, bool clear);
+
+int main()
+{
+    function(g_addrman, /*clear=*/false);
+}
+```
+
+### Running clang-tidy
+
+To run clang-tidy on Ubuntu/Debian, install the dependencies:
+
+```sh
+apt install clang-tidy bear clang
+```
+
+Then, pass clang as compiler to configure, and use bear to produce the `compile_commands.json`:
+
+```sh
+./autogen.sh && ./configure CC=clang CXX=clang++
+make clean && bear make -j $(nproc)     # For bear 2.x
+make clean && bear -- make -j $(nproc)  # For bear 3.x
+```
+
+To run clang-tidy on all source files:
+
+```sh
+( cd ./src/ && run-clang-tidy  -j $(nproc) )
+```
+
+To run clang-tidy on the changed source lines:
+
+```sh
+git diff | ( cd ./src/ && clang-tidy-diff -p2 -j $(nproc) )
+```
+
 Coding Style (Python)
 ---------------------
 
 Refer to [/test/functional/README.md#style-guidelines](/test/functional/README.md#style-guidelines).
+
 
 Coding Style (Doxygen-compatible comments)
 ------------------------------------------
@@ -1124,7 +1170,10 @@ A few guidelines for introducing and reviewing new RPC interfaces:
 
   - *Rationale*: Consistency with the existing interface.
 
-- Argument naming: use snake case `fee_delta` (and not, e.g. camel case `feeDelta`)
+- Argument and field naming: please consider whether there is already a naming
+  style or spelling convention in the API for the type of object in question
+  (`blockhash`, for example), and if so, try to use that. If not, use snake case
+  `fee_delta` (and not, e.g. `feedelta` or camel case `feeDelta`).
 
   - *Rationale*: Consistency with the existing interface.
 

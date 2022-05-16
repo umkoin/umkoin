@@ -24,7 +24,7 @@ using namespace std::filesystem;
  * Path class wrapper to block calls to the fs::path(std::string) implicit
  * constructor and the fs::path::string() method, which have unsafe and
  * unpredictable behavior on Windows (see implementation note in
- * ref PathToString for details)
+ * \ref PathToString for details)
  */
 class path : public std::filesystem::path
 {
@@ -51,11 +51,25 @@ public:
     // Disallow std::string conversion method to avoid locale-dependent encoding on windows.
     std::string string() const = delete;
 
+    std::string u8string() const
+    {
+        const auto& utf8_str{std::filesystem::path::u8string()};
+        // utf8_str might either be std::string (C++17) or std::u8string
+        // (C++20). Convert both to std::string. This method can be removed
+        // after switching to C++20.
+        return std::string{utf8_str.begin(), utf8_str.end()};
+    }
+
     // Required for path overloads in <fstream>.
     // See https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=96e0367ead5d8dcac3bec2865582e76e2fbab190
     path& make_preferred() { std::filesystem::path::make_preferred(); return *this; }
     path filename() const { return std::filesystem::path::filename(); }
 };
+
+static inline path u8path(const std::string& utf8_str)
+{
+    return std::filesystem::u8path(utf8_str);
+}
 
 // Disallow implicit std::string conversion for absolute to avoid
 // locale-dependent encoding on windows.
@@ -78,11 +92,30 @@ static inline auto quoted(const std::string& s)
 }
 
 // Allow safe path append operations.
-static inline path operator+(path p1, path p2)
+static inline path operator/(path p1, path p2)
 {
-    p1 += std::move(p2);
+    p1 /= std::move(p2);
     return p1;
 }
+static inline path operator/(path p1, const char* p2)
+{
+    p1 /= p2;
+    return p1;
+}
+static inline path operator+(path p1, const char* p2)
+{
+    p1 += p2;
+    return p1;
+}
+static inline path operator+(path p1, path::value_type p2)
+{
+    p1 += p2;
+    return p1;
+}
+
+// Disallow unsafe path append operations.
+template<typename T> static inline path operator/(path p1, T p2) = delete;
+template<typename T> static inline path operator+(path p1, T p2) = delete;
 
 // Disallow implicit std::string conversion for copy_file
 // to avoid locale-dependent encoding on Windows.
@@ -116,8 +149,8 @@ static inline std::string PathToString(const path& path)
     // use here, because these methods encode the path using C++'s narrow
     // multibyte encoding, which on Windows corresponds to the current "code
     // page", which is unpredictable and typically not able to represent all
-    // valid paths. So std::filesystem::path::u8string() and
-    // std::filesystem::u8path() functions are used instead on Windows. On
+    // valid paths. So fs::path::u8string() and
+    // fs::u8path() functions are used instead on Windows. On
     // POSIX, u8string/u8path functions are not safe to use because paths are
     // not always valid UTF-8, so plain string methods which do not transform
     // the path there are used.
@@ -156,7 +189,7 @@ static inline bool create_directories(const std::filesystem::path& p)
 }
 
 /**
- * This variant is not used. Delete it to prevent from accidentally working
+ * This variant is not used. Delete it to prevent it from accidentally working
  * around the workaround. If it is needed, add a workaround in the same pattern
  * as above.
  */

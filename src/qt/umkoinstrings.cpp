@@ -14,10 +14,6 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 "%s corrupt. Try using the wallet tool umkoin-wallet to salvage or restoring "
 "a backup."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
-"%s request to listen on port %u. This port is considered \"bad\" and thus it "
-"is unlikely that any Umkoin Core peers connect to it. See doc/p2p-bad-ports."
-"md for details and a full list."),
-QT_TRANSLATE_NOOP("umkoin-core", ""
 "-maxtxfee is set very high! Fees this large could be paid on a single "
 "transaction."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
@@ -57,9 +53,6 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "Error: Listening for incoming connections failed (listen returned error %s)"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
-"Failed to rename invalid peers.dat file. Please move or delete it and try "
-"again."),
-QT_TRANSLATE_NOOP("umkoin-core", ""
 "Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -"
 "fallbackfee."),
 QT_TRANSLATE_NOOP("umkoin-core", ""
@@ -83,10 +76,6 @@ QT_TRANSLATE_NOOP("umkoin-core", ""
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "No wallet file format provided. To use createfromdump, -format=<format> must "
 "be provided."),
-QT_TRANSLATE_NOOP("umkoin-core", ""
-"Outbound connections restricted to Tor (-onlynet=onion) but the proxy for "
-"reaching the Tor network is not provided (no -proxy= and no -onion= given) "
-"or it is explicitly forbidden (-onion=0)"),
 QT_TRANSLATE_NOOP("umkoin-core", ""
 "Please check that your computer's date and time are correct! If your clock "
 "is wrong, %s will not work properly."),

@@ -193,6 +193,19 @@ int FuzzedSock::GetSockOpt(int level, int opt_name, void* opt_val, socklen_t* op
     return 0;
 }
 
+int FuzzedSock::SetSockOpt(int, int, const void*, socklen_t) const
+{
+    constexpr std::array setsockopt_errnos{
+        ENOMEM,
+        ENOBUFS,
+    };
+    if (m_fuzzed_data_provider.ConsumeBool()) {
+        SetFuzzedErrNo(m_fuzzed_data_provider, setsockopt_errnos);
+        return -1;
+    }
+    return 0;
+}
+
 bool FuzzedSock::Wait(std::chrono::milliseconds timeout, Event requested, Event* occurred) const
 {
     constexpr std::array wait_errnos{
@@ -225,7 +238,7 @@ void FillNode(FuzzedDataProvider& fuzzed_data_provider, ConnmanTestMsg& connman,
     const ServiceFlags remote_services = ConsumeWeakEnum(fuzzed_data_provider, ALL_SERVICE_FLAGS);
     const NetPermissionFlags permission_flags = ConsumeWeakEnum(fuzzed_data_provider, ALL_NET_PERMISSION_FLAGS);
     const int32_t version = fuzzed_data_provider.ConsumeIntegralInRange<int32_t>(MIN_PEER_PROTO_VERSION, std::numeric_limits<int32_t>::max());
-    const bool filter_txs = fuzzed_data_provider.ConsumeBool();
+    const bool relay_txs{fuzzed_data_provider.ConsumeBool()};
 
     const CNetMsgMaker mm{0};
 
@@ -241,7 +254,7 @@ void FillNode(FuzzedDataProvider& fuzzed_data_provider, ConnmanTestMsg& connman,
                 uint64_t{1},                                    // dummy nonce
                 std::string{},                                  // dummy subver
                 int32_t{},                                      // dummy starting_height
-                filter_txs),
+                relay_txs),
     };
 
     (void)connman.ReceiveMsgFrom(node, msg_version);
@@ -255,10 +268,9 @@ void FillNode(FuzzedDataProvider& fuzzed_data_provider, ConnmanTestMsg& connman,
     assert(node.nVersion == version);
     assert(node.GetCommonVersion() == std::min(version, PROTOCOL_VERSION));
     assert(node.nServices == remote_services);
-    if (node.m_tx_relay != nullptr) {
-        LOCK(node.m_tx_relay->cs_filter);
-        assert(node.m_tx_relay->fRelayTxes == filter_txs);
-    }
+    CNodeStateStats statestats;
+    assert(peerman.GetNodeStateStats(node.GetId(), statestats));
+    assert(statestats.m_relay_txs == (relay_txs && !node.IsBlockOnlyConn()));
     node.m_permissionFlags = permission_flags;
     if (successfully_connected) {
         CSerializedNetMsg msg_verack{mm.Make(NetMsgType::VERACK)};

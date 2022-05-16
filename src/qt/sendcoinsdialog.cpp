@@ -380,8 +380,7 @@ bool SendCoinsDialog::PrepareSendText(QString& question_string, QString& informa
     question_string.append("<hr />");
     CAmount totalAmount = m_current_transaction->getTotalTransactionAmount() + txFee;
     QStringList alternativeUnits;
-    for (const UmkoinUnits::Unit u : UmkoinUnits::availableUnits())
-    {
+    for (const UmkoinUnit u : UmkoinUnits::availableUnits()) {
         if(u != model->getOptionsModel()->getDisplayUnit())
             alternativeUnits.append(UmkoinUnits::formatHtmlWithUnit(u, totalAmount));
     }

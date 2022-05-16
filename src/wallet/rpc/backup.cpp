@@ -26,8 +26,6 @@
 #include <tuple>
 #include <string>
 
-#include <boost/algorithm/string.hpp>
-
 #include <univalue.h>
 
 
@@ -546,8 +544,7 @@ RPCHelpMan importwallet()
             if (line.empty() || line[0] == '#')
                 continue;
 
-            std::vector<std::string> vstr;
-            boost::split(vstr, line, boost::is_any_of(" "));
+            std::vector<std::string> vstr = SplitString(line, ' ');
             if (vstr.size() < 2)
                 continue;
             CKey key = DecodeSecret(vstr[0]);
@@ -915,7 +912,7 @@ static std::string RecurseImportData(const CScript& script, ImportData& import_d
     case TxoutType::WITNESS_V1_TAPROOT:
         return "unrecognized script";
     } // no default case, so the compiler can warn about missing cases
-    CHECK_NONFATAL(false);
+    NONFATAL_UNREACHABLE();
 }
 
 static UniValue ProcessImportLegacy(ImportData& import_data, std::map<CKeyID, CPubKey>& pubkey_map, std::map<CKeyID, CKey>& privkey_map, std::set<CScript>& script_pub_keys, bool& have_solving_data, const UniValue& data, std::vector<CKeyID>& ordered_pubkeys)
@@ -1260,7 +1257,7 @@ RPCHelpMan importmulti()
                                 {
                                     {"desc", RPCArg::Type::STR, RPCArg::Optional::OMITTED, "Descriptor to import. If using descriptor, do not also provide address/scriptPubKey, scripts, or pubkeys"},
                                     {"scriptPubKey", RPCArg::Type::STR, RPCArg::Optional::NO, "Type of scriptPubKey (string for script, json for address). Should not be provided if using a descriptor",
-                                        /* oneline_description */ "", {"\"<script>\" | { \"address\":\"<address>\" }", "string / json"}
+                                        /*oneline_description=*/"", {"\"<script>\" | { \"address\":\"<address>\" }", "string / json"}
                                     },
                                     {"timestamp", RPCArg::Type::NUM, RPCArg::Optional::NO, "Creation time of the key expressed in " + UNIX_EPOCH_TIME + ",\n"
         "                                                              or the string \"now\" to substitute the current synced blockchain time. The timestamp of the oldest\n"
@@ -1268,7 +1265,7 @@ RPCHelpMan importmulti()
         "                                                              \"now\" can be specified to bypass scanning, for keys which are known to never have been used, and\n"
         "                                                              0 can be specified to scan the entire blockchain. Blocks up to 2 hours before the earliest key\n"
         "                                                              creation time of all keys being imported by the importmulti call will be scanned.",
-                                        /* oneline_description */ "", {"timestamp | \"now\"", "integer / string"}
+                                        /*oneline_description=*/"", {"timestamp | \"now\"", "integer / string"}
                                     },
                                     {"redeemscript", RPCArg::Type::STR, RPCArg::Optional::OMITTED, "Allowed only if the scriptPubKey is a P2SH or P2SH-P2WSH address/scriptPubKey"},
                                     {"witnessscript", RPCArg::Type::STR, RPCArg::Optional::OMITTED, "Allowed only if the scriptPubKey is a P2SH-P2WSH or P2WSH address/scriptPubKey"},
@@ -1596,7 +1593,7 @@ RPCHelpMan importdescriptors()
         "                                                              \"now\" can be specified to bypass scanning, for outputs which are known to never have been used, and\n"
         "                                                              0 can be specified to scan the entire blockchain. Blocks up to 2 hours before the earliest timestamp\n"
         "                                                              of all descriptors being imported will be scanned.",
-                                        /* oneline_description */ "", {"timestamp | \"now\"", "integer / string"}
+                                        /*oneline_description=*/"", {"timestamp | \"now\"", "integer / string"}
                                     },
                                     {"internal", RPCArg::Type::BOOL, RPCArg::Default{false}, "Whether matching outputs should be treated as not incoming payments (e.g. change)"},
                                     {"label", RPCArg::Type::STR, RPCArg::Default{""}, "Label to assign to the address, only allowed with internal=false. Disabled for ranged descriptors"},
@@ -1748,13 +1745,13 @@ RPCHelpMan listdescriptors()
                 {RPCResult::Type::OBJ, "", "", {
                     {RPCResult::Type::STR, "desc", "Descriptor string representation"},
                     {RPCResult::Type::NUM, "timestamp", "The creation time of the descriptor"},
-                    {RPCResult::Type::BOOL, "active", "Activeness flag"},
-                    {RPCResult::Type::BOOL, "internal", true, "Whether this is an internal or external descriptor; defined only for active descriptors"},
-                    {RPCResult::Type::ARR_FIXED, "range", true, "Defined only for ranged descriptors", {
+                    {RPCResult::Type::BOOL, "active", "Whether this descriptor is currently used to generate new addresses"},
+                    {RPCResult::Type::BOOL, "internal", /*optional=*/true, "True if this descriptor is used to generate change addresses. False if this descriptor is used to generate receiving addresses; defined only for active descriptors"},
+                    {RPCResult::Type::ARR_FIXED, "range", /*optional=*/true, "Defined only for ranged descriptors", {
                         {RPCResult::Type::NUM, "", "Range start inclusive"},
                         {RPCResult::Type::NUM, "", "Range end inclusive"},
                     }},
-                    {RPCResult::Type::NUM, "next", true, "The next index to generate addresses from; defined only for ranged descriptors"},
+                    {RPCResult::Type::NUM, "next", /*optional=*/true, "The next index to generate addresses from; defined only for ranged descriptors"},
                 }},
             }}
         }},

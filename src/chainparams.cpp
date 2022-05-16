@@ -9,12 +9,11 @@
 #include <consensus/merkle.h>
 #include <deploymentinfo.h>
 #include <hash.h> // for signet block challenge hash
+#include <script/interpreter.h>
+#include <util/string.h>
 #include <util/system.h>
 
 #include <assert.h>
-
-#include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/split.hpp>
 
 static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
@@ -65,7 +64,10 @@ public:
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Exception = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
+        consensus.script_flag_exceptions.emplace( // BIP16 exception
+            uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"), SCRIPT_VERIFY_NONE);
+        consensus.script_flag_exceptions.emplace( // Taproot exception
+            uint256S("0x0000000000006416703a4143581f958afc8325fe6e7b5fc427ff8a2a065f84da"), SCRIPT_VERIFY_P2SH | SCRIPT_VERIFY_WITNESS);
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
         consensus.BIP65Height = 0;
@@ -145,11 +147,14 @@ public:
                 { 22100, uint256S("0x000000000000045eb86c9f6f55ebe6f52a6b499810c06a3c1528c555a6668d57")},
                 { 22150, uint256S("0x000000000000056e1c71a808187950110f7d2af34b7c33b70bc5aafd81577bbe")},
                 { 23299, uint256S("0x000000000001937d0f8f9abf4c76e147daf4cf2149b66349fe29bac7f90eba16")},
+                { 25874, uint256S("0x00000000000083c2a36b0d4df233709f790ad144521362a08f86fba2e0a23232")},
+                { 25875, uint256S("0x00000000000068fc8d92ab2992451f830d36af4efa581d676140e2c49513b4a1")},
                 { 39332, uint256S("0x0000000000003c265a3cf6a3a29e0ac6ab292a591eddf02f5e1d50abb7394c40")},
                 { 67999, uint256S("0x000000000001972d726acfed45ffb647f7a6da7bdc3ab5288c7b2a82948ac65c")},
                 { 96428, uint256S("0x000000000039d6d37440cfe057b1d917bb778ce02fb79ad913435955dcbfced5")},
                 {131105, uint256S("0x00000000001fd629be483b16e42ded9e6055ba0a249dd0bfc0a3cb3736b96bf0")},
                 {148000, uint256S("0x000000000065b1a4a38ff7057ec2c80bbde98eea5a4141a3312ca2c4d0f5b850")},
+                {153000, uint256S("0x000000000000c1f45503eb4caf92acc0709b5efd6852ba6dcf4d9f1ef0cfd517")},
             }
         };
 
@@ -176,7 +181,8 @@ public:
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Exception = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
+        consensus.script_flag_exceptions.emplace( // BIP16 exception
+            uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"), SCRIPT_VERIFY_NONE);
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
         consensus.BIP65Height = 0;
@@ -313,7 +319,6 @@ public:
         consensus.signet_blocks = true;
         consensus.signet_challenge.assign(bin.begin(), bin.end());
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Exception = uint256{};
         consensus.BIP34Height = 1;
         consensus.BIP34Hash = uint256{};
         consensus.BIP65Height = 1;
@@ -381,7 +386,6 @@ public:
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 150;
-        consensus.BIP16Exception = uint256();
         consensus.BIP34Height = 1; // Always active unless overridden
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 1;  // Always active unless overridden
@@ -515,8 +519,7 @@ void CRegTestParams::UpdateActivationParametersFromArgs(const ArgsManager& args)
     if (!args.IsArgSet("-vbparams")) return;
 
     for (const std::string& strDeployment : args.GetArgs("-vbparams")) {
-        std::vector<std::string> vDeploymentParams;
-        boost::split(vDeploymentParams, strDeployment, boost::is_any_of(":"));
+        std::vector<std::string> vDeploymentParams = SplitString(strDeployment, ':');
         if (vDeploymentParams.size() < 3 || 4 < vDeploymentParams.size()) {
             throw std::runtime_error("Version bits parameters malformed, expecting deployment:start:end[:min_activation_height]");
         }

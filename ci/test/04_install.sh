@@ -103,12 +103,22 @@ fi
 CI_EXEC mkdir -p "${BASE_SCRATCH_DIR}/sanitizer-output/"
 
 if [[ ${USE_MEMORY_SANITIZER} == "true" ]]; then
-  CI_EXEC "update-alternatives --install /usr/bin/clang++ clang++ \$(which clang++-9) 100"
-  CI_EXEC "update-alternatives --install /usr/bin/clang clang \$(which clang-9) 100"
+  CI_EXEC "update-alternatives --install /usr/bin/clang++ clang++ \$(which clang++-12) 100"
+  CI_EXEC "update-alternatives --install /usr/bin/clang clang \$(which clang-12) 100"
   CI_EXEC "mkdir -p ${BASE_SCRATCH_DIR}/msan/build/"
   CI_EXEC "git clone --depth=1 https://github.com/llvm/llvm-project -b llvmorg-12.0.0 ${BASE_SCRATCH_DIR}/msan/llvm-project"
-  CI_EXEC "cd ${BASE_SCRATCH_DIR}/msan/build/ && cmake -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi' -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_SANITIZER=Memory -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DLLVM_TARGETS_TO_BUILD=X86 ../llvm-project/llvm/"
+  CI_EXEC "cd ${BASE_SCRATCH_DIR}/msan/build/ && cmake -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi' -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_SANITIZER=MemoryWithOrigins -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DLLVM_TARGETS_TO_BUILD=X86 ../llvm-project/llvm/"
   CI_EXEC "cd ${BASE_SCRATCH_DIR}/msan/build/ && make $MAKEJOBS cxx"
+fi
+
+if [[ "${RUN_TIDY}" == "true" ]]; then
+  export DIR_IWYU="${BASE_SCRATCH_DIR}/iwyu"
+  if [ ! -d "${DIR_IWYU}" ]; then
+    CI_EXEC "mkdir -p ${DIR_IWYU}/build/"
+    CI_EXEC "git clone --depth=1 https://github.com/include-what-you-use/include-what-you-use -b clang_14 ${DIR_IWYU}/include-what-you-use"
+    CI_EXEC "cd ${DIR_IWYU}/build && cmake -G 'Unix Makefiles' -DCMAKE_PREFIX_PATH=/usr/lib/llvm-14 ../include-what-you-use"
+    CI_EXEC "cd ${DIR_IWYU}/build && make install $MAKEJOBS"
+  fi
 fi
 
 if [ -z "$DANGER_RUN_CI_ON_HOST" ]; then

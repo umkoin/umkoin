@@ -5,13 +5,18 @@
 #ifndef UMKOIN_SCHEDULER_H
 #define UMKOIN_SCHEDULER_H
 
+#include <attributes.h>
+#include <sync.h>
+#include <threadsafety.h>
+
+#include <chrono>
 #include <condition_variable>
+#include <cstddef>
 #include <functional>
 #include <list>
 #include <map>
 #include <thread>
-
-#include <sync.h>
+#include <utility>
 
 /**
  * Simple class for background tasks that should be run
@@ -41,12 +46,12 @@ public:
     typedef std::function<void()> Function;
 
     /** Call func at/after time t */
-    void schedule(Function f, std::chrono::system_clock::time_point t);
+    void schedule(Function f, std::chrono::steady_clock::time_point t);
 
     /** Call f once after the delta has passed */
     void scheduleFromNow(Function f, std::chrono::milliseconds delta)
     {
-        schedule(std::move(f), std::chrono::system_clock::now() + delta);
+        schedule(std::move(f), std::chrono::steady_clock::now() + delta);
     }
 
     /**
@@ -88,8 +93,8 @@ public:
      * Returns number of tasks waiting to be serviced,
      * and first and last task times
      */
-    size_t getQueueInfo(std::chrono::system_clock::time_point& first,
-                        std::chrono::system_clock::time_point& last) const;
+    size_t getQueueInfo(std::chrono::steady_clock::time_point& first,
+                        std::chrono::steady_clock::time_point& last) const;
 
     /** Returns true if there are threads actively running in serviceQueue() */
     bool AreThreadsServicingQueue() const;
@@ -97,7 +102,7 @@ public:
 private:
     mutable Mutex newTaskMutex;
     std::condition_variable newTaskScheduled;
-    std::multimap<std::chrono::system_clock::time_point, Function> taskQueue GUARDED_BY(newTaskMutex);
+    std::multimap<std::chrono::steady_clock::time_point, Function> taskQueue GUARDED_BY(newTaskMutex);
     int nThreadsServicingQueue GUARDED_BY(newTaskMutex){0};
     bool stopRequested GUARDED_BY(newTaskMutex){false};
     bool stopWhenEmpty GUARDED_BY(newTaskMutex){false};
@@ -117,7 +122,7 @@ private:
 class SingleThreadedSchedulerClient
 {
 private:
-    CScheduler* m_pscheduler;
+    CScheduler& m_scheduler;
 
     Mutex m_callbacks_mutex;
     std::list<std::function<void()>> m_callbacks_pending GUARDED_BY(m_callbacks_mutex);
@@ -127,7 +132,7 @@ private:
     void ProcessQueue();
 
 public:
-    explicit SingleThreadedSchedulerClient(CScheduler* pschedulerIn) : m_pscheduler(pschedulerIn) {}
+    explicit SingleThreadedSchedulerClient(CScheduler& scheduler LIFETIMEBOUND) : m_scheduler{scheduler} {}
 
     /**
      * Add a callback to be executed. Callbacks are executed serially

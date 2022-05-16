@@ -76,8 +76,8 @@ void AllocateFileRange(FILE *file, unsigned int offset, unsigned int length);
  */
 [[nodiscard]] bool RenameOver(fs::path src, fs::path dest);
 
-bool LockDirectory(const fs::path& directory, const std::string lockfile_name, bool probe_only=false);
-void UnlockDirectory(const fs::path& directory, const std::string& lockfile_name);
+bool LockDirectory(const fs::path& directory, const fs::path& lockfile_name, bool probe_only=false);
+void UnlockDirectory(const fs::path& directory, const fs::path& lockfile_name);
 bool DirIsWritable(const fs::path& directory);
 bool CheckDiskSpace(const fs::path& dir, uint64_t additional_bytes = 0);
 
@@ -271,16 +271,6 @@ protected:
     std::optional<const Command> GetCommand() const;
 
     /**
-     * Get a normalized path from a specified pathlike argument
-     *
-     * It is guaranteed that the returned path has no trailing slashes.
-     *
-     * @param pathlike_arg Pathlike argument to get a path from (e.g., "-datadir", "-blocksdir" or "-walletdir")
-     * @return Normalized path which is get from a specified pathlike argument
-     */
-    fs::path GetPathArg(std::string pathlike_arg) const;
-
-    /**
      * Get blocks directory path
      *
      * @return Blocks path which is network specific
@@ -341,6 +331,18 @@ protected:
      * @return command-line argument or default value
      */
     std::string GetArg(const std::string& strArg, const std::string& strDefault) const;
+
+    /**
+     * Return path argument or default value
+     *
+     * @param arg Argument to get a path from (e.g., "-datadir", "-blocksdir" or "-walletdir")
+     * @param default_value Optional default value to return instead of the empty path.
+     * @return normalized path if argument is set, with redundant "." and ".."
+     * path components and trailing separators removed (see patharg unit test
+     * for examples or implementation for details). If argument is empty or not
+     * set, default_value is returned unchanged.
+     */
+    fs::path GetPathArg(std::string arg, const fs::path& default_value = {}) const;
 
     /**
      * Return integer argument or default value

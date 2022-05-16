@@ -4,20 +4,16 @@ Umkoin Core integration/staging tree
 http://www.umkoin.org
 
 For an immediately usable, binary version of the Umkoin Core software, see
-[http://www.umkoin.org/en/download.php](http://www.umkoin.org/en/download.php)
+[http://www.umkoin.org/en/download.php](http://www.umkoin.org/en/download.php).
+
+What is Umkoin Core?
+---------------------
+
+Umkoin Core connects to the Umkoin peer-to-peer network to download and fully
+validate blocks and transactions. It also includes a wallet and graphical user
+interface, which can be optionally built.
 
 Further information about Umkoin Core is available in the [doc folder](/doc).
-
-What is Umkoin?
-----------------
-
-Umkoin is an experimental digital currency that enables instant payments to
-anyone, anywhere in the world. Umkoin uses peer-to-peer technology to operate
-with no central authority: managing transactions and issuing money are carried
-out collectively by the network. Umkoin Core is the name of open source
-software which enables the use of this currency.
-
-For more information read the Umkoin [website](http://www.umkoin.org).
 
 License
 -------

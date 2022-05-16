@@ -9,16 +9,21 @@
 #include <clientversion.h>
 #include <compat/sanity.h>
 #include <crypto/sha256.h>
+#include <fs.h>
 #include <key.h>
 #include <logging.h>
 #include <node/ui_interface.h>
 #include <pubkey.h>
 #include <random.h>
+#include <tinyformat.h>
 #include <util/system.h>
 #include <util/time.h>
 #include <util/translation.h>
 
+#include <algorithm>
 #include <memory>
+#include <string>
+#include <vector>
 
 static std::unique_ptr<ECCVerifyHandle> globalVerifyHandle;
 
@@ -81,7 +86,7 @@ void AddLoggingArgs(ArgsManager& argsman)
 void SetLoggingOptions(const ArgsManager& args)
 {
     LogInstance().m_print_to_file = !args.IsArgNegated("-debuglogfile");
-    LogInstance().m_file_path = AbsPathForConfigVal(fs::PathFromString(args.GetArg("-debuglogfile", DEFAULT_DEBUGLOGFILE)));
+    LogInstance().m_file_path = AbsPathForConfigVal(args.GetPathArg("-debuglogfile", DEFAULT_DEBUGLOGFILE));
     LogInstance().m_print_to_console = args.GetBoolArg("-printtoconsole", !args.GetBoolArg("-daemon", false));
     LogInstance().m_log_timestamps = args.GetBoolArg("-logtimestamps", DEFAULT_LOGTIMESTAMPS);
     LogInstance().m_log_time_micros = args.GetBoolArg("-logtimemicros", DEFAULT_LOGTIMEMICROS);

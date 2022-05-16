@@ -28,17 +28,25 @@ SHA256_SUMS = {
 "ee3dddecfa5c858856f8006342c484b668f34d5d41f8f1d3237fbf3626a4f075": "umkoin-0.19.1-riscv64-linux-gnu.tar.gz",
 "c8b1d803c03e52538d62759caed010e52924c5c0a4f4cf840199c200399dc628": "umkoin-0.19.1-x86_64-linux-gnu.tar.gz",
 
-"71603c2015becc90c0efd91d6b4f91e1c2ae9a2344bd672e9beee01bce83b7b2": "umkoin-0.20.0-aarch64-linux-gnu.tar.gz",
-"78afc01e0e8ccf8ca90b139b9891c3a5adbfecbf1111cca82e613462e3d841d6": "umkoin-0.20.0-arm-linux-gnueabihf.tar.gz",
-"218bcea3eb9e42ce57ccfa26711827600a1b7164fbd02469513f11f023b29090": "umkoin-0.20.0-osx64.tar.gz",
-"5df8ef0cc548c3a69b9e475403ed5bbb5cadba964c4c3d873f1fda96afcd15b1": "umkoin-0.20.0-riscv64-linux-gnu.tar.gz",
-"c4d8896d53160ab039ab250d7e70c2822bb02aaaeac2f8f07fb73eff4635a87e": "umkoin-0.20.0-x86_64-linux-gnu.tar.gz",
-
 "ad356f577f3fffe646ffbe73bd3655612f794e9cc57995984f9f88581ea6fbb3": "umkoin-0.20.1-aarch64-linux-gnu.tar.gz",
 "2ef0bf4045ecdbd4fc34c1c818c0d4b5f52ca37709d71e8e0388f5272fb17214": "umkoin-0.20.1-arm-linux-gnueabihf.tar.gz",
 "6f6411c8409e91b070f54edf76544cdc85cfd2b9ffe0dba200fb68cddb1e3010": "umkoin-0.20.1-osx64.tar.gz",
 "e55c32e91800156032dcc2ff9bc654df2068b46bab24e63328755a1c2fd588e2": "umkoin-0.20.1-riscv64-linux-gnu.tar.gz",
-"2430e4c813ea0de28ef939170e05a36eaa1d2031589abe3b32491d5835f7b70e": "umkoin-0.20.1-x86_64-linux-gnu.tar.gz"
+"2430e4c813ea0de28ef939170e05a36eaa1d2031589abe3b32491d5835f7b70e": "umkoin-0.20.1-x86_64-linux-gnu.tar.gz",
+
+"25ea92c1318f062da3cc6eee34226a14589afec553dfdc8aef60fc359a55f773": "umkoin-0.21.0-aarch64-linux-gnu.tar.gz",
+"c24629badfdaa8cfc357e834c8814480f414cb28fc5f974cbeb14433f050ff19": "umkoin-0.21.0-arm-linux-gnueabihf.tar.gz",
+"53ec97ec51de214793172e20bb72b7639981720fa69ae81fb2f7c3e132218dcf": "umkoin-0.21.0-osx64.tar.gz",
+"ffcd9504c957f0b0d8ec24911f1a3fd023315edad853e5fa8908d869af0b0769": "umkoin-0.21.0-riscv64-linux-gnu.tar.gz",
+"4f0e60e22b501d2494d1cca6f6f507fa9a5ee0639af86901878500df6665d2d1": "umkoin-0.21.0-x86_64-linux-gnu.tar.gz",
+
+"d2b2b69917aa2f3389066e637fb38cd18ea8aa51b0b117edc878e600926a005b": "umkoin-22.0-aarch64-linux-gnu.tar.gz",
+"d4a6d99c21d200af3a24d0fad374a12834d44b9885f6677c52d6b293da559fdd": "umkoin-22.0-arm-linux-gnueabihf.tar.gz",
+"9e3ad3ea0fd71d7e65af3bda5d08702bcc2f3a7919321d9264ecb196b4787e21": "umkoin-22.0-osx64.tar.gz",
+"babb1a1a1b976f6593d692f6ff77f6c27d4fbbba242be7ca773f7d2229f0e52d": "umkoin-22.0-powerpc64le-linux-gnu.tar.gz",
+"d2a4b19a71edcddadf97ffd60a9ce0d09fdbe03ae5cb2fb8a30b7d4d0bf8e745": "umkoin-22.0-powerpc64-linux-gnu.tar.gz",
+"b1f9c2cff853c1adc2a6601dfce9fc3e7f3aa92d4aac4f08d6a6fc1fc5d1b954": "umkoin-22.0-riscv64-linux-gnu.tar.gz",
+"23ad8e83cb5761979f7d53b19814eda0d8e883588e30c758a4ef48fb01c6cc0a": "umkoin-22.0-x86_64-linux-gnu.tar.gz"
 }
 
 @contextlib.contextmanager
@@ -63,8 +71,11 @@ def download_binary(tag, args) -> int:
     if match:
         bin_path = 'bin/umkoin-core-{}/test.{}'.format(
             match.group(1), match.group(2))
+    platform = args.platform
+    if tag < "v23" and platform in ["x86_64-apple-darwin", "aarch64-apple-darwin"]:
+        platform = "osx64"
     tarball = 'umkoin-{tag}-{platform}.tar.gz'.format(
-        tag=tag[1:], platform=args.platform)
+        tag=tag[1:], platform=platform)
     tarballUrl = 'http://www.umkoin.org/{bin_path}/{tarball}'.format(
         bin_path=bin_path, tarball=tarball)
 
@@ -168,8 +179,8 @@ def check_host(args) -> int:
         platforms = {
             'aarch64-*-linux*': 'aarch64-linux-gnu',
             'x86_64-*-linux*': 'x86_64-linux-gnu',
-            'x86_64-apple-darwin*': 'osx64',
-            'aarch64-apple-darwin*': 'osx64',
+            'x86_64-apple-darwin*': 'x86_64-apple-darwin',
+            'aarch64-apple-darwin*': 'aarch64-apple-darwin',
         }
         args.platform = ''
         for pattern, target in platforms.items():

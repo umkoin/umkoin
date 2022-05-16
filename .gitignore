@@ -9,6 +9,7 @@ src/umkoin-gui
 src/umkoin-node
 src/umkoin-tx
 src/umkoin-util
+src/umkoin-chainstate
 src/umkoin-wallet
 src/test/fuzz/fuzz
 src/test/test_umkoin
@@ -76,7 +77,6 @@ src/qt/umkoin-qt.includes
 *.log
 *.trs
 *.dmg
-*.iso
 
 *.json.h
 *.raw.h
@@ -150,3 +150,5 @@ osx_volname
 dist/
 
 /guix-build-*
+
+/ci/scratch/

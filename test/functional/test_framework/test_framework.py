@@ -9,6 +9,7 @@ from enum import Enum
 import argparse
 import logging
 import os
+import platform
 import pdb
 import random
 import re
@@ -243,8 +244,14 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
             "src",
             "umkoin-cli" + config["environment"]["EXEEXT"],
         )
+        fname_umkoinutil = os.path.join(
+            config["environment"]["BUILDDIR"],
+            "src",
+            "umkoin-util" + config["environment"]["EXEEXT"],
+        )
         self.options.umkoind = os.getenv("UMKOIND", default=fname_umkoind)
         self.options.umkoincli = os.getenv("UMKOINCLI", default=fname_umkoincli)
+        self.options.umkoinutil = os.getenv("UMKOINUTIL", default=fname_umkoinutil)
 
         os.environ['PATH'] = os.pathsep.join([
             os.path.join(config['environment']['BUILDDIR'], 'src'),
@@ -826,6 +833,29 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         except ImportError:
             raise SkipTest("python3-zmq module not available.")
 
+    def skip_if_no_python_bcc(self):
+        """Attempt to import the bcc package and skip the tests if the import fails."""
+        try:
+            import bcc  # type: ignore[import] # noqa: F401
+        except ImportError:
+            raise SkipTest("bcc python module not available")
+
+    def skip_if_no_umkoind_tracepoints(self):
+        """Skip the running test if umkoind has not been compiled with USDT tracepoint support."""
+        if not self.is_usdt_compiled():
+            raise SkipTest("umkoind has not been built with USDT tracepoints enabled.")
+
+    def skip_if_no_bpf_permissions(self):
+        """Skip the running test if we don't have permissions to do BPF syscalls and load BPF maps."""
+        # check for 'root' permissions
+        if os.geteuid() != 0:
+            raise SkipTest("no permissions to use BPF (please review the tests carefully before running them with higher privileges)")
+
+    def skip_if_platform_not_linux(self):
+        """Skip the running test if we are not on a Linux platform"""
+        if platform.system() != "Linux":
+            raise SkipTest("not on a Linux system")
+
     def skip_if_no_umkoind_zmq(self):
         """Skip the running test if umkoind has not been compiled with zmq support."""
         if not self.is_zmq_compiled():
@@ -855,6 +885,11 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         """Skip the running test if umkoin-wallet has not been compiled."""
         if not self.is_wallet_tool_compiled():
             raise SkipTest("umkoin-wallet has not been compiled")
+
+    def skip_if_no_umkoin_util(self):
+        """Skip the running test if umkoin-util has not been compiled."""
+        if not self.is_umkoin_util_compiled():
+            raise SkipTest("umkoin-util has not been compiled")
 
     def skip_if_no_cli(self):
         """Skip the running test if umkoin-cli has not been compiled."""
@@ -903,9 +938,17 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         """Checks whether umkoin-wallet was compiled."""
         return self.config["components"].getboolean("ENABLE_WALLET_TOOL")
 
+    def is_umkoin_util_compiled(self):
+        """Checks whether umkoin-util was compiled."""
+        return self.config["components"].getboolean("ENABLE_UMKOIN_UTIL")
+
     def is_zmq_compiled(self):
         """Checks whether the zmq module was compiled."""
         return self.config["components"].getboolean("ENABLE_ZMQ")
+
+    def is_usdt_compiled(self):
+        """Checks whether the USDT tracepoints were compiled."""
+        return self.config["components"].getboolean("ENABLE_USDT_TRACEPOINTS")
 
     def is_sqlite_compiled(self):
         """Checks whether the wallet module was compiled with Sqlite support."""

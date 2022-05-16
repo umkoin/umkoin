@@ -37,7 +37,8 @@ Release Process
   - This update should be reviewed with a reindex-chainstate with assumevalid=0 to catch any defect
      that causes rejection of blocks in the past history.
 - Clear the release notes and move them to the wiki (see "Write the release notes" below).
-- Translations on Transifex
+- Translations on Transifex:
+    - Pull translations from Transifex into the master branch.
     - Create [a new resource](https://www.transifex.com/umkoin/umkoin-core/content/) named after the major version with the slug `[umkoin.qt-translation-<RRR>x]`, where `RRR` is the major branch number padded with zeros. Use `src/qt/locale/umkoin_en.xlf` to create it.
     - In the project workflow settings, ensure that [Translation Memory Fill-up](https://docs.transifex.com/translation-memory/enabling-autofill) is enabled and that [Translation Memory Context Matching](https://docs.transifex.com/translation-memory/translation-memory-with-context) is disabled.
     - Update the Transifex slug in [`.tx/config`](/.tx/config) to the slug of the resource created in the first step. This identifies which resource the translations will be synchronized from.
@@ -47,7 +48,9 @@ Release Process
 #### After branch-off (on the major release branch)
 
 - Update the versions.
-- Create a pinned meta-issue for testing the release candidate and provide a link to it in the release announcements where useful.
+- Create the draft, named "*version* Release Notes Draft", as a [collaborative wiki](https://github.com/umkoin-core/umkoin-devwiki/wiki/_new).
+- Clear the release notes: `cp doc/release-notes-empty-template.md doc/release-notes.md`
+- Create a pinned meta-issue for testing the release candidate (see [this issue](https://github.com/bitcoin/bitcoin/issues/17079) for an example) and provide a link to it in the release announcements where useful.
 - Translations on Transifex
     - Change the auto-update URL for the new major version's resource away from `master` and to the branch, e.g. `https://raw.githubusercontent.com/umkoin/umkoin/<branch>/src/qt/locale/umkoin_en.xlf`. Do not forget this or it will keep tracking the translations on master instead, drifting away from the specific major release.
 
@@ -110,28 +113,24 @@ against other `guix-attest` signatures.
 git -C ./guix.sigs pull
 ```
 
-### Create the macOS SDK tarball: (first time, or when SDK version changes)
+### Create the macOS SDK tarball (first time, or when SDK version changes)
 
 Create the macOS SDK tarball, see the [macdeploy
 instructions](/contrib/macdeploy/README.md#deterministic-macos-dmg-notes) for
 details.
 
-### Build and attest to build outputs:
+### Build and attest to build outputs
 
 Follow the relevant Guix README.md sections:
 - [Building](/contrib/guix/README.md#building)
 - [Attesting to build outputs](/contrib/guix/README.md#attesting-to-build-outputs)
 
-### Verify other builders' signatures to your own. (Optional)
+### Verify other builders' signatures to your own (optional)
 
-Add other builders keys to your gpg keyring, and/or refresh keys: See `../umkoin/contrib/builder-keys/README.md`.
-
-Follow the relevant Guix README.md sections:
+- [Add other builders keys to your gpg keyring, and/or refresh keys](/contrib/builder-keys/README.md)
 - [Verifying build output attestations](/contrib/guix/README.md#verifying-build-output-attestations)
 
-### Next steps:
-
-Commit your signature to guix.sigs:
+### Commit your non codesigned signature to guix.sigs
 
 ```sh
 pushd ./guix.sigs
@@ -141,29 +140,27 @@ git push  # Assuming you can push to the guix.sigs tree
 popd
 ```
 
-Codesigner only: Create Windows/macOS detached signatures:
-- Only one person handles codesigning. Everyone else should skip to the next step.
-- Only once the Windows/macOS builds each have 3 matching signatures may they be signed with their respective release keys.
+## Codesigning
 
-Codesigner only: Sign the macOS binary:
+### macOS codesigner only: Create detached macOS signatures (assuming [signapple](https://github.com/achow101/signapple/) is installed and up to date with master branch)
 
-    transfer umkoin-osx-unsigned.tar.gz to macOS for signing
     tar xf umkoin-osx-unsigned.tar.gz
-    ./detached-sig-create.sh -s "Key ID"
+    ./detached-sig-create.sh /path/to/codesign.p12
     Enter the keychain password and authorize the signature
-    Move signature-osx.tar.gz back to the guix-build host
+    signature-osx.tar.gz will be created
 
-Codesigner only: Sign the windows binaries:
+### Windows codesigner only: Create detached Windows signatures
 
     tar xf umkoin-win-unsigned.tar.gz
     ./detached-sig-create.sh -key /path/to/codesign.key
     Enter the passphrase for the key when prompted
     signature-win.tar.gz will be created
 
-Code-signer only: It is advised to test that the code signature attaches properly prior to tagging by performing the `guix-codesign` step.
+### Windows and macOS codesigners only: test code signatures
+It is advised to test that the code signature attaches properly prior to tagging by performing the `guix-codesign` step.
 However if this is done, once the release has been tagged in the umkoin-detached-sigs repo, the `guix-codesign` step must be performed again in order for the guix attestation to be valid when compared against the attestations of non-codesigner builds.
 
-Codesigner only: Commit the detached codesign payloads:
+### Windows and macOS codesigners only: Commit the detached codesign payloads
 
 ```sh
 pushd ./umkoin-detached-sigs
@@ -178,16 +175,21 @@ git push the current branch and new tag
 popd
 ```
 
-Non-codesigners: wait for Windows/macOS detached signatures:
+### Non-codesigners: wait for Windows and macOS detached signatures
 
-- Once the Windows/macOS builds each have 3 matching signatures, they will be signed with their respective release keys.
+- Once the Windows and macOS builds each have 3 matching signatures, they will be signed with their respective release keys.
 - Detached signatures will then be committed to the [umkoin-detached-sigs](https://github.com/umkoin/umkoin-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
 
-Create (and optionally verify) the codesigned outputs:
+### Create the codesigned build outputs
 
-- [Codesigning](/contrib/guix/README.md#codesigning)
+- [Codesigning build outputs](/contrib/guix/README.md#codesigning-build-outputs)
 
-Commit your signature for the signed macOS/Windows binaries:
+### Verify other builders' signatures to your own (optional)
+
+- [Add other builders keys to your gpg keyring, and/or refresh keys](/contrib/builder-keys/README.md)
+- [Verifying build output attestations](/contrib/guix/README.md#verifying-build-output-attestations)
+
+### Commit your codesigned signature to guix.sigs (for the signed macOS/Windows binaries)
 
 ```sh
 pushd ./guix.sigs
@@ -197,7 +199,7 @@ git push  # Assuming you can push to the guix.sigs tree
 popd
 ```
 
-### After 3 or more people have guix-built and their results match:
+## After 3 or more people have guix-built and their results match
 
 Combine the `all.SHA256SUMS.asc` file from all signers into `SHA256SUMS.asc`:
 

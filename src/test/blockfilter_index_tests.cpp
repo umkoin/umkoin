@@ -4,6 +4,7 @@
 
 #include <blockfilter.h>
 #include <chainparams.h>
+#include <consensus/merkle.h>
 #include <consensus/validation.h>
 #include <index/blockfilterindex.h>
 #include <node/miner.h>
@@ -18,7 +19,6 @@
 
 using node::BlockAssembler;
 using node::CBlockTemplate;
-using node::IncrementExtraNonce;
 
 BOOST_AUTO_TEST_SUITE(blockfilter_index_tests)
 
@@ -76,9 +76,12 @@ CBlock BuildChainTestingSetup::CreateBlock(const CBlockIndex* prev,
     for (const CMutableTransaction& tx : txns) {
         block.vtx.push_back(MakeTransactionRef(tx));
     }
-    // IncrementExtraNonce creates a valid coinbase and merkleRoot
-    unsigned int extraNonce = 0;
-    IncrementExtraNonce(&block, prev, extraNonce);
+    {
+        CMutableTransaction tx_coinbase{*block.vtx.at(0)};
+        tx_coinbase.vin.at(0).scriptSig = CScript{} << prev->nHeight + 1;
+        block.vtx.at(0) = MakeTransactionRef(std::move(tx_coinbase));
+        block.hashMerkleRoot = BlockMerkleRoot(block);
+    }
 
     while (!CheckProofOfWork(block.GetHash(), block.nBits, chainparams.GetConsensus())) ++block.nNonce;
 
@@ -98,7 +101,7 @@ bool BuildChainTestingSetup::BuildChain(const CBlockIndex* pindex,
         CBlockHeader header = block->GetBlockHeader();
 
         BlockValidationState state;
-        if (!Assert(m_node.chainman)->ProcessNewBlockHeaders({header}, state, Params(), &pindex)) {
+        if (!Assert(m_node.chainman)->ProcessNewBlockHeaders({header}, state, &pindex)) {
             return false;
         }
     }
@@ -175,7 +178,7 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
     uint256 chainA_last_header = last_header;
     for (size_t i = 0; i < 2; i++) {
         const auto& block = chainA[i];
-        BOOST_REQUIRE(Assert(m_node.chainman)->ProcessNewBlock(Params(), block, true, nullptr));
+        BOOST_REQUIRE(Assert(m_node.chainman)->ProcessNewBlock(block, true, nullptr));
     }
     for (size_t i = 0; i < 2; i++) {
         const auto& block = chainA[i];
@@ -193,7 +196,7 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
     uint256 chainB_last_header = last_header;
     for (size_t i = 0; i < 3; i++) {
         const auto& block = chainB[i];
-        BOOST_REQUIRE(Assert(m_node.chainman)->ProcessNewBlock(Params(), block, true, nullptr));
+        BOOST_REQUIRE(Assert(m_node.chainman)->ProcessNewBlock(block, true, nullptr));
     }
     for (size_t i = 0; i < 3; i++) {
         const auto& block = chainB[i];
@@ -224,7 +227,7 @@ BOOST_FIXTURE_TEST_CASE(blockfilter_index_initial_sync, BuildChainTestingSetup)
     // Reorg back to chain A.
      for (size_t i = 2; i < 4; i++) {
          const auto& block = chainA[i];
-         BOOST_REQUIRE(Assert(m_node.chainman)->ProcessNewBlock(Params(), block, true, nullptr));
+         BOOST_REQUIRE(Assert(m_node.chainman)->ProcessNewBlock(block, true, nullptr));
      }
 
      // Check that chain A and B blocks can be retrieved.
