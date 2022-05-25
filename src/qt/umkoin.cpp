@@ -308,7 +308,9 @@ void UmkoinApplication::startThread()
 
     /*  communication to and from thread */
     connect(&m_executor.value(), &InitExecutor::initializeResult, this, &UmkoinApplication::initializeResult);
-    connect(&m_executor.value(), &InitExecutor::shutdownResult, this, &QCoreApplication::quit);
+    connect(&m_executor.value(), &InitExecutor::shutdownResult, this, [] {
+        QCoreApplication::exit(0);
+    });
     connect(&m_executor.value(), &InitExecutor::runawayException, this, &UmkoinApplication::handleRunawayException);
     connect(this, &UmkoinApplication::requestedInitialize, &m_executor.value(), &InitExecutor::initialize);
     connect(this, &UmkoinApplication::requestedShutdown, &m_executor.value(), &InitExecutor::shutdown);
