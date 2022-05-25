@@ -5,7 +5,6 @@
 #ifndef UMKOIN_RPC_UTIL_H
 #define UMKOIN_RPC_UTIL_H
 
-#include <node/coinstats.h>
 #include <node/transaction.h>
 #include <outputtype.h>
 #include <protocol.h>
