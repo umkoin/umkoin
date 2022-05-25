@@ -5,7 +5,6 @@
 #ifndef UMKOIN_NODE_TRANSACTION_H
 #define UMKOIN_NODE_TRANSACTION_H
 
-#include <attributes.h>
 #include <policy/feerate.h>
 #include <primitives/transaction.h>
 #include <util/error.h>

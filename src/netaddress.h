@@ -9,7 +9,6 @@
 #include <config/umkoin-config.h>
 #endif
 
-#include <attributes.h>
 #include <compat.h>
 #include <crypto/siphash.h>
 #include <prevector.h>

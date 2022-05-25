@@ -14,7 +14,6 @@
 #ifndef UMKOIN_BASE58_H
 #define UMKOIN_BASE58_H
 
-#include <attributes.h>
 #include <span.h>
 
 #include <string>

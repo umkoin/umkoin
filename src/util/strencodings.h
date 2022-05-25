@@ -9,7 +9,6 @@
 #ifndef UMKOIN_UTIL_STRENCODINGS_H
 #define UMKOIN_UTIL_STRENCODINGS_H
 
-#include <attributes.h>
 #include <span.h>
 #include <util/string.h>
 

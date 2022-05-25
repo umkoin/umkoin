@@ -5,7 +5,6 @@
 #ifndef UMKOIN_UTIL_BIP32_H
 #define UMKOIN_UTIL_BIP32_H
 
-#include <attributes.h>
 #include <string>
 #include <vector>
 
