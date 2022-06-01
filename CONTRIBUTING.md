@@ -166,9 +166,14 @@ in the body of the pull request to indicate tasks are pending.
 
 At this stage, one should expect comments and review from other contributors. You
 can add more commits to your pull request by committing them locally and pushing
-to your fork until you have satisfied all feedback.
+to your fork.
 
-Note: Code review is a burdensome but important part of the development process, and as such, certain types of pull requests are rejected. In general, if the **improvements** do not warrant the **review effort** required, the PR has a high chance of being rejected. It is up to the PR author to convince the reviewers that the changes warrant the review effort, and if reviewers are "Concept NACK'ing" the PR, the author may need to present arguments and/or do research backing their suggested changes.
+You are expected to reply to any review comments before your pull request is
+merged. You may update the code or reject the feedback if you do not agree with
+it, but you should express so in a reply. If there is outstanding feedback and
+you are not actively working on it, your pull request may be closed.
+
+Please refer to the [peer review](#peer-review) section below for more details.
 
 ### Squashing Commits
 
@@ -188,9 +193,9 @@ Please update the resulting commit message, if needed. It should read as a
 coherent message. In most cases, this means not just listing the interim
 commits.
 
-If you have problems with squashing or other git workflows, you can enable
-"Allow edits from maintainers" in the right-hand sidebar of the GitHub web
-interface and ask for help in the pull request.
+If your change contains a merge commit, the above workflow may not work and you
+will need to remove the merge commit first. See the next section for details on
+how to rebase.
 
 Please refrain from creating several pull requests for the same change.
 Use the pull request that is already open (or was created earlier) to amend
@@ -203,7 +208,9 @@ pull request to pull request.
 ### Rebasing Changes
 
 When a pull request conflicts with the target branch, you may be asked to rebase it on top of the current target branch.
-The `git rebase` command will take care of rebuilding your commits on top of the new base.
+
+    git fetch https://github.com/umkoin/umkoin  # Fetch the latest upstream commit
+    git rebase FETCH_HEAD  # Rebuild commits on top of the new base
 
 This project aims to have a clean git history, where code changes are only made in non-merge commits. This simplifies
 auditability because merge commits can be assumed to not contain arbitrary code changes. Merge commits should be signed,
@@ -264,7 +271,7 @@ projects such as libsecp256k1), and is not to be confused with overall Umkoin
 Network Protocol consensus changes.
 
 Whether a pull request is merged into Umkoin Core rests with the project merge
-maintainers and ultimately the project lead.
+maintainers.
 
 Maintainers will take into consideration if a patch is in line with the general
 principles of the project; meets the minimum standards for inclusion; and will
