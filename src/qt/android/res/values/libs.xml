@@ -10,8 +10,5 @@
         <item>
             x86_64;libumkoin-qt_x86_64.so
         </item>
-        <item>
-            x86;libumkoin-qt_x86.so
-        </item>
     </array>
 </resources>
