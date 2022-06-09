@@ -98,7 +98,7 @@ test/functional/test_runner.py --extended
 In order to run backwards compatibility tests, download the previous node binaries:
 
 ```
-test/get_previous_releases.py -b v22.0 v0.21.0 v0.20.1 v0.19.1
+test/get_previous_releases.py -b v23.0 v22.0 v0.21.0 v0.20.1 v0.19.1
 ```
 
 By default, up to 4 tests will be run in parallel by test_runner. To specify
@@ -327,7 +327,7 @@ test/lint/lint-files.py
 You can run all the shell-based lint tests by running:
 
 ```
-test/lint/lint-all.py
+test/lint/all-lint.py
 ```
 
 # Writing functional tests
