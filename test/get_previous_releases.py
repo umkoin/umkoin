@@ -46,8 +46,22 @@ SHA256_SUMS = {
 "babb1a1a1b976f6593d692f6ff77f6c27d4fbbba242be7ca773f7d2229f0e52d": "umkoin-22.0-powerpc64le-linux-gnu.tar.gz",
 "d2a4b19a71edcddadf97ffd60a9ce0d09fdbe03ae5cb2fb8a30b7d4d0bf8e745": "umkoin-22.0-powerpc64-linux-gnu.tar.gz",
 "b1f9c2cff853c1adc2a6601dfce9fc3e7f3aa92d4aac4f08d6a6fc1fc5d1b954": "umkoin-22.0-riscv64-linux-gnu.tar.gz",
-"23ad8e83cb5761979f7d53b19814eda0d8e883588e30c758a4ef48fb01c6cc0a": "umkoin-22.0-x86_64-linux-gnu.tar.gz"
+"23ad8e83cb5761979f7d53b19814eda0d8e883588e30c758a4ef48fb01c6cc0a": "umkoin-22.0-x86_64-linux-gnu.tar.gz",
+
+"87fc9e3325f1912474ef84a8cdeadff06b00bab870823675418cca18c56b1fef": "umkoin-23.0.1-x86_64-linux-gnu.tar.gz",
+"f0006a4bb38d19945251bcefc3315f2903bfafadeaf8ba63a8b89b5bb9274798": "umkoin-23.0.1-arm64-apple-darwin.dmg",
+"e77014ed1637aed8c54ec3dbc63c44a5e682dda73ad0c334ea9c533be9204c6a": "umkoin-23.0.1-riscv64-linux-gnu.tar.gz",
+"4b979209f344c2b19d27731e253ee18644cb966a630fd350ea6ae12e5526f6ea": "umkoin-23.0.1-x86_64-apple-darwin.dmg",
+"364575f19b05c92b4cd5aecd890e43a82b6bc5abf7311182d5e232aea20f83ea": "umkoin-23.0.1-powerpc64-linux-gnu.tar.gz",
+"614158b6c71d465a3c70c699d5521d8759ef5517d4f56b69d4e58f47be50b451": "umkoin-23.0.1-arm-linux-gnueabihf.tar.gz",
+"1ddef0fa86b3ab7ae971b13093bea496842c6f92def4bd6b9aeceb56f4814c9c": "umkoin-23.0.1-x86_64-apple-darwin.tar.gz",
+"53916f01c420e7655762494b11bf3e43d0513b5ed7836bbb62420c4336b3f526": "umkoin-23.0.1-powerpc64le-linux-gnu.tar.gz",
+"3cf2f22fd005bf2b8f877c3fb2c2c114a440776d7a1d25a668c10284d879d682": "umkoin-23.0.1-win64-setup.exe",
+"ccf081444a29ba6a3183b0ad612512ab891811721117a7a6595b35bc79a2cce7": "umkoin-23.0.1-aarch64-linux-gnu.tar.gz",
+"e9d715097126d6b0ec9cd267e07dfcd1dba595588b689b8aaad73ae267526cf5": "umkoin-23.0.1-arm64-apple-darwin.tar.gz",
+"26cd05901c333857f117583d20345e26caa2b52b950ec8aa1596a181a3bc8709": "umkoin-23.0.1-win64.zip"
 }
+
 
 @contextlib.contextmanager
 def pushd(new_dir) -> None:
@@ -72,7 +86,7 @@ def download_binary(tag, args) -> int:
         bin_path = 'bin/umkoin-core-{}/test.{}'.format(
             match.group(1), match.group(2))
     platform = args.platform
-    if tag < "v23" and platform in ["x86_64-apple-darwin", "aarch64-apple-darwin"]:
+    if tag < "v23" and platform in ["x86_64-apple-darwin", "arm64-apple-darwin"]:
         platform = "osx64"
     tarball = 'umkoin-{tag}-{platform}.tar.gz'.format(
         tag=tag[1:], platform=platform)
@@ -180,7 +194,7 @@ def check_host(args) -> int:
             'aarch64-*-linux*': 'aarch64-linux-gnu',
             'x86_64-*-linux*': 'x86_64-linux-gnu',
             'x86_64-apple-darwin*': 'x86_64-apple-darwin',
-            'aarch64-apple-darwin*': 'aarch64-apple-darwin',
+            'aarch64-apple-darwin*': 'arm64-apple-darwin',
         }
         args.platform = ''
         for pattern, target in platforms.items():
