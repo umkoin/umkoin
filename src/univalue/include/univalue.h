@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://opensource.org/licenses/mit-license.php.
 
-#ifndef __UNIVALUE_H__
-#define __UNIVALUE_H__
+#ifndef UMKOIN_UNIVALUE_INCLUDE_UNIVALUE_H
+#define UMKOIN_UNIVALUE_INCLUDE_UNIVALUE_H
 
 #include <charconv>
 #include <cstdint>
@@ -194,4 +194,4 @@ extern const UniValue NullUniValue;
 
 const UniValue& find_value( const UniValue& obj, const std::string& name);
 
-#endif // __UNIVALUE_H__
+#endif // UMKOIN_UNIVALUE_INCLUDE_UNIVALUE_H
