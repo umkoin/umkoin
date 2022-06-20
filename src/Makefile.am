@@ -29,7 +29,6 @@ LIBUMKOIN_NODE=libumkoin_node.a
 LIBUMKOIN_COMMON=libumkoin_common.a
 LIBUMKOIN_CONSENSUS=libumkoin_consensus.a
 LIBUMKOIN_CLI=libumkoin_cli.a
-LIBUMKOIN_KERNEL=libumkoin_kernel.a
 LIBUMKOIN_UTIL=libumkoin_util.a
 LIBUMKOIN_CRYPTO_BASE=crypto/libumkoin_crypto_base.la
 LIBUMKOINQT=qt/libumkoinqt.a
