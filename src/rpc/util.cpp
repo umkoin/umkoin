@@ -9,12 +9,14 @@
 #include <script/descriptor.h>
 #include <script/signingprovider.h>
 #include <tinyformat.h>
-#include <util/check.h>
 #include <util/strencodings.h>
 #include <util/string.h>
 #include <util/translation.h>
 
 #include <tuple>
+
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
 
 const std::string UNIX_EPOCH_TIME = "UNIX epoch time";
 const std::string EXAMPLE_ADDRESS[2] = {"bc1q09vm5lfy0j5reeulh4x5752q25uqqvz34hufdl", "bc1q02ad21edsxd23d32dfgqqsz4vv4nmtfzuklhy3"};
@@ -419,7 +421,7 @@ struct Sections {
             if (arg.m_type_str.size() != 0 && push_name) {
                 left += "\"" + arg.GetName() + "\": " + arg.m_type_str.at(0);
             } else {
-                left += push_name ? arg.ToStringObj(/*oneline=*/false) : arg.ToString(/*oneline=*/false);
+                left += push_name ? arg.ToStringObj(/* oneline */ false) : arg.ToString(/* oneline */ false);
             }
             left += ",";
             PushSection({left, arg.ToDescriptionString()});
@@ -511,7 +513,8 @@ RPCHelpMan::RPCHelpMan(std::string name, std::string description, std::vector<RP
 {
     std::set<std::string> named_args;
     for (const auto& arg : m_args) {
-        std::vector<std::string> names = SplitString(arg.m_names, '|');
+        std::vector<std::string> names;
+        boost::split(names, arg.m_names, boost::is_any_of("|"));
         // Should have unique named arguments
         for (const std::string& name : names) {
             CHECK_NONFATAL(named_args.insert(name).second);
@@ -539,7 +542,7 @@ RPCHelpMan::RPCHelpMan(std::string name, std::string description, std::vector<RP
                 // Null values are accepted in all arguments
                 break;
             default:
-                NONFATAL_UNREACHABLE();
+                CHECK_NONFATAL(false);
                 break;
             }
         }
@@ -581,7 +584,7 @@ UniValue RPCHelpMan::HandleRequest(const JSONRPCRequest& request) const
         throw std::runtime_error(ToString());
     }
     const UniValue ret = m_fun(*this, request);
-    CHECK_NONFATAL(std::any_of(m_results.m_results.begin(), m_results.m_results.end(), [ret](const RPCResult& res) { return res.MatchesType(ret); }));
+    CHECK_NONFATAL(std::any_of(m_results.m_results.begin(), m_results.m_results.end(), [&ret](const RPCResult& res) { return res.MatchesType(ret); }));
     return ret;
 }
 
@@ -624,7 +627,7 @@ std::string RPCHelpMan::ToString() const
             if (was_optional) ret += ") ";
             was_optional = false;
         }
-        ret += arg.ToString(/*oneline=*/true);
+        ret += arg.ToString(/* oneline */ true);
     }
     if (was_optional) ret += " )";
 
@@ -662,7 +665,8 @@ UniValue RPCHelpMan::GetArgMap() const
     UniValue arr{UniValue::VARR};
     for (int i{0}; i < int(m_args.size()); ++i) {
         const auto& arg = m_args.at(i);
-        std::vector<std::string> arg_names = SplitString(arg.m_names, '|');
+        std::vector<std::string> arg_names;
+        boost::split(arg_names, arg.m_names, boost::is_any_of("|"));
         for (const auto& arg_name : arg_names) {
             UniValue map{UniValue::VARR};
             map.push_back(m_name);
@@ -770,7 +774,7 @@ void RPCResult::ToSections(Sections& sections, const OuterType outer_type, const
     // Elements in a JSON structure (dictionary or array) are separated by a comma
     const std::string maybe_separator{outer_type != OuterType::NONE ? "," : ""};
 
-    // The key name if recursed into a dictionary
+    // The key name if recursed into an dictionary
     const std::string maybe_key{
         outer_type == OuterType::OBJ ?
             "\"" + this->m_key_name + "\" : " :
@@ -789,7 +793,7 @@ void RPCResult::ToSections(Sections& sections, const OuterType outer_type, const
         return;
     }
     case Type::ANY: {
-        NONFATAL_UNREACHABLE(); // Only for testing
+        CHECK_NONFATAL(false); // Only for testing
     }
     case Type::NONE: {
         sections.PushSection({indent + "null" + maybe_separator, Description("json null")});
@@ -856,16 +860,15 @@ void RPCResult::ToSections(Sections& sections, const OuterType outer_type, const
         return;
     }
     } // no default case, so the compiler can warn about missing cases
-    NONFATAL_UNREACHABLE();
+    CHECK_NONFATAL(false);
 }
 
 bool RPCResult::MatchesType(const UniValue& result) const
 {
-    if (m_skip_type_check) {
-        return true;
-    }
     switch (m_type) {
-    case Type::ELISION:
+    case Type::ELISION: {
+        return false;
+    }
     case Type::ANY: {
         return true;
     }
@@ -886,55 +889,14 @@ bool RPCResult::MatchesType(const UniValue& result) const
     }
     case Type::ARR_FIXED:
     case Type::ARR: {
-        if (UniValue::VARR != result.getType()) return false;
-        for (size_t i{0}; i < result.get_array().size(); ++i) {
-            // If there are more results than documented, re-use the last doc_inner.
-            const RPCResult& doc_inner{m_inner.at(std::min(m_inner.size() - 1, i))};
-            if (!doc_inner.MatchesType(result.get_array()[i])) return false;
-        }
-        return true; // empty result array is valid
+        return UniValue::VARR == result.getType();
     }
     case Type::OBJ_DYN:
     case Type::OBJ: {
-        if (UniValue::VOBJ != result.getType()) return false;
-        if (!m_inner.empty() && m_inner.at(0).m_type == Type::ELISION) return true;
-        if (m_type == Type::OBJ_DYN) {
-            const RPCResult& doc_inner{m_inner.at(0)}; // Assume all types are the same, randomly pick the first
-            for (size_t i{0}; i < result.get_obj().size(); ++i) {
-                if (!doc_inner.MatchesType(result.get_obj()[i])) {
-                    return false;
-                }
-            }
-            return true; // empty result obj is valid
-        }
-        std::set<std::string> doc_keys;
-        for (const auto& doc_entry : m_inner) {
-            doc_keys.insert(doc_entry.m_key_name);
-        }
-        std::map<std::string, UniValue> result_obj;
-        result.getObjMap(result_obj);
-        for (const auto& result_entry : result_obj) {
-            if (doc_keys.find(result_entry.first) == doc_keys.end()) {
-                return false; // missing documentation
-            }
-        }
-
-        for (const auto& doc_entry : m_inner) {
-            const auto result_it{result_obj.find(doc_entry.m_key_name)};
-            if (result_it == result_obj.end()) {
-                if (!doc_entry.m_optional) {
-                    return false; // result is missing a required key
-                }
-                continue;
-            }
-            if (!doc_entry.MatchesType(result_it->second)) {
-                return false; // wrong type
-            }
-        }
-        return true;
+        return UniValue::VOBJ == result.getType();
     }
     } // no default case, so the compiler can warn about missing cases
-    NONFATAL_UNREACHABLE();
+    CHECK_NONFATAL(false);
 }
 
 void RPCResult::CheckInnerDoc() const
@@ -980,9 +942,9 @@ std::string RPCArg::ToStringObj(const bool oneline) const
     case Type::OBJ:
     case Type::OBJ_USER_KEYS:
         // Currently unused, so avoid writing dead code
-        NONFATAL_UNREACHABLE();
+        CHECK_NONFATAL(false);
     } // no default case, so the compiler can warn about missing cases
-    NONFATAL_UNREACHABLE();
+    CHECK_NONFATAL(false);
 }
 
 std::string RPCArg::ToString(const bool oneline) const
@@ -1017,7 +979,7 @@ std::string RPCArg::ToString(const bool oneline) const
         return "[" + res + "...]";
     }
     } // no default case, so the compiler can warn about missing cases
-    NONFATAL_UNREACHABLE();
+    CHECK_NONFATAL(false);
 }
 
 static std::pair<int64_t, int64_t> ParseRange(const UniValue& value)
