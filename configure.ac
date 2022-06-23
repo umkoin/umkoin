@@ -1303,6 +1303,7 @@ if test "$enable_fuzz" = "yes"; then
   umkoin_enable_qt_test=no
   umkoin_enable_qt_dbus=no
   use_bench=no
+  use_tests=no
   use_external_signer=no
   use_upnp=no
   use_natpmp=no
@@ -1559,7 +1560,7 @@ fi
 dnl libevent check
 
 use_libevent=no
-if test "$build_umkoin_cli$build_umkoind$umkoin_enable_qt$use_tests$use_bench" != "nonononono"; then
+if test "$build_umkoin_cli$build_umkoind$umkoin_enable_qt$enable_fuzz_binary$use_tests$use_bench" != "nononononono"; then
   PKG_CHECK_MODULES([EVENT], [libevent >= 2.1.8], [use_libevent=yes], [AC_MSG_ERROR([libevent version 2.1.8 or greater not found.])])
   if test "$TARGET_OS" != "windows"; then
     PKG_CHECK_MODULES([EVENT_PTHREADS], [libevent_pthreads >= 2.1.8], [], [AC_MSG_ERROR([libevent_pthreads version 2.1.8 or greater not found.])])
@@ -1846,8 +1847,8 @@ else
   AC_MSG_RESULT([no])
 fi
 
-if test "$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoin_libs$build_umkoind$umkoin_enable_qt$use_bench$use_tests" = "nononononononono"; then
-  AC_MSG_ERROR([No targets! Please specify at least one of: --with-utils --with-libs --with-daemon --with-gui --enable-bench or --enable-tests])
+if test "$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoin_libs$build_umkoind$umkoin_enable_qt$enable_fuzz_binary$use_bench$use_tests" = "nonononononononono"; then
+  AC_MSG_ERROR([No targets! Please specify at least one of: --with-utils --with-libs --with-daemon --with-gui --enable-fuzz(-binary) --enable-bench or --enable-tests])
 fi
 
 AM_CONDITIONAL([TARGET_DARWIN], [test "$TARGET_OS" = "darwin"])
