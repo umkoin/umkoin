@@ -56,10 +56,10 @@ The Umkoin repo's [root README](/README.md) contains relevant information on the
 - [BIPS](bips.md)
 - [Dnsseed Policy](dnsseed-policy.md)
 - [Benchmarking](benchmarking.md)
+- [Internal Design Docs](design/)
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)
-- [Assumeutxo design](assumeutxo.md)
 - [umkoin.conf Configuration File](umkoin-conf.md)
 - [CJDNS Support](cjdns.md)
 - [Files](files.md)
