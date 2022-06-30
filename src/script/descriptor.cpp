@@ -380,7 +380,7 @@ public:
             if (m_derive == DeriveType::UNHARDENED) der = parent_extkey.Derive(final_extkey, pos);
             assert(m_derive != DeriveType::HARDENED);
         }
-//        assert(der);
+        assert(der);
 
         final_info_out = final_info_out_tmp;
         key_out = final_extkey.pubkey;
@@ -882,7 +882,7 @@ protected:
         if (!xpk.IsFullyValid()) return {};
         builder.Finalize(xpk);
         WitnessV1Taproot output = builder.GetOutput();
-        out.tr_spenddata[output].Merge(builder.GetSpendData());
+        out.tr_trees[output] = builder;
         out.pubkeys.emplace(keys[0].GetID(), keys[0]);
         return Vector(GetScriptForDestination(output));
     }
