@@ -854,8 +854,7 @@ endif
 
 # TODO: libumkoinkernel is a work in progress consensus engine library, as more
 #       and more modules are decoupled from the consensus engine, this list will
-#       shrink to only those which are absolutely necessary. For example, things
-#       like index/*.cpp will be removed.
+#       shrink to only those which are absolutely necessary.
 libumkoinkernel_la_SOURCES = \
   kernel/umkoinkernel.cpp \
   arith_uint256.cpp \
