@@ -6,6 +6,7 @@
 #define UMKOIN_TEST_UTIL_NET_H
 
 #include <compat.h>
+#include <node/eviction.h>
 #include <netaddress.h>
 #include <net.h>
 #include <util/sock.h>
