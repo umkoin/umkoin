@@ -5,7 +5,7 @@
 #ifndef UMKOIN_UTIL_SERFLOAT_H
 #define UMKOIN_UTIL_SERFLOAT_H
 
-#include <stdint.h>
+#include <cstdint>
 
 /* Encode a double using the IEEE 754 binary64 format. All NaNs are encoded as x86/ARM's
  * positive quiet NaN with payload 0. */

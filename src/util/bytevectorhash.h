@@ -5,7 +5,8 @@
 #ifndef UMKOIN_UTIL_BYTEVECTORHASH_H
 #define UMKOIN_UTIL_BYTEVECTORHASH_H
 
-#include <stdint.h>
+#include <cstdint>
+#include <cstddef>
 #include <vector>
 
 /**
