@@ -607,8 +607,7 @@ inspecting signatures in Mach-O binaries.")
           ((string-contains target "-linux-")
            (list (cond ((string-contains target "riscv64-")
                         (make-umkoin-cross-toolchain target
-                                                      #:base-libc (make-glibc-without-werror glibc-2.27/umkoin-patched)
-                                                      #:base-kernel-headers base-linux-kernel-headers))
+                                                      #:base-libc (make-glibc-without-werror glibc-2.27/umkoin-patched)))
                        (else
                         (make-umkoin-cross-toolchain target)))))
           ((string-contains target "darwin")
