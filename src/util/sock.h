@@ -5,7 +5,7 @@
 #ifndef UMKOIN_UTIL_SOCK_H
 #define UMKOIN_UTIL_SOCK_H
 
-#include <compat.h>
+#include <compat/compat.h>
 #include <threadinterrupt.h>
 #include <util/time.h>
 

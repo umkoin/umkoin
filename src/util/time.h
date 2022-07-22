@@ -6,7 +6,7 @@
 #ifndef UMKOIN_UTIL_TIME_H
 #define UMKOIN_UTIL_TIME_H
 
-#include <compat.h>
+#include <compat/compat.h>
 
 #include <chrono>
 #include <cstdint>
