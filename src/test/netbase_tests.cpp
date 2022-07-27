@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(netbase_networks)
     BOOST_CHECK(ResolveIP("::1").GetNetwork() == NET_UNROUTABLE);
     BOOST_CHECK(ResolveIP("8.8.8.8").GetNetwork() == NET_IPV4);
     BOOST_CHECK(ResolveIP("2001::8888").GetNetwork() == NET_IPV6);
-    BOOST_CHECK(ResolveIP("pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion").GetNetwork() == NET_ONION);
+    BOOST_CHECK(ResolveIP("klfchu53kxun6zx5.onion").GetNetwork() == NET_ONION);
     BOOST_CHECK(CreateInternal("foo.com").GetNetwork() == NET_INTERNAL);
 }
 
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(netbase_properties)
     BOOST_CHECK(ResolveIP("2001:20::").IsRFC7343());
     BOOST_CHECK(ResolveIP("FE80::").IsRFC4862());
     BOOST_CHECK(ResolveIP("64:FF9B::").IsRFC6052());
-    BOOST_CHECK(ResolveIP("pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion").IsTor());
+    BOOST_CHECK(ResolveIP("klfchu53kxun6zx5.onion").IsTor());
     BOOST_CHECK(ResolveIP("127.0.0.1").IsLocal());
     BOOST_CHECK(ResolveIP("::1").IsLocal());
     BOOST_CHECK(ResolveIP("8.8.8.8").IsRoutable());
@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE(subnet_test)
     // Create Non-IP subnets.
 
     const CNetAddr tor_addr{
-        ResolveIP("pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion")};
+        ResolveIP("klfchu53kxun6zx5.onion")};
 
     subnet = CSubNet(tor_addr);
     BOOST_CHECK(subnet.IsValid());
@@ -480,21 +480,21 @@ BOOST_AUTO_TEST_CASE(netbase_dont_resolve_strings_with_embedded_nul_characters)
 // try a few edge cases for port, service flags and time.
 
 static const std::vector<CAddress> fixture_addresses({
-    CAddress(
+    CAddress{
         CService(CNetAddr(in6_addr(IN6ADDR_LOOPBACK_INIT)), 0 /* port */),
         NODE_NONE,
-        0x24a2185aU /* Fri Nov 24 22:50:12 UTC 2017 */
-    ),
-    CAddress(
+        NodeSeconds{0x5a18a224s}, /* Fri Nov 24 22:50:12 UTC 2017 */
+    },
+    CAddress{
         CService(CNetAddr(in6_addr(IN6ADDR_LOOPBACK_INIT)), 0x00f1 /* port */),
         NODE_NETWORK,
-        0x83766279U /* Tue Nov 22 11:22:33 UTC 2039 */
-    ),
-    CAddress(
+        NodeSeconds{0x83766279s}, /* Tue Nov 22 11:22:33 UTC 2039 */
+    },
+    CAddress{
         CService(CNetAddr(in6_addr(IN6ADDR_LOOPBACK_INIT)), 0xf1f2 /* port */),
         static_cast<ServiceFlags>(NODE_WITNESS | NODE_COMPACT_FILTERS | NODE_NETWORK_LIMITED),
-        0xffffffffU /* Sun Feb  7 06:28:15 UTC 2106 */
-    )
+        NodeSeconds{0xffffffffs}, /* Sun Feb  7 06:28:15 UTC 2106 */
+    },
 });
 
 // fixture_addresses should equal to this when serialized in V1 format.
@@ -522,7 +522,7 @@ static constexpr const char* stream_addrv1_hex =
 static constexpr const char* stream_addrv2_hex =
     "03" // number of entries
 
-    "5a18a224"                         // time, Nov 24 22:50:12 UTC 2017
+    "5a18a224"                         // time, Fri Nov 24 22:50:12 UTC 2017
     "00"                               // service flags, COMPACTSIZE(NODE_NONE)
     "02"                               // network id, IPv6
     "10"                               // address length, COMPACTSIZE(16)
