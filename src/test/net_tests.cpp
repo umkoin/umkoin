@@ -207,7 +207,7 @@ BOOST_AUTO_TEST_CASE(cnetaddr_basic)
     BOOST_CHECK(!addr.SetSpecial("6hzph5hv6337r6p2.onion"));
 
     // TORv3
-    const char* torv3_addr = "pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion";
+    const char* torv3_addr = "klfchu53kxun6zx5.onion";
     BOOST_REQUIRE(addr.SetSpecial(torv3_addr));
     BOOST_REQUIRE(addr.IsValid());
     BOOST_REQUIRE(addr.IsTor());
@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(cnetaddr_basic)
 
     // TORv3, malicious
     BOOST_CHECK(!addr.SetSpecial(std::string{
-        "pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd\0wtf.onion", 66}));
+        "klfchu53kxun6zx5\0wtf.onion", 66}));
 
     // TOR, bogus length
     BOOST_CHECK(!addr.SetSpecial(std::string{"mfrggzak.onion"}));
@@ -351,7 +351,7 @@ BOOST_AUTO_TEST_CASE(cnetaddr_serialize_v1)
     // TORv2, no longer supported
     BOOST_CHECK(!addr.SetSpecial("6hzph5hv6337r6p2.onion"));
 
-    BOOST_REQUIRE(addr.SetSpecial("pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion"));
+    BOOST_REQUIRE(addr.SetSpecial("klfchu53kxun6zx5.onion"));
     s << addr;
     BOOST_CHECK_EQUAL(HexStr(s), "00000000000000000000000000000000");
     s.clear();
@@ -510,7 +510,7 @@ BOOST_AUTO_TEST_CASE(cnetaddr_unserialize_v2)
     BOOST_CHECK(addr.IsTor());
     BOOST_CHECK(!addr.IsAddrV1Compatible());
     BOOST_CHECK_EQUAL(addr.ToString(),
-                      "pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion");
+                      "klfchu53kxun6zx5.onion");
     BOOST_REQUIRE(s.empty());
 
     // Invalid TORv3, with bogus length.
@@ -675,10 +675,13 @@ BOOST_AUTO_TEST_CASE(get_local_addr_for_peer_port)
     const uint16_t bind_port = 20001;
     m_node.args->ForceSetArg("-bind", strprintf("3.4.5.6:%u", bind_port));
 
+    const uint32_t current_time = static_cast<uint32_t>(GetAdjustedTime());
+    SetMockTime(current_time);
+
     // Our address:port as seen from the peer, completely different from the above.
     in_addr peer_us_addr;
     peer_us_addr.s_addr = htonl(0x02030405);
-    const CAddress peer_us{CService{peer_us_addr, 20002}, NODE_NETWORK};
+    const CAddress peer_us{CService{peer_us_addr, 20002}, NODE_NETWORK, current_time};
 
     // Create a peer with a routable IPv4 address (outbound).
     in_addr peer_out_in_addr;
@@ -699,7 +702,7 @@ BOOST_AUTO_TEST_CASE(get_local_addr_for_peer_port)
     // Without the fix peer_us:6333 is chosen instead of the proper peer_us:bind_port.
     auto chosen_local_addr = GetLocalAddrForPeer(&peer_out);
     BOOST_REQUIRE(chosen_local_addr);
-    const CService expected{peer_us_addr, bind_port};
+    const CAddress expected{CService{peer_us_addr, bind_port}, NODE_NETWORK, current_time};
     BOOST_CHECK(*chosen_local_addr == expected);
 
     // Create a peer with a routable IPv4 address (inbound).
@@ -732,31 +735,26 @@ BOOST_AUTO_TEST_CASE(LimitedAndReachable_Network)
     BOOST_CHECK(IsReachable(NET_IPV6));
     BOOST_CHECK(IsReachable(NET_ONION));
     BOOST_CHECK(IsReachable(NET_I2P));
-    BOOST_CHECK(IsReachable(NET_CJDNS));
 
     SetReachable(NET_IPV4, false);
     SetReachable(NET_IPV6, false);
     SetReachable(NET_ONION, false);
     SetReachable(NET_I2P, false);
-    SetReachable(NET_CJDNS, false);
 
     BOOST_CHECK(!IsReachable(NET_IPV4));
     BOOST_CHECK(!IsReachable(NET_IPV6));
     BOOST_CHECK(!IsReachable(NET_ONION));
     BOOST_CHECK(!IsReachable(NET_I2P));
-    BOOST_CHECK(!IsReachable(NET_CJDNS));
 
     SetReachable(NET_IPV4, true);
     SetReachable(NET_IPV6, true);
     SetReachable(NET_ONION, true);
     SetReachable(NET_I2P, true);
-    SetReachable(NET_CJDNS, true);
 
     BOOST_CHECK(IsReachable(NET_IPV4));
     BOOST_CHECK(IsReachable(NET_IPV6));
     BOOST_CHECK(IsReachable(NET_ONION));
     BOOST_CHECK(IsReachable(NET_I2P));
-    BOOST_CHECK(IsReachable(NET_CJDNS));
 }
 
 BOOST_AUTO_TEST_CASE(LimitedAndReachable_NetworkCaseUnroutableAndInternal)
