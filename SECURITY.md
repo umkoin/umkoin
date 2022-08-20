@@ -13,7 +13,7 @@ The following keys may be used to communicate sensitive information to developer
 
 | Name | Fingerprint |
 |------|-------------|
-| Igor Gunia | 56E2 70BD DEDF 0118 DCAD 3B09 F15D 7516 47A2 C44C |
 | Umkoin Core Builder | A405 D7A3 AACB 75AB 1B8D C18A 3B59 F7F9 F2B4 FCF0 |
+| Igor Gunia | 56E2 70BD DEDF 0118 DCAD 3B09 F15D 7516 47A2 C44C |
 
 You can import a key by running the following command with that individual’s fingerprint: `gpg --keyserver hkps://keys.openpgp.org --recv-keys "<fingerprint>"` Ensure that you put quotes around fingerprints containing spaces.
