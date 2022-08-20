@@ -23,6 +23,7 @@ endif
 
 UMKOIND_BIN=$(top_builddir)/src/$(UMKOIN_DAEMON_NAME)$(EXEEXT)
 UMKOIN_QT_BIN=$(top_builddir)/src/qt/$(UMKOIN_GUI_NAME)$(EXEEXT)
+UMKOIN_TEST_BIN=$(top_builddir)/src/test/$(UMKOIN_TEST_NAME)$(EXEEXT)
 UMKOIN_CLI_BIN=$(top_builddir)/src/$(UMKOIN_CLI_NAME)$(EXEEXT)
 UMKOIN_TX_BIN=$(top_builddir)/src/$(UMKOIN_TX_NAME)$(EXEEXT)
 UMKOIN_UTIL_BIN=$(top_builddir)/src/$(UMKOIN_UTIL_NAME)$(EXEEXT)
@@ -78,6 +79,7 @@ $(UMKOIN_WIN_INSTALLER): all-recursive
 	$(MKDIR_P) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIND_BIN) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_QT_BIN) $(top_builddir)/release
+	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_TEST_BIN) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_CLI_BIN) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_TX_BIN) $(top_builddir)/release
 	STRIPPROG="$(STRIP)" $(INSTALL_STRIP_PROGRAM) $(UMKOIN_WALLET_BIN) $(top_builddir)/release
