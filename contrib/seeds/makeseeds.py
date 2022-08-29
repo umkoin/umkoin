@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2013-2020 The Bitcoin Core developers
+# Copyright (c) 2013-2022 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #
@@ -7,10 +7,10 @@
 #
 
 import argparse
+import collections
 import ipaddress
 import re
 import sys
-import collections
 from typing import List, Dict, Union
 
 from asmap import ASMap, net_to_prefix
@@ -22,7 +22,7 @@ MAX_SEEDS_PER_ASN = {
     'ipv6': 10,
 }
 
-MIN_BLOCKS = 153500
+MIN_BLOCKS = 730000
 
 PATTERN_IPV4 = re.compile(r"^((\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})):(\d+)$")
 PATTERN_IPV6 = re.compile(r"^\[([0-9a-z:]+)\]:(\d+)$")
@@ -38,7 +38,8 @@ PATTERN_AGENT = re.compile(
     r"0.20.(0|1|2|99)|"
     r"0.21.(0|1|2|99)|"
     r"22.(0|99)|"
-    r"23.99"
+    r"23.(0|99)|"
+    r"24.99"
     r")")
 
 def parseline(line: str) -> Union[dict, None]:
