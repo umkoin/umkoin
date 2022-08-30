@@ -615,8 +615,8 @@ void UmkoinGUI::setClientModel(ClientModel *_clientModel, interfaces::BlockAndHe
         connect(_clientModel, &ClientModel::numConnectionsChanged, this, &UmkoinGUI::setNumConnections);
         connect(_clientModel, &ClientModel::networkActiveChanged, this, &UmkoinGUI::setNetworkActive);
 
-        modalOverlay->setKnownBestHeight(tip_info->header_height, QDateTime::fromSecsSinceEpoch(tip_info->header_time));
-        setNumBlocks(tip_info->block_height, QDateTime::fromSecsSinceEpoch(tip_info->block_time), tip_info->verification_progress, false, SynchronizationState::INIT_DOWNLOAD);
+        modalOverlay->setKnownBestHeight(tip_info->header_height, QDateTime::fromSecsSinceEpoch(tip_info->header_time), /*presync=*/false);
+        setNumBlocks(tip_info->block_height, QDateTime::fromSecsSinceEpoch(tip_info->block_time), tip_info->verification_progress, SyncType::BLOCK_SYNC, SynchronizationState::INIT_DOWNLOAD);
         connect(_clientModel, &ClientModel::numBlocksChanged, this, &UmkoinGUI::setNumBlocks);
 
         // Receive and report messages from client model
@@ -1026,6 +1026,13 @@ void UmkoinGUI::updateHeadersSyncProgressLabel()
         progressBarLabel->setText(tr("Syncing Headers (%1%)…").arg(QString::number(100.0 / (headersTipHeight+estHeadersLeft)*headersTipHeight, 'f', 1)));
 }
 
+void UmkoinGUI::updateHeadersPresyncProgressLabel(int64_t height, const QDateTime& blockDate)
+{
+    int estHeadersLeft = blockDate.secsTo(QDateTime::currentDateTime()) / Params().GetConsensus().nPowTargetSpacing;
+    if (estHeadersLeft > HEADER_HEIGHT_DELTA_SYNC)
+        progressBarLabel->setText(tr("Pre-syncing Headers (%1%)…").arg(QString::number(100.0 / (height+estHeadersLeft)*height, 'f', 1)));
+}
+
 void UmkoinGUI::openOptionsDialogWithTab(OptionsDialog::Tab tab)
 {
     if (!clientModel || !clientModel->getOptionsModel())
@@ -1039,7 +1046,7 @@ void UmkoinGUI::openOptionsDialogWithTab(OptionsDialog::Tab tab)
     GUIUtil::ShowModalDialogAsynchronously(dlg);
 }
 
-void UmkoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool header, SynchronizationState sync_state)
+void UmkoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, SyncType synctype, SynchronizationState sync_state)
 {
 // Disabling macOS App Nap on initial sync, disk and reindex operations.
 #ifdef Q_OS_MACOS
@@ -1052,8 +1059,8 @@ void UmkoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVeri
 
     if (modalOverlay)
     {
-        if (header)
-            modalOverlay->setKnownBestHeight(count, blockDate);
+        if (synctype != SyncType::BLOCK_SYNC)
+            modalOverlay->setKnownBestHeight(count, blockDate, synctype == SyncType::HEADER_PRESYNC);
         else
             modalOverlay->tipUpdate(count, blockDate, nVerificationProgress);
     }
@@ -1067,7 +1074,10 @@ void UmkoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVeri
     enum BlockSource blockSource = clientModel->getBlockSource();
     switch (blockSource) {
         case BlockSource::NETWORK:
-            if (header) {
+            if (synctype == SyncType::HEADER_PRESYNC) {
+                updateHeadersPresyncProgressLabel(count, blockDate);
+                return;
+            } else if (synctype == SyncType::HEADER_SYNC) {
                 updateHeadersSyncProgressLabel();
                 return;
             }
@@ -1075,7 +1085,7 @@ void UmkoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVeri
             updateHeadersSyncProgressLabel();
             break;
         case BlockSource::DISK:
-            if (header) {
+            if (synctype != SyncType::BLOCK_SYNC) {
                 progressBarLabel->setText(tr("Indexing blocks on disk…"));
             } else {
                 progressBarLabel->setText(tr("Processing blocks on disk…"));
@@ -1085,7 +1095,7 @@ void UmkoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVeri
             progressBarLabel->setText(tr("Reindexing blocks on disk…"));
             break;
         case BlockSource::NONE:
-            if (header) {
+            if (synctype != SyncType::BLOCK_SYNC) {
                 return;
             }
             progressBarLabel->setText(tr("Connecting to peers…"));
