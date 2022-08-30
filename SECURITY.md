@@ -7,7 +7,7 @@ security updates: [http://www.umkoin.org/en/lifecycle.php](http://www.umkoin.org
 
 ## Reporting a Vulnerability
 
-To report security issues send an email to umkoin@umkoin.org (not for support).
+Report security issues to umkoin@umkoin.org (not for support).
 
 The following keys may be used to communicate sensitive information to developers:
 
