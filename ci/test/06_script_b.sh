@@ -65,6 +65,7 @@ if [ "${RUN_TIDY}" = "true" ]; then
           " src/util/serfloat.cpp"\
           " src/util/spanparsing.cpp"\
           " src/util/strencodings.cpp"\
+          " src/util/string.cpp"\
           " src/util/syserror.cpp"\
           " src/util/url.cpp"\
           " -p . ${MAKEJOBS} -- -Xiwyu --cxx17ns -Xiwyu --mapping_file=${BASE_BUILD_DIR}/umkoin-$HOST/contrib/devtools/iwyu/umkoin.core.imp"
