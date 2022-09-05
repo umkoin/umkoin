@@ -68,7 +68,6 @@ BOOST_AUTO_TEST_CASE(outbound_slow_chain_eviction)
         /*successfully_connected=*/true,
         /*remote_services=*/ServiceFlags(NODE_NETWORK | NODE_WITNESS),
         /*local_services=*/ServiceFlags(NODE_NETWORK | NODE_WITNESS),
-        /*permission_flags=*/NetPermissionFlags::None,
         /*version=*/PROTOCOL_VERSION,
         /*relay_txs=*/true);
     TestOnlyResetTimeData();
@@ -282,7 +281,7 @@ BOOST_AUTO_TEST_CASE(peer_discouragement)
 
     CNetAddr tor_netaddr;
     BOOST_REQUIRE(
-        tor_netaddr.SetSpecial("pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion"));
+        tor_netaddr.SetSpecial("klfchu53kxun6zx5.onion"));
     const CService tor_service{tor_netaddr, Params().GetDefaultPort()};
 
     const std::array<CAddress, 3> addr{CAddress{ip(0xa0b0c001), NODE_NONE},
