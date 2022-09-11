@@ -1,3 +1,3 @@
-# List of fixed seed nodes for testnet
+# List of fixed seed nodes for testnet (2022-09)
 68.183.210.111:16333
 82.193.103.110:16333
