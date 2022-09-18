@@ -772,7 +772,7 @@ umkoin_cli_LDADD += $(EVENT_LIBS)
 
 # umkoin-tx binary #
 umkoin_tx_SOURCES = umkoin-tx.cpp
-umkoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS)
+umkoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 umkoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 umkoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
