@@ -155,13 +155,13 @@ class ProxyTest(UmkoinTestFramework):
             self.network_test(node, addr, network=NET_IPV6)
 
         if test_onion:
-            addr = "pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion:6333"
+            addr = "klfchu53kxun6zx5.onion:6333"
             self.log.debug(f"Test: outgoing onion connection through node for address {addr}")
             node.addnode(addr, "onetry")
             cmd = proxies[2].queue.get()
             assert isinstance(cmd, Socks5Command)
             assert_equal(cmd.atyp, AddressType.DOMAINNAME)
-            assert_equal(cmd.addr, b"pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion")
+            assert_equal(cmd.addr, b"klfchu53kxun6zx5.onion")
             assert_equal(cmd.port, 6333)
             if not auth:
                 assert_equal(cmd.username, None)
@@ -332,19 +332,26 @@ class ProxyTest(UmkoinTestFramework):
         msg = "Error: Invalid -i2psam address or hostname: 'def:xyz'"
         self.nodes[1].assert_start_raises_init_error(expected_msg=msg)
 
+        self.log.info("Test passing -onlynet=onion with -onion=0/-noonion raises expected init error")
         msg = (
             "Error: Outbound connections restricted to Tor (-onlynet=onion) but "
-            "the proxy for reaching the Tor network is not provided (no -proxy= "
-            "and no -onion= given) or it is explicitly forbidden (-onion=0)"
+            "the proxy for reaching the Tor network is explicitly forbidden: -onion=0"
         )
-        self.log.info("Test passing -onlynet=onion without -proxy or -onion raises expected init error")
-        self.nodes[1].extra_args = ["-onlynet=onion"]
-        self.nodes[1].assert_start_raises_init_error(expected_msg=msg)
-
-        self.log.info("Test passing -onlynet=onion with -onion=0/-noonion raises expected init error")
         for arg in ["-onion=0", "-noonion"]:
             self.nodes[1].extra_args = ["-onlynet=onion", arg]
             self.nodes[1].assert_start_raises_init_error(expected_msg=msg)
+
+        self.log.info("Test passing -onlynet=onion without -proxy, -onion or -listenonion raises expected init error")
+        self.nodes[1].extra_args = ["-onlynet=onion", "-listenonion=0"]
+        msg = (
+            "Error: Outbound connections restricted to Tor (-onlynet=onion) but the proxy for "
+            "reaching the Tor network is not provided: none of -proxy, -onion or -listenonion is given"
+        )
+        self.nodes[1].assert_start_raises_init_error(expected_msg=msg)
+
+        self.log.info("Test passing -onlynet=onion without -proxy or -onion but with -listenonion=1 is ok")
+        self.start_node(1, extra_args=["-onlynet=onion", "-listenonion=1"])
+        self.stop_node(1)
 
         self.log.info("Test passing unknown network to -onlynet raises expected init error")
         self.nodes[1].extra_args = ["-onlynet=abc"]
