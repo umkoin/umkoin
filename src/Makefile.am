@@ -23,7 +23,7 @@ noinst_PROGRAMS =
 TESTS =
 BENCHMARKS =
 
-UMKOIN_INCLUDES=-I$(builddir) -I$(srcdir)/$(MINISKETCH_INCLUDE_DIR_INT) -I$(srcdir)/secp256k1/include -I$(srcdir)/$(UNIVALUE_INCLUDE_DIR_INT) $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
+UMKOIN_INCLUDES=-I$(builddir) -I$(srcdir)/$(MINISKETCH_INCLUDE_DIR_INT) -I$(srcdir)/secp256k1/include -I$(srcdir)/$(UNIVALUE_INCLUDE_DIR_INT) $(LEVELDB_CPPFLAGS)
 
 LIBUMKOIN_NODE=libumkoin_node.a
 LIBUMKOIN_COMMON=libumkoin_common.a
@@ -349,7 +349,7 @@ libumkoin_util_a-clientversion.$(OBJEXT): obj/build.h
 # Contains code accessing mempool and chain state that is meant to be separated
 # from wallet and gui code (see node/README.md). Shared code should go in
 # libumkoin_common or libumkoin_util libraries, instead.
-libumkoin_node_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(NATPMP_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libumkoin_node_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS) $(MINIUPNPC_CPPFLAGS) $(NATPMP_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libumkoin_node_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_node_a_SOURCES = \
   addrdb.cpp \
@@ -439,7 +439,7 @@ libumkoin_node_a_SOURCES += dummywallet.cpp
 endif
 
 if ENABLE_ZMQ
-libumkoin_zmq_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(ZMQ_CFLAGS)
+libumkoin_zmq_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS) $(ZMQ_CFLAGS)
 libumkoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
@@ -452,7 +452,7 @@ endif
 
 # wallet: shared between umkoind and umkoin-qt, but only linked
 # when wallet enabled
-libumkoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BDB_CPPFLAGS) $(SQLITE_CFLAGS)
+libumkoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS) $(BDB_CPPFLAGS) $(SQLITE_CFLAGS)
 libumkoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_wallet_a_SOURCES = \
   wallet/coincontrol.cpp \
@@ -491,7 +491,7 @@ if USE_BDB
 libumkoin_wallet_a_SOURCES += wallet/bdb.cpp wallet/salvage.cpp
 endif
 
-libumkoin_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+libumkoin_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS)
 libumkoin_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_wallet_tool_a_SOURCES = \
   wallet/wallettool.cpp \
@@ -655,7 +655,7 @@ libumkoin_common_a_SOURCES = \
   $(UMKOIN_CORE_H)
 
 # util: shared between all executables.
-libumkoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+libumkoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS)
 libumkoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_util_a_SOURCES = \
   support/lockedpool.cpp \
@@ -772,7 +772,7 @@ umkoin_cli_LDADD += $(EVENT_LIBS)
 
 # umkoin-tx binary #
 umkoin_tx_SOURCES = umkoin-tx.cpp
-umkoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+umkoin_tx_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS)
 umkoin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 umkoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
@@ -833,7 +833,7 @@ umkoin_util_LDADD = \
 
 # umkoin-chainstate binary #
 umkoin_chainstate_SOURCES = umkoin-chainstate.cpp
-umkoin_chainstate_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+umkoin_chainstate_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS)
 umkoin_chainstate_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 # $(LIBTOOL_APP_LDFLAGS) deliberately omitted here so that we can test linking
