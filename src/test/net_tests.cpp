@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(cnetaddr_basic)
     BOOST_CHECK(!addr.SetSpecial("6hzph5hv6337r6p2.onion"));
 
     // TORv3
-    const char* torv3_addr = "pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion";
+    const char* torv3_addr = "klfchu53kxun6zx5.onion";
     BOOST_REQUIRE(addr.SetSpecial(torv3_addr));
     BOOST_REQUIRE(addr.IsValid());
     BOOST_REQUIRE(addr.IsTor());
@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_CASE(cnetaddr_basic)
 
     // TORv3, malicious
     BOOST_CHECK(!addr.SetSpecial(std::string{
-        "pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd\0wtf.onion", 66}));
+        "klfchu53kxun6zx5\0wtf.onion", 66}));
 
     // TOR, bogus length
     BOOST_CHECK(!addr.SetSpecial(std::string{"mfrggzak.onion"}));
@@ -347,7 +347,7 @@ BOOST_AUTO_TEST_CASE(cnetaddr_serialize_v1)
     // TORv2, no longer supported
     BOOST_CHECK(!addr.SetSpecial("6hzph5hv6337r6p2.onion"));
 
-    BOOST_REQUIRE(addr.SetSpecial("pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion"));
+    BOOST_REQUIRE(addr.SetSpecial("klfchu53kxun6zx5.onion"));
     s << addr;
     BOOST_CHECK_EQUAL(HexStr(s), "00000000000000000000000000000000");
     s.clear();
@@ -506,7 +506,7 @@ BOOST_AUTO_TEST_CASE(cnetaddr_unserialize_v2)
     BOOST_CHECK(addr.IsTor());
     BOOST_CHECK(!addr.IsAddrV1Compatible());
     BOOST_CHECK_EQUAL(addr.ToString(),
-                      "pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion");
+                      "klfchu53kxun6zx5.onion");
     BOOST_REQUIRE(s.empty());
 
     // Invalid TORv3, with bogus length.
@@ -840,7 +840,7 @@ BOOST_AUTO_TEST_CASE(initial_advertise_from_version_message)
     const int64_t time{0};
     const CNetMsgMaker msg_maker{PROTOCOL_VERSION};
 
-    // Force CChainState::IsInitialBlockDownload() to return false.
+    // Force Chainstate::IsInitialBlockDownload() to return false.
     // Otherwise PushAddress() isn't called by PeerManager::ProcessMessage().
     TestChainState& chainstate =
         *static_cast<TestChainState*>(&m_node.chainman->ActiveChainstate());
