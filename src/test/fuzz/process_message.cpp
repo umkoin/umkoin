@@ -73,8 +73,6 @@ void fuzz_target(FuzzBufferType buffer, const std::string& LIMIT_TO_MESSAGE_TYPE
     SetMockTime(1610000000); // any time to successfully reset ibd
     chainstate.ResetIbd();
 
-    LOCK(NetEventsInterface::g_msgproc_mutex);
-
     const std::string random_message_type{fuzzed_data_provider.ConsumeBytesAsString(CMessageHeader::COMMAND_SIZE).c_str()};
     if (!LIMIT_TO_MESSAGE_TYPE.empty() && random_message_type != LIMIT_TO_MESSAGE_TYPE) {
         return;
@@ -94,7 +92,10 @@ void fuzz_target(FuzzBufferType buffer, const std::string& LIMIT_TO_MESSAGE_TYPE
                                                 GetTime<std::chrono::microseconds>(), std::atomic<bool>{false});
     } catch (const std::ios_base::failure&) {
     }
-    g_setup->m_node.peerman->SendMessages(&p2p_node);
+    {
+        LOCK(p2p_node.cs_sendProcessing);
+        g_setup->m_node.peerman->SendMessages(&p2p_node);
+    }
     SyncWithValidationInterfaceQueue();
     g_setup->m_node.connman->StopNodes();
 }

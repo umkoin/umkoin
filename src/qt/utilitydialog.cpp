@@ -17,7 +17,7 @@
 #include <util/system.h>
 #include <util/strencodings.h>
 
-#include <cstdio>
+#include <stdio.h>
 
 #include <QCloseEvent>
 #include <QLabel>

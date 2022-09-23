@@ -44,7 +44,10 @@ void ConnmanTestMsg::Handshake(CNode& node,
     (void)connman.ReceiveMsgFrom(node, msg_version);
     node.fPauseSend = false;
     connman.ProcessMessagesOnce(node);
-    peerman.SendMessages(&node);
+    {
+        LOCK(node.cs_sendProcessing);
+        peerman.SendMessages(&node);
+    }
     if (node.fDisconnect) return;
     assert(node.nVersion == version);
     assert(node.GetCommonVersion() == std::min(version, PROTOCOL_VERSION));
@@ -57,7 +60,10 @@ void ConnmanTestMsg::Handshake(CNode& node,
         (void)connman.ReceiveMsgFrom(node, msg_verack);
         node.fPauseSend = false;
         connman.ProcessMessagesOnce(node);
-        peerman.SendMessages(&node);
+        {
+            LOCK(node.cs_sendProcessing);
+            peerman.SendMessages(&node);
+        }
         assert(node.fSuccessfullyConnected == true);
     }
 }

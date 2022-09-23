@@ -2,10 +2,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include <util/bitdeque.h>
+
 #include <random.h>
 #include <test/fuzz/FuzzedDataProvider.h>
 #include <test/fuzz/util.h>
-#include <util/bitdeque.h>
 
 #include <deque>
 #include <vector>
@@ -53,8 +54,7 @@ FUZZ_TARGET_INIT(bitdeque, InitRandData)
         --initlen;
     }
 
-    LIMITED_WHILE(provider.remaining_bytes() > 0, 900)
-    {
+    while (provider.remaining_bytes()) {
         {
             assert(deq.size() == bitdeq.size());
             auto it = deq.begin();
@@ -538,4 +538,5 @@ FUZZ_TARGET_INIT(bitdeque, InitRandData)
             }
         );
     }
+
 }

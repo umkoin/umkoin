@@ -64,6 +64,7 @@ static RPCHelpMan estimatesmartfee()
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
         {
             RPCTypeCheck(request.params, {UniValue::VNUM, UniValue::VSTR});
+            RPCTypeCheckArgument(request.params[0], UniValue::VNUM);
 
             CBlockPolicyEstimator& fee_estimator = EnsureAnyFeeEstimator(request.context);
             const NodeContext& node = EnsureAnyNodeContext(request.context);
@@ -156,6 +157,7 @@ static RPCHelpMan estimaterawfee()
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
         {
             RPCTypeCheck(request.params, {UniValue::VNUM, UniValue::VNUM}, true);
+            RPCTypeCheckArgument(request.params[0], UniValue::VNUM);
 
             CBlockPolicyEstimator& fee_estimator = EnsureAnyFeeEstimator(request.context);
 
