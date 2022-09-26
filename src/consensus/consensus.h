@@ -6,7 +6,7 @@
 #ifndef UMKOIN_CONSENSUS_CONSENSUS_H
 #define UMKOIN_CONSENSUS_CONSENSUS_H
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <stdint.h>
 
 /** The maximum allowed size for a serialized block, in bytes (only for buffer size limits) */
