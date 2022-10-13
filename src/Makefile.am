@@ -133,6 +133,7 @@ UMKOIN_CORE_H = \
   clientversion.h \
   coins.h \
   common/bloom.h \
+  common/run_command.h \
   compat/assumptions.h \
   compat/byteswap.h \
   compat/compat.h \
@@ -616,7 +617,7 @@ libumkoin_consensus_a_SOURCES = \
   version.h
 
 # common: shared between umkoind, and umkoin-qt and non-server tools
-libumkoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+libumkoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS)
 libumkoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_common_a_SOURCES = \
   base58.cpp \
@@ -624,6 +625,7 @@ libumkoin_common_a_SOURCES = \
   chainparams.cpp \
   coins.cpp \
   common/bloom.cpp \
+  common/run_command.cpp \
   compressor.cpp \
   core_read.cpp \
   core_write.cpp \
