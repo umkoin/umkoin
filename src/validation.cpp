@@ -1838,11 +1838,21 @@ DisconnectResult Chainstate::DisconnectBlock(const CBlock& block, const CBlockIn
         return DISCONNECT_FAILED;
     }
 
+    // Ignore blocks that contain transactions which are 'overwritten' by later transactions,
+    // unless those are already completely spent.
+    // See https://github.com/bitcoin/bitcoin/issues/22596 for additional information.
+    // Note: the blocks specified here are different than the ones used in ConnectBlock because DisconnectBlock
+    // unwinds the blocks in reverse. As a result, the inconsistency is not discovered until the earlier
+    // blocks with the duplicate coinbase transactions are disconnected.
+    bool fEnforceBIP30 = !((pindex->nHeight==91722 && pindex->GetBlockHash() == uint256S("0x000000000020b729598284afb9ae56a533511bb58ca4fd1ef2bb0a6066150464")) ||
+                           (pindex->nHeight==91812 && pindex->GetBlockHash() == uint256S("0x000000000022213d0d4b6a18ea70cc42bb8ef80d7c45a7c993dd9e8b7391d33b")));
+
     // undo transactions in reverse order
     for (int i = block.vtx.size() - 1; i >= 0; i--) {
         const CTransaction &tx = *(block.vtx[i]);
         uint256 hash = tx.GetHash();
         bool is_coinbase = tx.IsCoinBase();
+        bool is_bip30_exception = (is_coinbase && !fEnforceBIP30);
 
         // Check that all outputs are available and match the outputs in the block itself
         // exactly.
@@ -1852,7 +1862,9 @@ DisconnectResult Chainstate::DisconnectBlock(const CBlock& block, const CBlockIn
                 Coin coin;
                 bool is_spent = view.SpendCoin(out, &coin);
                 if (!is_spent || tx.vout[o] != coin.out || pindex->nHeight != coin.nHeight || is_coinbase != coin.fCoinBase) {
-                    fClean = false; // transaction output mismatch
+                    if (!is_bip30_exception) {
+                        fClean = false; // transaction output mismatch
+                    }
                 }
             }
         }
@@ -2071,8 +2083,8 @@ bool Chainstate::ConnectBlock(const CBlock& block, BlockValidationState& state, 
     // Now that the whole chain is irreversibly beyond that time it is applied to all blocks except the
     // two in the chain that violate it. This prevents exploiting the issue against nodes during their
     // initial block download.
-    bool fEnforceBIP30 = !((pindex->nHeight==91842 && pindex->GetBlockHash() == uint256S("0x00000000000a4d0a398161ffc163c503763b1f4360639393e0e4c8e300e0caec")) ||
-                           (pindex->nHeight==91880 && pindex->GetBlockHash() == uint256S("0x00000000000743f190a18c5577a3c2d2a1f610ae9601ac046a38084ccb7cd721")));
+    bool fEnforceBIP30 = !((pindex->nHeight==91842 && pindex->GetBlockHash() == uint256S("0x0000000000428ff926372c6ea99712fd7b18e3f904a3dd78283857a03ec0900d")) ||
+                           (pindex->nHeight==91880 && pindex->GetBlockHash() == uint256S("0x000000000024d0f4c29f736bd6d1ea4c44d0cd5c1439f18ca69f144eef28af3f")));
 
     // Once BIP34 activated it was not possible to create new duplicate coinbases and thus other than starting
     // with the 2 existing duplicate coinbase pairs, not possible to create overwriting txs.  But by the
