@@ -346,11 +346,7 @@ obj/build.h: FORCE
 	  "$(abs_top_srcdir)"
 libumkoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
-
-# server: shared between umkoind and umkoin-qt
-# Contains code accessing mempool and chain state that is meant to be separated
-# from wallet and gui code (see node/README.md). Shared code should go in
-# libumkoin_common or libumkoin_util libraries, instead.
+# node #
 libumkoin_node_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS) $(MINIUPNPC_CPPFLAGS) $(NATPMP_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libumkoin_node_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_node_a_SOURCES = \
@@ -441,7 +437,9 @@ endif
 if !ENABLE_WALLET
 libumkoin_node_a_SOURCES += dummywallet.cpp
 endif
+#
 
+# zmq #
 if ENABLE_ZMQ
 libumkoin_zmq_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(ZMQ_CFLAGS)
 libumkoin_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -452,10 +450,9 @@ libumkoin_zmq_a_SOURCES = \
   zmq/zmqrpc.cpp \
   zmq/zmqutil.cpp
 endif
+#
 
-
-# wallet: shared between umkoind and umkoin-qt, but only linked
-# when wallet enabled
+# wallet #
 libumkoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS) $(BDB_CPPFLAGS) $(SQLITE_CFLAGS)
 libumkoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_wallet_a_SOURCES = \
@@ -494,14 +491,17 @@ endif
 if USE_BDB
 libumkoin_wallet_a_SOURCES += wallet/bdb.cpp wallet/salvage.cpp
 endif
+#
 
+# wallet tool #
 libumkoin_wallet_tool_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS)
 libumkoin_wallet_tool_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_wallet_tool_a_SOURCES = \
   wallet/wallettool.cpp \
   $(UMKOIN_CORE_H)
+#
 
-# crypto primitives library
+# crypto #
 crypto_libumkoin_crypto_base_la_CPPFLAGS = $(AM_CPPFLAGS)
 
 # Specify -static in both CXXFLAGS and LDFLAGS so libtool will only build a
@@ -581,8 +581,9 @@ crypto_libumkoin_crypto_arm_shani_la_CPPFLAGS = $(AM_CPPFLAGS)
 crypto_libumkoin_crypto_arm_shani_la_CXXFLAGS += $(ARM_SHANI_CXXFLAGS)
 crypto_libumkoin_crypto_arm_shani_la_CPPFLAGS += -DENABLE_ARM_SHANI
 crypto_libumkoin_crypto_arm_shani_la_SOURCES = crypto/sha256_arm_shani.cpp
+#
 
-# consensus: shared between all executables that validate any consensus rules.
+# consensus #
 libumkoin_consensus_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_consensus_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_consensus_a_SOURCES = \
@@ -618,8 +619,9 @@ libumkoin_consensus_a_SOURCES = \
   util/strencodings.cpp \
   util/strencodings.h \
   version.h
+#
 
-# common: shared between umkoind, and umkoin-qt and non-server tools
+# common #
 libumkoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS)
 libumkoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_common_a_SOURCES = \
@@ -658,8 +660,9 @@ libumkoin_common_a_SOURCES = \
   script/standard.cpp \
   warnings.cpp \
   $(UMKOIN_CORE_H)
+#
 
-# util: shared between all executables.
+# util #
 libumkoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS)
 libumkoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_util_a_SOURCES = \
@@ -707,8 +710,9 @@ libumkoin_util_a_SOURCES = \
 if USE_LIBEVENT
 libumkoin_util_a_SOURCES += util/url.cpp
 endif
+#
 
-# cli: shared between umkoin-cli and umkoin-qt
+# cli #
 libumkoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
 libumkoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_cli_a_SOURCES = \

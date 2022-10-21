@@ -83,7 +83,7 @@ class umkoin-qt,umkoind,umkoin-cli,umkoin-wallet bold
 
 </td></tr></table>
 
-- The graph shows what _linker symbols_ (functions and variables) from each library other libraries can call and reference directly, but it is not a call graph. For example, there is no arrow connecting *libumkoin_wallet* and *libumkoin_node* libraries, because these libraries are intended to be modular and not depend on each other's internal implementation details. But wallet code still is still able to call node code indirectly through the `interfaces::Chain` abstract class in [`interfaces/chain.h`](../../src/interfaces/chain.h) and node code calls wallet code through the `interfaces::ChainClient` and `interfaces::Chain::Notifications` abstract classes in the same file. In general, defining abstract classes in [`src/interfaces/`](../../src/interfaces/) can be a convenient way of avoiding unwanted direct dependencies or circular dependencies between libraries.
+- The graph shows what _linker symbols_ (functions and variables) from each library other libraries can call and reference directly, but it is not a call graph. For example, there is no arrow connecting *libumkoin_wallet* and *libumkoin_node* libraries, because these libraries are intended to be modular and not depend on each other's internal implementation details. But wallet code is still able to call node code indirectly through the `interfaces::Chain` abstract class in [`interfaces/chain.h`](../../src/interfaces/chain.h) and node code calls wallet code through the `interfaces::ChainClient` and `interfaces::Chain::Notifications` abstract classes in the same file. In general, defining abstract classes in [`src/interfaces/`](../../src/interfaces/) can be a convenient way of avoiding unwanted direct dependencies or circular dependencies between libraries.
 
 - *libumkoin_consensus* should be a standalone dependency that any library can depend on, and it should not depend on any other libraries itself.
 
@@ -101,3 +101,4 @@ class umkoin-qt,umkoind,umkoin-cli,umkoin-wallet bold
 ## Work in progress
 
 - Validation code is moving from *libumkoin_node* to *libumkoin_kernel* as part of [The libumkoinkernel Project]
+- Source code organization is discussed in general in [Library source code organization]
