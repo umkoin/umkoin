@@ -35,7 +35,7 @@
 
 ```mermaid
 
-%%{ init : { "flowchart" : { "curve" : "linear" }}}%%
+%%{ init : { "flowchart" : { "curve" : "basis" }}}%%
 
 graph TD;
 
@@ -51,18 +51,18 @@ umkoin-qt[umkoin-qt]-->libumkoin_wallet;
 umkoin-wallet[umkoin-wallet]-->libumkoin_wallet;
 umkoin-wallet[umkoin-wallet]-->libumkoin_wallet_tool;
 
-libumkoin_cli-->libumkoin_common;
 libumkoin_cli-->libumkoin_util;
+libumkoin_cli-->libumkoin_common;
 
-libumkoin_common-->libumkoin_util;
 libumkoin_common-->libumkoin_consensus;
+libumkoin_common-->libumkoin_util;
 
 libumkoin_kernel-->libumkoin_consensus;
 libumkoin_kernel-->libumkoin_util;
 
-libumkoin_node-->libumkoin_common;
 libumkoin_node-->libumkoin_consensus;
 libumkoin_node-->libumkoin_kernel;
+libumkoin_node-->libumkoin_common;
 libumkoin_node-->libumkoin_util;
 
 libumkoinqt-->libumkoin_common;
@@ -71,8 +71,8 @@ libumkoinqt-->libumkoin_util;
 libumkoin_wallet-->libumkoin_common;
 libumkoin_wallet-->libumkoin_util;
 
-libumkoin_wallet_tool-->libumkoin_util;
 libumkoin_wallet_tool-->libumkoin_wallet;
+libumkoin_wallet_tool-->libumkoin_util;
 
 classDef bold stroke-width:2px, font-weight:bold, font-size: smaller;
 class umkoin-qt,umkoind,umkoin-cli,umkoin-wallet bold
@@ -100,5 +100,5 @@ class umkoin-qt,umkoind,umkoin-cli,umkoin-wallet bold
 
 ## Work in progress
 
-- Validation code is moving from *libumkoin_node* to *libumkoin_kernel* as part of [The libumkoinkernel Project]
-- Source code organization is discussed in general in [Library source code organization]
+- Validation code is moving from *libbitcoin_node* to *libbitcoin_kernel* as part of [The libbitcoinkernel Project #24303](https://github.com/bitcoin/bitcoin/issues/24303)
+- Source code organization is discussed in general in [Library source code organization #15732](https://github.com/bitcoin/bitcoin/issues/15732)
