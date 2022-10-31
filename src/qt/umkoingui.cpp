@@ -41,13 +41,11 @@
 #include <validation.h>
 
 #include <QAction>
-#include <QActionGroup>
 #include <QApplication>
 #include <QComboBox>
 #include <QCursor>
 #include <QDateTime>
 #include <QDragEnterEvent>
-#include <QKeySequence>
 #include <QListWidget>
 #include <QMenu>
 #include <QMenuBar>
@@ -253,28 +251,28 @@ void UmkoinGUI::createActions()
     overviewAction->setStatusTip(tr("Show general overview of wallet"));
     overviewAction->setToolTip(overviewAction->statusTip());
     overviewAction->setCheckable(true);
-    overviewAction->setShortcut(QKeySequence(QStringLiteral("Alt+1")));
+    overviewAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
     tabGroup->addAction(overviewAction);
 
     sendCoinsAction = new QAction(platformStyle->SingleColorIcon(":/icons/send"), tr("&Send"), this);
     sendCoinsAction->setStatusTip(tr("Send coins to a Umkoin address"));
     sendCoinsAction->setToolTip(sendCoinsAction->statusTip());
     sendCoinsAction->setCheckable(true);
-    sendCoinsAction->setShortcut(QKeySequence(QStringLiteral("Alt+2")));
+    sendCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
     tabGroup->addAction(sendCoinsAction);
 
     receiveCoinsAction = new QAction(platformStyle->SingleColorIcon(":/icons/receiving_addresses"), tr("&Receive"), this);
     receiveCoinsAction->setStatusTip(tr("Request payments (generates QR codes and umkoin: URIs)"));
     receiveCoinsAction->setToolTip(receiveCoinsAction->statusTip());
     receiveCoinsAction->setCheckable(true);
-    receiveCoinsAction->setShortcut(QKeySequence(QStringLiteral("Alt+3")));
+    receiveCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_3));
     tabGroup->addAction(receiveCoinsAction);
 
     historyAction = new QAction(platformStyle->SingleColorIcon(":/icons/history"), tr("&Transactions"), this);
     historyAction->setStatusTip(tr("Browse transaction history"));
     historyAction->setToolTip(historyAction->statusTip());
     historyAction->setCheckable(true);
-    historyAction->setShortcut(QKeySequence(QStringLiteral("Alt+4")));
+    historyAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_4));
     tabGroup->addAction(historyAction);
 
 #ifdef ENABLE_WALLET
@@ -292,7 +290,7 @@ void UmkoinGUI::createActions()
 
     quitAction = new QAction(tr("E&xit"), this);
     quitAction->setStatusTip(tr("Quit application"));
-    quitAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
+    quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     quitAction->setMenuRole(QAction::QuitRole);
     aboutAction = new QAction(tr("&About %1").arg(PACKAGE_NAME), this);
     aboutAction->setStatusTip(tr("Show information about %1").arg(PACKAGE_NAME));
@@ -356,7 +354,7 @@ void UmkoinGUI::createActions()
     showHelpMessageAction->setStatusTip(tr("Show the %1 help message to get a list with possible Umkoin command-line options").arg(PACKAGE_NAME));
 
     m_mask_values_action = new QAction(tr("&Mask values"), this);
-    m_mask_values_action->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_M));
+    m_mask_values_action->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_M));
     m_mask_values_action->setStatusTip(tr("Mask the values in the Overview tab"));
     m_mask_values_action->setCheckable(true);
 
@@ -427,8 +425,8 @@ void UmkoinGUI::createActions()
     }
 #endif // ENABLE_WALLET
 
-    connect(new QShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_C), this), &QShortcut::activated, this, &UmkoinGUI::showDebugWindowActivateConsole);
-    connect(new QShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_D), this), &QShortcut::activated, this, &UmkoinGUI::showDebugWindow);
+    connect(new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_C), this), &QShortcut::activated, this, &UmkoinGUI::showDebugWindowActivateConsole);
+    connect(new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_D), this), &QShortcut::activated, this, &UmkoinGUI::showDebugWindow);
 }
 
 void UmkoinGUI::createMenuBar()
@@ -474,7 +472,7 @@ void UmkoinGUI::createMenuBar()
     QMenu* window_menu = appMenuBar->addMenu(tr("&Window"));
 
     QAction* minimize_action = window_menu->addAction(tr("&Minimize"));
-    minimize_action->setShortcut(QKeySequence(tr("Ctrl+M")));
+    minimize_action->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_M));
     connect(minimize_action, &QAction::triggered, [] {
         QApplication::activeWindow()->showMinimized();
     });
@@ -854,7 +852,7 @@ void UmkoinGUI::aboutClicked()
     if(!clientModel)
         return;
 
-    auto dlg = new HelpMessageDialog(this, /*about=*/true);
+    auto dlg = new HelpMessageDialog(this, /* about */ true);
     GUIUtil::ShowModalDialogAsynchronously(dlg);
 }
 
@@ -1245,7 +1243,7 @@ void UmkoinGUI::showEvent(QShowEvent *event)
 }
 
 #ifdef ENABLE_WALLET
-void UmkoinGUI::incomingTransaction(const QString& date, UmkoinUnit unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& walletName)
+void UmkoinGUI::incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& walletName)
 {
     // On new transaction, make an info balloon
     QString msg = tr("Date: %1\n").arg(date) +
@@ -1318,6 +1316,12 @@ void UmkoinGUI::setEncryptionStatus(int status)
 {
     switch(status)
     {
+    case WalletModel::NoKeys:
+        labelWalletEncryptionIcon->hide();
+        encryptWalletAction->setChecked(false);
+        changePassphraseAction->setEnabled(false);
+        encryptWalletAction->setEnabled(false);
+        break;
     case WalletModel::Unencrypted:
         labelWalletEncryptionIcon->hide();
         encryptWalletAction->setChecked(false);
@@ -1496,10 +1500,11 @@ UnitDisplayStatusBarControl::UnitDisplayStatusBarControl(const PlatformStyle *pl
 {
     createContextMenu();
     setToolTip(tr("Unit to show amounts in. Click to select another unit."));
-    QList<UmkoinUnit> units = UmkoinUnits::availableUnits();
+    QList<UmkoinUnits::Unit> units = UmkoinUnits::availableUnits();
     int max_width = 0;
     const QFontMetrics fm(font());
-    for (const UmkoinUnit unit : units) {
+    for (const UmkoinUnits::Unit unit : units)
+    {
         max_width = qMax(max_width, GUIUtil::TextWidth(fm, UmkoinUnits::longName(unit)));
     }
     setMinimumSize(max_width, 0);
@@ -1529,8 +1534,8 @@ void UnitDisplayStatusBarControl::changeEvent(QEvent* e)
 void UnitDisplayStatusBarControl::createContextMenu()
 {
     menu = new QMenu(this);
-    for (const UmkoinUnit u : UmkoinUnits::availableUnits()) {
-        menu->addAction(UmkoinUnits::longName(u))->setData(QVariant::fromValue(u));
+    for (const UmkoinUnits::Unit u : UmkoinUnits::availableUnits()) {
+        menu->addAction(UmkoinUnits::longName(u))->setData(QVariant(u));
     }
     connect(menu, &QMenu::triggered, this, &UnitDisplayStatusBarControl::onMenuSelection);
 }
@@ -1551,7 +1556,7 @@ void UnitDisplayStatusBarControl::setOptionsModel(OptionsModel *_optionsModel)
 }
 
 /** When Display Units are changed on OptionsModel it will refresh the display text of the control on the status bar */
-void UnitDisplayStatusBarControl::updateDisplayUnit(UmkoinUnit newUnits)
+void UnitDisplayStatusBarControl::updateDisplayUnit(int newUnits)
 {
     setText(UmkoinUnits::longName(newUnits));
 }

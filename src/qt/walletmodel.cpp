@@ -145,7 +145,7 @@ void WalletModel::updateWatchOnlyFlag(bool fHaveWatchonly)
     Q_EMIT notifyWatchonlyChanged(fHaveWatchonly);
 }
 
-bool WalletModel::validateAddress(const QString& address) const
+bool WalletModel::validateAddress(const QString &address)
 {
     return IsValidDestinationString(address.toStdString());
 }
@@ -284,22 +284,22 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
     return SendCoinsReturn(OK);
 }
 
-OptionsModel* WalletModel::getOptionsModel() const
+OptionsModel *WalletModel::getOptionsModel()
 {
     return optionsModel;
 }
 
-AddressTableModel* WalletModel::getAddressTableModel() const
+AddressTableModel *WalletModel::getAddressTableModel()
 {
     return addressTableModel;
 }
 
-TransactionTableModel* WalletModel::getTransactionTableModel() const
+TransactionTableModel *WalletModel::getTransactionTableModel()
 {
     return transactionTableModel;
 }
 
-RecentRequestsTableModel* WalletModel::getRecentRequestsTableModel() const
+RecentRequestsTableModel *WalletModel::getRecentRequestsTableModel()
 {
     return recentRequestsTableModel;
 }
@@ -308,6 +308,11 @@ WalletModel::EncryptionStatus WalletModel::getEncryptionStatus() const
 {
     if(!m_wallet->isCrypted())
     {
+        // A previous bug allowed for watchonly wallets to be encrypted (encryption keys set, but nothing is actually encrypted).
+        // To avoid misrepresenting the encryption status of such wallets, we only return NoKeys for watchonly wallets that are unencrypted.
+        if (m_wallet->privateKeysDisabled()) {
+            return NoKeys;
+        }
         return Unencrypted;
     }
     else if(m_wallet->isLocked())
@@ -369,7 +374,7 @@ static void NotifyAddressBookChanged(WalletModel *walletmodel,
     QString strPurpose = QString::fromStdString(purpose);
 
     qDebug() << "NotifyAddressBookChanged: " + strAddress + " " + strLabel + " isMine=" + QString::number(isMine) + " purpose=" + strPurpose + " status=" + QString::number(status);
-    bool invoked = QMetaObject::invokeMethod(walletmodel, "updateAddressBook",
+    bool invoked = QMetaObject::invokeMethod(walletmodel, "updateAddressBook", Qt::QueuedConnection,
                               Q_ARG(QString, strAddress),
                               Q_ARG(QString, strLabel),
                               Q_ARG(bool, isMine),
@@ -557,7 +562,7 @@ bool WalletModel::bumpFee(uint256 hash, uint256& new_hash)
     return true;
 }
 
-bool WalletModel::displayAddress(std::string sAddress) const
+bool WalletModel::displayAddress(std::string sAddress)
 {
     CTxDestination dest = DecodeDestination(sAddress);
     bool res = false;
@@ -585,7 +590,7 @@ QString WalletModel::getDisplayName() const
     return name.isEmpty() ? "["+tr("default wallet")+"]" : name;
 }
 
-bool WalletModel::isMultiwallet() const
+bool WalletModel::isMultiwallet()
 {
     return m_node.walletLoader().getWallets().size() > 1;
 }

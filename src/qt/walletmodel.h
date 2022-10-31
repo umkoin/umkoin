@@ -72,20 +72,21 @@ public:
 
     enum EncryptionStatus
     {
+        NoKeys,       // wallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS)
         Unencrypted,  // !wallet->IsCrypted()
         Locked,       // wallet->IsCrypted() && wallet->IsLocked()
         Unlocked      // wallet->IsCrypted() && !wallet->IsLocked()
     };
 
-    OptionsModel* getOptionsModel() const;
-    AddressTableModel* getAddressTableModel() const;
-    TransactionTableModel* getTransactionTableModel() const;
-    RecentRequestsTableModel* getRecentRequestsTableModel() const;
+    OptionsModel *getOptionsModel();
+    AddressTableModel *getAddressTableModel();
+    TransactionTableModel *getTransactionTableModel();
+    RecentRequestsTableModel *getRecentRequestsTableModel();
 
     EncryptionStatus getEncryptionStatus() const;
 
     // Check address for validity
-    bool validateAddress(const QString& address) const;
+    bool validateAddress(const QString &address);
 
     // Return status record for SendCoins, contains error id + information
     struct SendCoinsReturn
@@ -137,7 +138,7 @@ public:
     UnlockContext requestUnlock();
 
     bool bumpFee(uint256 hash, uint256& new_hash);
-    bool displayAddress(std::string sAddress) const;
+    bool displayAddress(std::string sAddress);
 
     static bool isWalletEnabled();
 
@@ -149,7 +150,9 @@ public:
     QString getWalletName() const;
     QString getDisplayName() const;
 
-    bool isMultiwallet() const;
+    bool isMultiwallet();
+
+    AddressTableModel* getAddressTableModel() const { return addressTableModel; }
 
     void refresh(bool pk_hash_only = false);
 
