@@ -23,7 +23,6 @@
 
 #include <deque>
 #include <memory>
-#include <optional>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -31,12 +30,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include <event2/thread.h>
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
-#include <event2/http.h>
-#include <event2/keyvalq_struct.h>
-#include <event2/thread.h>
 #include <event2/util.h>
+#include <event2/keyvalq_struct.h>
 
 #include <support/events.h>
 
@@ -145,7 +143,8 @@ static std::vector<CSubNet> rpc_allow_subnets;
 //! Work queue for handling longer requests off the event loop thread
 static std::unique_ptr<WorkQueue<HTTPClosure>> g_work_queue{nullptr};
 //! Handlers for (sub)paths
-static std::vector<HTTPPathHandler> pathHandlers;
+static Mutex g_httppathhandlers_mutex;
+static std::vector<HTTPPathHandler> pathHandlers GUARDED_BY(g_httppathhandlers_mutex);
 //! Bound listening sockets
 static std::vector<evhttp_bound_socket *> boundSockets;
 
@@ -246,6 +245,7 @@ static void http_request_cb(struct evhttp_request* req, void* arg)
     // Find registered handler for prefix
     std::string strURI = hreq->GetURI();
     std::string path;
+    LOCK(g_httppathhandlers_mutex);
     std::vector<HTTPPathHandler>::const_iterator i = pathHandlers.begin();
     std::vector<HTTPPathHandler>::const_iterator iend = pathHandlers.end();
     for (; i != iend; ++i) {
@@ -360,8 +360,12 @@ bool InitHTTPServer()
 
     // Redirect libevent's logging to our own log
     event_set_log_callback(&libevent_log_cb);
-    // Update libevent's log handling.
-    UpdateHTTPServerLogging(LogInstance().WillLogCategory(BCLog::LIBEVENT));
+    // Update libevent's log handling. Returns false if our version of
+    // libevent doesn't support debug logging, in which case we should
+    // clear the BCLog::LIBEVENT flag.
+    if (!UpdateHTTPServerLogging(LogInstance().WillLogCategory(BCLog::LIBEVENT))) {
+        LogInstance().DisableCategory(BCLog::LIBEVENT);
+    }
 
 #ifdef WIN32
     evthread_use_windows_threads();
@@ -400,12 +404,18 @@ bool InitHTTPServer()
     return true;
 }
 
-void UpdateHTTPServerLogging(bool enable) {
+bool UpdateHTTPServerLogging(bool enable) {
+#if LIBEVENT_VERSION_NUMBER >= 0x02010100
     if (enable) {
         event_enable_debug_logging(EVENT_DBG_ALL);
     } else {
         event_enable_debug_logging(EVENT_DBG_NONE);
     }
+    return true;
+#else
+    // Can't update libevent logging if version < 02010100
+    return false;
+#endif
 }
 
 static std::thread g_thread_http;
@@ -631,45 +641,16 @@ HTTPRequest::RequestMethod HTTPRequest::GetRequestMethod() const
     }
 }
 
-std::optional<std::string> HTTPRequest::GetQueryParameter(const std::string& key) const
-{
-    const char* uri{evhttp_request_get_uri(req)};
-
-    return GetQueryParameterFromUri(uri, key);
-}
-
-std::optional<std::string> GetQueryParameterFromUri(const char* uri, const std::string& key)
-{
-    evhttp_uri* uri_parsed{evhttp_uri_parse(uri)};
-    const char* query{evhttp_uri_get_query(uri_parsed)};
-    std::optional<std::string> result;
-
-    if (query) {
-        // Parse the query string into a key-value queue and iterate over it
-        struct evkeyvalq params_q;
-        evhttp_parse_query_str(query, &params_q);
-
-        for (struct evkeyval* param{params_q.tqh_first}; param != nullptr; param = param->next.tqe_next) {
-            if (param->key == key) {
-                result = param->value;
-                break;
-            }
-        }
-        evhttp_clear_headers(&params_q);
-    }
-    evhttp_uri_free(uri_parsed);
-
-    return result;
-}
-
 void RegisterHTTPHandler(const std::string &prefix, bool exactMatch, const HTTPRequestHandler &handler)
 {
     LogPrint(BCLog::HTTP, "Registering HTTP handler for %s (exactmatch %d)\n", prefix, exactMatch);
+    LOCK(g_httppathhandlers_mutex);
     pathHandlers.push_back(HTTPPathHandler(prefix, exactMatch, handler));
 }
 
 void UnregisterHTTPHandler(const std::string &prefix, bool exactMatch)
 {
+    LOCK(g_httppathhandlers_mutex);
     std::vector<HTTPPathHandler>::iterator i = pathHandlers.begin();
     std::vector<HTTPPathHandler>::iterator iend = pathHandlers.end();
     for (; i != iend; ++i)
