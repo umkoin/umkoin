@@ -410,7 +410,7 @@ void UmkoinGUI::createActions()
 
                 connect(action, &QAction::triggered, [this, path] {
                     auto activity = new OpenWalletActivity(m_wallet_controller, this);
-                    connect(activity, &OpenWalletActivity::opened, this, &UmkoinGUI::setCurrentWallet);
+                    connect(activity, &OpenWalletActivity::opened, this, &UmkoinGUI::setCurrentWallet, Qt::QueuedConnection);
                     activity->open(path);
                 });
             }
