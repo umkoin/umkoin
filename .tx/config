@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[umkoin.qt-translation-024x]
+[o:umkoin:p:umkoin:r:qt-translation-024x]
 file_filter = src/qt/locale/umkoin_<lang>.xlf
 source_file = src/qt/locale/umkoin_en.xlf
 source_lang = en
