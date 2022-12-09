@@ -2080,8 +2080,7 @@ bool Chainstate::ConnectBlock(const CBlock& block, BlockValidationState& state, 
     // Now that the whole chain is irreversibly beyond that time it is applied to all blocks except the
     // two in the chain that violate it. This prevents exploiting the issue against nodes during their
     // initial block download.
-    bool fEnforceBIP30 = !((pindex->nHeight==91842 && pindex->GetBlockHash() == uint256S("0x0000000000428ff926372c6ea99712fd7b18e3f904a3dd78283857a03ec0900d")) ||
-                           (pindex->nHeight==91880 && pindex->GetBlockHash() == uint256S("0x000000000024d0f4c29f736bd6d1ea4c44d0cd5c1439f18ca69f144eef28af3f")));
+    bool fEnforceBIP30 = !IsBIP30Repeat(*pindex);
 
     // Once BIP34 activated it was not possible to create new duplicate coinbases and thus other than starting
     // with the 2 existing duplicate coinbase pairs, not possible to create overwriting txs.  But by the
@@ -5312,4 +5311,16 @@ Chainstate& ChainstateManager::ActivateExistingSnapshot(CTxMemPool* mempool, uin
     LogPrintf("[snapshot] switching active chainstate to %s\n", m_snapshot_chainstate->ToString());
     m_active_chainstate = m_snapshot_chainstate.get();
     return *m_snapshot_chainstate;
+}
+
+bool IsBIP30Repeat(const CBlockIndex& block_index)
+{
+    return (block_index.nHeight==91842 && block_index.GetBlockHash() == uint256S("0x0000000000428ff926372c6ea99712fd7b18e3f904a3dd78283857a03ec0900d")) ||
+           (block_index.nHeight==91880 && block_index.GetBlockHash() == uint256S("0x000000000024d0f4c29f736bd6d1ea4c44d0cd5c1439f18ca69f144eef28af3f"));
+}
+
+bool IsBIP30Unspendable(const CBlockIndex& block_index)
+{
+    return (block_index.nHeight==91722 && block_index.GetBlockHash() == uint256S("0x000000000020b729598284afb9ae56a533511bb58ca4fd1ef2bb0a6066150464")) ||
+           (block_index.nHeight==91812 && block_index.GetBlockHash() == uint256S("0x000000000022213d0d4b6a18ea70cc42bb8ef80d7c45a7c993dd9e8b7391d33b"));
 }
