@@ -34,9 +34,6 @@ PGP keys used for signing Umkoin Core [release](/doc/release-process.md) results
 ### [MacDeploy](/contrib/macdeploy) ###
 Scripts and notes for Mac builds.
 
-### [Gitian-build](/contrib/gitian-build.py) ###
-Script for running full Gitian builds.
-
 Test and Verify Tools
 ---------------------
 
@@ -45,3 +42,9 @@ Utilities to generate test vectors for the data-driven Umkoin tests.
 
 ### [Verify Binaries](/contrib/verifybinaries) ###
 This script attempts to download and verify the signature file SHA256SUMS.asc from umkoin.org.
+
+Command Line Tools
+---------------------
+
+### [Completions](/contrib/completions) ###
+Shell completions for bash and fish.
