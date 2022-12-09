@@ -27,7 +27,7 @@
     </message>
     <message>
         <source>Delete the currently selected address from the list</source>
-        <translation type="unfinished">Видалити поточну вибрану адресу зі списку </translation>
+        <translation type="unfinished">Видалити поточну вибрану адресу зі списку</translation>
     </message>
     <message>
         <source>Enter address or label to search</source>
