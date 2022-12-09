@@ -14,7 +14,7 @@ from test_framework.test_framework import UmkoinTestFramework
 from test_framework.wallet import MiniWallet
 
 
-class MempoolCompatibilityTest(UmkoinTestFramework):
+class TxindexCompatibilityTest(UmkoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 3
         self.extra_args = [
@@ -33,7 +33,7 @@ class MempoolCompatibilityTest(UmkoinTestFramework):
             versions=[
                 160300,  # Last release with legacy txindex
                 None,  # For MiniWallet, without migration code
-                200100,  # Any release with migration code (0.17.x - 22.x)
+                220000,  # Last release with migration code (0.17.x - 22.x)
             ],
         )
         self.start_nodes()
@@ -78,7 +78,7 @@ class MempoolCompatibilityTest(UmkoinTestFramework):
 
         self.stop_nodes()
 
-        self.log.info("Check migrated txindex can not be read by legacy node")
+        self.log.info("Check migrated txindex cannot be read by legacy node")
         err_msg = f": You need to rebuild the database using -reindex to change -txindex.{os.linesep}Please restart with -reindex or -reindex-chainstate to recover."
         shutil.rmtree(legacy_chain_dir)
         shutil.copytree(migrate_chain_dir, legacy_chain_dir)
@@ -89,4 +89,4 @@ class MempoolCompatibilityTest(UmkoinTestFramework):
 
 
 if __name__ == "__main__":
-    MempoolCompatibilityTest().main()
+    TxindexCompatibilityTest().main()
