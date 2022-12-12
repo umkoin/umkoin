@@ -7,5 +7,4 @@ QT_TS = \
   qt/locale/umkoin_fr.ts \
   qt/locale/umkoin_it.ts \
   qt/locale/umkoin_nl.ts \
-  qt/locale/umkoin_ru.ts \
   qt/locale/umkoin_uk.ts
