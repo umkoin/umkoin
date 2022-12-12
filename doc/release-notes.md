@@ -1,7 +1,7 @@
-22.1rc2 Release Notes Draft
-===========================
+22.1 Release Notes
+==================
 
-Umkoin Core version 22.1rc2 is now available from:
+Umkoin Core version 22.1 is now available from:
 
   <http://www.umkoin.org/bin/umkoin-core-22.1/>
 
@@ -72,6 +72,7 @@ Updated settings
 - #24256 build: Bump depends packages (zmq, libXau)
 - #25201 windeploy: Renewed windows code signing certificate
 - #25985 Revert "build: Use Homebrew's sqlite package if it is available"
+- #26633 depends: update qt 5.12 url to archive location
 
 ### GUI
 
@@ -102,6 +103,7 @@ Credits
 Thanks to everyone who directly contributed to this release:
 
 - Andrew Chow
+- BlackcoinDev
 - Carl Dong
 - Hennadii Stepanov
 - Joan Karadimov
