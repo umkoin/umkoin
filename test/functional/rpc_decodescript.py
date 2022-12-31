@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2021 The Bitcoin Core developers
+# Copyright (c) 2015-2022 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test decoding scripts via decodescript RPC command."""
@@ -52,7 +52,7 @@ class DecodeScriptTest(UmkoinTestFramework):
         rpc_result = self.nodes[0].decodescript('5100')
         assert_equal('1 0', rpc_result['asm'])
 
-        # null data scriptSig - no such thing because null data scripts can not be spent.
+        # null data scriptSig - no such thing because null data scripts cannot be spent.
         # thus, no test case for that standard transaction type is here.
 
     def decodescript_script_pub_key(self):
