@@ -21,7 +21,7 @@ There is also a runner script to execute all fuzz targets. Refer to
 
 ## Overview of Umkoin Core fuzzing
 
-[Google](https://github.com/google/fuzzing/) has a good overview of fuzzing in general, with contributions from key architects of some of the most-used fuzzers. [John Regehr](https://blog.regehr.org/archives/1687) provides good advice on writing code that assists fuzzers in finding bugs, which is useful for developers to keep in mind.
+[Google](https://github.com/google/fuzzing/) has a good overview of fuzzing in general, with contributions from key architects of some of the most-used fuzzers. [This paper](https://agroce.github.io/umkoin_report.pdf) includes an external overview of the status of Umkoin Core fuzzing, as of summer 2021.  [John Regehr](https://blog.regehr.org/archives/1687) provides good advice on writing code that assists fuzzers in finding bugs, which is useful for developers to keep in mind.
 
 ## Fuzzing harnesses and output
 
@@ -283,8 +283,8 @@ $ sudo apt-get install libtool libtool-bin wget automake autoconf bison gdb
 ```
 
 At this point, you must install the .NET core.  The process differs, depending on your Linux distribution.
-See [this link](https://docs.microsoft.com/en-us/dotnet/core/install/linux) for details.
-On ubuntu 20.04, the following should work:
+See [this link](https://learn.microsoft.com/en-us/dotnet/core/install/linux) for details.
+On Ubuntu 20.04, the following should work:
 
 ```sh
 $ wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
