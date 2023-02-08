@@ -1,5 +1,23 @@
 This folder contains lint scripts.
 
+Running locally
+===============
+
+To run linters locally with the same versions as the CI environment, use the included
+Dockerfile:
+
+```sh
+cd ./ci/lint
+docker build -t umkoin-linter .
+
+cd /root/of/umkoin/repo
+docker run --rm -v $(pwd):/umkoin -it umkoin-linter
+```
+
+After building the container once, you can simply run the last command any time you
+want to lint.
+
+
 check-doc.py
 ============
 Check for missing documentation of command line options.

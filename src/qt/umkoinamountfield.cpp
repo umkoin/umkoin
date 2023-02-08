@@ -217,9 +217,8 @@ Q_SIGNALS:
 
 #include <qt/umkoinamountfield.moc>
 
-UmkoinAmountField::UmkoinAmountField(QWidget *parent) :
-    QWidget(parent),
-    amount(nullptr)
+UmkoinAmountField::UmkoinAmountField(QWidget* parent)
+    : QWidget(parent)
 {
     amount = new AmountSpinBox(this);
     amount->setLocale(QLocale::c());

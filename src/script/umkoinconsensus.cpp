@@ -62,12 +62,6 @@ inline int set_error(umkoinconsensus_error* ret, umkoinconsensus_error serror)
     return 0;
 }
 
-struct ECCryptoClosure
-{
-    ECCVerifyHandle handle;
-};
-
-ECCryptoClosure instance_of_eccryptoclosure;
 } // namespace
 
 /** Check that all specified flags are part of the libconsensus interface. */

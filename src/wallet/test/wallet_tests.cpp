@@ -43,7 +43,7 @@ static_assert(WALLET_INCREMENTAL_RELAY_FEE >= DEFAULT_INCREMENTAL_RELAY_FEE, "wa
 
 BOOST_FIXTURE_TEST_SUITE(wallet_tests, WalletTestingSetup)
 
-static const std::shared_ptr<CWallet> TestLoadWallet(WalletContext& context)
+static std::shared_ptr<CWallet> TestLoadWallet(WalletContext& context)
 {
     DatabaseOptions options;
     options.create_flags = WALLET_FLAG_DESCRIPTORS;
@@ -907,24 +907,28 @@ BOOST_FIXTURE_TEST_CASE(ZapSelectTx, TestChain100Setup)
     TestUnloadWallet(std::move(wallet));
 }
 
+class FailCursor : public DatabaseCursor
+{
+public:
+    Status Next(DataStream& key, DataStream& value) override { return Status::FAIL; }
+};
+
 /** RAII class that provides access to a FailDatabase. Which fails if needed. */
 class FailBatch : public DatabaseBatch
 {
 private:
     bool m_pass{true};
-    bool ReadKey(CDataStream&& key, CDataStream& value) override { return m_pass; }
-    bool WriteKey(CDataStream&& key, CDataStream&& value, bool overwrite=true) override { return m_pass; }
-    bool EraseKey(CDataStream&& key) override { return m_pass; }
-    bool HasKey(CDataStream&& key) override { return m_pass; }
+    bool ReadKey(DataStream&& key, DataStream& value) override { return m_pass; }
+    bool WriteKey(DataStream&& key, DataStream&& value, bool overwrite = true) override { return m_pass; }
+    bool EraseKey(DataStream&& key) override { return m_pass; }
+    bool HasKey(DataStream&& key) override { return m_pass; }
 
 public:
     explicit FailBatch(bool pass) : m_pass(pass) {}
     void Flush() override {}
     void Close() override {}
 
-    bool StartCursor() override { return true; }
-    bool ReadAtCursor(CDataStream& ssKey, CDataStream& ssValue, bool& complete) override { return false; }
-    void CloseCursor() override {}
+    std::unique_ptr<DatabaseCursor> GetNewCursor() override { return std::make_unique<FailCursor>(); }
     bool TxnBegin() override { return false; }
     bool TxnCommit() override { return false; }
     bool TxnAbort() override { return false; }

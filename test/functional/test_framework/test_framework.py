@@ -533,11 +533,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
             self.nodes.append(test_node_i)
             if not test_node_i.version_is_at_least(170000):
                 # adjust conf for pre 17
-                conf_file = test_node_i.umkoinconf
-                with open(conf_file, 'r', encoding='utf8') as conf:
-                    conf_data = conf.read()
-                with open(conf_file, 'w', encoding='utf8') as conf:
-                    conf.write(conf_data.replace('[regtest]', ''))
+                test_node_i.replace_in_config([('[regtest]', '')])
 
     def start_node(self, i, *args, **kwargs):
         """Start a umkoind"""
@@ -608,6 +604,10 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         self.wait_until(lambda: sum(peer['version'] != 0 for peer in to_connection.getpeerinfo()) == to_num_peers)
         self.wait_until(lambda: sum(peer['bytesrecv_per_msg'].pop('verack', 0) == 24 for peer in from_connection.getpeerinfo()) == from_num_peers)
         self.wait_until(lambda: sum(peer['bytesrecv_per_msg'].pop('verack', 0) == 24 for peer in to_connection.getpeerinfo()) == to_num_peers)
+        # The message bytes are counted before processing the message, so make
+        # sure it was fully processed by waiting for a ping.
+        self.wait_until(lambda: sum(peer["bytesrecv_per_msg"].pop("pong", 0) >= 32 for peer in from_connection.getpeerinfo()) == from_num_peers)
+        self.wait_until(lambda: sum(peer["bytesrecv_per_msg"].pop("pong", 0) >= 32 for peer in to_connection.getpeerinfo()) == to_num_peers)
 
     def disconnect_nodes(self, a, b):
         def disconnect_nodes_helper(node_a, node_b):
@@ -849,6 +849,13 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
             import zmq  # noqa
         except ImportError:
             raise SkipTest("python3-zmq module not available.")
+
+    def skip_if_no_py_sqlite3(self):
+        """Attempt to import the sqlite3 package and skip the test if the import fails."""
+        try:
+            import sqlite3  # noqa
+        except ImportError:
+            raise SkipTest("sqlite3 module not available.")
 
     def skip_if_no_python_bcc(self):
         """Attempt to import the bcc package and skip the tests if the import fails."""

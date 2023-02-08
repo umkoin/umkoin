@@ -76,8 +76,6 @@ using node::BlockManager;
 using node::BlockMap;
 using node::CBlockIndexHeightOnlyComparator;
 using node::CBlockIndexWorkComparator;
-using node::fImporting;
-using node::fPruneMode;
 using node::fReindex;
 using node::ReadBlockFromDisk;
 using node::SnapshotMetadata;
@@ -106,18 +104,6 @@ const std::vector<std::string> CHECKLEVEL_DOC {
  *  noticeably interfere with the pruning mechanism.
  * */
 static constexpr int PRUNE_LOCK_BUFFER{10};
-
-/**
- * Mutex to guard access to validation specific variables, such as reading
- * or changing the chainstate.
- *
- * This may also need to be locked when updating the transaction pool, e.g. on
- * AcceptToMemoryPool. See CTxMemPool::cs comment for details.
- *
- * The transaction pool has a separate lock to allow reading from it and the
- * chainstate at the same time.
- */
-RecursiveMutex cs_main;
 
 GlobalMutex g_best_block_mutex;
 std::condition_variable g_best_block_cv;
@@ -1585,8 +1571,9 @@ bool Chainstate::IsInitialBlockDownload() const
     LOCK(cs_main);
     if (m_cached_finished_ibd.load(std::memory_order_relaxed))
         return false;
-    if (fImporting || fReindex)
+    if (m_chainman.m_blockman.LoadingBlocks()) {
         return true;
+    }
     if (m_chain.Tip() == nullptr)
         return true;
     if (m_chain.Tip()->nChainWork < m_chainman.MinimumChainWork()) {
@@ -2423,7 +2410,7 @@ bool Chainstate::FlushStateToDisk(
 
         CoinsCacheSizeState cache_state = GetCoinsCacheSizeState();
         LOCK(m_blockman.cs_LastBlockFile);
-        if (fPruneMode && (m_blockman.m_check_for_pruning || nManualPruneHeight > 0) && !fReindex) {
+        if (m_blockman.IsPruneMode() && (m_blockman.m_check_for_pruning || nManualPruneHeight > 0) && !fReindex) {
             // make sure we don't prune above any of the prune locks bestblocks
             // pruning is height-based
             int last_prune{m_chain.Height()}; // last height we can prune
@@ -4094,7 +4081,8 @@ bool CVerifyDB::VerifyDB(
     int nGoodTransactions = 0;
     BlockValidationState state;
     int reportDone = 0;
-    LogPrintf("[0%%]..."); /* Continued */
+    bool skipped_l3_checks{false};
+    LogPrintf("Verification progress: 0%%\n");
 
     const bool is_snapshot_cs{!chainstate.m_from_snapshot_blockhash};
 
@@ -4102,14 +4090,14 @@ bool CVerifyDB::VerifyDB(
         const int percentageDone = std::max(1, std::min(99, (int)(((double)(chainstate.m_chain.Height() - pindex->nHeight)) / (double)nCheckDepth * (nCheckLevel >= 4 ? 50 : 100))));
         if (reportDone < percentageDone / 10) {
             // report every 10% step
-            LogPrintf("[%d%%]...", percentageDone); /* Continued */
+            LogPrintf("Verification progress: %d%%\n", percentageDone);
             reportDone = percentageDone / 10;
         }
         uiInterface.ShowProgress(_("Verifying blocks…").translated, percentageDone, false);
         if (pindex->nHeight <= chainstate.m_chain.Height() - nCheckDepth) {
             break;
         }
-        if ((fPruneMode || is_snapshot_cs) && !(pindex->nStatus & BLOCK_HAVE_DATA)) {
+        if ((chainstate.m_blockman.IsPruneMode() || is_snapshot_cs) && !(pindex->nStatus & BLOCK_HAVE_DATA)) {
             // If pruning or running under an assumeutxo snapshot, only go
             // back as far as we have data.
             LogPrintf("VerifyDB(): block verification stopping at height %d (pruning, no data)\n", pindex->nHeight);
@@ -4137,17 +4125,21 @@ bool CVerifyDB::VerifyDB(
         // check level 3: check for inconsistencies during memory-only disconnect of tip blocks
         size_t curr_coins_usage = coins.DynamicMemoryUsage() + chainstate.CoinsTip().DynamicMemoryUsage();
 
-        if (nCheckLevel >= 3 && curr_coins_usage <= chainstate.m_coinstip_cache_size_bytes) {
-            assert(coins.GetBestBlock() == pindex->GetBlockHash());
-            DisconnectResult res = chainstate.DisconnectBlock(block, pindex, coins);
-            if (res == DISCONNECT_FAILED) {
-                return error("VerifyDB(): *** irrecoverable inconsistency in block data at %d, hash=%s", pindex->nHeight, pindex->GetBlockHash().ToString());
-            }
-            if (res == DISCONNECT_UNCLEAN) {
-                nGoodTransactions = 0;
-                pindexFailure = pindex;
+        if (nCheckLevel >= 3) {
+            if (curr_coins_usage <= chainstate.m_coinstip_cache_size_bytes) {
+                assert(coins.GetBestBlock() == pindex->GetBlockHash());
+                DisconnectResult res = chainstate.DisconnectBlock(block, pindex, coins);
+                if (res == DISCONNECT_FAILED) {
+                    return error("VerifyDB(): *** irrecoverable inconsistency in block data at %d, hash=%s", pindex->nHeight, pindex->GetBlockHash().ToString());
+                }
+                if (res == DISCONNECT_UNCLEAN) {
+                    nGoodTransactions = 0;
+                    pindexFailure = pindex;
+                } else {
+                    nGoodTransactions += block.vtx.size();
+                }
             } else {
-                nGoodTransactions += block.vtx.size();
+                skipped_l3_checks = true;
             }
         }
         if (ShutdownRequested()) return true;
@@ -4155,17 +4147,19 @@ bool CVerifyDB::VerifyDB(
     if (pindexFailure) {
         return error("VerifyDB(): *** coin database inconsistencies found (last %i blocks, %i good transactions before that)\n", chainstate.m_chain.Height() - pindexFailure->nHeight + 1, nGoodTransactions);
     }
-
+    if (skipped_l3_checks) {
+        LogPrintf("Skipped verification of level >=3 (insufficient database cache size). Consider increasing -dbcache.\n");
+    }
     // store block count as we move pindex at check level >= 4
     int block_count = chainstate.m_chain.Height() - pindex->nHeight;
 
     // check level 4: try reconnecting blocks
-    if (nCheckLevel >= 4) {
+    if (nCheckLevel >= 4 && !skipped_l3_checks) {
         while (pindex != chainstate.m_chain.Tip()) {
             const int percentageDone = std::max(1, std::min(99, 100 - (int)(((double)(chainstate.m_chain.Height() - pindex->nHeight)) / (double)nCheckDepth * 50)));
             if (reportDone < percentageDone / 10) {
                 // report every 10% step
-                LogPrintf("[%d%%]...", percentageDone); /* Continued */
+                LogPrintf("Verification progress: %d%%\n", percentageDone);
                 reportDone = percentageDone / 10;
             }
             uiInterface.ShowProgress(_("Verifying blocks…").translated, percentageDone, false);
@@ -4180,8 +4174,7 @@ bool CVerifyDB::VerifyDB(
         }
     }
 
-    LogPrintf("[DONE].\n");
-    LogPrintf("No coin database inconsistencies in last %i blocks (%i transactions)\n", block_count, nGoodTransactions);
+    LogPrintf("Verification: No coin database inconsistencies in last %i blocks (%i transactions)\n", block_count, nGoodTransactions);
 
     return true;
 }

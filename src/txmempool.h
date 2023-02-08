@@ -21,6 +21,7 @@
 #include <coins.h>
 #include <consensus/amount.h>
 #include <indirectmap.h>
+#include <kernel/cs_main.h>
 #include <kernel/mempool_entry.h>
 #include <policy/feerate.h>
 #include <policy/packages.h>
@@ -39,7 +40,6 @@
 class CBlockIndex;
 class CChain;
 class Chainstate;
-extern RecursiveMutex cs_main;
 
 /** Fake height value used in Coin to signify they are only in the memory pool (since 0.8) */
 static const uint32_t MEMPOOL_HEIGHT = 0x7FFFFFFF;
@@ -237,7 +237,7 @@ enum class MemPoolRemovalReason {
     REPLACED,    //!< Removed for replacement
 };
 
-const std::string RemovalReasonToString(const MemPoolRemovalReason& r) noexcept;
+std::string RemovalReasonToString(const MemPoolRemovalReason& r) noexcept;
 
 /**
  * CTxMemPool stores valid-according-to-the-current-best-chain transactions
