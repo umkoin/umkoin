@@ -1071,7 +1071,7 @@ void UmkoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVeri
     statusBar()->clearMessage();
 
     // Acquire current block source
-    enum BlockSource blockSource = clientModel->getBlockSource();
+    BlockSource blockSource{clientModel->getBlockSource()};
     switch (blockSource) {
         case BlockSource::NETWORK:
             if (synctype == SyncType::HEADER_PRESYNC) {
@@ -1090,9 +1090,6 @@ void UmkoinGUI::setNumBlocks(int count, const QDateTime& blockDate, double nVeri
             } else {
                 progressBarLabel->setText(tr("Processing blocks on disk…"));
             }
-            break;
-        case BlockSource::REINDEX:
-            progressBarLabel->setText(tr("Reindexing blocks on disk…"));
             break;
         case BlockSource::NONE:
             if (synctype != SyncType::BLOCK_SYNC) {
