@@ -1451,7 +1451,7 @@ if test "$use_natpmp" != "no"; then
   CPPFLAGS="$TEMP_CPPFLAGS"
 fi
 
-if test "$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoin_util$build_umkoind$umkoin_enable_qt$use_tests$use_bench" = "nononononononono"; then
+if test "$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoin_util$build_umkoind$umkoin_enable_qt$use_tests$use_bench$enable_fuzz_binary" = "nonononononononono"; then
   use_boost=no
 else
   use_boost=yes
