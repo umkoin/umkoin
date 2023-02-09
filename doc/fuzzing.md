@@ -101,7 +101,7 @@ INFO: seed corpus: files: 991 min: 1b max: 1858b total: 288291b rss: 150Mb
 
 ## Run without sanitizers for increased throughput
 
-Fuzzing on a harness compiled with `--with-sanitizers=address,fuzzer,undefined` is good for finding bugs. However, the very slow execution even under libFuzzer will limit the ability to find new coverage. A good approach is to perform occasional long runs without the additional bug-detectors (configure `--with-sanitizers=fuzzer`) and then merge new inputs into a corpus as described in the qa-assets repo (https://github.com/bitcoin-core/qa-assets/blob/main/.github/PULL_REQUEST_TEMPLATE.md).  Patience is useful; even with improved throughput, libFuzzer may need days and 10s of millions of executions to reach deep/hard targets.
+Fuzzing on a harness compiled with `--with-sanitizers=address,fuzzer,undefined` is good for finding bugs. However, the very slow execution even under libFuzzer will limit the ability to find new coverage. A good approach is to perform occasional long runs without the additional bug-detectors (configure `--with-sanitizers=fuzzer`) and then merge new inputs into a corpus as described in the qa-assets repo (https://github.com/bitcoin-core/qa-assets/blob/main/.github/PULL_REQUEST_TEMPLATE.md). Patience is useful; even with improved throughput, libFuzzer may need days and 10s of millions of executions to reach deep/hard targets.
 
 ## Reproduce a fuzzer crash reported by the CI
 
@@ -136,10 +136,10 @@ You may also need to take care of giving the correct path for `clang` and
 `clang++`, like `CC=/path/to/clang CXX=/path/to/clang++` if the non-systems
 `clang` does not come first in your path.
 
-Full configure that was tested on macOS Catalina with `brew` installed `llvm`:
+Full configure that was tested on macOS with `brew` installed `llvm`:
 
 ```sh
-./configure --enable-fuzz --with-sanitizers=fuzzer,address,undefined CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ --disable-asm
+./configure --enable-fuzz --with-sanitizers=fuzzer,address,undefined --disable-asm CC=$(brew --prefix llvm)/bin/clang CXX=$(brew --prefix llvm)/bin/clang++
 ```
 
 Read the [libFuzzer documentation](https://llvm.org/docs/LibFuzzer.html) for more information. This [libFuzzer tutorial](https://github.com/google/fuzzing/blob/master/tutorial/libFuzzerTutorial.md) might also be of interest.
