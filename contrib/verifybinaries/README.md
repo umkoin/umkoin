@@ -1,16 +1,5 @@
 ### Verify Binaries
 
-#### Preparation:
-
-Make sure you obtain the proper release signing key and verify the fingerprint with several independent sources.
-
-```sh
-$ gpg --fingerprint "Umkoin Core Builder"
-pub   rsa4096 2019-06-19 [SC] [expires: 2021-03-18]
-      A405 D7A3 AACB 75AB 1B8D  C18A 3B59 F7F9 F2B4 FCF0
-uid           [ unknown] Umkoin Core Builder <umkoin@umkoin.org>
-```
-
 #### Usage:
 
 This script attempts to download the signature file `SHA256SUMS.asc` from http://www.umkoin.org.

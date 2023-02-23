@@ -154,7 +154,7 @@ public:
     /**
      * Parse a Tor or I2P address and set this object to it.
      * @param[in] addr Address to parse, for example
-     * pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion or
+     * klfchu53kxun6zx5.onion or
      * ukeu3k5oycgaauneqgtnvselmt4yemvoilkln7jpvamvfx7dnkdq.b32.i2p.
      * @returns Whether the operation was successful.
      * @see CNetAddr::IsTor(), CNetAddr::IsI2P()
@@ -193,8 +193,7 @@ public:
     bool IsAddrV1Compatible() const;
 
     enum Network GetNetwork() const;
-    std::string ToString() const;
-    std::string ToStringIP() const;
+    std::string ToStringAddr() const;
     bool GetInAddr(struct in_addr* pipv4Addr) const;
     Network GetNetClass() const;
 
@@ -253,7 +252,7 @@ private:
     /**
      * Parse a Tor address and set this object to it.
      * @param[in] addr Address to parse, must be a valid C string, for example
-     * pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion.
+     * klfchu53kxun6zx5.onion.
      * @returns Whether the operation was successful.
      * @see CNetAddr::IsTor()
      */
@@ -476,8 +475,6 @@ protected:
     /// Is this value valid? (only used to signal parse errors)
     bool valid;
 
-    bool SanityCheck() const;
-
 public:
     /**
      * Construct an invalid subnet (empty, `Match()` always returns false).
@@ -536,9 +533,7 @@ public:
     friend bool operator!=(const CService& a, const CService& b) { return !(a == b); }
     friend bool operator<(const CService& a, const CService& b);
     std::vector<unsigned char> GetKey() const;
-    std::string ToString() const;
-    std::string ToStringPort() const;
-    std::string ToStringIPPort() const;
+    std::string ToStringAddrPort() const;
 
     CService(const struct in6_addr& ipv6Addr, uint16_t port);
     explicit CService(const struct sockaddr_in6& addr);

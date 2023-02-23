@@ -17,7 +17,6 @@
 #include <sync.h>
 #include <uint256.h>
 #include <util/bip32.h>
-#include <util/system.h>
 #include <util/time.h>
 #include <util/translation.h>
 #include <wallet/rpc/util.h>
@@ -1478,7 +1477,7 @@ static UniValue ProcessDescriptorImport(CWallet& wallet, const UniValue& data, c
             } else {
                 warnings.push_back("Range not given, using default keypool range");
                 range_start = 0;
-                range_end = gArgs.GetIntArg("-keypool", DEFAULT_KEYPOOL_SIZE);
+                range_end = wallet.m_keypool_size;
             }
             next_index = range_start;
 
@@ -1651,9 +1650,13 @@ RPCHelpMan importdescriptors()
     }
 
     WalletRescanReserver reserver(*pwallet);
-    if (!reserver.reserve()) {
+    if (!reserver.reserve(/*with_passphrase=*/true)) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Wallet is currently rescanning. Abort existing rescan or wait.");
     }
+
+    // Ensure that the wallet is not locked for the remainder of this RPC, as
+    // the passphrase is used to top up the keypool.
+    LOCK(pwallet->m_relock_mutex);
 
     const UniValue& requests = main_request.params[0];
     const int64_t minimum_timestamp = 1;

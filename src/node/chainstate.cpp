@@ -64,7 +64,12 @@ ChainstateLoadResult LoadChainstate(ChainstateManager& chainman, const CacheSize
     // new CBlockTreeDB tries to delete the existing file, which
     // fails if it's still open from the previous loop. Close it first:
     pblocktree.reset();
-    pblocktree.reset(new CBlockTreeDB(cache_sizes.block_tree_db, options.block_tree_db_in_memory, options.reindex));
+    pblocktree = std::make_unique<CBlockTreeDB>(DBParams{
+        .path = chainman.m_options.datadir / "blocks" / "index",
+        .cache_bytes = static_cast<size_t>(cache_sizes.block_tree_db),
+        .memory_only = options.block_tree_db_in_memory,
+        .wipe_data = options.reindex,
+        .options = chainman.m_options.block_tree_db});
 
     if (options.reindex) {
         pblocktree->WriteReindexing(true);
@@ -187,12 +192,23 @@ ChainstateLoadResult VerifyLoadedChainstate(ChainstateManager& chainman, const C
                                                          "Only rebuild the block database if you are sure that your computer's date and time are correct")};
             }
 
-            if (!CVerifyDB().VerifyDB(
-                    *chainstate, chainman.GetConsensus(), chainstate->CoinsDB(),
-                    options.check_level,
-                    options.check_blocks)) {
+            VerifyDBResult result = CVerifyDB().VerifyDB(
+                *chainstate, chainman.GetConsensus(), chainstate->CoinsDB(),
+                options.check_level,
+                options.check_blocks);
+            switch (result) {
+            case VerifyDBResult::SUCCESS:
+            case VerifyDBResult::INTERRUPTED:
+            case VerifyDBResult::SKIPPED_MISSING_BLOCKS:
+                break;
+            case VerifyDBResult::CORRUPTED_BLOCK_DB:
                 return {ChainstateLoadStatus::FAILURE, _("Corrupted block database detected")};
-            }
+            case VerifyDBResult::SKIPPED_L3_CHECKS:
+                if (options.require_full_verification) {
+                    return {ChainstateLoadStatus::FAILURE_INSUFFICIENT_DBCACHE, _("Insufficient dbcache for block verification")};
+                }
+                break;
+            } // no default case, so the compiler can warn about missing cases
         }
     }
 
