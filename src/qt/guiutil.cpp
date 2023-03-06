@@ -428,7 +428,7 @@ void openDebugLogfile()
 
 bool openUmkoinConf()
 {
-    fs::path pathConfig = GetConfigFile(gArgs.GetPathArg("-conf", UMKOIN_CONF_FILENAME));
+    fs::path pathConfig = gArgs.GetConfigFilePath();
 
     /* Create the file */
     std::ofstream configFile{pathConfig, std::ios_base::app};
