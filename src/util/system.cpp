@@ -417,7 +417,7 @@ const fs::path& ArgsManager::GetDataDir(bool net_specific) const
     LOCK(cs_args);
     fs::path& path = net_specific ? m_cached_network_datadir_path : m_cached_datadir_path;
 
-    // Use cached path if available
+    // Used cached path if available
     if (!path.empty()) return path;
 
     const fs::path datadir{GetPathArg("-datadir")};
@@ -436,27 +436,6 @@ const fs::path& ArgsManager::GetDataDir(bool net_specific) const
     }
 
     return path;
-}
-
-void ArgsManager::EnsureDataDir() const
-{
-    /**
-     * "/wallets" subdirectories are created in all **new**
-     * datadirs, because wallet code will create new wallets in the "wallets"
-     * subdirectory only if one already exists, otherwise it will create them
-     * in the top-level datadir where they might interfere with other files.
-     * Wallet init code currently avoids creating "wallets" directories itself
-     * for backwards compatibility, but this will be changed in the future and
-     * wallet code here could go away (#16220).
-     */
-    auto path{GetDataDir(false)};
-    if (!fs::exists(path)) {
-        fs::create_directories(path / "wallets");
-    }
-    path = GetDataDir(true);
-    if (!fs::exists(path)) {
-        fs::create_directories(path / "wallets");
-    }
 }
 
 void ArgsManager::ClearPathCache()
@@ -500,25 +479,6 @@ std::vector<std::string> ArgsManager::GetArgs(const std::string& strArg) const
 bool ArgsManager::IsArgSet(const std::string& strArg) const
 {
     return !GetSetting(strArg).isNull();
-}
-
-bool ArgsManager::InitSettings(std::string& error)
-{
-    EnsureDataDir();
-    if (!GetSettingsPath()) {
-        return true; // Do nothing if settings file disabled.
-    }
-
-    std::vector<std::string> errors;
-    if (!ReadSettingsFile(&errors)) {
-        error = strprintf("Failed loading settings file:\n%s\n", MakeUnorderedList(errors));
-        return false;
-    }
-    if (!WriteSettingsFile(&errors)) {
-        error = strprintf("Failed saving settings file:\n%s\n", MakeUnorderedList(errors));
-        return false;
-    }
-    return true;
 }
 
 bool ArgsManager::GetSettingsPath(fs::path* filepath, bool temp, bool backup) const
