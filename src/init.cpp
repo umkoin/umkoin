@@ -37,6 +37,7 @@
 #include <net_processing.h>
 #include <netbase.h>
 #include <netgroup.h>
+#include <node/blockmanager_args.h>
 #include <node/blockstorage.h>
 #include <node/caches.h>
 #include <node/chainstate.h>
@@ -122,9 +123,7 @@ using node::ShouldPersistMempool;
 using node::NodeContext;
 using node::ThreadImport;
 using node::VerifyLoadedChainstate;
-using node::fPruneMode;
 using node::fReindex;
-using node::nPruneTarget;
 
 static constexpr bool DEFAULT_PROXYRANDOMIZE{true};
 static constexpr bool DEFAULT_REST_ENABLE{false};
@@ -477,7 +476,7 @@ void SetupServerArgs(ArgsManager& argsman)
     argsman.AddArg("-externalip=<ip>", "Specify your own public address", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-fixedseeds", strprintf("Allow fixed seeds if DNS seeds don't provide peers (default: %u)", DEFAULT_FIXEDSEEDS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-forcednsseed", strprintf("Always query for peer addresses via DNS lookup (default: %u)", DEFAULT_FORCEDNSSEED), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
-    argsman.AddArg("-listen", "Accept connections from outside (default: 1 if no -proxy or -connect)", ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
+    argsman.AddArg("-listen", strprintf("Accept connections from outside (default: %u if no -proxy or -connect)", DEFAULT_LISTEN), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-listenonion", strprintf("Automatically create Tor onion service (default: %d)", DEFAULT_LISTEN_ONION), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-maxconnections=<n>", strprintf("Maintain at most <n> connections to peers (default: %u). This limit does not apply to connections manually added via -addnode or the addnode RPC, which have a separate limit of %u.", DEFAULT_MAX_PEER_CONNECTIONS, MAX_ADDNODE_CONNECTIONS), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
     argsman.AddArg("-maxreceivebuffer=<n>", strprintf("Maximum per-connection receive buffer, <n>*1000 bytes (default: %u)", DEFAULT_MAXRECEIVEBUFFER), ArgsManager::ALLOW_ANY, OptionsCategory::CONNECTION);
@@ -867,7 +866,7 @@ bool AppInitParameterInteraction(const ArgsManager& args, bool use_syscall_sandb
         InitWarning(warnings);
     }
 
-    if (!fs::is_directory(gArgs.GetBlocksDirPath())) {
+    if (!fs::is_directory(args.GetBlocksDirPath())) {
         return InitError(strprintf(_("Specified blocks directory \"%s\" does not exist."), args.GetArg("-blocksdir", "")));
     }
 
@@ -944,22 +943,6 @@ bool AppInitParameterInteraction(const ArgsManager& args, bool use_syscall_sandb
     // ********************************************************* Step 3: parameter-to-internal-flags
     init::SetLoggingCategories(args);
     init::SetLoggingLevel(args);
-
-    // block pruning; get the amount of disk space (in MiB) to allot for block & undo files
-    int64_t nPruneArg = args.GetIntArg("-prune", 0);
-    if (nPruneArg < 0) {
-        return InitError(_("Prune cannot be configured with a negative value."));
-    }
-    nPruneTarget = (uint64_t) nPruneArg * 1024 * 1024;
-    if (nPruneArg == 1) {  // manual pruning: -prune=1
-        nPruneTarget = std::numeric_limits<uint64_t>::max();
-        fPruneMode = true;
-    } else if (nPruneTarget) {
-        if (nPruneTarget < MIN_DISK_SPACE_FOR_BLOCK_FILES) {
-            return InitError(strprintf(_("Prune configured below the minimum of %d MiB.  Please use a higher number."), MIN_DISK_SPACE_FOR_BLOCK_FILES / 1024 / 1024));
-        }
-        fPruneMode = true;
-    }
 
     nConnectTimeout = args.GetIntArg("-timeout", DEFAULT_CONNECT_TIMEOUT);
     if (nConnectTimeout <= 0) {
@@ -1049,6 +1032,10 @@ bool AppInitParameterInteraction(const ArgsManager& args, bool use_syscall_sandb
             .datadir = args.GetDataDirNet(),
         };
         if (const auto error{ApplyArgsManOptions(args, chainman_opts_dummy)}) {
+            return InitError(*error);
+        }
+        node::BlockManager::Options blockman_opts_dummy{};
+        if (const auto error{ApplyArgsManOptions(args, blockman_opts_dummy)}) {
             return InitError(*error);
         }
     }
@@ -1224,7 +1211,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         if (args.IsArgSet("-asmap")) {
             fs::path asmap_path = args.GetPathArg("-asmap", DEFAULT_ASMAP_FILENAME);
             if (!asmap_path.is_absolute()) {
-                asmap_path = gArgs.GetDataDirNet() / asmap_path;
+                asmap_path = args.GetDataDirNet() / asmap_path;
             }
             if (!fs::exists(asmap_path)) {
                 InitError(strprintf(_("Could not find asmap file %s"), fs::quoted(fs::PathToString(asmap_path))));
@@ -1254,7 +1241,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     }
 
     assert(!node.banman);
-    node.banman = std::make_unique<BanMan>(gArgs.GetDataDirNet() / "banlist", &uiInterface, args.GetIntArg("-bantime", DEFAULT_MISBEHAVING_BANTIME));
+    node.banman = std::make_unique<BanMan>(args.GetDataDirNet() / "banlist", &uiInterface, args.GetIntArg("-bantime", DEFAULT_MISBEHAVING_BANTIME));
     assert(!node.connman);
     node.connman = std::make_unique<CConnman>(GetRand<uint64_t>(),
                                               GetRand<uint64_t>(),
@@ -1450,6 +1437,9 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     };
     Assert(!ApplyArgsManOptions(args, chainman_opts)); // no error can happen, already checked in AppInitParameterInteraction
 
+    node::BlockManager::Options blockman_opts{};
+    Assert(!ApplyArgsManOptions(args, blockman_opts)); // no error can happen, already checked in AppInitParameterInteraction
+
     // cache size calculations
     CacheSizes cache_sizes = CalculateCacheSizes(args, g_enabled_filter_types.size());
 
@@ -1485,7 +1475,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     for (bool fLoaded = false; !fLoaded && !ShutdownRequested();) {
         node.mempool = std::make_unique<CTxMemPool>(mempool_opts);
 
-        node.chainman = std::make_unique<ChainstateManager>(chainman_opts);
+        node.chainman = std::make_unique<ChainstateManager>(chainman_opts, blockman_opts);
         ChainstateManager& chainman = *node.chainman;
 
         node::ChainstateLoadOptions options;
@@ -1618,12 +1608,12 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     // ********************************************************* Step 11: import blocks
 
-    if (!CheckDiskSpace(gArgs.GetDataDirNet())) {
-        InitError(strprintf(_("Error: Disk space is low for %s"), fs::quoted(fs::PathToString(gArgs.GetDataDirNet()))));
+    if (!CheckDiskSpace(args.GetDataDirNet())) {
+        InitError(strprintf(_("Error: Disk space is low for %s"), fs::quoted(fs::PathToString(args.GetDataDirNet()))));
         return false;
     }
-    if (!CheckDiskSpace(gArgs.GetBlocksDirPath())) {
-        InitError(strprintf(_("Error: Disk space is low for %s"), fs::quoted(fs::PathToString(gArgs.GetBlocksDirPath()))));
+    if (!CheckDiskSpace(args.GetBlocksDirPath())) {
+        InitError(strprintf(_("Error: Disk space is low for %s"), fs::quoted(fs::PathToString(args.GetBlocksDirPath()))));
         return false;
     }
 
@@ -1631,10 +1621,11 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 
     // On first startup, warn on low block storage space
     if (!fReindex && !fReindexChainState && chain_active_height <= 1) {
+        uint64_t assumed_chain_bytes{chainparams.AssumedBlockchainSize() * 1024 * 1024 * 1024};
         uint64_t additional_bytes_needed{
             chainman.m_blockman.IsPruneMode() ?
-                chainman.m_blockman.GetPruneTarget() :
-                chainparams.AssumedBlockchainSize() * 1024 * 1024 * 1024};
+                std::min(chainman.m_blockman.GetPruneTarget(), assumed_chain_bytes) :
+                assumed_chain_bytes};
 
         if (!CheckDiskSpace(args.GetBlocksDirPath(), additional_bytes_needed)) {
             InitWarning(strprintf(_(
@@ -1715,7 +1706,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     if (node.peerman) node.peerman->SetBestHeight(chain_active_height);
 
     // Map ports with UPnP or NAT-PMP.
-    StartMapPort(args.GetBoolArg("-upnp", DEFAULT_UPNP), gArgs.GetBoolArg("-natpmp", DEFAULT_NATPMP));
+    StartMapPort(args.GetBoolArg("-upnp", DEFAULT_UPNP), args.GetBoolArg("-natpmp", DEFAULT_NATPMP));
 
     CConnman::Options connOptions;
     connOptions.nLocalServices = nLocalServices;

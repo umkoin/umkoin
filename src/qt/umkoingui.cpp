@@ -456,6 +456,7 @@ void UmkoinGUI::createActions()
             m_wallet_controller->closeAllWallets(this);
         });
         connect(m_mask_values_action, &QAction::toggled, this, &UmkoinGUI::setPrivacy);
+        connect(m_mask_values_action, &QAction::toggled, this, &UmkoinGUI::enableHistoryAction);
     }
 #endif // ENABLE_WALLET
 
@@ -668,6 +669,12 @@ void UmkoinGUI::setClientModel(ClientModel *_clientModel, interfaces::BlockAndHe
 }
 
 #ifdef ENABLE_WALLET
+void UmkoinGUI::enableHistoryAction(bool privacy)
+{
+    historyAction->setEnabled(!privacy);
+    if (historyAction->isChecked()) gotoOverviewPage();
+}
+
 void UmkoinGUI::setWalletController(WalletController* wallet_controller)
 {
     assert(!m_wallet_controller);
@@ -716,7 +723,9 @@ void UmkoinGUI::addWallet(WalletModel* walletModel)
     connect(wallet_view, &WalletView::encryptionStatusChanged, this, &UmkoinGUI::updateWalletStatus);
     connect(wallet_view, &WalletView::incomingTransaction, this, &UmkoinGUI::incomingTransaction);
     connect(this, &UmkoinGUI::setPrivacy, wallet_view, &WalletView::setPrivacy);
-    wallet_view->setPrivacy(isPrivacyModeActivated());
+    const bool privacy = isPrivacyModeActivated();
+    wallet_view->setPrivacy(privacy);
+    enableHistoryAction(privacy);
     const QString display_name = walletModel->getDisplayName();
     m_wallet_selector->addItem(display_name, QVariant::fromValue(walletModel));
 }

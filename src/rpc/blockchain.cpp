@@ -432,7 +432,8 @@ static RPCHelpMan getblockfrompeer()
         "We must have the header for this block, e.g. using submitheader.\n"
         "Subsequent calls for the same block and a new peer will cause the response from the previous peer to be ignored.\n"
         "Peers generally ignore requests for a stale block that they never fully verified, or one that is more than a month old.\n"
-        "When a peer does not respond with a block, we will disconnect.\n\n"
+        "When a peer does not respond with a block, we will disconnect.\n"
+        "Note: The block could be re-pruned as soon as it is received.\n\n"
         "Returns an empty JSON object if the request was successfully scheduled.",
         {
             {"blockhash", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "The block hash to try to fetch"},
@@ -1248,7 +1249,6 @@ RPCHelpMan getblockchaininfo()
         },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
-    const ArgsManager& args{EnsureAnyArgsman(request.context)};
     ChainstateManager& chainman = EnsureAnyChainman(request.context);
     LOCK(cs_main);
     Chainstate& active_chainstate = chainman.ActiveChainstate();
@@ -1271,8 +1271,7 @@ RPCHelpMan getblockchaininfo()
     if (chainman.m_blockman.IsPruneMode()) {
         obj.pushKV("pruneheight", chainman.m_blockman.GetFirstStoredBlock(tip)->nHeight);
 
-        // if 0, execution bypasses the whole if block.
-        bool automatic_pruning{args.GetIntArg("-prune", 0) != 1};
+        const bool automatic_pruning{chainman.m_blockman.GetPruneTarget() != BlockManager::PRUNE_TARGET_MANUAL};
         obj.pushKV("automatic_pruning",  automatic_pruning);
         if (automatic_pruning) {
             obj.pushKV("prune_target_size", chainman.m_blockman.GetPruneTarget());
