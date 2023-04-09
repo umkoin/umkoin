@@ -11,7 +11,6 @@ if [ "$CI_OS_NAME" == "macos" ]; then
   echo > "${HOME}/Library/Application Support/Umkoin"
 else
   CI_EXEC echo \> \$HOME/.umkoin
-  CI_EXEC_ROOT echo \> \$HOME/.umkoin
 fi
 
 if [ -z "$NO_DEPENDS" ]; then
