@@ -7,9 +7,9 @@
 #define UMKOIN_WALLET_DB_H
 
 #include <clientversion.h>
-#include <fs.h>
 #include <streams.h>
 #include <support/allocators/secure.h>
+#include <util/fs.h>
 
 #include <atomic>
 #include <memory>

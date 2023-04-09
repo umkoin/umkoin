@@ -8,8 +8,8 @@
 #ifndef UMKOIN_TORCONTROL_H
 #define UMKOIN_TORCONTROL_H
 
-#include <fs.h>
 #include <netaddress.h>
+#include <util/fs.h>
 
 #include <boost/signals2/signal.hpp>
 

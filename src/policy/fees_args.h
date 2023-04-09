@@ -5,7 +5,7 @@
 #ifndef UMKOIN_POLICY_FEES_ARGS_H
 #define UMKOIN_POLICY_FEES_ARGS_H
 
-#include <fs.h>
+#include <util/fs.h>
 
 class ArgsManager;
 

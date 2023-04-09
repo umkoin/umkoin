@@ -5,8 +5,8 @@
 #ifndef UMKOIN_WALLET_WALLETUTIL_H
 #define UMKOIN_WALLET_WALLETUTIL_H
 
-#include <fs.h>
 #include <script/descriptor.h>
+#include <util/fs.h>
 
 #include <vector>
 

@@ -5,7 +5,7 @@
 #ifndef UMKOIN_WALLET_DUMP_H
 #define UMKOIN_WALLET_DUMP_H
 
-#include <fs.h>
+#include <util/fs.h>
 
 #include <string>
 #include <vector>
