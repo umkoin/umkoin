@@ -98,7 +98,7 @@ Generate the change log. As this is a huge amount of work to do manually, there 
 
 Generate list of authors:
 
-    git log --format='- %aN' v(current version, e.g. 0.20.0)..v(new version, e.g. 0.20.1) | sort -fiu
+    git log --format='- %aN' v(current version, e.g. 24.0)..v(new version, e.g. 24.1) | sort -fiu
 
 ### Setup and perform Guix builds
 
@@ -107,7 +107,7 @@ Checkout the Umkoin Core version you'd like to build:
 ```sh
 pushd ./umkoin
 SIGNER='(your builder key, i.e. vmta, etc)'
-VERSION='(new version without v-prefix, e.g. 0.20.0)'
+VERSION='(new version without v-prefix, e.g. 24.0)'
 git fetch origin "v${VERSION}"
 git checkout "v${VERSION}"
 popd
@@ -213,7 +213,7 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
 ```
 
 
-- Upload to the www.umkoin.org server):
+- Upload to the www.umkoin.org server (`/var/www/bin/umkoin-core-${VERSION}/`):
     1. The contents of each `./umkoin/guix-build-${VERSION}/output/${HOST}/` directory, except for
        `*-debug*` files.
 

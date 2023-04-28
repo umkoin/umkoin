@@ -5,9 +5,8 @@
 
 #include <kernel/chainparams.h>
 
-
-#include <consensus/amount.h>
 #include <chainparamsseeds.h>
+#include <consensus/amount.h>
 #include <consensus/merkle.h>
 #include <consensus/params.h>
 #include <hash.h>
