@@ -6,7 +6,8 @@
 
 from test_framework.test_framework import UmkoinTestFramework
 from test_framework.util import (
-    p2p_port
+    p2p_port,
+    assert_equal,
 )
 
 class SetBanTests(UmkoinTestFramework):
@@ -47,7 +48,7 @@ class SetBanTests(UmkoinTestFramework):
 
         self.log.info("Test that a non-IP address can be banned/unbanned")
         node = self.nodes[1]
-        tor_addr = "pg6mmjiyjmcrsslvykfwnntlaru7p5svn6y2ymmju6nubxndf4pscryd.onion"
+        tor_addr = "klfchu53kxun6zx5.onion"
         ip_addr = "1.2.3.4"
         assert not self.is_banned(node, tor_addr)
         assert not self.is_banned(node, ip_addr)
@@ -70,6 +71,11 @@ class SetBanTests(UmkoinTestFramework):
         assert not self.is_banned(node, tor_addr)
         assert not self.is_banned(node, ip_addr)
 
+        self.log.info("Test -bantime")
+        self.restart_node(1, ["-bantime=1234"])
+        self.nodes[1].setban("127.0.0.1", "add")
+        banned = self.nodes[1].listbanned()[0]
+        assert_equal(banned['ban_duration'], 1234)
 
 if __name__ == '__main__':
     SetBanTests().main()
