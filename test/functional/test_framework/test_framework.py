@@ -228,6 +228,23 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
 
         PortSeed.n = self.options.port_seed
 
+    def set_binary_paths(self):
+        """Update self.options with the paths of all binaries from environment variables or their default values"""
+
+        binaries = {
+            "umkoind": ("umkoind", "UMKOIND"),
+            "umkoin-cli": ("umkoincli", "UMKOINCLI"),
+            "umkoin-util": ("umkoinutil", "UMKOINUTIL"),
+            "umkoin-wallet": ("umkoinwallet", "UMKOINWALLET"),
+        }
+        for binary, [attribute_name, env_variable_name] in binaries.items():
+            default_filename = os.path.join(
+                self.config["environment"]["BUILDDIR"],
+                "src",
+                binary + self.config["environment"]["EXEEXT"],
+            )
+            setattr(self.options, attribute_name, os.getenv(env_variable_name, default=default_filename))
+
     def setup(self):
         """Call this method to start up the test framework object with options set."""
 
@@ -237,24 +254,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
 
         config = self.config
 
-        fname_umkoind = os.path.join(
-            config["environment"]["BUILDDIR"],
-            "src",
-            "umkoind" + config["environment"]["EXEEXT"],
-        )
-        fname_umkoincli = os.path.join(
-            config["environment"]["BUILDDIR"],
-            "src",
-            "umkoin-cli" + config["environment"]["EXEEXT"],
-        )
-        fname_umkoinutil = os.path.join(
-            config["environment"]["BUILDDIR"],
-            "src",
-            "umkoin-util" + config["environment"]["EXEEXT"],
-        )
-        self.options.umkoind = os.getenv("UMKOIND", default=fname_umkoind)
-        self.options.umkoincli = os.getenv("UMKOINCLI", default=fname_umkoincli)
-        self.options.umkoinutil = os.getenv("UMKOINUTIL", default=fname_umkoinutil)
+        self.set_binary_paths()
 
         os.environ['PATH'] = os.pathsep.join([
             os.path.join(config['environment']['BUILDDIR'], 'src'),
