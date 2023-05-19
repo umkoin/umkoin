@@ -28,7 +28,7 @@
     <ClCompile Include="$(GeneratedFilesOutDir)\moc\moc_wallettests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libumkoinconsensus\libumkoinconsensus.vcxproj">
+    <ProjectReference Include="..\libumkoin_consensus\libumkoin_consensus.vcxproj">
       <Project>{2b384fa8-9ee1-4544-93cb-0d733c25e8ce}</Project>
     </ProjectReference>
     <ProjectReference Include="..\libumkoin_cli\libumkoin_cli.vcxproj">
