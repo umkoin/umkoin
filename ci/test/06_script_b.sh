@@ -104,9 +104,6 @@ cd "${BASE_BUILD_DIR}/umkoin-$HOST"
 
 bash -c "./configure --cache-file=../config.cache $UMKOIN_CONFIG_ALL $UMKOIN_CONFIG" || ( (cat config.log) && false)
 
-set -o errtrace
-trap 'bash -c "cat ${BASE_SCRATCH_DIR}/sanitizer-output/* 2> /dev/null"' ERR
-
 if [[ ${USE_MEMORY_SANITIZER} == "true" ]]; then
   # MemorySanitizer (MSAN) does not support tracking memory initialization done by
   # using the Linux getrandom syscall. Avoid using getrandom by undefining
