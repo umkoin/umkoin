@@ -74,6 +74,11 @@ def bctest(testDir, testObj, buildenv):
     """
     # Get the exec names and arguments
     execprog = os.path.join(buildenv["BUILDDIR"], "src", testObj["exec"] + buildenv["EXEEXT"])
+    if testObj["exec"] == "./umkoin-util":
+        execprog = os.getenv("UMKOINUTIL", default=execprog)
+    elif testObj["exec"] == "./umkoin-tx":
+        execprog = os.getenv("UMKOINTX", default=execprog)
+
     execargs = testObj['args']
     execrun = [execprog] + execargs
 
