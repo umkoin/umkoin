@@ -5,8 +5,8 @@
 #ifndef UMKOIN_EXTERNAL_SIGNER_H
 #define UMKOIN_EXTERNAL_SIGNER_H
 
+#include <common/system.h>
 #include <univalue.h>
-#include <util/system.h>
 
 #include <string>
 #include <vector>
