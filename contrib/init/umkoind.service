@@ -18,10 +18,11 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/usr/bin/umkoind -daemonwait \
-                            -pid=/run/umkoind/umkoind.pid \
+ExecStart=/usr/bin/umkoind -pid=/run/umkoind/umkoind.pid \
                             -conf=/etc/umkoin/umkoin.conf \
-                            -datadir=/var/lib/umkoind
+                            -datadir=/var/lib/umkoind \
+                            -startupnotify='systemd-notify --ready' \
+                            -shutdownnotify='systemd-notify --stopping'
 
 # Make sure the config directory is readable by the service user
 PermissionsStartOnly=true
@@ -30,8 +31,10 @@ ExecStartPre=/bin/chgrp umkoin /etc/umkoin
 # Process management
 ####################
 
-Type=forking
+Type=notify
+NotifyAccess=all
 PIDFile=/run/umkoind/umkoind.pid
+
 Restart=on-failure
 TimeoutStartSec=infinity
 TimeoutStopSec=600
