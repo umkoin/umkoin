@@ -139,6 +139,7 @@ BASE_SCRIPTS = [
     'feature_fee_estimation.py',
     'interface_zmq.py',
     'rpc_invalid_address_message.py',
+    'rpc_validateaddress.py',
     'interface_umkoin_cli.py --legacy-wallet',
     'interface_umkoin_cli.py --descriptors',
     'feature_bind_extra.py',
