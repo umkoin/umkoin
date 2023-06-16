@@ -67,7 +67,7 @@ if [ "$DOWNLOAD_PREVIOUS_RELEASES" = "true" ]; then
   test/get_previous_releases.py -b -t "$PREVIOUS_RELEASES_DIR"
 fi
 
-UMKOIN_CONFIG_ALL="--enable-suppress-external-warnings --disable-dependency-tracking"
+UMKOIN_CONFIG_ALL="--disable-dependency-tracking"
 if [ -z "$NO_DEPENDS" ]; then
   UMKOIN_CONFIG_ALL="${UMKOIN_CONFIG_ALL} CONFIG_SITE=$DEPENDS_DIR/$HOST/share/config.site"
 fi
