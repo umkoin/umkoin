@@ -122,18 +122,6 @@ typedef int (*secp256k1_nonce_function)(
 #  endif
 # endif
 
-# if (!defined(__STDC_VERSION__) || (__STDC_VERSION__ < 199901L) )
-#  if SECP256K1_GNUC_PREREQ(2,7)
-#   define SECP256K1_INLINE __inline__
-#  elif (defined(_MSC_VER))
-#   define SECP256K1_INLINE __inline
-#  else
-#   define SECP256K1_INLINE
-#  endif
-# else
-#  define SECP256K1_INLINE inline
-# endif
-
 /*  When this header is used at build-time the SECP256K1_BUILD define needs to be set
  *  to correctly setup export attributes and nullness checks.  This is normally done
  *  by secp256k1.c but to guard against this header being included before secp256k1.c
@@ -145,8 +133,9 @@ typedef int (*secp256k1_nonce_function)(
 # define SECP256K1_NO_BUILD
 #endif
 
-/* Symbol visibility. See libtool manual, section "Windows DLLs". */
-#if defined(_WIN32) && !defined(__GNUC__)
+/* Symbol visibility. See https://gcc.gnu.org/wiki/Visibility */
+/* DLL_EXPORT is defined internally for shared builds */
+#if defined(_WIN32)
 # ifdef SECP256K1_BUILD
 #  ifdef DLL_EXPORT
 #   define SECP256K1_API            __declspec (dllexport)
