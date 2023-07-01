@@ -34,7 +34,7 @@ static void LoadExternalBlockFile(benchmark::Bench& bench)
     ss << static_cast<uint32_t>(benchmark::data::block47789.size());
     // We can't use the streaming serialization (ss << benchmark::data::block47789)
     // because that first writes a compact size.
-    ss.write(MakeByteSpan(benchmark::data::block47789));
+    ss << Span{benchmark::data::block47789};
 
     // Create the test file.
     {
