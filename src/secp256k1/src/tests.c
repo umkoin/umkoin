@@ -89,6 +89,16 @@ static void uncounting_illegal_callback_fn(const char* str, void* data) {
     (*p)--;
 }
 
+static void random_field_element_test(secp256k1_fe *fe) {
+    do {
+        unsigned char b32[32];
+        secp256k1_testrand256_test(b32);
+        if (secp256k1_fe_set_b32_limit(fe, b32)) {
+            break;
+        }
+    } while(1);
+}
+
 static void random_field_element_magnitude(secp256k1_fe *fe) {
     secp256k1_fe zero;
     int n = secp256k1_testrand_int(9);
@@ -98,33 +108,17 @@ static void random_field_element_magnitude(secp256k1_fe *fe) {
     }
     secp256k1_fe_clear(&zero);
     secp256k1_fe_negate(&zero, &zero, 0);
-    secp256k1_fe_mul_int_unchecked(&zero, n - 1);
+    secp256k1_fe_mul_int(&zero, n - 1);
     secp256k1_fe_add(fe, &zero);
 #ifdef VERIFY
     CHECK(fe->magnitude == n);
 #endif
 }
 
-static void random_fe_test(secp256k1_fe *x) {
-    unsigned char bin[32];
-    do {
-        secp256k1_testrand256_test(bin);
-        if (secp256k1_fe_set_b32_limit(x, bin)) {
-            return;
-        }
-    } while(1);
-}
-
-static void random_fe_non_zero_test(secp256k1_fe *fe) {
-    do {
-        random_fe_test(fe);
-    } while(secp256k1_fe_is_zero(fe));
-}
-
 static void random_group_element_test(secp256k1_ge *ge) {
     secp256k1_fe fe;
     do {
-        random_fe_test(&fe);
+        random_field_element_test(&fe);
         if (secp256k1_ge_set_xo_var(ge, &fe, secp256k1_testrand_bits(1))) {
             secp256k1_fe_normalize(&ge->y);
             break;
@@ -135,7 +129,12 @@ static void random_group_element_test(secp256k1_ge *ge) {
 
 static void random_group_element_jacobian_test(secp256k1_gej *gej, const secp256k1_ge *ge) {
     secp256k1_fe z2, z3;
-    random_fe_non_zero_test(&gej->z);
+    do {
+        random_field_element_test(&gej->z);
+        if (!secp256k1_fe_is_zero(&gej->z)) {
+            break;
+        }
+    } while(1);
     secp256k1_fe_sqr(&z2, &gej->z);
     secp256k1_fe_mul(&z3, &z2, &gej->z);
     secp256k1_fe_mul(&gej->x, &ge->x, &z2);
@@ -2985,6 +2984,16 @@ static void random_fe(secp256k1_fe *x) {
     } while(1);
 }
 
+static void random_fe_test(secp256k1_fe *x) {
+    unsigned char bin[32];
+    do {
+        secp256k1_testrand256_test(bin);
+        if (secp256k1_fe_set_b32_limit(x, bin)) {
+            return;
+        }
+    } while(1);
+}
+
 static void random_fe_non_zero(secp256k1_fe *nz) {
     int tries = 10;
     while (--tries >= 0) {
@@ -3225,7 +3234,7 @@ static void run_field_misc(void) {
         CHECK(q.normalized && q.magnitude == 1);
 #endif
         for (j = 0; j < 6; j++) {
-            secp256k1_fe_negate_unchecked(&z, &z, j+1);
+            secp256k1_fe_negate(&z, &z, j+1);
             secp256k1_fe_normalize_var(&q);
             secp256k1_fe_cmov(&q, &z, (j&1));
 #ifdef VERIFY
@@ -3497,7 +3506,7 @@ static void run_inverse_tests(void)
          SECP256K1_FE_CONST(0xb024fdc7, 0x5547451e, 0x426c585f, 0xbd481425, 0x73df6b75, 0xeef6d9d0, 0x389d87d4, 0xfbb440ba)},
         /* Input known to need 566 divsteps starting with delta=1/2. */
         {SECP256K1_FE_CONST(0xb595d81b, 0x2e3c1e2f, 0x482dbc65, 0xe4865af7, 0x9a0a50aa, 0x29f9e618, 0x6f87d7a5, 0x8d1063ae),
-         SECP256K1_FE_CONST(0xc983337c, 0x5d5c74e1, 0x49918330, 0x0b53afb5, 0xa0428a0b, 0xce6eef86, 0x059bd8ef, 0xe5b908de)},
+         SECP256K1_FE_CONST(0xc963337c, 0x5d5c74e1, 0x49918330, 0x0b53afb5, 0xa0428a0b, 0xce6eef86, 0x059bd8ef, 0xe5b908de)},
         /* Set of 10 inputs accessing all 128 entries in the modinv32 divsteps_var table */
         {SECP256K1_FE_CONST(0x00000000, 0x00000000, 0xe0ff1f80, 0x1f000000, 0x00000000, 0x00000000, 0xfeff0100, 0x00000000),
          SECP256K1_FE_CONST(0x9faf9316, 0x77e5049d, 0x0b5e7a1b, 0xef70b893, 0x18c9e30c, 0x045e7fd7, 0x29eddf8c, 0xd62e9e3d)},
@@ -3607,7 +3616,7 @@ static void run_inverse_tests(void)
         {SECP256K1_SCALAR_CONST(0x1950d757, 0xb37a5809, 0x435059bb, 0x0bb8997e, 0x07e1e3c8, 0x5e5d7d2c, 0x6a0ed8e3, 0xdbde180e),
          SECP256K1_SCALAR_CONST(0xbf72af9b, 0x750309e2, 0x8dda230b, 0xfe432b93, 0x7e25e475, 0x4388251e, 0x633d894b, 0x3bcb6f8c)},
         {SECP256K1_SCALAR_CONST(0x9bccf4e7, 0xc5a515e3, 0x50637aa9, 0xbb65a13f, 0x391749a1, 0x62de7d4e, 0xf6d7eabb, 0x3cd10ce0),
-         SECP256K1_SCALAR_CONST(0xaf2d5623, 0xb6385a33, 0xcd0365be, 0x5e92a70d, 0x7f09179c, 0x3baaf30f, 0x8f9cc83b, 0x20092f67)},
+         SECP256K1_SCALAR_CONST(0xaf2d5623, 0xb6385a33, 0xcd0365be, 0x5e92a70d, 0x7f09179c, 0x3baaf30f, 0x8f9cc83b, 0x20172f67)},
         {SECP256K1_SCALAR_CONST(0x73a57111, 0xb242952a, 0x5c5dee59, 0xf3be2ace, 0xa30a7659, 0xa46e5f47, 0xd21267b1, 0x39e642c9),
          SECP256K1_SCALAR_CONST(0xa711df07, 0xcbcf13ef, 0xd61cc6be, 0xbcd058ce, 0xb02cf157, 0x272d4a18, 0x86d0feb3, 0xcd5fa004)},
         {SECP256K1_SCALAR_CONST(0x04884963, 0xce0580b1, 0xba547030, 0x3c691db3, 0x9cd2c84f, 0x24c7cebd, 0x97ebfdba, 0x3e785ec2),
@@ -3631,7 +3640,7 @@ static void run_inverse_tests(void)
         {SECP256K1_SCALAR_CONST(0x11cdaeda, 0x969c464b, 0xef1f4ab0, 0x5b01d22e, 0x656fd098, 0x882bea84, 0x65cdbe7a, 0x0c19ff03),
          SECP256K1_SCALAR_CONST(0x1968d0fa, 0xac46f103, 0xb55f1f72, 0xb3820bed, 0xec6b359a, 0x4b1ae0ad, 0x7e38e1fb, 0x295ccdfb)},
         {SECP256K1_SCALAR_CONST(0x2c351aa1, 0x26e91589, 0x194f8a1e, 0x06561f66, 0x0cb97b7f, 0x10914454, 0x134d1c03, 0x157266b4),
-         SECP256K1_SCALAR_CONST(0xbe49ada6, 0x92bd8711, 0x41b176c4, 0xa478ba95, 0x14883434, 0x9d1cd6f3, 0xcc4b847d, 0x22af80f5)},
+         SECP256K1_SCALAR_CONST(0xbe49ada6, 0x92bd8711, 0x41b176c4, 0xa478ba95, 0x14863434, 0x9d1cd6f3, 0xcc4b847d, 0x22af80f5)},
         {SECP256K1_SCALAR_CONST(0x6ba07c6e, 0x13a60edb, 0x6247f5c3, 0x84b5fa56, 0x76fe3ec5, 0x80426395, 0xf65ec2ae, 0x623ba730),
          SECP256K1_SCALAR_CONST(0x25ac23f7, 0x418cd747, 0x98376f9d, 0x4a11c7bf, 0x24c8ebfe, 0x4c8a8655, 0x345f4f52, 0x1c515595)},
         {SECP256K1_SCALAR_CONST(0x9397a712, 0x8abb6951, 0x2d4a3d54, 0x703b1c2a, 0x0661dca8, 0xd75c9b31, 0xaed4d24b, 0xd2ab2948),
@@ -3811,14 +3820,18 @@ static void test_ge(void) {
     }
 
     /* Generate random zf, and zfi2 = 1/zf^2, zfi3 = 1/zf^3 */
-    random_fe_non_zero_test(&zf);
+    do {
+        random_field_element_test(&zf);
+    } while(secp256k1_fe_is_zero(&zf));
     random_field_element_magnitude(&zf);
     secp256k1_fe_inv_var(&zfi3, &zf);
     secp256k1_fe_sqr(&zfi2, &zfi3);
     secp256k1_fe_mul(&zfi3, &zfi3, &zfi2);
 
     /* Generate random r */
-    random_fe_non_zero_test(&r);
+    do {
+        random_field_element_test(&r);
+    } while(secp256k1_fe_is_zero(&r));
 
     for (i1 = 0; i1 < 1 + 4 * runs; i1++) {
         int i2;
@@ -4031,7 +4044,7 @@ static void test_add_neg_y_diff_x(void) {
      * of the sum to be wrong (since infinity has no xy coordinates).
      * HOWEVER, if the x-coordinates are different, infinity is the
      * wrong answer, and such degeneracies are exposed. This is the
-     * root of https://github.com/bitcoin-core/secp256k1/issues/257
+     * root of https://github.com/umkoin-core/secp256k1/issues/257
      * which this test is a regression test for.
      *
      * These points were generated in sage as
@@ -4135,7 +4148,10 @@ static void run_gej(void) {
         CHECK(!secp256k1_gej_eq_var(&a, &b));
 
         b = a;
-        random_fe_non_zero_test(&fe);
+        random_field_element_test(&fe);
+        if (secp256k1_fe_is_zero(&fe)) {
+            continue;
+        }
         secp256k1_gej_rescale(&a, &fe);
         CHECK(secp256k1_gej_eq_var(&a, &b));
     }
@@ -4574,7 +4590,9 @@ static void ecmult_const_mult_xonly(void) {
         random_scalar_order_test(&q);
         /* If i is odd, n=d*base.x for random non-zero d */
         if (i & 1) {
-            random_fe_non_zero_test(&d);
+            do {
+                random_field_element_test(&d);
+            } while (secp256k1_fe_normalizes_to_zero_var(&d));
             secp256k1_fe_mul(&n, &base.x, &d);
         } else {
             n = base.x;
@@ -4593,17 +4611,22 @@ static void ecmult_const_mult_xonly(void) {
 
     /* Test that secp256k1_ecmult_const_xonly correctly rejects X coordinates not on curve. */
     for (i = 0; i < 2*COUNT; ++i) {
-        secp256k1_fe x, n, d, r;
+        secp256k1_fe x, n, d, c, r;
         int res;
         secp256k1_scalar q;
         random_scalar_order_test(&q);
         /* Generate random X coordinate not on the curve. */
         do {
-            random_fe_test(&x);
-        } while (secp256k1_ge_x_on_curve_var(&x));
+            random_field_element_test(&x);
+            secp256k1_fe_sqr(&c, &x);
+            secp256k1_fe_mul(&c, &c, &x);
+            secp256k1_fe_add_int(&c, SECP256K1_B);
+        } while (secp256k1_fe_is_square_var(&c));
         /* If i is odd, n=d*x for random non-zero d. */
         if (i & 1) {
-            random_fe_non_zero_test(&d);
+            do {
+                random_field_element_test(&d);
+            } while (secp256k1_fe_normalizes_to_zero_var(&d));
             secp256k1_fe_mul(&n, &x, &d);
         } else {
             n = x;
@@ -7467,7 +7490,7 @@ static void run_ecdsa_edge_cases(void) {
 The tests check for known attacks (range checks in (r,s), arithmetic errors, malleability).
 */
 static void test_ecdsa_wycheproof(void) {
-    #include "wycheproof/ecdsa_secp256k1_sha256_bitcoin_test.h"
+    #include "wycheproof/ecdsa_secp256k1_sha256_umkoin_test.h"
 
     int t;
     for (t = 0; t < SECP256K1_ECDSA_WYCHEPROOF_NUMBER_TESTVECTORS; t++) {

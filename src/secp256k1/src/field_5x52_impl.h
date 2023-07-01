@@ -314,7 +314,7 @@ static void secp256k1_fe_impl_get_b32(unsigned char *r, const secp256k1_fe *a) {
     r[31] = a->n[0] & 0xFF;
 }
 
-SECP256K1_INLINE static void secp256k1_fe_impl_negate_unchecked(secp256k1_fe *r, const secp256k1_fe *a, int m) {
+SECP256K1_INLINE static void secp256k1_fe_impl_negate(secp256k1_fe *r, const secp256k1_fe *a, int m) {
     /* For all legal values of m (0..31), the following properties hold: */
     VERIFY_CHECK(0xFFFFEFFFFFC2FULL * 2 * (m + 1) >= 0xFFFFFFFFFFFFFULL * 2 * m);
     VERIFY_CHECK(0xFFFFFFFFFFFFFULL * 2 * (m + 1) >= 0xFFFFFFFFFFFFFULL * 2 * m);
@@ -329,7 +329,7 @@ SECP256K1_INLINE static void secp256k1_fe_impl_negate_unchecked(secp256k1_fe *r,
     r->n[4] = 0x0FFFFFFFFFFFFULL * 2 * (m + 1) - a->n[4];
 }
 
-SECP256K1_INLINE static void secp256k1_fe_impl_mul_int_unchecked(secp256k1_fe *r, int a) {
+SECP256K1_INLINE static void secp256k1_fe_impl_mul_int(secp256k1_fe *r, int a) {
     r->n[0] *= a;
     r->n[1] *= a;
     r->n[2] *= a;
@@ -422,71 +422,6 @@ static SECP256K1_INLINE void secp256k1_fe_impl_half(secp256k1_fe *r) {
      * and since we want the smallest such integer value for M:
      *     M == floor(m/2) + 1
      */
-}
-
-static SECP256K1_INLINE void secp256k1_fe_half(secp256k1_fe *r) {
-    uint64_t t0 = r->n[0], t1 = r->n[1], t2 = r->n[2], t3 = r->n[3], t4 = r->n[4];
-    uint64_t one = (uint64_t)1;
-    uint64_t mask = -(t0 & one) >> 12;
-
-#ifdef VERIFY
-    secp256k1_fe_verify(r);
-    VERIFY_CHECK(r->magnitude < 32);
-#endif
-
-    /* Bounds analysis (over the rationals).
-     *
-     * Let m = r->magnitude
-     *     C = 0xFFFFFFFFFFFFFULL * 2
-     *     D = 0x0FFFFFFFFFFFFULL * 2
-     *
-     * Initial bounds: t0..t3 <= C * m
-     *                     t4 <= D * m
-     */
-
-    t0 += 0xFFFFEFFFFFC2FULL & mask;
-    t1 += mask;
-    t2 += mask;
-    t3 += mask;
-    t4 += mask >> 4;
-
-    VERIFY_CHECK((t0 & one) == 0);
-
-    /* t0..t3: added <= C/2
-     *     t4: added <= D/2
-     *
-     * Current bounds: t0..t3 <= C * (m + 1/2)
-     *                     t4 <= D * (m + 1/2)
-     */
-
-    r->n[0] = (t0 >> 1) + ((t1 & one) << 51);
-    r->n[1] = (t1 >> 1) + ((t2 & one) << 51);
-    r->n[2] = (t2 >> 1) + ((t3 & one) << 51);
-    r->n[3] = (t3 >> 1) + ((t4 & one) << 51);
-    r->n[4] = (t4 >> 1);
-
-    /* t0..t3: shifted right and added <= C/4 + 1/2
-     *     t4: shifted right
-     *
-     * Current bounds: t0..t3 <= C * (m/2 + 1/2)
-     *                     t4 <= D * (m/2 + 1/4)
-     */
-
-#ifdef VERIFY
-    /* Therefore the output magnitude (M) has to be set such that:
-     *     t0..t3: C * M >= C * (m/2 + 1/2)
-     *         t4: D * M >= D * (m/2 + 1/4)
-     *
-     * It suffices for all limbs that, for any input magnitude m:
-     *     M >= m/2 + 1/2
-     *
-     * and since we want the smallest such integer value for M:
-     *     M == floor(m/2) + 1
-     */
-    r->magnitude = (r->magnitude >> 1) + 1;
-    r->normalized = 0;
-    secp256k1_fe_verify(r);
-#endif
 }
 
 static SECP256K1_INLINE void secp256k1_fe_storage_cmov(secp256k1_fe_storage *r, const secp256k1_fe_storage *a, int flag) {
@@ -590,33 +525,6 @@ static int secp256k1_fe_impl_is_square_var(const secp256k1_fe *x) {
         secp256k1_fe dummy;
         ret = secp256k1_fe_sqrt(&dummy, &tmp);
     } else {
-        ret = jac >= 0;
-    }
-    return ret;
-}
-
-static int secp256k1_fe_is_square_var(const secp256k1_fe *x) {
-    secp256k1_fe tmp;
-    secp256k1_modinv64_signed62 s;
-    int jac, ret;
-
-    tmp = *x;
-    secp256k1_fe_normalize_var(&tmp);
-    /* secp256k1_jacobi64_maybe_var cannot deal with input 0. */
-    if (secp256k1_fe_is_zero(&tmp)) return 1;
-    secp256k1_fe_to_signed62(&s, &tmp);
-    jac = secp256k1_jacobi64_maybe_var(&s, &secp256k1_const_modinfo_fe);
-    if (jac == 0) {
-        /* secp256k1_jacobi64_maybe_var failed to compute the Jacobi symbol. Fall back
-         * to computing a square root. This should be extremely rare with random
-         * input (except in VERIFY mode, where a lower iteration count is used). */
-        secp256k1_fe dummy;
-        ret = secp256k1_fe_sqrt(&dummy, &tmp);
-    } else {
-#ifdef VERIFY
-        secp256k1_fe dummy;
-        VERIFY_CHECK(jac == 2*secp256k1_fe_sqrt(&dummy, &tmp) - 1);
-#endif
         ret = jac >= 0;
     }
     return ret;
