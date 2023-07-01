@@ -3,6 +3,7 @@ Repository Tools
 
 ### [Developer tools](/contrib/devtools) ###
 Specific tools for developers working on this repository.
+Additional tools, including the `github-merge.py` script, are available in the [maintainer-tools].
 
 ### [Verify-Commits](/contrib/verify-commits) ###
 Tool to verify that every merge commit was signed by a developer using the `github-merge.py` script.
@@ -23,13 +24,7 @@ Build Tools and Keys
 ### Packaging ###
 The [Debian](/contrib/debian) subfolder contains the copyright file.
 
-All other packaging related files can be found in the repository.
-
-### [Gitian-descriptors](/contrib/gitian-descriptors) ###
-Files used during the gitian build process. For more information about gitian, see the [the Umkoin Core documentation repository](https://github.com/umkoin/umkoin/doc/gitian-building).
-
-### [Builder keys](/contrib/builder-keys)
-PGP keys used for signing Umkoin Core [release](/doc/release-process.md) results.
+All other packaging related files can be found in the [umkoin/packaging].
 
 ### [MacDeploy](/contrib/macdeploy) ###
 Scripts and notes for Mac builds.
@@ -40,7 +35,7 @@ Test and Verify Tools
 ### [TestGen](/contrib/testgen) ###
 Utilities to generate test vectors for the data-driven Umkoin tests.
 
-### [Verify Binaries](/contrib/verifybinaries) ###
+### [Verify-Binaries](/contrib/verify-binaries) ###
 This script attempts to download and verify the signature file SHA256SUMS.asc from umkoin.org.
 
 Command Line Tools
