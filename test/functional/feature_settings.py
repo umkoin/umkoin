@@ -21,7 +21,7 @@ class SettingsTest(UmkoinTestFramework):
 
     def run_test(self):
         node, = self.nodes
-        settings = Path(node.datadir, self.chain, "settings.json")
+        settings = Path(node.chain_path, "settings.json")
         conf = Path(node.datadir, "umkoin.conf")
 
         # Assert empty settings file was created
