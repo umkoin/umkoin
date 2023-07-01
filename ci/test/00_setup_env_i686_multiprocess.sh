@@ -15,4 +15,3 @@ export GOAL="install"
 export UMKOIN_CONFIG="--enable-debug CC='clang -m32' CXX='clang++ -m32' \
 LDFLAGS='--rtlib=compiler-rt -lgcc_s' CPPFLAGS='-DBOOST_MULTI_INDEX_ENABLE_SAFE_MODE'"
 export TEST_RUNNER_ENV="UMKOIND=umkoin-node"
-export TEST_RUNNER_EXTRA="--nosandbox"
