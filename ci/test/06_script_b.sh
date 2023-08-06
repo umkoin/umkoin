@@ -75,7 +75,7 @@ if [ -z "$NO_WERROR" ]; then
   UMKOIN_CONFIG_ALL="${UMKOIN_CONFIG_ALL} --enable-werror"
 fi
 
-ccache --zero-stats --max-size="${CCACHE_SIZE}"
+ccache --zero-stats
 PRINT_CCACHE_STATISTICS="ccache --version | head -n 1 && ccache --show-stats"
 
 if [ -n "$ANDROID_TOOLS_URL" ]; then
