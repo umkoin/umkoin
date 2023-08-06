@@ -8,11 +8,11 @@ Release Process
 * Update translations see [translation_process.md](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md#synchronising-translations).
 * Update release candidate version in `configure.ac` (`CLIENT_VERSION_RC`).
 * Update manpages (after rebuilding the binaries), see [gen-manpages.py](https://github.com/umkoin/umkoin/blob/master/contrib/devtools/README.md#gen-manpagespy).
-* Update umkoin.conf and commit, see [gen-umkoin-conf.sh](https://github.com/umkoin/umkoin/blob/master/contrib/devtools/README.md#gen-umkoin-confsh).
+* Update bitcoin.conf and commit, see [gen-bitcoin-conf.sh](https://github.com/umkoin/umkoin/blob/master/contrib/devtools/README.md#gen-bitcoin-confsh).
 
 ### Before every major and minor release
 
-* Update [bips.md](bips.md) to account for changes since the last release (don't forget to bump the version number on the first line).
+* Update [bips.md](bips.md) to account for changes since the last release.
 * Update version in `configure.ac` (don't forget to set `CLIENT_VERSION_RC` to `0`).
 * Update manpages (see previous section)
 * Write release notes (see "Write the release notes" below).
@@ -96,11 +96,9 @@ Open a draft of the release notes for collaborative editing.
 
 For the period during which the notes are being edited on the wiki, the version on the branch should be wiped and replaced with a link to the wiki which should be used for all announcements until `-final`.
 
-Generate the change log. As this is a huge amount of work to do manually, there is the `list-pulls` script to do a pre-sorting step based on github PR metadata.
-
 Generate list of authors:
 
-    git log --format='- %aN' v(current version, e.g. 24.0)..v(new version, e.g. 24.1) | sort -fiu
+    git log --format='- %aN' v(current version, e.g. 25.0)..v(new version, e.g. 25.1) | grep -v 'merge-script' | sort -fiu
 
 ### Setup and perform Guix builds
 
@@ -109,7 +107,7 @@ Checkout the Umkoin Core version you'd like to build:
 ```sh
 pushd ./umkoin
 SIGNER='(your builder key, i.e. vmta, etc)'
-VERSION='(new version without v-prefix, e.g. 24.0)'
+VERSION='(new version without v-prefix, e.g. 25.0)'
 git fetch origin "v${VERSION}"
 git checkout "v${VERSION}"
 popd
