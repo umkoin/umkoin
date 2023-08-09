@@ -6,6 +6,7 @@
 
 #include <chainparams.h>
 #include <key.h>
+#include <logging.h>
 #include <qt/umkoin.h>
 #include <qt/umkoingui.h>
 #include <qt/networkstyle.h>

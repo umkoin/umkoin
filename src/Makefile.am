@@ -24,7 +24,7 @@ check_PROGRAMS =
 TESTS =
 BENCHMARKS =
 
-UMKOIN_INCLUDES=-I$(builddir) -I$(srcdir)/$(MINISKETCH_INCLUDE_DIR_INT) -I$(srcdir)/secp256k1/include -I$(srcdir)/$(UNIVALUE_INCLUDE_DIR_INT) $(LEVELDB_CPPFLAGS)
+UMKOIN_INCLUDES=-I$(builddir) -I$(srcdir)/$(MINISKETCH_INCLUDE_DIR_INT) -I$(srcdir)/secp256k1/include -I$(srcdir)/$(UNIVALUE_INCLUDE_DIR_INT)
 
 LIBUMKOIN_NODE=libumkoin_node.a
 LIBUMKOIN_COMMON=libumkoin_common.a
@@ -370,7 +370,7 @@ obj/build.h: FORCE
 libumkoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
 # node #
-libumkoin_node_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS) $(MINIUPNPC_CPPFLAGS) $(NATPMP_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libumkoin_node_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(LEVELDB_CPPFLAGS) $(BOOST_CPPFLAGS) $(MINIUPNPC_CPPFLAGS) $(NATPMP_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libumkoin_node_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libumkoin_node_a_SOURCES = \
   addrdb.cpp \
