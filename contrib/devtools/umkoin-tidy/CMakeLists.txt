@@ -25,6 +25,12 @@ else()
     target_compile_options(umkoin-tidy PRIVATE -fno-exceptions)
 endif()
 
+if(CMAKE_HOST_APPLE)
+    # ld64 expects no undefined symbols by default
+    target_link_options(umkoin-tidy PRIVATE -Wl,-flat_namespace)
+    target_link_options(umkoin-tidy PRIVATE -Wl,-undefined -Wl,suppress)
+endif()
+
 # Add warnings
 if (MSVC)
     target_compile_options(umkoin-tidy PRIVATE /W4)
@@ -33,7 +39,12 @@ else()
     target_compile_options(umkoin-tidy PRIVATE -Wextra)
 endif()
 
-set(CLANG_TIDY_COMMAND "${CLANG_TIDY_EXE}" "--load=${CMAKE_BINARY_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}umkoin-tidy${CMAKE_SHARED_LIBRARY_SUFFIX}" "-checks=-*,umkoin-*")
+if(CMAKE_VERSION VERSION_LESS 3.27)
+    set(CLANG_TIDY_COMMAND "${CLANG_TIDY_EXE}" "--load=${CMAKE_BINARY_DIR}/${CMAKE_SHARED_MODULE_PREFIX}umkoin-tidy${CMAKE_SHARED_MODULE_SUFFIX}" "-checks=-*,umkoin-*")
+else()
+    # CLANG_TIDY_COMMAND supports generator expressions as of 3.27
+    set(CLANG_TIDY_COMMAND "${CLANG_TIDY_EXE}" "--load=$<TARGET_FILE:umkoin-tidy>" "-checks=-*,umkoin-*")
+endif()
 
 # Create a dummy library that runs clang-tidy tests as a side-effect of building
 add_library(umkoin-tidy-tests OBJECT EXCLUDE_FROM_ALL example_logprintf.cpp)
