@@ -6,6 +6,7 @@
 #ifndef UMKOIN_WALLET_WALLET_H
 #define UMKOIN_WALLET_WALLET_H
 
+#include <addresstype.h>
 #include <consensus/amount.h>
 #include <interfaces/chain.h>
 #include <interfaces/handler.h>

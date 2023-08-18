@@ -5,7 +5,7 @@
 #ifndef UMKOIN_WALLET_TEST_UTIL_H
 #define UMKOIN_WALLET_TEST_UTIL_H
 
-#include <script/standard.h>
+#include <addresstype.h>
 #include <wallet/db.h>
 
 #include <memory>
