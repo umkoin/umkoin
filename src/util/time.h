@@ -6,8 +6,6 @@
 #ifndef UMKOIN_UTIL_TIME_H
 #define UMKOIN_UTIL_TIME_H
 
-#include <compat/compat.h>
-
 #include <chrono> // IWYU pragma: export
 #include <cstdint>
 #include <string>
