@@ -123,7 +123,7 @@ git -C ./guix.sigs pull
 ### Create the macOS SDK tarball (first time, or when SDK version changes)
 
 Create the macOS SDK tarball, see the [macdeploy
-instructions](/contrib/macdeploy/README.md#deterministic-macos-dmg-notes) for
+instructions](/contrib/macdeploy/README.md#deterministic-macos-app-notes) for
 details.
 
 ### Build and attest to build outputs
@@ -142,9 +142,10 @@ Follow the relevant Guix README.md sections:
 pushd ./guix.sigs
 git add "${VERSION}/${SIGNER}"/noncodesigned.SHA256SUMS{,.asc}
 git commit -m "Add attestations by ${SIGNER} for ${VERSION} non-codesigned"
-git push  # Assuming you can push to the guix.sigs tree
 popd
 ```
+
+Then open a Pull Request to the [guix.sigs repository](https://github.com/umkoin-core/guix.sigs).
 
 ## Codesigning
 
@@ -200,9 +201,10 @@ popd
 pushd ./guix.sigs
 git add "${VERSION}/${SIGNER}"/all.SHA256SUMS{,.asc}
 git commit -m "Add attestations by ${SIGNER} for ${VERSION} codesigned"
-git push  # Assuming you can push to the guix.sigs tree
 popd
 ```
+
+Then open a Pull Request to the [guix.sigs repository](https://github.com/umkoin/guix.sigs).
 
 ## After 3 or more people have guix-built and their results match
 
