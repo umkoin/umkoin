@@ -376,7 +376,6 @@ public:
         bech32_hrp = "tb";
 
         fDefaultConsistencyChecks = false;
-        m_is_test_chain = true;
         m_is_mockable_chain = false;
     }
 };
@@ -467,7 +466,6 @@ public:
         vSeeds.emplace_back("dummySeed.invalid.");
 
         fDefaultConsistencyChecks = true;
-        m_is_test_chain = true;
         m_is_mockable_chain = true;
 
         checkpointData = {
