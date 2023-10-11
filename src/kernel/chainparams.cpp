@@ -167,7 +167,7 @@ public:
             }
         };
 
-        m_assumeutxo_data = MapAssumeutxo{
+        m_assumeutxo_data = {
          // TODO to be specified in a future patch.
         };
 
@@ -263,7 +263,7 @@ public:
             }
         };
 
-        m_assumeutxo_data = MapAssumeutxo{
+        m_assumeutxo_data = {
             // TODO to be specified in a future patch.
         };
 
@@ -479,7 +479,7 @@ public:
             }
         };
 
-        m_assumeutxo_data = MapAssumeutxo{
+        m_assumeutxo_data = {
             {
                 .height = 110,
                 .hash_serialized = AssumeutxoHash{uint256S("0x1ebbf5850204c0bdb15bf030f47c7fe91d45c44c712697e4509ba67adb01c618")},
