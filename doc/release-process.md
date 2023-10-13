@@ -45,7 +45,7 @@ Release Process
   - `nMinimumChainWork` with the "chainwork" value of RPC `getblockheader` using the same height as that selected for the previous step.
 * Consider updating the headers synchronization tuning parameters to account for the chainparams updates.
   The optimal values change very slowly, so this isn't strictly necessary every release, but doing so doesn't hurt.
-  - Update configuration variables in [`contrib/devtools/headerssync-params.py`](contrib/devtools/headerssync-params.py):
+  - Update configuration variables in [`contrib/devtools/headerssync-params.py`](/contrib/devtools/headerssync-params.py):
     - Set `TIME` to the software's expected supported lifetime -- after this time, its ability to defend against a high bandwidth timewarp attacker will begin to degrade.
     - Set `MINCHAINWORK_HEADERS` to the height used for the `nMinimumChainWork` calculation above.
     - Check that the other variables still look reasonable.
