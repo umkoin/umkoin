@@ -1,16 +1,16 @@
-25.1rc1 Release Notes
+25.1 Release Notes
 ==================
 
-Umkoin Core version 25.1rc1 is now available from:
+Umkoin Core version 25.1 is now available from:
 
-  <http://www.umkoin..org/bin/umkoin-core-25.1/test.rc1>
+  <http://www.umkoin.org/bin/umkoin-core-25.1/>
 
-This release includes new features, various bug fixes and performance
+This release includes various bug fixes and performance
 improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at GitHub:
 
-  <http://github.com/umkoin/umkoin/issues>
+  <https://github.com/umkoin/umkoin/issues>
 
 How to Upgrade
 ==============
