@@ -358,11 +358,14 @@ SECONDARY: $(QT_QM)
 
 $(srcdir)/qt/umkoinstrings.cpp: FORCE
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
-	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" $(PYTHON) ../share/qt/extract_strings_qt.py $(libumkoin_node_a_SOURCES) $(libumkoin_wallet_a_SOURCES) $(libumkoin_common_a_SOURCES) $(libumkoin_zmq_a_SOURCES) $(libumkoin_consensus_a_SOURCES) $(libumkoin_util_a_SOURCES)
+	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) COPYRIGHT_HOLDERS="$(COPYRIGHT_HOLDERS)" $(PYTHON) ../share/qt/extract_strings_qt.py \
+    $(libumkoin_node_a_SOURCES) $(libumkoin_wallet_a_SOURCES) $(libumkoin_common_a_SOURCES) \
+    $(libumkoin_zmq_a_SOURCES) $(libumkoin_consensus_a_SOURCES) $(libumkoin_util_a_SOURCES) \
+    $(UMKOIN_QT_BASE_CPP) $(UMKOIN_QT_WINDOWS_CPP) $(UMKOIN_QT_WALLET_CPP) $(UMKOIN_QT_H) $(UMKOIN_MM)
 
 # The resulted umkoin_en.xlf source file should follow Transifex requirements.
 # See: https://docs.transifex.com/formats/xliff#how-to-distinguish-between-a-source-file-and-a-translation-file
-translate: $(srcdir)/qt/umkoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(UMKOIN_QT_BASE_CPP) qt/umkoin.cpp $(UMKOIN_QT_WINDOWS_CPP) $(UMKOIN_QT_WALLET_CPP) $(UMKOIN_QT_H) $(UMKOIN_MM)
+translate: $(srcdir)/qt/umkoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(UMKOIN_QT_BASE_CPP) $(UMKOIN_QT_WINDOWS_CPP) $(UMKOIN_QT_WALLET_CPP) $(UMKOIN_QT_H) $(UMKOIN_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
 	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) -no-obsolete -I $(srcdir) -locations relative $^ -ts $(srcdir)/qt/locale/umkoin_en.ts
 	@test -n $(LCONVERT) || echo "lconvert is required for updating translations"
