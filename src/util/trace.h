@@ -5,6 +5,10 @@
 #ifndef UMKOIN_UTIL_TRACE_H
 #define UMKOIN_UTIL_TRACE_H
 
+#if defined(HAVE_CONFIG_H)
+#include <config/umkoin-config.h>
+#endif
+
 #ifdef ENABLE_TRACING
 
 #include <sys/sdt.h>
