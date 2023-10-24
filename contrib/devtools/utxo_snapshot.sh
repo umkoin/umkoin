@@ -34,7 +34,7 @@ ${UMKOIN_CLI_CALL} invalidateblock "${PIVOT_BLOCKHASH}"
 
 if [[ "${OUTPUT_PATH}" = "-" ]]; then
   (>&2 echo "Generating txoutset info...")
-  ${UMKOIN_CLI_CALL} gettxoutsetinfo | grep hash_serialized_2 | sed 's/^.*: "\(.\+\)\+",/\1/g'
+  ${UMKOIN_CLI_CALL} gettxoutsetinfo | grep hash_serialized_3 | sed 's/^.*: "\(.\+\)\+",/\1/g'
 else
   (>&2 echo "Generating UTXO snapshot...")
   ${UMKOIN_CLI_CALL} dumptxoutset "${OUTPUT_PATH}"
