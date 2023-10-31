@@ -28,7 +28,7 @@ import logging
 import unittest
 
 # Formatting. Default colors to empty strings.
-DEFAULT, BOLD, GREEN, RED = ("", ""), ("", ""), ("", ""), ("", "")
+BOLD, GREEN, RED, GREY = ("", ""), ("", ""), ("", ""), ("", "")
 try:
     # Make sure python thinks it can write unicode to its stdout
     "\u2713".encode("utf_8").decode(sys.stdout.encoding)
@@ -59,10 +59,10 @@ if os.name != 'nt' or sys.getwindowsversion() >= (10, 0, 14393): #type:ignore
         kernel32.SetConsoleMode(stderr, stderr_mode.value | ENABLE_VIRTUAL_TERMINAL_PROCESSING)
     # primitive formatting on supported
     # terminal via ANSI escape sequences:
-    DEFAULT = ('\033[0m', '\033[0m')
     BOLD = ('\033[0m', '\033[1m')
     GREEN = ('\033[0m', '\033[0;32m')
     RED = ('\033[0m', '\033[0;31m')
+    GREY = ('\033[0m', '\033[1;30m')
 
 TEST_EXIT_PASSED = 0
 TEST_EXIT_SKIPPED = 77
@@ -82,7 +82,6 @@ EXTENDED_SCRIPTS = [
     # Longest test should go first, to favor running tests in parallel
     'feature_pruning.py',
     'feature_dbcrash.py',
-    'feature_index_prune.py',
 ]
 
 BASE_SCRIPTS = [
@@ -112,6 +111,7 @@ BASE_SCRIPTS = [
     'p2p_tx_download.py',
     'mempool_updatefromblock.py',
     'wallet_dump.py --legacy-wallet',
+    'feature_taproot.py --previous_release',
     'feature_taproot.py',
     'rpc_signer.py',
     'wallet_signer.py --descriptors',
@@ -138,6 +138,7 @@ BASE_SCRIPTS = [
     'feature_fee_estimation.py',
     'interface_zmq.py',
     'rpc_invalid_address_message.py',
+    'rpc_validateaddress.py',
     'interface_umkoin_cli.py --legacy-wallet',
     'interface_umkoin_cli.py --descriptors',
     'feature_bind_extra.py',
@@ -145,8 +146,6 @@ BASE_SCRIPTS = [
     'wallet_txn_doublespend.py --mineblock',
     'tool_wallet.py --legacy-wallet',
     'tool_wallet.py --descriptors',
-    'tool_signet_miner.py --legacy-wallet',
-    'tool_signet_miner.py --descriptors',
     'wallet_txn_clone.py',
     'wallet_txn_clone.py --segwit',
     'rpc_getchaintips.py',
@@ -170,10 +169,6 @@ BASE_SCRIPTS = [
     'wallet_reorgsrestore.py',
     'interface_http.py',
     'interface_rpc.py',
-    'interface_usdt_coinselection.py',
-    'interface_usdt_net.py',
-    'interface_usdt_utxocache.py',
-    'interface_usdt_validation.py',
     'rpc_psbt.py --legacy-wallet',
     'rpc_psbt.py --descriptors',
     'rpc_users.py',
@@ -194,7 +189,8 @@ BASE_SCRIPTS = [
     'rpc_decodescript.py',
     'rpc_blockchain.py',
     'rpc_deprecated.py',
-    'wallet_disable.py',
+    'wallet_disable.py --legacy-wallet',
+    'wallet_disable.py --descriptors',
     'p2p_addr_relay.py',
     'p2p_getaddr_caching.py',
     'p2p_getdata.py',
@@ -230,7 +226,8 @@ BASE_SCRIPTS = [
     'feature_rbf.py --descriptors',
     'mempool_packages.py',
     'mempool_package_onemore.py',
-    'rpc_createmultisig.py',
+    'rpc_createmultisig.py --legacy-wallet',
+    'rpc_createmultisig.py --descriptors',
     'rpc_packages.py',
     'mempool_package_limits.py',
     'feature_versionbits_warning.py',
@@ -241,6 +238,7 @@ BASE_SCRIPTS = [
     'p2p_eviction.py',
     'wallet_signmessagewithaddress.py',
     'rpc_signmessagewithprivkey.py',
+    'rpc_generateblock.py',
     'rpc_generate.py',
     'wallet_balance.py --legacy-wallet',
     'wallet_balance.py --descriptors',
@@ -255,7 +253,6 @@ BASE_SCRIPTS = [
     'rpc_bind.py --ipv4',
     'rpc_bind.py --ipv6',
     'rpc_bind.py --nonloopback',
-    'wallet_crosschain.py',
     'mining_basic.py',
     'feature_signet.py',
     'wallet_bumpfee.py --legacy-wallet',
@@ -284,8 +281,6 @@ BASE_SCRIPTS = [
     'wallet_create_tx.py --legacy-wallet',
     'wallet_send.py --legacy-wallet',
     'wallet_send.py --descriptors',
-    'wallet_sendall.py --legacy-wallet',
-    'wallet_sendall.py --descriptors',
     'wallet_create_tx.py --descriptors',
     'wallet_taproot.py',
     'wallet_inactive_hdchains.py',
@@ -313,10 +308,10 @@ BASE_SCRIPTS = [
     'p2p_ping.py',
     'rpc_scantxoutset.py',
     'feature_txindex_compatibility.py',
-    'feature_unsupported_utxo_db.py',
     'feature_logging.py',
     'feature_anchors.py',
-    'feature_coinstatsindex.py',
+    'feature_coinstatsindex.py --legacy-wallet',
+    'feature_coinstatsindex.py --descriptors',
     'wallet_orphanedreward.py',
     'wallet_timelock.py',
     'p2p_node_network_limited.py',
@@ -334,6 +329,7 @@ BASE_SCRIPTS = [
     'feature_help.py',
     'feature_shutdown.py',
     'p2p_ibd_txrelay.py',
+    'feature_blockfilterindex_prune.py'
     # Don't append tests at the end to avoid merge conflicts
     # Put them in a random line within the section that fits their approximate run-time
 ]
@@ -372,11 +368,11 @@ def main():
 
     args, unknown_args = parser.parse_known_args()
     if not args.ansi:
-        global DEFAULT, BOLD, GREEN, RED
-        DEFAULT = ("", "")
+        global BOLD, GREEN, RED, GREY
         BOLD = ("", "")
         GREEN = ("", "")
         RED = ("", "")
+        GREY = ("", "")
 
     # args to be passed on always start with two dashes; tests are the remaining unknown args
     tests = [arg for arg in unknown_args if arg[:2] != "--"]
@@ -594,11 +590,10 @@ def run_tests(*, test_list, src_dir, build_dir, tmpdir, jobs=1, enable_coverage=
     # Clean up dangling processes if any. This may only happen with --failfast option.
     # Killing the process group will also terminate the current process but that is
     # not an issue
-    if not os.getenv("CI_FAILFAST_TEST_LEAVE_DANGLING") and len(job_queue.jobs):
+    if len(job_queue.jobs):
         os.killpg(os.getpgid(0), signal.SIGKILL)
 
     sys.exit(not all_passed)
-
 
 def print_results(test_results, max_len_name, runtime):
     results = "\n" + BOLD[1] + "%s | %s | %s\n\n" % ("TEST".ljust(max_len_name), "STATUS   ", "DURATION") + BOLD[0]
@@ -720,7 +715,7 @@ class TestResult():
             color = RED
             glyph = CROSS
         elif self.status == "Skipped":
-            color = DEFAULT
+            color = GREY
             glyph = CIRCLE
 
         return color[1] + "%s | %s%s | %s s\n" % (self.name.ljust(self.padding), glyph, self.status.ljust(7), self.time) + color[0]
