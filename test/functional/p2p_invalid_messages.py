@@ -216,7 +216,7 @@ class InvalidMessagesTest(UmkoinTestFramework):
         self.test_addrv2('unrecognized network',
             [
                 'received: addrv2 (25 bytes)',
-                '9.9.9.9:6333 mapped',
+                '9.9.9.9:6333',
                 'Added 1 addresses',
             ],
             bytes.fromhex(
