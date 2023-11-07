@@ -217,8 +217,8 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1628640000; // August 11th, 2021
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
 
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000182787674693329");  // 109457
-        consensus.defaultAssumeValid = uint256S("0x0000000000435c7a56820f0509d8f6834c47e044ec1b1ef7f12ba4855bbc2954"); // 109457
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000298d8be9ba049e1");  // 177173
+        consensus.defaultAssumeValid = uint256S("0x0000000000171423f711b1ded2bea3d810a5c44ae6f7e707f395238f59db0040"); // 177173
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -269,9 +269,9 @@ public:
 
         chainTxData = ChainTxData{
             // Data from RPC: getchaintxstats 4096 00000000002c0afdad479a7e36eee0e969a004e13d709492c8237f4b7f423d28
-            .nTime    = 1646130875,
-            .nTxCount = 152278,
-            .dTxRate  = 0.001751381367944,
+            .nTime    = 1699441105,
+            .nTxCount = 236630,
+            .dTxRate  = 0.000561877008434,
         };
     }
 };
