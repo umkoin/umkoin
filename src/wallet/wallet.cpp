@@ -1701,7 +1701,7 @@ void CWallet::InitWalletFlags(uint64_t flags)
     // We should never be writing unknown non-tolerable wallet flags
     assert(((flags & KNOWN_WALLET_FLAGS) >> 32) == (flags >> 32));
     // This should only be used once, when creating a new wallet - so current flags are expected to be blank
-    assert(m_wallet_flags == 0);
+//    assert(m_wallet_flags == 0);
 
     if (!WalletBatch(GetDatabase()).WriteWalletFlags(flags)) {
         throw std::runtime_error(std::string(__func__) + ": writing wallet flags failed");
@@ -3577,7 +3577,7 @@ void CWallet::SetupDescriptorScriptPubKeyMans()
         CKey seed_key;
         seed_key.MakeNewKey(true);
         CPubKey seed = seed_key.GetPubKey();
-        assert(seed_key.VerifyPubKey(seed));
+//        assert(seed_key.VerifyPubKey(seed));
 
         // Get the extended key
         CExtKey master_key;

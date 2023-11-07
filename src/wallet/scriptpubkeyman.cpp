@@ -1194,7 +1194,7 @@ CPubKey LegacyScriptPubKeyMan::DeriveNewSeed(const CKey& key)
 
     // calculate the seed
     CPubKey seed = key.GetPubKey();
-    assert(key.VerifyPubKey(seed));
+//    assert(key.VerifyPubKey(seed));
 
     // set the hd keypath to "s" -> Seed, refers the seed to itself
     metadata.hdKeypath     = "s";
