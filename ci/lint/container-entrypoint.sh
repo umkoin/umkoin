@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) The Umkoin Core developers
+# Copyright (c) The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit/.
 
@@ -11,6 +11,7 @@ export LC_ALL=C
 git config --global --add safe.directory /umkoin
 
 export PATH="/python_build/bin:${PATH}"
+export LINT_RUNNER_PATH="/lint_test_runner"
 
 if [ -z "$1" ]; then
   LOCAL_BRANCH=1 bash -ic "./ci/lint/06_script.sh"
