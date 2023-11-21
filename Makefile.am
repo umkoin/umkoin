@@ -14,8 +14,6 @@ endif
 .PHONY: deploy FORCE
 .INTERMEDIATE: $(COVERAGE_INFO)
 
-export PYTHONPATH
-
 if BUILD_UMKOIN_LIBS
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libumkoinconsensus.pc
