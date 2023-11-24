@@ -152,49 +152,49 @@ BOOST_AUTO_TEST_CASE(embedded_test)
 BOOST_AUTO_TEST_CASE(subnet_test)
 {
 
-    BOOST_CHECK(ResolveSubNet("1.2.3.0/24") == ResolveSubNet("1.2.3.0/255.255.255.0"));
-    BOOST_CHECK(ResolveSubNet("1.2.3.0/24") != ResolveSubNet("1.2.4.0/255.255.255.0"));
-    BOOST_CHECK(ResolveSubNet("1.2.3.0/24").Match(ResolveIP("1.2.3.4")));
-    BOOST_CHECK(!ResolveSubNet("1.2.2.0/24").Match(ResolveIP("1.2.3.4")));
-    BOOST_CHECK(ResolveSubNet("1.2.3.4").Match(ResolveIP("1.2.3.4")));
-    BOOST_CHECK(ResolveSubNet("1.2.3.4/32").Match(ResolveIP("1.2.3.4")));
-    BOOST_CHECK(!ResolveSubNet("1.2.3.4").Match(ResolveIP("5.6.7.8")));
-    BOOST_CHECK(!ResolveSubNet("1.2.3.4/32").Match(ResolveIP("5.6.7.8")));
-    BOOST_CHECK(ResolveSubNet("::ffff:127.0.0.1").Match(ResolveIP("127.0.0.1")));
-    BOOST_CHECK(ResolveSubNet("1:2:3:4:5:6:7:8").Match(ResolveIP("1:2:3:4:5:6:7:8")));
-    BOOST_CHECK(!ResolveSubNet("1:2:3:4:5:6:7:8").Match(ResolveIP("1:2:3:4:5:6:7:9")));
-    BOOST_CHECK(ResolveSubNet("1:2:3:4:5:6:7:0/112").Match(ResolveIP("1:2:3:4:5:6:7:1234")));
-    BOOST_CHECK(ResolveSubNet("192.168.0.1/24").Match(ResolveIP("192.168.0.2")));
-    BOOST_CHECK(ResolveSubNet("192.168.0.20/29").Match(ResolveIP("192.168.0.18")));
-    BOOST_CHECK(ResolveSubNet("1.2.2.1/24").Match(ResolveIP("1.2.2.4")));
-    BOOST_CHECK(ResolveSubNet("1.2.2.110/31").Match(ResolveIP("1.2.2.111")));
-    BOOST_CHECK(ResolveSubNet("1.2.2.20/26").Match(ResolveIP("1.2.2.63")));
+    BOOST_CHECK(LookupSubNet("1.2.3.0/24") == LookupSubNet("1.2.3.0/255.255.255.0"));
+    BOOST_CHECK(LookupSubNet("1.2.3.0/24") != LookupSubNet("1.2.4.0/255.255.255.0"));
+    BOOST_CHECK(LookupSubNet("1.2.3.0/24").Match(ResolveIP("1.2.3.4")));
+    BOOST_CHECK(!LookupSubNet("1.2.2.0/24").Match(ResolveIP("1.2.3.4")));
+    BOOST_CHECK(LookupSubNet("1.2.3.4").Match(ResolveIP("1.2.3.4")));
+    BOOST_CHECK(LookupSubNet("1.2.3.4/32").Match(ResolveIP("1.2.3.4")));
+    BOOST_CHECK(!LookupSubNet("1.2.3.4").Match(ResolveIP("5.6.7.8")));
+    BOOST_CHECK(!LookupSubNet("1.2.3.4/32").Match(ResolveIP("5.6.7.8")));
+    BOOST_CHECK(LookupSubNet("::ffff:127.0.0.1").Match(ResolveIP("127.0.0.1")));
+    BOOST_CHECK(LookupSubNet("1:2:3:4:5:6:7:8").Match(ResolveIP("1:2:3:4:5:6:7:8")));
+    BOOST_CHECK(!LookupSubNet("1:2:3:4:5:6:7:8").Match(ResolveIP("1:2:3:4:5:6:7:9")));
+    BOOST_CHECK(LookupSubNet("1:2:3:4:5:6:7:0/112").Match(ResolveIP("1:2:3:4:5:6:7:1234")));
+    BOOST_CHECK(LookupSubNet("192.168.0.1/24").Match(ResolveIP("192.168.0.2")));
+    BOOST_CHECK(LookupSubNet("192.168.0.20/29").Match(ResolveIP("192.168.0.18")));
+    BOOST_CHECK(LookupSubNet("1.2.2.1/24").Match(ResolveIP("1.2.2.4")));
+    BOOST_CHECK(LookupSubNet("1.2.2.110/31").Match(ResolveIP("1.2.2.111")));
+    BOOST_CHECK(LookupSubNet("1.2.2.20/26").Match(ResolveIP("1.2.2.63")));
     // All-Matching IPv6 Matches arbitrary IPv6
-    BOOST_CHECK(ResolveSubNet("::/0").Match(ResolveIP("1:2:3:4:5:6:7:1234")));
+    BOOST_CHECK(LookupSubNet("::/0").Match(ResolveIP("1:2:3:4:5:6:7:1234")));
     // But not `::` or `0.0.0.0` because they are considered invalid addresses
-    BOOST_CHECK(!ResolveSubNet("::/0").Match(ResolveIP("::")));
-    BOOST_CHECK(!ResolveSubNet("::/0").Match(ResolveIP("0.0.0.0")));
+    BOOST_CHECK(!LookupSubNet("::/0").Match(ResolveIP("::")));
+    BOOST_CHECK(!LookupSubNet("::/0").Match(ResolveIP("0.0.0.0")));
     // Addresses from one network (IPv4) don't belong to subnets of another network (IPv6)
-    BOOST_CHECK(!ResolveSubNet("::/0").Match(ResolveIP("1.2.3.4")));
+    BOOST_CHECK(!LookupSubNet("::/0").Match(ResolveIP("1.2.3.4")));
     // All-Matching IPv4 does not Match IPv6
-    BOOST_CHECK(!ResolveSubNet("0.0.0.0/0").Match(ResolveIP("1:2:3:4:5:6:7:1234")));
+    BOOST_CHECK(!LookupSubNet("0.0.0.0/0").Match(ResolveIP("1:2:3:4:5:6:7:1234")));
     // Invalid subnets Match nothing (not even invalid addresses)
     BOOST_CHECK(!CSubNet().Match(ResolveIP("1.2.3.4")));
-    BOOST_CHECK(!ResolveSubNet("").Match(ResolveIP("4.5.6.7")));
-    BOOST_CHECK(!ResolveSubNet("bloop").Match(ResolveIP("0.0.0.0")));
-    BOOST_CHECK(!ResolveSubNet("bloop").Match(ResolveIP("hab")));
+    BOOST_CHECK(!LookupSubNet("").Match(ResolveIP("4.5.6.7")));
+    BOOST_CHECK(!LookupSubNet("bloop").Match(ResolveIP("0.0.0.0")));
+    BOOST_CHECK(!LookupSubNet("bloop").Match(ResolveIP("hab")));
     // Check valid/invalid
-    BOOST_CHECK(ResolveSubNet("1.2.3.0/0").IsValid());
-    BOOST_CHECK(!ResolveSubNet("1.2.3.0/-1").IsValid());
-    BOOST_CHECK(ResolveSubNet("1.2.3.0/32").IsValid());
-    BOOST_CHECK(!ResolveSubNet("1.2.3.0/33").IsValid());
-    BOOST_CHECK(!ResolveSubNet("1.2.3.0/300").IsValid());
-    BOOST_CHECK(ResolveSubNet("1:2:3:4:5:6:7:8/0").IsValid());
-    BOOST_CHECK(ResolveSubNet("1:2:3:4:5:6:7:8/33").IsValid());
-    BOOST_CHECK(!ResolveSubNet("1:2:3:4:5:6:7:8/-1").IsValid());
-    BOOST_CHECK(ResolveSubNet("1:2:3:4:5:6:7:8/128").IsValid());
-    BOOST_CHECK(!ResolveSubNet("1:2:3:4:5:6:7:8/129").IsValid());
-    BOOST_CHECK(!ResolveSubNet("fuzzy").IsValid());
+    BOOST_CHECK(LookupSubNet("1.2.3.0/0").IsValid());
+    BOOST_CHECK(!LookupSubNet("1.2.3.0/-1").IsValid());
+    BOOST_CHECK(LookupSubNet("1.2.3.0/32").IsValid());
+    BOOST_CHECK(!LookupSubNet("1.2.3.0/33").IsValid());
+    BOOST_CHECK(!LookupSubNet("1.2.3.0/300").IsValid());
+    BOOST_CHECK(LookupSubNet("1:2:3:4:5:6:7:8/0").IsValid());
+    BOOST_CHECK(LookupSubNet("1:2:3:4:5:6:7:8/33").IsValid());
+    BOOST_CHECK(!LookupSubNet("1:2:3:4:5:6:7:8/-1").IsValid());
+    BOOST_CHECK(LookupSubNet("1:2:3:4:5:6:7:8/128").IsValid());
+    BOOST_CHECK(!LookupSubNet("1:2:3:4:5:6:7:8/129").IsValid());
+    BOOST_CHECK(!LookupSubNet("fuzzy").IsValid());
 
     //CNetAddr constructor test
     BOOST_CHECK(CSubNet(ResolveIP("127.0.0.1")).IsValid());
@@ -472,15 +472,15 @@ BOOST_AUTO_TEST_CASE(netbase_dont_resolve_strings_with_embedded_nul_characters)
     BOOST_CHECK(!LookupHost("127.0.0.1\0"s, false).has_value());
     BOOST_CHECK(!LookupHost("127.0.0.1\0example.com"s, false).has_value());
     BOOST_CHECK(!LookupHost("127.0.0.1\0example.com\0"s, false).has_value());
-    CSubNet ret;
-    BOOST_CHECK(LookupSubNet("1.2.3.0/24"s, ret));
-    BOOST_CHECK(!LookupSubNet("1.2.3.0/24\0"s, ret));
-    BOOST_CHECK(!LookupSubNet("1.2.3.0/24\0example.com"s, ret));
-    BOOST_CHECK(!LookupSubNet("1.2.3.0/24\0example.com\0"s, ret));
-    BOOST_CHECK(LookupSubNet("klfchu53kxun6zx5.onion"s, ret));
-    BOOST_CHECK(!LookupSubNet("klfchu53kxun6zx5.onion\0"s, ret));
-    BOOST_CHECK(!LookupSubNet("klfchu53kxun6zx5.onion\0example.com"s, ret));
-    BOOST_CHECK(!LookupSubNet("klfchu53kxun6zx5.onion\0example.com\0"s, ret));
+
+    BOOST_CHECK(LookupSubNet("1.2.3.0/24"s).IsValid());
+    BOOST_CHECK(!LookupSubNet("1.2.3.0/24\0"s).IsValid());
+    BOOST_CHECK(!LookupSubNet("1.2.3.0/24\0example.com"s).IsValid());
+    BOOST_CHECK(!LookupSubNet("1.2.3.0/24\0example.com\0"s).IsValid());
+    BOOST_CHECK(LookupSubNet("klfchu53kxun6zx5.onion"s).IsValid());
+    BOOST_CHECK(!LookupSubNet("klfchu53kxun6zx5.onion\0"s).IsValid());
+    BOOST_CHECK(!LookupSubNet("klfchu53kxun6zx5.onion\0example.com"s).IsValid());
+    BOOST_CHECK(!LookupSubNet("klfchu53kxun6zx5.onion\0example.com\0"s).IsValid());
 }
 
 // Since CNetAddr (un)ser is tested separately in net_tests.cpp here we only
