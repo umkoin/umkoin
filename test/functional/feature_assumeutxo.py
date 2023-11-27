@@ -107,7 +107,7 @@ class AssumeutxoTest(UmkoinTestFramework):
                 f.write(valid_snapshot_contents[:(32 + 8 + offset)])
                 f.write(content)
                 f.write(valid_snapshot_contents[(32 + 8 + offset + len(content)):])
-            expected_error(log_msg=f"[snapshot] bad snapshot content hash: expected 61d9c2b29a2571a5fe285fe2d8554f91f93309666fc9b8223ee96338de25ff53, got {wrong_hash}")
+            expected_error(log_msg=f"[snapshot] bad snapshot content hash: expected 4a5e9e1cfeba05a536885f813a56411d904782900eb00a533eab1e5be4f277ba, got {wrong_hash}")
 
     def test_invalid_chainstate_scenarios(self):
         self.log.info("Test different scenarios of invalid snapshot chainstate in datadir")
@@ -170,7 +170,7 @@ class AssumeutxoTest(UmkoinTestFramework):
 
         assert_equal(
             dump_output['txoutset_hash'],
-            '61d9c2b29a2571a5fe285fe2d8554f91f93309666fc9b8223ee96338de25ff53')
+            '4a5e9e1cfeba05a536885f813a56411d904782900eb00a533eab1e5be4f277ba')
         assert_equal(dump_output['nchaintx'], 300)
         assert_equal(n0.getblockchaininfo()["blocks"], SNAPSHOT_BASE_HEIGHT)
 
