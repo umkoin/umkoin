@@ -168,7 +168,7 @@ public:
         };
 
         m_assumeutxo_data = {
-         // TODO to be specified in a future patch.
+            // TODO to be specified in a future patch.
         };
 
         chainTxData = ChainTxData{
@@ -264,14 +264,20 @@ public:
         };
 
         m_assumeutxo_data = {
-            // TODO to be specified in a future patch.
+            // Dumptxoutset at height 179888.
+            {
+                .height = 179888,
+                .hash_serialized = AssumeutxoHash{uint256S("0x9708859da4b26c6aed3ca61a5018b34c3b74b2b1f92f3bc24fcda82e31094320")},
+                .nChainTx = 239355,
+                .blockhash = uint256S("0x000000000048ef633af334fc737c8d8750fb58068bfdecd8995723fcb63079f3")
+            },
         };
 
         chainTxData = ChainTxData{
-            // Data from RPC: getchaintxstats 4096 00000000002c0afdad479a7e36eee0e969a004e13d709492c8237f4b7f423d28
-            .nTime    = 1699441105,
-            .nTxCount = 236630,
-            .dTxRate  = 0.000561877008434,
+            // Data from RPC: getchaintxstats 4096 000000000062e3325e42574ceee13bc7873f69a2e0e7fce35063c86c34b05a43
+            .nTime    = 1700712904,
+            .nTxCount = 238467,
+            .dTxRate  = 0.000663547274101,
         };
     }
 };
@@ -364,12 +370,7 @@ public:
         vFixedSeeds.clear();
 
         m_assumeutxo_data = {
-            {
-                .height = 160'000,
-                .hash_serialized = AssumeutxoHash{uint256S("0x5225141cb62dee63ab3be95f9b03d60801f264010b1816d4bd00618b2736e7be")},
-                .nChainTx = 2289496,
-                .blockhash = uint256S("0x0000003ca3c99aff040f2563c2ad8f8ec88bd0fd6b8f0895cfaf1ef90353a62c")
-            }
+            // TODO to be specified in a future patch.
         };
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
@@ -481,17 +482,18 @@ public:
 
         m_assumeutxo_data = {
             {
+                // Dumptxoutset at height 110.
                 .height = 110,
-                .hash_serialized = AssumeutxoHash{uint256S("0x1ebbf5850204c0bdb15bf030f47c7fe91d45c44c712697e4509ba67adb01c618")},
+                .hash_serialized = AssumeutxoHash{uint256S("0x611314483dc02d0591d15b104c54c09491612744815b0659a7530ecb1a4cecbe")},
                 .nChainTx = 111,
-                .blockhash = uint256S("0x696e92821f65549c7ee134edceeeeaaa4105647a3c4fd9f298c0aec0ab50425c")
+                .blockhash = uint256S("0x724bbf18ed0d9f52068ddd6738dbb54245e56e7dc578381bc1f4b0db4616b2f4")
             },
             {
                 // For use by test/functional/feature_assumeutxo.py
                 .height = 299,
-                .hash_serialized = AssumeutxoHash{uint256S("0xef45ccdca5898b6c2145e4581d2b88c56564dd389e4bd75a1aaf6961d3edd3c0")},
+                .hash_serialized = AssumeutxoHash{uint256S("0x4a5e9e1cfeba05a536885f813a56411d904782900eb00a533eab1e5be4f277ba")},
                 .nChainTx = 300,
-                .blockhash = uint256S("0x7e0517ef3ea6ecbed9117858e42eedc8eb39e8698a38dcbd1b3962a283233f4c")
+                .blockhash = uint256S("0x3d2073fc14cc954687a8a30f12a121af3facc560370dc296a8d4e6ff7091259b")
             },
         };
 
