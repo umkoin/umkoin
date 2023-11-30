@@ -1194,7 +1194,7 @@ CPubKey LegacyScriptPubKeyMan::DeriveNewSeed(const CKey& key)
 
     // calculate the seed
     CPubKey seed = key.GetPubKey();
-//    assert(key.VerifyPubKey(seed));
+    assert(key.VerifyPubKey(seed));
 
     // set the hd keypath to "s" -> Seed, refers the seed to itself
     metadata.hdKeypath     = "s";
@@ -2283,20 +2283,20 @@ bool DescriptorScriptPubKeyMan::SetupDescriptorGeneration(const CExtKey& master_
     std::string desc_suffix = "/*)";
     switch (addr_type) {
     case OutputType::LEGACY: {
-        desc_prefix = "pkh(" + xpub + "/44h";
+        desc_prefix = "pkh(" + xpub + "/44";
         break;
     }
     case OutputType::P2SH_SEGWIT: {
-        desc_prefix = "sh(wpkh(" + xpub + "/49h";
+        desc_prefix = "sh(wpkh(" + xpub + "/49";
         desc_suffix += ")";
         break;
     }
     case OutputType::BECH32: {
-        desc_prefix = "wpkh(" + xpub + "/84h";
+        desc_prefix = "wpkh(" + xpub + "/84";
         break;
     }
     case OutputType::BECH32M: {
-        desc_prefix = "tr(" + xpub + "/86h";
+        desc_prefix = "tr(" + xpub + "/86";
         break;
     }
     case OutputType::UNKNOWN: {
@@ -2309,13 +2309,13 @@ bool DescriptorScriptPubKeyMan::SetupDescriptorGeneration(const CExtKey& master_
 
     // Mainnet derives at 0', testnet and regtest derive at 1'
     if (Params().IsTestChain()) {
-        desc_prefix += "/1h";
+        desc_prefix += "/1";
     } else {
-        desc_prefix += "/0h";
+        desc_prefix += "/0";
     }
 
     std::string internal_path = internal ? "/1" : "/0";
-    std::string desc_str = desc_prefix + "/0h" + internal_path + desc_suffix;
+    std::string desc_str = desc_prefix + "/0" + internal_path + desc_suffix;
 
     // Make the descriptor
     FlatSigningProvider keys;
