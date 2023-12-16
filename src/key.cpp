@@ -232,10 +232,10 @@ bool CKey::Sign(const uint256 &hash, std::vector<unsigned char>& vchSig, bool gr
     vchSig.resize(nSigLen);
     // Additional verification step to prevent using a potentially corrupted signature
     secp256k1_pubkey pk;
-//    ret = secp256k1_ec_pubkey_create(secp256k1_context_sign, &pk, begin());
-//    assert(ret);
-//    ret = secp256k1_ecdsa_verify(secp256k1_context_static, &sig, hash.begin(), &pk);
-//    assert(ret);
+    ret = secp256k1_ec_pubkey_create(secp256k1_context_sign, &pk, begin());
+    assert(ret);
+    ret = secp256k1_ecdsa_verify(secp256k1_context_static, &sig, hash.begin(), &pk);
+    assert(ret);
     return true;
 }
 
