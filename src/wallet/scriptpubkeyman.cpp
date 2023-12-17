@@ -333,7 +333,8 @@ bool LegacyScriptPubKeyMan::TopUpInactiveHDChain(const CKeyID seed_id, int64_t i
         chain.m_next_external_index = std::max(chain.m_next_external_index, index + 1);
     }
 
-    TopUpChain(chain, 0);
+    WalletBatch batch(m_storage.GetDatabase());
+    TopUpChain(batch, chain, 0);
 
     return true;
 }
@@ -1274,19 +1275,22 @@ bool LegacyScriptPubKeyMan::TopUp(unsigned int kpSize)
         return false;
     }
 
-    if (!TopUpChain(m_hd_chain, kpSize)) {
+    WalletBatch batch(m_storage.GetDatabase());
+    if (!batch.TxnBegin()) return false;
+    if (!TopUpChain(batch, m_hd_chain, kpSize)) {
         return false;
     }
     for (auto& [chain_id, chain] : m_inactive_hd_chains) {
-        if (!TopUpChain(chain, kpSize)) {
+        if (!TopUpChain(batch, chain, kpSize)) {
             return false;
         }
     }
+    if (!batch.TxnCommit()) throw std::runtime_error(strprintf("Error during keypool top up. Cannot commit changes for wallet %s", m_storage.GetDisplayName()));
     NotifyCanGetAddressesChanged();
     return true;
 }
 
-bool LegacyScriptPubKeyMan::TopUpChain(CHDChain& chain, unsigned int kpSize)
+bool LegacyScriptPubKeyMan::TopUpChain(WalletBatch& batch, CHDChain& chain, unsigned int kpSize)
 {
     LOCK(cs_KeyStore);
 
@@ -1318,7 +1322,6 @@ bool LegacyScriptPubKeyMan::TopUpChain(CHDChain& chain, unsigned int kpSize)
         missingInternal = 0;
     }
     bool internal = false;
-    WalletBatch batch(m_storage.GetDatabase());
     for (int64_t i = missingInternal + missingExternal; i--;) {
         if (i < missingInternal) {
             internal = true;
@@ -2136,6 +2139,15 @@ std::map<CKeyID, CKey> DescriptorScriptPubKeyMan::GetKeys() const
 
 bool DescriptorScriptPubKeyMan::TopUp(unsigned int size)
 {
+    WalletBatch batch(m_storage.GetDatabase());
+    if (!batch.TxnBegin()) return false;
+    bool res = TopUpWithDB(batch, size);
+    if (!batch.TxnCommit()) throw std::runtime_error(strprintf("Error during descriptors keypool top up. Cannot commit changes for wallet %s", m_storage.GetDisplayName()));
+    return res;
+}
+
+bool DescriptorScriptPubKeyMan::TopUpWithDB(WalletBatch& batch, unsigned int size)
+{
     LOCK(cs_desc_man);
     unsigned int target_size;
     if (size > 0) {
@@ -2157,7 +2169,6 @@ bool DescriptorScriptPubKeyMan::TopUp(unsigned int size)
     FlatSigningProvider provider;
     provider.keys = GetKeys();
 
-    WalletBatch batch(m_storage.GetDatabase());
     uint256 id = GetID();
     for (int32_t i = m_max_cached_index + 1; i < new_range_end; ++i) {
         FlatSigningProvider out_keys;
@@ -2264,7 +2275,7 @@ bool DescriptorScriptPubKeyMan::AddDescriptorKeyWithDB(WalletBatch& batch, const
     }
 }
 
-bool DescriptorScriptPubKeyMan::SetupDescriptorGeneration(const CExtKey& master_key, OutputType addr_type, bool internal)
+bool DescriptorScriptPubKeyMan::SetupDescriptorGeneration(WalletBatch& batch, const CExtKey& master_key, OutputType addr_type, bool internal)
 {
     LOCK(cs_desc_man);
     assert(m_storage.IsWalletFlagSet(WALLET_FLAG_DESCRIPTORS));
@@ -2283,20 +2294,20 @@ bool DescriptorScriptPubKeyMan::SetupDescriptorGeneration(const CExtKey& master_
     std::string desc_suffix = "/*)";
     switch (addr_type) {
     case OutputType::LEGACY: {
-        desc_prefix = "pkh(" + xpub + "/44";
+        desc_prefix = "pkh(" + xpub + "/44h";
         break;
     }
     case OutputType::P2SH_SEGWIT: {
-        desc_prefix = "sh(wpkh(" + xpub + "/49";
+        desc_prefix = "sh(wpkh(" + xpub + "/49h";
         desc_suffix += ")";
         break;
     }
     case OutputType::BECH32: {
-        desc_prefix = "wpkh(" + xpub + "/84";
+        desc_prefix = "wpkh(" + xpub + "/84h";
         break;
     }
     case OutputType::BECH32M: {
-        desc_prefix = "tr(" + xpub + "/86";
+        desc_prefix = "tr(" + xpub + "/86h";
         break;
     }
     case OutputType::UNKNOWN: {
@@ -2309,13 +2320,13 @@ bool DescriptorScriptPubKeyMan::SetupDescriptorGeneration(const CExtKey& master_
 
     // Mainnet derives at 0', testnet and regtest derive at 1'
     if (Params().IsTestChain()) {
-        desc_prefix += "/1";
+        desc_prefix += "/1h";
     } else {
-        desc_prefix += "/0";
+        desc_prefix += "/0h";
     }
 
     std::string internal_path = internal ? "/1" : "/0";
-    std::string desc_str = desc_prefix + "/0" + internal_path + desc_suffix;
+    std::string desc_str = desc_prefix + "/0h" + internal_path + desc_suffix;
 
     // Make the descriptor
     FlatSigningProvider keys;
@@ -2325,7 +2336,6 @@ bool DescriptorScriptPubKeyMan::SetupDescriptorGeneration(const CExtKey& master_
     m_wallet_descriptor = w_desc;
 
     // Store the master private key, and descriptor
-    WalletBatch batch(m_storage.GetDatabase());
     if (!AddDescriptorKeyWithDB(batch, master_key.key, master_key.key.GetPubKey())) {
         throw std::runtime_error(std::string(__func__) + ": writing descriptor master private key failed");
     }
@@ -2334,7 +2344,7 @@ bool DescriptorScriptPubKeyMan::SetupDescriptorGeneration(const CExtKey& master_
     }
 
     // TopUp
-    TopUp();
+    TopUpWithDB(batch);
 
     m_storage.UnsetBlankWalletFlag(batch);
     return true;
