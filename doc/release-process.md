@@ -28,7 +28,7 @@ Release Process
 
 #### Before branch-off
 
-* Update hardcoded [seeds](/contrib/seeds/README.md), see [this pull request](https://github.com/bitcoin/bitcoin/pull/7415) for an example.
+* Update hardcoded [seeds](/contrib/seeds/README.md), see [this pull request](https://github.com/bitcoin/bitcoin/pull/27488) for an example.
 * Update the following variables in [`src/kernel/chainparams.cpp`](/src/kernel/chainparams.cpp) for mainnet, testnet, and signet:
   - `m_assumed_blockchain_size` and `m_assumed_chain_state_size` with the current size plus some overhead (see
     [this](#how-to-calculate-assumed-blockchain-and-chain-state-size) for information on how to calculate them).
@@ -36,7 +36,7 @@ Release Process
     that causes rejection of blocks in the past history.
   - `chainTxData` with statistics about the transaction count and rate. Use the output of the `getchaintxstats` RPC with an
     `nBlocks` of 4096 (28 days) and a `bestblockhash` of RPC `getbestblockhash`; see
-    [this pull request](https://github.com/bitcoin/bitcoin/pull/20263) for an example. Reviewers can verify the results by running
+    [this pull request](https://github.com/bitcoin/bitcoin/pull/28591) for an example. Reviewers can verify the results by running
     `getchaintxstats <window_block_count> <window_final_block_hash>` with the `window_block_count` and `window_final_block_hash` from your output.
   - `defaultAssumeValid` with the output of RPC `getblockhash` using the `height` of `window_final_block_height` above
     (and update the block height comment with that height), taking into account the following:
@@ -73,14 +73,16 @@ Release Process
 
 #### Before final release
 
-- Merge the release notes from the wiki into the branch.
-- Ensure the "Needs release note" label is removed from all relevant pull requests and issues.
+- Merge the release notes into the branch.
+- Ensure the "Needs release note" label is removed from all relevant pull
+  requests and issues:
+  https://github.com/umkoin/umkoin/issues?q=label%3A%22Needs+release+note%22
 
 #### Tagging a release (candidate)
 
 To tag the version (or release candidate) in git, use the `make-tag.py` script from [contrib/devtools](/contrib/devtools/make-tag.py). From the root of the repository run:
 
-    ./contrib/devtools/make-tag.py v(new version, e.g. 23.0)
+    ./contrib/devtools/make-tag.py v(new version, e.g. 25.0)
 
 This will perform a few last-minute consistency checks in the build system files, and if they pass, create a signed tag.
 
