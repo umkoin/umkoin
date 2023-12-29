@@ -14,7 +14,7 @@ $ umkoind -signer=../HWI/hwi.py
 
 ### Device setup
 
-Follow the hardware manufacturers instructions for the initial device setup, as well as their instructions for creating a backup. Alternatively, for some devices, you can use the `setup`, `restore` and `backup` commands provided by [HWI](https://github.com/umkoin-core/HWI).
+Follow the hardware manufacturers instructions for the initial device setup, as well as their instructions for creating a backup. Alternatively, for some devices, you can use the `setup`, `restore` and `backup` commands provided by [HWI](https://github.com/bitcoin-core/HWI).
 
 ### Create wallet and import keys
 

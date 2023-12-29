@@ -91,8 +91,8 @@ void OptionTests::integerGetArgBug()
 
 void OptionTests::parametersInteraction()
 {
-    // Test that the bug https://github.com/umkoin-core/gui/issues/567 does not resurface.
-    // It was fixed via https://github.com/umkoin-core/gui/pull/568.
+    // Test that the bug https://github.com/bitcoin-core/gui/issues/567 does not resurface.
+    // It was fixed via https://github.com/bitcoin-core/gui/pull/568.
     // With fListen=false in ~/.config/Umkoin/Umkoin-Qt.conf and all else left as default,
     // umkoin-qt should set both -listen and -listenonion to false and start successfully.
     gArgs.LockSettings([&](common::Settings& s) {

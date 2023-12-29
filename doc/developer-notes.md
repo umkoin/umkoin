@@ -26,7 +26,7 @@ Developer Notes
     - [Threads](#threads)
     - [Ignoring IDE/editor files](#ignoring-ideeditor-files)
 - [Development guidelines](#development-guidelines)
-    - [General Umkoin Core](#general-umkoin-core)
+    - [General Umkoin Core](#general-bitcoin-core)
     - [Wallet](#wallet)
     - [General C++](#general-c)
     - [C++ data structures](#c-data-structures)
@@ -1105,7 +1105,7 @@ to check a subtree directory for consistency with its upstream repository.
 Current subtrees include:
 
 - src/leveldb
-  - Subtree at https://github.com/umkoin-core/leveldb-subtree ; maintained by Core contributors.
+  - Subtree at https://github.com/bitcoin-core/leveldb-subtree ; maintained by Core contributors.
   - Upstream at https://github.com/google/leveldb ; maintained by Google. Open
     important PRs to the subtree to avoid delay.
   - **Note**: Follow the instructions in [Upgrading LevelDB](#upgrading-leveldb) when
@@ -1113,14 +1113,14 @@ Current subtrees include:
 
 - src/crc32c
   - Used by leveldb for hardware acceleration of CRC32C checksums for data integrity.
-  - Subtree at https://github.com/umkoin-core/crc32c-subtree ; maintained by Core contributors.
+  - Subtree at https://github.com/bitcoin-core/crc32c-subtree ; maintained by Core contributors.
   - Upstream at https://github.com/google/crc32c ; maintained by Google.
 
 - src/secp256k1
-  - Upstream at https://github.com/umkoin-core/secp256k1/ ; maintained by Core contributors.
+  - Upstream at https://github.com/bitcoin-core/secp256k1/ ; maintained by Core contributors.
 
 - src/crypto/ctaes
-  - Upstream at https://github.com/umkoin-core/ctaes ; maintained by Core contributors.
+  - Upstream at https://github.com/bitcoin-core/ctaes ; maintained by Core contributors.
 
 - src/minisketch
   - Upstream at https://github.com/sipa/minisketch ; maintained by Core contributors.
