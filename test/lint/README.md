@@ -57,7 +57,7 @@ maintained:
 To do so, add the upstream repository as remote:
 
 ```
-git remote add --fetch secp256k1 https://github.com/umkoin-core/secp256k1.git
+git remote add --fetch secp256k1 https://github.com/bitcoin-core/secp256k1.git
 ```
 
 all-lint.py

@@ -54,7 +54,7 @@ Release Process
 - Clear the release notes and move them to the wiki (see "Write the release notes" below).
 - Translations on Transifex:
     - Pull translations from Transifex into the master branch.
-    - Create [a new resource](https://www.transifex.com/umkoin/umkoin-core/content/) named after the major version with the slug `qt-translation-<RRR>x`, where `RRR` is the major branch number padded with zeros. Use `src/qt/locale/umkoin_en.xlf` to create it.
+    - Create [a new resource](https://www.transifex.com/umkoin/umkoin/content/) named after the major version with the slug `qt-translation-<RRR>x`, where `RRR` is the major branch number padded with zeros. Use `src/qt/locale/umkoin_en.xlf` to create it.
     - In the project workflow settings, ensure that [Translation Memory Fill-up](https://help.transifex.com/en/articles/6224817-setting-up-translation-memory-fill-up) is enabled and that [Translation Memory Context Matching](https://help.transifex.com/en/articles/6224753-translation-memory-with-context) is disabled.
     - Update the Transifex slug in [`.tx/config`](/.tx/config) to the slug of the resource created in the first step. This identifies which resource the translations will be synchronized from.
     - Make an announcement that translators can start translating for the new version.
@@ -63,7 +63,7 @@ Release Process
 #### After branch-off (on the major release branch)
 
 - Update the versions.
-- Create the draft, named "*version* Release Notes Draft", as a [collaborative wiki](https://github.com/umkoin-core/umkoin-devwiki/wiki/_new).
+- Create the draft, named "*version* Release Notes Draft".
 - Clear the release notes: `cp doc/release-notes-empty-template.md doc/release-notes.md`
 - Create a pinned meta-issue for testing the release candidate and provide a link to it in the release announcements where useful.
 - Translations on Transifex
@@ -155,7 +155,7 @@ git commit -m "Add attestations by ${SIGNER} for ${VERSION} non-codesigned"
 popd
 ```
 
-Then open a Pull Request to the [guix.sigs repository](https://github.com/umkoin-core/guix.sigs).
+Then open a Pull Request to the [guix.sigs repository](https://github.com/umkoin/guix.sigs).
 
 ## Codesigning
 
@@ -225,7 +225,7 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
 ```
 
 
-- Upload to the www.umkoin.org server (`/var/www/bin/umkoin-core-${VERSION}/`):
+- Upload to the www.umkoin.org server (`/var/www/bin/umkoin-${VERSION}/`):
     1. The contents of each `./umkoin/guix-build-${VERSION}/output/${HOST}/` directory, except for
        `*-debug*` files.
 
@@ -242,15 +242,15 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
        nor put them in the torrent*.
 
        ```sh
-       find guix-build-${VERSION}/output/ -maxdepth 2 -type f -not -name "SHA256SUMS.part" -and -not -name "*debug*" -exec scp {} user@umkoin.org:/var/www/bin/umkoin-core-${VERSION} \; 
+       find guix-build-${VERSION}/output/ -maxdepth 2 -type f -not -name "SHA256SUMS.part" -and -not -name "*debug*" -exec scp {} user@umkoin.org:/var/www/bin/umkoin-${VERSION} \; 
        ```
 
     2. The `SHA256SUMS` file
 
     3. The `SHA256SUMS.asc` combined signature file you just created
 
-- Create a torrent of the `/var/www/bin/umkoin-core-${VERSION}` directory such
-  that at the top level there is only one file: the `umkoin-core-${VERSION}`
+- Create a torrent of the `/var/www/bin/umkoin-${VERSION}` directory such
+  that at the top level there is only one file: the `umkoin-${VERSION}`
   directory containing everything else. Name the torrent
   `umkoin-${VERSION}.torrent` (note that there is no `-core-` in this name).
 
