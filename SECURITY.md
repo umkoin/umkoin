@@ -3,11 +3,11 @@
 ## Supported Versions
 
 See our website for versions of Umkoin Core that are currently supported with
-security updates: [http://www.umkoin.org/en/lifecycle.php](http://www.umkoin.org/en/lifecycle.php)
+security updates: [http://www.umkoin.org/en/lifecycle.html](http://www.umkoin.org/en/lifecycle.html)
 
 ## Reporting a Vulnerability
 
-Report security issues to umkoin@umkoin.org (not for support).
+To report security issues send an email to umkoin@umkoin.org (not for support).
 
 The following keys may be used to communicate sensitive information to developers:
 
