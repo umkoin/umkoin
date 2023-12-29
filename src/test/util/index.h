@@ -6,8 +6,11 @@
 #define UMKOIN_TEST_UTIL_INDEX_H
 
 class BaseIndex;
+namespace util {
+class SignalInterrupt;
+} // namespace util
 
 /** Block until the index is synced to the current chain */
-void IndexWaitSynced(const BaseIndex& index);
+void IndexWaitSynced(const BaseIndex& index, const util::SignalInterrupt& interrupt);
 
 #endif // UMKOIN_TEST_UTIL_INDEX_H
