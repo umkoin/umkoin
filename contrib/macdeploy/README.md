@@ -15,14 +15,14 @@ When complete, it will have produced `Umkoin-Core.zip`.
 A free Apple Developer Account is required to proceed.
 
 Our macOS SDK can be extracted from
-[Xcode_15.xip](https://download.developer.apple.com/Developer_Tools/Xcode_15/Xcode_15.xip).
+[Xcode_15.2.xip](https://download.developer.apple.com/Developer_Tools/Xcode_15.2/Xcode_15.2.xip).
 
 Alternatively, after logging in to your account go to 'Downloads', then 'More'
 and search for [`Xcode 15`](https://developer.apple.com/download/all/?q=Xcode%2015).
 
 An Apple ID and cookies enabled for the hostname are needed to download this.
 
-The `sha256sum` of the downloaded XIP archive should be `4daaed2ef2253c9661779fa40bfff50655dc7ec45801aba5a39653e7bcdde48e`.
+The `sha256sum` of the downloaded XIP archive should be `04e93680c6ddbec84666531be412de778afc8eac6ab2037f4c2be7290818b59b`.
 
 To extract the `.xip` on Linux:
 
@@ -33,13 +33,13 @@ git clone https://github.com/bitcoin-core/apple-sdk-tools.git
 
 # Unpack the .xip and place the resulting Xcode.app in your current
 # working directory
-python3 apple-sdk-tools/extract_xcode.py -f Xcode_15.xip | cpio -d -i
+python3 apple-sdk-tools/extract_xcode.py -f Xcode_15.2.xip | cpio -d -i
 ```
 
 On macOS:
 
 ```bash
-xip -x Xcode_15.xip
+xip -x Xcode_15.2.xip
 ```
 
 ### Step 2: Generating the SDK tarball from `Xcode.app`
@@ -51,8 +51,8 @@ path to `Xcode.app` (extracted in the previous stage) as the first argument.
 ./contrib/macdeploy/gen-sdk '/path/to/Xcode.app'
 ```
 
-The generated archive should be: `Xcode-15.0-15A240d-extracted-SDK-with-libcxx-headers.tar.gz`.
-The `sha256sum` should be `c0c2e7bb92c1fee0c4e9f3a485e4530786732d6c6dd9e9f418c282aa6892f55d`.
+The generated archive should be: `Xcode-15.2-15C500b-extracted-SDK-with-libcxx-headers.tar.gz`.
+The `sha256sum` should be `7c74146250fc6b6ea37b3f00b17a019fcade109cfe609989edecbbd6f228bfce`.
 
 ## Deterministic macOS App Notes
 
