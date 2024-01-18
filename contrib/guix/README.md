@@ -11,7 +11,7 @@ We achieve bootstrappability by using Guix as a functional package manager.
 
 # Requirements
 
-Conservatively, you will need an x86_64 machine with:
+Conservatively, you will need:
 
 - 16GB of free disk space on the partition that /gnu/store will reside in
 - 8GB of free disk space **per platform triple** you're planning on building
@@ -108,7 +108,7 @@ worktree to save disk space:
 
 Much like how Gitian build outputs are attested to in a `gitian.sigs`
 repository, Guix build outputs are attested to in the [`guix.sigs`
-repository](https://github.com/umkoin/guix.sigs).
+repository](https://github.com/umkoin-core/guix.sigs).
 
 After you've cloned the `guix.sigs` repository, to attest to the current
 worktree's commit/tag:
@@ -247,7 +247,7 @@ details.
 * _**SDK_PATH**_
 
   Set the path where _extracted_ SDKs can be found. This is passed through to
-  the depends tree. Note that this should be set to the _parent_ directory of
+  the depends tree. Note that this is should be set to the _parent_ directory of
   the actual SDK (e.g. `SDK_PATH=$HOME/Downloads/macOS-SDKs` instead of
   `$HOME/Downloads/macOS-SDKs/Xcode-15.2-15C500b-extracted-SDK-with-libcxx-headers`).
 
