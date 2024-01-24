@@ -1090,6 +1090,7 @@ ipc/capnp/libumkoin_ipc_a-protocol.$(OBJEXT): $(libumkoin_ipc_mpgen_input:=.h)
 if BUILD_MULTIPROCESS
 LIBUMKOIN_IPC=libumkoin_ipc.a
 libumkoin_ipc_a_SOURCES = \
+  ipc/capnp/common-types.h \
   ipc/capnp/context.h \
   ipc/capnp/init-types.h \
   ipc/capnp/protocol.cpp \
