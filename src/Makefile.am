@@ -50,6 +50,10 @@ LIBUMKOIN_WALLET_TOOL=libumkoin_wallet_tool.a
 endif
 
 LIBUMKOIN_CRYPTO = $(LIBUMKOIN_CRYPTO_BASE)
+if USE_ASM
+LIBUMKOIN_CRYPTO_SSE4 = crypto/libumkoin_crypto_sse4.la
+LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_SSE4)
+endif
 if ENABLE_SSE41
 LIBUMKOIN_CRYPTO_SSE41 = crypto/libumkoin_crypto_sse41.la
 LIBUMKOIN_CRYPTO += $(LIBUMKOIN_CRYPTO_SSE41)
@@ -541,6 +545,10 @@ libumkoin_wallet_tool_a_SOURCES = \
 #
 
 # crypto #
+
+# crypto_base contains the unspecialized (unoptimized) versions of our
+# crypto functions. Functions that require custom compiler flags and/or
+# runtime opt-in are omitted.
 crypto_libumkoin_crypto_base_la_CPPFLAGS = $(AM_CPPFLAGS)
 
 # Specify -static in both CXXFLAGS and LDFLAGS so libtool will only build a
@@ -581,9 +589,12 @@ crypto_libumkoin_crypto_base_la_SOURCES = \
   crypto/siphash.cpp \
   crypto/siphash.h
 
-if USE_ASM
-crypto_libumkoin_crypto_base_la_SOURCES += crypto/sha256_sse4.cpp
-endif
+# See explanation for -static in crypto_libumkoin_crypto_base_la's LDFLAGS and
+# CXXFLAGS above
+crypto_libumkoin_crypto_sse4_la_LDFLAGS = $(AM_LDFLAGS) -static
+crypto_libumkoin_crypto_sse4_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) -static
+crypto_libumkoin_crypto_sse4_la_CPPFLAGS = $(AM_CPPFLAGS)
+crypto_libumkoin_crypto_sse4_la_SOURCES = crypto/sha256_sse4.cpp
 
 # See explanation for -static in crypto_libumkoin_crypto_base_la's LDFLAGS and
 # CXXFLAGS above
@@ -906,7 +917,7 @@ lib_LTLIBRARIES += $(LIBUMKOINKERNEL)
 
 libumkoinkernel_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS) $(PTHREAD_FLAGS)
 libumkoinkernel_la_LIBADD = $(LIBUMKOIN_CRYPTO) $(LIBLEVELDB) $(LIBMEMENV) $(LIBSECP256K1)
-libumkoinkernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_UMKOIN_INTERNAL $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
+libumkoinkernel_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS)
 
 # libumkoinkernel requires default symbol visibility, explicitly specify that
 # here so that things still work even when user configures with
@@ -1012,7 +1023,7 @@ libumkoinconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libumkoin_crypto_ba
 
 libumkoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
 libumkoinconsensus_la_LIBADD = $(LIBSECP256K1)
-libumkoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_UMKOIN_INTERNAL
+libumkoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_UMKOIN_INTERNAL -DDISABLE_OPTIMIZED_SHA256
 libumkoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
