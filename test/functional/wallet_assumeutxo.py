@@ -16,6 +16,7 @@ from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
 )
+from test_framework.wallet import MiniWallet
 
 START_HEIGHT = 199
 SNAPSHOT_BASE_HEIGHT = 299
@@ -55,6 +56,8 @@ class AssumeutxoTest(UmkoinTestFramework):
         n0 = self.nodes[0]
         n1 = self.nodes[1]
 
+        self.mini_wallet = MiniWallet(n0)
+
         # Mock time for a deterministic chain
         for n in self.nodes:
             n.setmocktime(n.getblockheader(n.getbestblockhash())['time'])
@@ -69,7 +72,9 @@ class AssumeutxoTest(UmkoinTestFramework):
         # though, we have to ferry over the new headers to n1 so that it
         # isn't waiting forever to see the header of the snapshot's base block
         # while disconnected from n0.
-        for _ in range(100):
+        for i in range(100):
+            if i % 3 == 0:
+                self.mini_wallet.send_self_transfer(from_node=n0)
             self.generate(n0, nblocks=1, sync_fun=self.no_op)
             newblock = n0.getblock(n0.getbestblockhash(), 0)
 
