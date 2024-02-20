@@ -419,7 +419,9 @@ umkoin_test_check: $(TEST_BINARY) FORCE
 umkoin_test_clean : FORCE
 	rm -f $(CLEAN_UMKOIN_TEST) $(test_test_umkoin_OBJECTS) $(TEST_BINARY)
 
-check-local: $(UMKOIN_TESTS:.cpp=.cpp.test)
+check-unit: $(UMKOIN_TESTS:.cpp=.cpp.test)
+
+check-local: check-unit
 if BUILD_UMKOIN_TX
 	@echo "Running test/util/test_runner.py..."
 	$(PYTHON) $(top_builddir)/test/util/test_runner.py
