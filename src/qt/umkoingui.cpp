@@ -673,8 +673,10 @@ void UmkoinGUI::setClientModel(ClientModel *_clientModel, interfaces::BlockAndHe
 #ifdef ENABLE_WALLET
 void UmkoinGUI::enableHistoryAction(bool privacy)
 {
-    historyAction->setEnabled(!privacy);
-    if (historyAction->isChecked()) gotoOverviewPage();
+    if (walletFrame->currentWalletModel()) {
+        historyAction->setEnabled(!privacy);
+        if (historyAction->isChecked()) gotoOverviewPage();
+    }
 }
 
 void UmkoinGUI::setWalletController(WalletController* wallet_controller, bool show_loading_minimized)
