@@ -44,36 +44,17 @@ Visit the [Transifex Signup](https://www.transifex.com/signup/) page to create a
 You can find the Umkoin translation project at [https://www.transifex.com/umkoin/umkoin-core/](https://www.transifex.com/umkoin/umkoin-core/).
 
 ### Installing the Transifex client command-line tool
-The client is used to fetch updated translations. If you are having problems, or need more details, see [https://docs.transifex.com/client/installing-the-client](https://docs.transifex.com/client/installing-the-client)
-
-`pip install transifex-client`
-
-Setup your Transifex client config as follows. Please *ignore the token field*.
-
-```ini
-nano ~/.transifexrc
-
-[https://www.transifex.com]
-hostname = https://www.transifex.com
-password = PASSWORD
-token =
-username = USERNAME
-```
+The client is used to fetch updated translations. Please check installation instructions and any other details at https://developers.transifex.com/docs/cli.
 
 The Transifex Umkoin project config file is included as part of the repo. It can be found at `.tx/config`, however you shouldn’t need to change anything.
 
 ### Synchronising translations
-To assist in updating translations, we have created a script to help.
 
-1. `python contrib/devtools/update-translations.py`
-2. `git add` new translations from `src/qt/locale/`
-3. Update `src/qt/umkoin_locale.qrc` manually or via
-```bash
-git ls-files src/qt/locale/*ts|xargs -n1 basename|sed 's/\(umkoin_\(.*\)\).ts/        <file alias="\2">locale\/\1.qm<\/file>/'
+To assist in updating translations, a helper script is available in the [maintainer-tools]. To use it and commit the result, simply do:
+
 ```
-4. Update `src/Makefile.qt_locale.include` manually or via
-```bash
-git ls-files src/qt/locale/*ts|xargs -n1 basename|sed 's/\(umkoin_\(.*\)\).ts/  qt\/locale\/\1.ts \\/'
+python3 ../umkoin-maintainer-tools/update-translations.py
+git commit -a
 ```
 
 **Do not directly download translations** one by one from the Transifex website, as we do a few post-processing steps before committing the translations.
