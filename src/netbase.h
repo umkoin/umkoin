@@ -5,10 +5,6 @@
 #ifndef UMKOIN_NETBASE_H
 #define UMKOIN_NETBASE_H
 
-#if defined(HAVE_CONFIG_H)
-#include <config/umkoin-config.h>
-#endif
-
 #include <compat/compat.h>
 #include <netaddress.h>
 #include <serialize.h>

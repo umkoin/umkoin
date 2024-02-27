@@ -6,10 +6,6 @@
 #ifndef UMKOIN_VALIDATION_H
 #define UMKOIN_VALIDATION_H
 
-#if defined(HAVE_CONFIG_H)
-#include <config/umkoin-config.h>
-#endif
-
 #include <arith_uint256.h>
 #include <attributes.h>
 #include <chain.h>

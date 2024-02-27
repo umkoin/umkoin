@@ -5,10 +5,6 @@
 #ifndef UMKOIN_QT_SENDCOINSRECIPIENT_H
 #define UMKOIN_QT_SENDCOINSRECIPIENT_H
 
-#if defined(HAVE_CONFIG_H)
-#include <config/umkoin-config.h>
-#endif
-
 #include <consensus/amount.h>
 #include <serialize.h>
 
