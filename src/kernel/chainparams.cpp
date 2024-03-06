@@ -482,7 +482,6 @@ public:
 
         m_assumeutxo_data = {
             {
-                // Dumptxoutset at height 110.
                 .height = 110,
                 .hash_serialized = AssumeutxoHash{uint256S("0x611314483dc02d0591d15b104c54c09491612744815b0659a7530ecb1a4cecbe")},
                 .nChainTx = 111,
