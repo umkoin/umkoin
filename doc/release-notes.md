@@ -42,22 +42,45 @@ Notable changes
 
 - #29003 rpc: fix getrawtransaction segfault
 
+### Logs
+
+- #29227 log mempool loading progress
+
+### P2P and network changes
+
+- #29200 net: create I2P sessions using both ECIES-X25519 and ElGamal encryption
+
+### Build
+
+- #29127 Use hardened runtime on macOS release builds.
+- #29195 build: Fix -Xclang -internal-isystem option
+
 ### CI
 
 - #28992 ci: Use Ubuntu 24.04 Noble for asan,tsan,tidy,fuzz
 - #29080 ci: Set HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK to avoid unrelated failures
+
+### Miscellaneous
+
+- #28391 refactor: Simplify CTxMempool/BlockAssembler fields, remove some external mapTx access
+- #29179 test: wallet rescan with reorged parent + IsFromMe child in mempool
+- #28791 snapshots: don't core dump when running -checkblockindex after loadtxoutset
 
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
 
-- Andrew Chow
+- fanquake
 - furszy
+- glozow
 - Hennadii Stepanov
+- Jon Atack
 - MarcoFalke
+- Mark Friedenbach
 - Martin Zumsande
 - Murch
+- stickies-v
 
 As well as to everyone that helped with translations on
 [Transifex](https://www.transifex.com/umkoin/umkoin-core/).
