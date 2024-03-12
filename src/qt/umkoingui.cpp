@@ -989,6 +989,7 @@ void UmkoinGUI::gotoLoadPSBT(bool from_clipboard)
 
 void UmkoinGUI::updateNetworkState()
 {
+    if (!clientModel) return;
     int count = clientModel->getNumConnections();
     QString icon;
     switch(count)
