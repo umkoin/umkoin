@@ -62,8 +62,6 @@ class AssumeutxoTest(UmkoinTestFramework):
         for n in self.nodes:
             n.setmocktime(n.getblockheader(n.getbestblockhash())['time'])
 
-        self.sync_blocks()
-
         n0.createwallet('w')
         w = n0.get_wallet_rpc("w")
 
@@ -99,8 +97,8 @@ class AssumeutxoTest(UmkoinTestFramework):
 
         assert_equal(
             dump_output['txoutset_hash'],
-            '61d9c2b29a2571a5fe285fe2d8554f91f93309666fc9b8223ee96338de25ff53')
-        assert_equal(dump_output['nchaintx'], 300)
+            "61d9c2b29a2571a5fe285fe2d8554f91f93309666fc9b8223ee96338de25ff53")
+        assert_equal(dump_output["nchaintx"], 300)
         assert_equal(n0.getblockchaininfo()["blocks"], SNAPSHOT_BASE_HEIGHT)
 
         # Mine more blocks on top of the snapshot that n1 hasn't yet seen. This
