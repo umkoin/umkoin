@@ -44,6 +44,16 @@ Notable changes
 
 - #29003 rpc: fix getrawtransaction segfault
 
+### Wallet
+
+- #29176 wallet: Fix use-after-free in WalletBatch::EraseRecords
+- #29510 wallet: `getrawchangeaddress` and `getnewaddress` failures should not affect keypools for descriptor wallets
+
+### P2P and network changes
+
+- #29412 p2p: Don't process mutated blocks
+- #29524 p2p: Don't consider blocks mutated if they don't connect to known prev block
+
 Credits
 =======
 
@@ -51,6 +61,10 @@ Thanks to everyone who directly contributed to this release:
 
 - Martin Zumsande
 - Sebastian Falbesoner
+- MarcoFalke
+- UdjinM6
+- dergoegge
+- Greg Sanders
 
 As well as to everyone that helped with translations on
 [Transifex](https://www.transifex.com/umkoin-core/umkoin/).
