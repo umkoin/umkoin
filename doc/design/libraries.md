@@ -4,10 +4,9 @@
 |--------------------------|-------------|
 | *libumkoin_cli*         | RPC client functionality used by *umkoin-cli* executable |
 | *libumkoin_common*      | Home for common functionality shared by different executables and libraries. Similar to *libumkoin_util*, but higher-level (see [Dependencies](#dependencies)). |
-| *libumkoin_consensus*   | Stable, backwards-compatible consensus functionality used by *libumkoin_node* and *libumkoin_wallet* and also exposed as a [shared library](../shared-libraries.md). |
-| *libumkoinconsensus*    | Shared library build of static *libumkoin_consensus* library |
-| *libumkoin_kernel*      | Consensus engine and support library used for validation by *libumkoin_node* and also exposed as a [shared library](../shared-libraries.md). |
-| *libumkoinqt*           | GUI functionality used by *umkoin-qt* and *umkoin-gui* executables |
+| *libumkoin_consensus*   | Stable, backwards-compatible consensus functionality used by *libumkoin_node* and *libumkoin_wallet*. |
+| *libumkoin_kernel*      | Consensus engine and support library used for validation by *libumkoin_node*. |
+| *libumkoinqt*           | GUI functionality used by *umkoin-qt* and *umkoin-gui* executables. |
 | *libumkoin_ipc*         | IPC functionality used by *umkoin-node*, *umkoin-wallet*, *umkoin-gui* executables to communicate when [`--enable-multiprocess`](multiprocess.md) is used. |
 | *libumkoin_node*        | P2P and RPC server functionality used by *umkoind* and *umkoin-qt* executables. |
 | *libumkoin_util*        | Home for common functionality shared by different executables and libraries. Similar to *libumkoin_common*, but lower-level (see [Dependencies](#dependencies)). |
@@ -17,7 +16,7 @@
 
 ## Conventions
 
-- Most libraries are internal libraries and have APIs which are completely unstable! There are few or no restrictions on backwards compatibility or rules about external dependencies. Exceptions are *libumkoin_consensus* and *libumkoin_kernel* which have external interfaces documented at [../shared-libraries.md](../shared-libraries.md).
+- Most libraries are internal libraries and have APIs which are completely unstable! There are few or no restrictions on backwards compatibility or rules about external dependencies. An exception is *libumkoin_kernel*, which, at some future point, will have a documented external interface.
 
 - Generally each library should have a corresponding source directory and namespace. Source code organization is a work in progress, so it is true that some namespaces are applied inconsistently, and if you look at [`libumkoin_*_SOURCES`](../../src/Makefile.am) lists you can see that many libraries pull in files from outside their source directory. But when working with libraries, it is good to follow a consistent pattern like:
 

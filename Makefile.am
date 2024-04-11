@@ -14,11 +14,6 @@ endif
 .PHONY: deploy FORCE
 .INTERMEDIATE: $(COVERAGE_INFO)
 
-if BUILD_UMKOIN_LIBS
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libumkoinconsensus.pc
-endif
-
 UMKOIND_BIN=$(top_builddir)/src/$(UMKOIN_DAEMON_NAME)$(EXEEXT)
 UMKOIN_QT_BIN=$(top_builddir)/src/qt/$(UMKOIN_GUI_NAME)$(EXEEXT)
 UMKOIN_TEST_BIN=$(top_builddir)/src/test/$(UMKOIN_TEST_NAME)$(EXEEXT)

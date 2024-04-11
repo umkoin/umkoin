@@ -626,15 +626,9 @@ AC_ARG_ENABLE([experimental-util-chainstate],
   [build_umkoin_chainstate=$enableval],
   [build_umkoin_chainstate=no])
 
-AC_ARG_WITH([libs],
-  [AS_HELP_STRING([--with-libs],
-  [build libraries (default=yes)])],
-  [build_umkoin_libs=$withval],
-  [build_umkoin_libs=yes])
-
 AC_ARG_WITH([experimental-kernel-lib],
   [AS_HELP_STRING([--with-experimental-kernel-lib],
-  [build experimental umkoinkernel library (default is to build if we're building libraries and the experimental build-chainstate executable)])],
+  [build experimental umkoinkernel library (default is to build if we're building the experimental build-chainstate executable)])],
   [build_experimental_kernel_lib=$withval],
   [build_experimental_kernel_lib=auto])
 
@@ -1262,7 +1256,6 @@ if test "$enable_fuzz" = "yes"; then
   build_umkoin_chainstate=no
   build_umkoin_wallet=no
   build_umkoind=no
-  build_umkoin_libs=no
   umkoin_enable_qt=no
   umkoin_enable_qt_test=no
   umkoin_enable_qt_dbus=no
@@ -1421,7 +1414,7 @@ if test "$use_boost" = "yes"; then
   dnl Check for Boost headers
   AX_BOOST_BASE([1.73.0],[],[AC_MSG_ERROR([Boost is not available!])])
   if test "$want_boost" = "no"; then
-    AC_MSG_ERROR([only libumkoinconsensus can be built without Boost])
+    AC_MSG_ERROR([Boost is required])
   fi
 
   dnl we don't use multi_index serialization
@@ -1635,17 +1628,7 @@ fi
 AM_CONDITIONAL([BUILD_UMKOIN_CHAINSTATE], [test $build_umkoin_chainstate = "yes"])
 AC_MSG_RESULT($build_umkoin_chainstate)
 
-AC_MSG_CHECKING([whether to build libraries])
-AM_CONDITIONAL([BUILD_UMKOIN_LIBS], [test $build_umkoin_libs = "yes"])
-
-if test "$build_umkoin_libs" = "yes"; then
-  AC_DEFINE([HAVE_CONSENSUS_LIB], [1], [Define this symbol if the consensus lib has been built])
-  AC_CONFIG_FILES([libumkoinconsensus.pc:libumkoinconsensus.pc.in])
-fi
-
 AM_CONDITIONAL([BUILD_UMKOIN_KERNEL_LIB], [test "$build_experimental_kernel_lib" != "no" && ( test "$build_experimental_kernel_lib" = "yes" || test "$build_umkoin_chainstate" = "yes" )])
-
-AC_MSG_RESULT($build_umkoin_libs)
 
 AC_LANG_POP
 
@@ -1780,8 +1763,8 @@ else
   AC_MSG_RESULT([no])
 fi
 
-if test "$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoin_util$build_umkoin_libs$build_umkoind$umkoin_enable_qt$enable_fuzz_binary$use_bench$use_tests" = "nononononononononono"; then
-  AC_MSG_ERROR([No targets! Please specify at least one of: --with-utils --with-libs --with-daemon --with-gui --enable-fuzz(-binary) --enable-bench or --enable-tests])
+if test "$build_umkoin_wallet$build_umkoin_cli$build_umkoin_tx$build_umkoin_util$build_umkoind$umkoin_enable_qt$enable_fuzz_binary$use_bench$use_tests" = "nonononononononono"; then
+  AC_MSG_ERROR([No targets! Please specify at least one of: --with-utils --with-daemon --with-gui --enable-fuzz(-binary) --enable-bench or --enable-tests])
 fi
 
 AM_CONDITIONAL([TARGET_DARWIN], [test "$TARGET_OS" = "darwin"])
@@ -1941,7 +1924,6 @@ echo
 echo "Options used to compile and link:"
 echo "  external signer = $use_external_signer"
 echo "  multiprocess    = $build_multiprocess"
-echo "  with libs       = $build_umkoin_libs"
 echo "  with wallet     = $enable_wallet"
 if test "$enable_wallet" != "no"; then
     echo "    with sqlite   = $use_sqlite"

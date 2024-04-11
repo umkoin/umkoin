@@ -39,9 +39,6 @@ LIBSECP256K1=secp256k1/libsecp256k1.la
 if ENABLE_ZMQ
 LIBUMKOIN_ZMQ=libumkoin_zmq.a
 endif
-if BUILD_UMKOIN_LIBS
-LIBUMKOINCONSENSUS=libumkoinconsensus.la
-endif
 if BUILD_UMKOIN_KERNEL_LIB
 LIBUMKOINKERNEL=libumkoinkernel.la
 endif
@@ -649,7 +646,6 @@ libumkoin_consensus_a_SOURCES = \
   primitives/transaction.h \
   pubkey.cpp \
   pubkey.h \
-  script/umkoinconsensus.cpp \
   script/interpreter.cpp \
   script/interpreter.h \
   script/script.cpp \
@@ -1008,21 +1004,6 @@ libumkoinkernel_la_SOURCES = \
 # More details: https://www.gnu.org/software/automake/manual/html_node/Built-Sources-Example.html
 libumkoinkernel_la-clientversion.l$(OBJEXT): obj/build.h
 endif # BUILD_UMKOIN_KERNEL_LIB
-#
-
-# umkoinconsensus library #
-if BUILD_UMKOIN_LIBS
-lib_LTLIBRARIES += $(LIBUMKOINCONSENSUS)
-
-include_HEADERS = script/umkoinconsensus.h
-libumkoinconsensus_la_SOURCES = support/cleanse.cpp $(crypto_libumkoin_crypto_base_la_SOURCES) $(libumkoin_consensus_a_SOURCES)
-
-libumkoinconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libumkoinconsensus_la_LIBADD = $(LIBSECP256K1)
-libumkoinconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_UMKOIN_INTERNAL -DDISABLE_OPTIMIZED_SHA256
-libumkoinconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-
-endif
 #
 
 CTAES_DIST =  crypto/ctaes/bench.c
