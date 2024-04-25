@@ -1,12 +1,16 @@
-26.x Release Notes
+26.1 Release Notes
 ==================
 
-Umkoin Core version 26.x is now available from:
+Umkoin Core version 26.1 is now available from:
 
-  <http://www.umkoin.org/bin/umkoin-core-26.x/>
+  <http://www.umkoin.org/bin/umkoin-core-26.1/>
 
-This release includes new features, various bug fixes and performance
+This release includes various bug fixes and performance
 improvements, as well as updated translations.
+
+Please report bugs using the issue tracker at GitHub:
+
+  <https://github.com/umkoin/umkoin/issues>
 
 How to Upgrade
 ==============
@@ -63,6 +67,7 @@ Notable changes
 
 - #28992 ci: Use Ubuntu 24.04 Noble for asan,tsan,tidy,fuzz
 - #29080 ci: Set HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK to avoid unrelated failures
+- #29610 ci: Fix "macOS native" job
 
 ### Miscellaneous
 
