@@ -1,9 +1,9 @@
-25.x Release Notes
+25.2 Release Notes
 ==================
 
-Umkoin Core version 25.x is now available from:
+Umkoin Core version 25.2 is now available from:
 
-  <http://www.umkoin.org/bin/umkoin-core-25.x/>
+  <http://www.umkoin.org/bin/umkoin-core-25.2>
 
 This release includes various bug fixes and performance
 improvements, as well as updated translations.
