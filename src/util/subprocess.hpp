@@ -655,7 +655,7 @@ namespace util
  * Default value is 0.
  */
 struct bufsize {
-  explicit bufsize(int siz): bufsiz(siz) {}
+  explicit bufsize(int sz): bufsiz(sz) {}
   int  bufsiz = 0;
 };
 
@@ -728,7 +728,7 @@ struct executable: string_arg
  * Option to set the current working directory
  * of the spawned process.
  *
- * Eg: cwd{"/som/path/x"}
+ * Eg: cwd{"/some/path/x"}
  */
 struct cwd: string_arg
 {
@@ -852,7 +852,7 @@ struct error
     wr_ch_ = fd;
   }
   explicit error(IOTYPE typ) {
-    assert ((typ == PIPE || typ == STDOUT) && "STDERR not aloowed");
+    assert ((typ == PIPE || typ == STDOUT) && "STDERR not allowed");
     if (typ == PIPE) {
 #ifndef __USING_WINDOWS__
       std::tie(rd_ch_, wr_ch_) = util::pipe_cloexec();
@@ -874,7 +874,7 @@ struct error
 // ATTN: Can be used only to execute functions with no
 // arguments and returning void.
 // Could have used more efficient methods, of course, but
-// that wont yield me the consistent syntax which I am
+// that won't yield me the consistent syntax which I am
 // aiming for. If you know, then please do let me know.
 
 class preexec_func
