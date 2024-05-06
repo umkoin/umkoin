@@ -320,6 +320,7 @@ UMKOIN_CORE_H = \
   util/sock.h \
   util/spanparsing.h \
   util/string.h \
+  util/subprocess.hpp \
   util/syserror.h \
   util/task_runner.h \
   util/thread.h \
