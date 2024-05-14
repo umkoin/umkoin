@@ -1,6 +1,8 @@
+// Based on the https://github.com/arun11299/cpp-subprocess project.
+
 /*!
 
-Documentation for C++ subprocessing libraray.
+Documentation for C++ subprocessing library.
 
 @copyright The code is licensed under the [MIT
   License](http://opensource.org/licenses/MIT):
@@ -106,7 +108,7 @@ namespace subprocess {
 // from pipe
 static const size_t SP_MAX_ERR_BUF_SIZ = 1024;
 
-// Default buffer capcity for OutBuffer and ErrBuffer.
+// Default buffer capacity for OutBuffer and ErrBuffer.
 // If the data exceeds this capacity, the buffer size is grown
 // by 1.5 times its previous capacity
 static const size_t DEFAULT_BUF_CAP_BYTES = 8192;
@@ -312,8 +314,8 @@ namespace util
   inline env_map_t MapFromWindowsEnvironment(){
       wchar_t *variable_strings_ptr;
       wchar_t *environment_strings_ptr;
-      std::wstring delimeter(L"=");
-      int del_len = delimeter.length();
+      std::wstring delimiter(L"=");
+      int del_len = delimiter.length();
       env_map_t mapped_environment;
 
       // Get a pointer to the environment block.
@@ -335,7 +337,7 @@ namespace util
           // Create a string from Variable String
           env_string_t current_line(variable_strings_ptr);
           // Find the first "equals" sign.
-          auto pos = current_line.find(delimeter);
+          auto pos = current_line.find(delimiter);
           // Assuming it's not missing ...
           if(pos!=std::wstring::npos){
               // ... parse the key and value.
@@ -404,9 +406,9 @@ namespace util
    * Parameters:
    * [in] str : Input string which needs to be split based upon the
    *            delimiters provided.
-   * [in] delims : Delimiter characters based upon which the string needs
+   * [in] deleims : Delimiter characters based upon which the string needs
    *                to be split. Default constructed to ' '(space) and '\t'(tab)
-   * [out] vector<string> : Vector of strings split at delimiter.
+   * [out] vector<string> : Vector of strings split at deleimiter.
    */
   static inline std::vector<std::string>
   split(const std::string& str, const std::string& delims=" \t")
@@ -501,7 +503,7 @@ namespace util
    * Writes `length` bytes to the file descriptor `fd`
    * from the buffer `buf`.
    * Parameters:
-   * [in] fd : The file descriptor to write to.
+   * [in] fd : The file descriptotr to write to.
    * [in] buf: Buffer from which data needs to be written to fd.
    * [in] length: The number of bytes that needs to be written from
    *              `buf` to `fd`.
@@ -873,7 +875,7 @@ struct error
 // needed to provide the functionality of preexec_func
 // ATTN: Can be used only to execute functions with no
 // arguments and returning void.
-// Could have used more efficient methods, of course, but
+// Could have used more efficient methods, ofcourse, but
 // that won't yield me the consistent syntax which I am
 // aiming for. If you know, then please do let me know.
 
@@ -967,8 +969,8 @@ namespace detail {
 // Metaprogram for searching a type within
 // a variadic parameter pack
 // This is particularly required to do a compile time
-// checking of the arguments provided to 'check_ouput' function
-// wherein the user is not expected to provide an 'ouput' option.
+// checking of the arguments provided to 'check_output' function
+// wherein the user is not expected to provide an 'output' option.
 
 template <typename... T> struct param_pack{};
 
@@ -995,7 +997,7 @@ struct has_type<F, param_pack<H,T...>> {
 /*!
  * A helper class to Popen class for setting
  * options as provided in the Popen constructor
- * or in check_ouput arguments.
+ * or in check_output arguments.
  * This design allows us to _not_ have any fixed position
  * to any arguments and specify them in a way similar to what
  * can be done in python.
