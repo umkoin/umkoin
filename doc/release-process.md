@@ -161,12 +161,16 @@ Then open a Pull Request to the [guix.sigs repository](https://github.com/umkoin
 
 ### macOS codesigner only: Create detached macOS signatures (assuming [signapple](https://github.com/achow101/signapple/) is installed and up to date with master branch)
 
+In the `guix-build-${VERSION}/output/x86_64-apple-darwin` and `guix-build-${VERSION}/output/arm64-apple-darwin` directories:
+
     tar xf umkoin-osx-unsigned.tar.gz
     ./detached-sig-create.sh /path/to/codesign.p12
     Enter the keychain password and authorize the signature
     signature-osx.tar.gz will be created
 
 ### Windows codesigner only: Create detached Windows signatures
+
+In the `guix-build-${VERSION}/output/x86_64-w64-mingw32` directory:
 
     tar xf umkoin-win-unsigned.tar.gz
     ./detached-sig-create.sh -key /path/to/codesign.key
@@ -175,18 +179,22 @@ Then open a Pull Request to the [guix.sigs repository](https://github.com/umkoin
 
 ### Windows and macOS codesigners only: test code signatures
 It is advised to test that the code signature attaches properly prior to tagging by performing the `guix-codesign` step.
-However if this is done, once the release has been tagged in the umkoin-detached-sigs repo, the `guix-codesign` step must be performed again in order for the guix attestation to be valid when compared against the attestations of non-codesigner builds.
+However if this is done, once the release has been tagged in the umkoin-detached-sigs repo, the `guix-codesign` step must be performed again in order for the guix attestation to be valid when compared against the attestations of non-codesigner builds. The directories created by `guix-codesign` will need to be cleared prior to running `guix-codesign` again.
 
 ### Windows and macOS codesigners only: Commit the detached codesign payloads
 
 ```sh
 pushd ./umkoin-detached-sigs
-# checkout the appropriate branch for this release series
-rm -rf ./*
+# checkout or create the appropriate branch for this release series
+git checkout --orphan <branch>
+# if you are the macOS codesigner
+rm -rf osx
 tar xf signature-osx.tar.gz
+# if you are the windows codesigner
+rm -rf win
 tar xf signature-win.tar.gz
 git add -A
-git commit -m "point to ${VERSION}"
+git commit -m "<version>: {osx,win} signature for {rc,final}"
 git tag -s "v${VERSION}" HEAD
 git push the current branch and new tag
 popd
