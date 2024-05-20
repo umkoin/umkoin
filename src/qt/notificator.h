@@ -5,9 +5,7 @@
 #ifndef UMKOIN_QT_NOTIFICATOR_H
 #define UMKOIN_QT_NOTIFICATOR_H
 
-#if defined(HAVE_CONFIG_H)
-#include <config/umkoin-config.h>
-#endif
+#include <config/umkoin-config.h> // IWYU pragma: keep
 
 #include <QIcon>
 #include <QObject>
