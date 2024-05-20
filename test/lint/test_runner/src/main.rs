@@ -178,7 +178,6 @@ Please add any false positives, such as subtrees, or externally sourced files to
 
 fn lint_includes_build_config() -> LintResult {
     let config_path = "./src/config/umkoin-config.h.in";
-    let include_directive = "#include <config/umkoin-config.h>";
     if !Path::new(config_path).is_file() {
         assert!(Command::new("./autogen.sh")
             .status()
@@ -235,7 +234,11 @@ fn lint_includes_build_config() -> LintResult {
                 } else {
                     "--files-with-matches"
                 },
-                include_directive,
+                if mode {
+                    "^#include <config/umkoin-config.h> // IWYU pragma: keep$"
+                } else {
+                    "#include <config/umkoin-config.h>" // Catch redundant includes with and without the IWYU pragma
+                },
                 "--",
             ])
             .args(defines_files.lines())
@@ -256,6 +259,11 @@ even though umkoin-config.h indicates that a faster feature is available and sho
 
 If you are unsure which symbol is used, you can find it with this command:
 git grep --perl-regexp '{}' -- file_name
+
+Make sure to include it with the IWYU pragma. Otherwise, IWYU may falsely instruct to remove the
+include again.
+
+#include <config/umkoin-config.h> // IWYU pragma: keep
             "#,
             defines_regex
         ));

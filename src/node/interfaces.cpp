@@ -53,9 +53,7 @@
 #include <validationinterface.h>
 #include <warnings.h>
 
-#if defined(HAVE_CONFIG_H)
-#include <config/umkoin-config.h>
-#endif
+#include <config/umkoin-config.h> // IWYU pragma: keep
 
 #include <any>
 #include <memory>

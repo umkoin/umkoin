@@ -5,9 +5,7 @@
 #ifndef UMKOIN_UTIL_TRACE_H
 #define UMKOIN_UTIL_TRACE_H
 
-#if defined(HAVE_CONFIG_H)
-#include <config/umkoin-config.h>
-#endif
+#include <config/umkoin-config.h> // IWYU pragma: keep
 
 #ifdef ENABLE_TRACING
 
