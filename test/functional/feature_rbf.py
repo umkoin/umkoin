@@ -28,7 +28,6 @@ class ReplaceByFeeTest(UmkoinTestFramework):
         self.num_nodes = 2
         self.extra_args = [
             [
-                "-maxorphantx=1000",
                 "-limitancestorcount=50",
                 "-limitancestorsize=101",
                 "-limitdescendantcount=200",
