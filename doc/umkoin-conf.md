@@ -59,7 +59,7 @@ The `includeconf=<file>` option in the `umkoin.conf` file can be used to include
 
 Operating System | Data Directory | Example Path
 -- | -- | --
-Windows | `%APPDATA%\Umkoin\` | `C:\Users\username\AppData\Roaming\Umkoin\umkoin.conf`
+Windows | `%LOCALAPPDATA%\Umkoin\` | `C:\Users\username\AppData\Local\Umkoin\umkoin.conf`
 Linux | `$HOME/.umkoin/` | `/home/username/.umkoin/umkoin.conf`
 macOS | `$HOME/Library/Application Support/Umkoin/` | `/Users/username/Library/Application Support/Umkoin/umkoin.conf`
 

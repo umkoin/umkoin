@@ -20,7 +20,7 @@ By default, wallets are created in the `wallets` folder of the data directory, w
 | Operating System | Default wallet directory                                    |
 | -----------------|:------------------------------------------------------------|
 | Linux            | `/home/<user>/.umkoin/wallets`                             |
-| Windows          | `C:\Users\<user>\AppData\Roaming\Umkoin\wallets`           |
+| Windows          | `C:\Users\<user>\AppData\Local\Umkoin\wallets`             |
 | macOS            | `/Users/<user>/Library/Application Support/Umkoin/wallets` |
 
 ### 1.2 Encrypting the Wallet
@@ -106,7 +106,7 @@ This means that a single backup is enough to recover the coins at any time. It i
 
 ### 1.6 Restoring the Wallet From a Backup
 
-To restore a wallet, the `restorewallet` RPC or the `Restore Wallet` GUI menu item (`File` -> `Restore Wallet…`) must >
+To restore a wallet, the `restorewallet` RPC or the `Restore Wallet` GUI menu item (`File` -> `Restore Wallet…`) must be used.
 
 ```
 $ umkoin-cli restorewallet "restored-wallet" /home/node01/Backups/backup-01.dat
