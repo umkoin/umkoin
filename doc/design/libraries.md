@@ -5,6 +5,7 @@
 | *libumkoin_cli*         | RPC client functionality used by *umkoin-cli* executable |
 | *libumkoin_common*      | Home for common functionality shared by different executables and libraries. Similar to *libumkoin_util*, but higher-level (see [Dependencies](#dependencies)). |
 | *libumkoin_consensus*   | Stable, backwards-compatible consensus functionality used by *libumkoin_node* and *libumkoin_wallet*. |
+| *libumkoin_crypto*      | Hardware-optimized functions for data encryption, hashing, message authentication, and key derivation. |
 | *libumkoin_kernel*      | Consensus engine and support library used for validation by *libumkoin_node*. |
 | *libumkoinqt*           | GUI functionality used by *umkoin-qt* and *umkoin-gui* executables. |
 | *libumkoin_ipc*         | IPC functionality used by *umkoin-node*, *umkoin-wallet*, *umkoin-gui* executables to communicate when [`--enable-multiprocess`](multiprocess.md) is used. |
@@ -53,13 +54,18 @@ umkoin-wallet[umkoin-wallet]-->libumkoin_wallet_tool;
 libumkoin_cli-->libumkoin_util;
 libumkoin_cli-->libumkoin_common;
 
+libumkoin_consensus-->libumkoin_crypto;
+
 libumkoin_common-->libumkoin_consensus;
+libumkoin_common-->libumkoin_crypto;
 libumkoin_common-->libumkoin_util;
 
 libumkoin_kernel-->libumkoin_consensus;
+libumkoin_kernel-->libumkoin_crypto;
 libumkoin_kernel-->libumkoin_util;
 
 libumkoin_node-->libumkoin_consensus;
+libumkoin_node-->libumkoin_crypto;
 libumkoin_node-->libumkoin_kernel;
 libumkoin_node-->libumkoin_common;
 libumkoin_node-->libumkoin_util;
@@ -67,7 +73,10 @@ libumkoin_node-->libumkoin_util;
 libumkoinqt-->libumkoin_common;
 libumkoinqt-->libumkoin_util;
 
+libumkoin_util-->libumkoin_crypto;
+
 libumkoin_wallet-->libumkoin_common;
+libumkoin_wallet-->libumkoin_crypto;
 libumkoin_wallet-->libumkoin_util;
 
 libumkoin_wallet_tool-->libumkoin_wallet;
@@ -78,22 +87,23 @@ class umkoin-qt,umkoind,umkoin-cli,umkoin-wallet bold
 ```
 </td></tr><tr><td>
 
-**Dependency graph**. Arrows show linker symbol dependencies. *Consensus* lib depends on nothing. *Util* lib is depended on by everything. *Kernel* lib depends only on consensus and util.
+**Dependency graph**. Arrows show linker symbol dependencies. *Crypto* lib depends on nothing. *Util* lib is depended on by everything. *Kernel* lib depends only on consensus, crypto, and util.
 
 </td></tr></table>
 
 - The graph shows what _linker symbols_ (functions and variables) from each library other libraries can call and reference directly, but it is not a call graph. For example, there is no arrow connecting *libumkoin_wallet* and *libumkoin_node* libraries, because these libraries are intended to be modular and not depend on each other's internal implementation details. But wallet code is still able to call node code indirectly through the `interfaces::Chain` abstract class in [`interfaces/chain.h`](../../src/interfaces/chain.h) and node code calls wallet code through the `interfaces::ChainClient` and `interfaces::Chain::Notifications` abstract classes in the same file. In general, defining abstract classes in [`src/interfaces/`](../../src/interfaces/) can be a convenient way of avoiding unwanted direct dependencies or circular dependencies between libraries.
 
-- *libumkoin_consensus* should be a standalone dependency that any library can depend on, and it should not depend on any other libraries itself.
+- *libumkoin_crypto* should be a standalone dependency that any library can depend on, and it should not depend on any other libraries itself.
 
-- *libumkoin_util* should also be a standalone dependency that any library can depend on, and it should not depend on other internal libraries.
+- *libumkoin_consensus* should only depend on *libumkoin_crypto*, and all other libraries besides *libumkoin_crypto* should be allowed to depend on it.
 
-- *libumkoin_common* should serve a similar function as *libumkoin_util* and be a place for miscellaneous code used by various daemon, GUI, and CLI applications and libraries to live. It should not depend on anything other than *libumkoin_util* and *libumkoin_consensus*. The boundary between _util_ and _common_ is a little fuzzy but historically _util_ has been used for more generic, lower-level things like parsing hex, and _common_ has been used for umkoin-specific, higher-level things like parsing base58. The difference between util and common is mostly important because *libumkoin_kernel* is not supposed to depend on *libumkoin_common*, only *libumkoin_util*. In general, if it is ever unclear whether it is better to add code to *util* or *common*, it is probably better to add it to *common* unless it is very generically useful or useful particularly to include in the kernel.
+- *libumkoin_util* should be a standalone dependency that any library can depend on, and it should not depend on other libraries except *libumkoin_crypto*. It provides basic utilities that fill in gaps in the C++ standard library and provide lightweight abstractions over platform-specific features. Since the util library is distributed with the kernel and is usable by kernel applications, it shouldn't contain functions that external code shouldn't call, like higher level code targetted at the node or wallet. (*libumkoin_common* is a better place for higher level code, or code that is meant to be used by internal applications only.)
 
+- *libumkoin_common* is a home for miscellaneous shared code used by different Umkoin Core applications. It should not depend on anything other than *libumkoin_util*, *libumkoin_consensus*, and *libumkoin_crypto*.
 
-- *libumkoin_kernel* should only depend on *libumkoin_util* and *libumkoin_consensus*.
+- *libumkoin_kernel* should only depend on *libumkoin_util*, *libumkoin_consensus*, and *libumkoin_crypto*.
 
-- The only thing that should depend on *libumkoin_kernel* internally should be *libumkoin_node*. GUI and wallet libraries *libumkoinqt* and *libumkoin_wallet* in particular should not depend on *libumkoin_kernel* and the unneeded functionality it would pull in, like block validation. To the extent that GUI and wallet code need scripting and signing functionality, they should be get able it from *libumkoin_consensus*, *libumkoin_common*, and *libumkoin_util*, instead of *libumkoin_kernel*.
+- The only thing that should depend on *libumkoin_kernel* internally should be *libumkoin_node*. GUI and wallet libraries *libumkoinqt* and *libumkoin_wallet* in particular should not depend on *libumkoin_kernel* and the unneeded functionality it would pull in, like block validation. To the extent that GUI and wallet code need scripting and signing functionality, they should be get able it from *libumkoin_consensus*, *libumkoin_common*, *libumkoin_crypto*, and *libumkoin_util*, instead of *libumkoin_kernel*.
 
 - GUI, node, and wallet code internal implementations should all be independent of each other, and the *libumkoinqt*, *libumkoin_node*, *libumkoin_wallet* libraries should never reference each other's symbols. They should only call each other through [`src/interfaces/`](../../src/interfaces/) abstract interfaces.
 
