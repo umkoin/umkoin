@@ -13,6 +13,8 @@
 #include <string>
 #include <vector>
 
+using util::Join;
+
 /**
  * Name of client reported in the 'version' message. Report the same name
  * for both umkoind and umkoin-qt, to make it harder for attackers to
