@@ -26,6 +26,21 @@ Then you can use:
 ( cd ./test/lint/test_runner/ && cargo fmt && cargo clippy && RUST_BACKTRACE=1 cargo run )
 ```
 
+If you wish to run individual lint checks, run the test_runner with
+`--lint=TEST_TO_RUN` arguments. If running with `cargo run`, arguments after
+`--` are passed to the binary you are running e.g.:
+
+```sh
+( cd ./test/lint/test_runner/ && RUST_BACKTRACE=1 cargo run -- --lint=doc --lint=trailing_whitespace )
+```
+
+To see a list of all individual lint checks available in test_runner, use `-h`
+or `--help`:
+
+```sh
+( cd ./test/lint/test_runner/ && RUST_BACKTRACE=1 cargo run -- --help )
+```
+
 #### Dependencies
 
 | Lint test | Dependency |
@@ -77,16 +92,16 @@ Usage: test/lint/git-subtree-check.sh [-r] DIR [COMMIT]
 
 To do a full check with `-r`, make sure that you have fetched the upstream repository branch in which the subtree is
 maintained:
-* for `src/secp256k1`: https://github.com/bitcoin-core/secp256k1.git (branch master)
-* for `src/leveldb`: https://github.com/bitcoin-core/leveldb-subtree.git (branch bitcoin-fork)
-* for `src/crypto/ctaes`: https://github.com/bitcoin-core/ctaes.git (branch master)
-* for `src/crc32c`: https://github.com/bitcoin-core/crc32c-subtree.git (branch bitcoin-fork)
+* for `src/secp256k1`: https://github.com/umkoin-core/secp256k1.git (branch master)
+* for `src/leveldb`: https://github.com/umkoin-core/leveldb-subtree.git (branch umkoin-fork)
+* for `src/crypto/ctaes`: https://github.com/umkoin-core/ctaes.git (branch master)
+* for `src/crc32c`: https://github.com/umkoin-core/crc32c-subtree.git (branch umkoin-fork)
 * for `src/minisketch`: https://github.com/sipa/minisketch.git (branch master)
 
 To do so, add the upstream repository as remote:
 
 ```
-git remote add --fetch secp256k1 https://github.com/bitcoin-core/secp256k1.git
+git remote add --fetch secp256k1 https://github.com/umkoin-core/secp256k1.git
 ```
 
 lint_ignore_dirs.py
