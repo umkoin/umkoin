@@ -1088,7 +1088,7 @@ libumkoin_ipc_a_SOURCES = \
   ipc/process.cpp \
   ipc/process.h \
   ipc/protocol.h
-libumkoin_ipc_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES)
+libumkoin_ipc_a_CPPFLAGS = $(AM_CPPFLAGS) $(UMKOIN_INCLUDES) $(BOOST_CPPFLAGS)
 libumkoin_ipc_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS) $(LIBMULTIPROCESS_CFLAGS)
 
 include $(MPGEN_PREFIX)/include/mpgen.mk
