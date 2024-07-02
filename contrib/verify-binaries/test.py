@@ -10,7 +10,22 @@ def main():
     """Tests ordered roughly from faster to slower."""
     expect_code(run_verify("", "pub", '0.32'), 4, "Nonexistent version should fail")
     expect_code(run_verify("", "pub", '0.32.awefa.12f9h'), 11, "Malformed version should fail")
-    expect_code(run_verify('--min-good-sigs 1', "pub", "22.0"), 9, "--min-good-sigs 20 should fail")
+    expect_code(run_verify('--min-good-sigs 20', "pub", "22.0"), 9, "--min-good-sigs 20 should fail")
+
+    print("- testing verification (22.0-x86_64-linux-gnu.tar.gz)", flush=True)
+    _220_x86_64_linux_gnu = run_verify("--json", "pub", "22.0-x86_64-linux-gnu.tar.gz")
+    try:
+        result = json.loads(_220_x86_64_linux_gnu.stdout.decode())
+    except Exception:
+        print("failed on 22.0-x86_64-linux-gnu.tar.gz --json:")
+        print_process_failure(_220_x86_64_linux_gnu)
+        raise
+
+    expect_code(_220_x86_64_linux_gnu, 0, "22.0-x86_64-linux-gnu.tar.gz should succeed")
+    v = result['verified_binaries']
+    assert result['good_trusted_sigs']
+    assert len(v) == 1
+    assert v['umkoin-22.0-x86_64-linux-gnu.tar.gz'] == '23ad8e83cb5761979f7d53b19814eda0d8e883588e30c758a4ef48fb01c6cc0a'
 
     print("- testing verification (22.0)", flush=True)
     _220 = run_verify("--json", "pub", "22.0")

@@ -5,7 +5,7 @@
 """Script for verifying Umkoin Core release binaries.
 
 This script attempts to download the sum file SHA256SUMS and corresponding
-signature file SHA256SUMS.asc from bitcoincore.org and bitcoin.org and
+signature file SHA256SUMS.asc from umkoin.org and www.umkoin.org and
 compares them.
 
 The sum-signature file is signed by a number of builder keys. This script
@@ -15,7 +15,7 @@ here, but by default is based upon local GPG trust settings.
 
 The builder keys are available in the guix.sigs repo:
 
-    https://github.com/umkoin-core/guix.sigs/tree/main/builder-keys
+    https://github.com/umkoin/guix.sigs/tree/main/builder-keys
 
 If a minimum good, trusted signature threshold is met on the sum file, we then
 download the files specified in SHA256SUMS, and check if the hashes of these
@@ -46,7 +46,7 @@ from hashlib import sha256
 from pathlib import PurePath, Path
 
 # The primary host; this will fail if we can't retrieve files from here.
-HOST1 = "https://bitcoincore.org"
+HOST1 = "http://www.umkoin.org"
 HOST2 = "https://umkoin.org"
 VERSIONPREFIX = "umkoin-core-"
 SUMS_FILENAME = 'SHA256SUMS'
@@ -97,23 +97,17 @@ def bool_from_env(key, default=False) -> bool:
 
 
 VERSION_FORMAT = "<major>.<minor>[.<patch>][-rc[0-9]][-platform]"
-VERSION_EXAMPLE = "22.0-x86_64 or 23.1-rc1-darwin"
+VERSION_EXAMPLE = "22.0 or 23.1-rc1-darwin.dmg or 27.0-x86_64-linux-gnu"
 
 def parse_version_string(version_str):
-    parts = version_str.split('-')
-    version_base = parts[0]
-    version_rc = ""
-    version_os = ""
-    if len(parts) == 2:  # "<version>-rcN" or "version-platform"
-        if "rc" in parts[1]:
-            version_rc = parts[1]
-        else:
-            version_os = parts[1]
-    elif len(parts) == 3:  # "<version>-rcN-platform"
-        version_rc = parts[1]
-        version_os = parts[2]
+    # "<version>[-rcN][-platform]"
+    version_base, _, platform = version_str.partition('-')
+    rc = ""
+    if platform.startswith("rc"): # "<version>-rcN[-platform]"
+        rc, _, platform = platform.partition('-')
+    # else "<version>" or "<version>-platform"
 
-    return version_base, version_rc, version_os
+    return version_base, rc, platform
 
 
 def download_with_wget(remote_file, local_file):
@@ -514,10 +508,12 @@ def verify_published_handler(args: argparse.Namespace) -> ReturnCode:
     # Extract hashes and filenames
     hashes_to_verify = parse_sums_file(SUMS_FILENAME, [os_filter])
     if not hashes_to_verify:
-        log.error("no files matched the platform specified")
+        available_versions = ["-".join(line[1].split("-")[2:]) for line in parse_sums_file(SUMS_FILENAME, [])]
+        closest_match = difflib.get_close_matches(os_filter, available_versions, cutoff=0, n=1)[0]
+        log.error(f"No files matched the platform specified. Did you mean: {closest_match}")
         return ReturnCode.NO_BINARIES_MATCH
 
-    # remove binaries that are known not to be hosted by bitcoincore.org
+    # remove binaries that are known not to be hosted by umkoin.org
     fragments_to_remove = ['-unsigned', '-debug', '-codesignatures']
     for fragment in fragments_to_remove:
         nobinaries = [i for i in hashes_to_verify if fragment in i[1]]
@@ -690,7 +686,7 @@ def main():
         default=bool_from_env('BINVERIFY_REQUIRE_ALL_HOSTS'),
         help=(
             f'If set, require all hosts ({HOST1}, {HOST2}) to provide signatures. '
-            '(Sometimes bitcoin.org lags behind bitcoincore.org.)')
+            '(Sometimes umkoin.org lags behind www.umkoin.org.)')
     )
 
     bin_parser = subparsers.add_parser("bin", help="Verify local binaries.")
