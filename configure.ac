@@ -253,17 +253,22 @@ AC_ARG_ENABLE([zmq],
   [use_zmq=$enableval],
   [use_zmq=yes])
 
-AC_ARG_WITH([libmultiprocess],
-  [AS_HELP_STRING([--with-libmultiprocess=yes|no|auto],
-  [Build with libmultiprocess library. (default: auto, i.e. detect with pkg-config)])],
-  [with_libmultiprocess=$withval],
-  [with_libmultiprocess=auto])
+AC_ARG_WITH([ecmult-window], [AS_HELP_STRING([--with-ecmult-window=SIZE],
+[window size for ecmult precomputation for verification, specified as integer in range [2..24].]
+[Larger values result in possibly better performance at the cost of an exponentially larger precomputed table.]
+[The table will store 2^(SIZE-1) * 64 bytes of data but can be larger in memory due to platform-specific padding and alignment.]
+[A window size larger than 15 will require you delete the prebuilt precomputed_ecmult.c file so that it can be rebuilt.]
+[For very large window sizes, use "make -j 1" to reduce memory use during compilation.]
+[The default value is a reasonable setting for desktop machines (currently 15). [default=15]]
+)],
+[set_ecmult_window=$withval], [set_ecmult_window=15])
 
-AC_ARG_WITH([mpgen],
-  [AS_HELP_STRING([--with-mpgen=yes|no|auto|PREFIX],
-  [Build with libmultiprocess codegen tool. Useful to specify different libmultiprocess host system library and build system codegen tool prefixes when cross-compiling (default is host system libmultiprocess prefix)])],
-  [with_mpgen=$withval],
-  [with_mpgen=auto])
+AC_ARG_WITH([ecmult-gen-kb], [AS_HELP_STRING([--with-ecmult-gen-kb=2|22|86],
+[The size of the precomputed table for signing in multiples of 1024 bytes (on typical platforms).]
+[Larger values result in possibly better signing/keygeneration performance at the cost of a larger table.]
+[The default value is a reasonable setting for desktop machines (currently 22). [default=22]]
+)],
+[set_ecmult_gen_kb=$withval], [set_ecmult_gen_kb=22])
 
 AC_ARG_ENABLE([multiprocess],
   [AS_HELP_STRING([--enable-multiprocess],
@@ -322,14 +327,61 @@ dnl warning about something unrelated, for example about some path issue. If tha
 dnl -Werror cannot be used because all of those warnings would be turned into errors.
 AX_CHECK_COMPILE_FLAG([-Werror], [CXXFLAG_WERROR="-Werror"], [CXXFLAG_WERROR=""])
 
-dnl Check for a flag to turn linker warnings into errors. When flags are passed to linkers via the
-dnl compiler driver using a -Wl,-foo flag, linker warnings may be swallowed rather than bubbling up.
-dnl See note above, the same applies here as well.
-dnl
-dnl LDFLAG_WERROR Should only be used when testing -Wl,*
-case $host in
- *darwin*)
-    AX_CHECK_LINK_FLAG([-Wl,-fatal_warnings], [LDFLAG_WERROR="-Wl,-fatal_warnings"], [LDFLAG_WERROR=""])
+print_msan_notice=no
+if test x"$enable_ctime_tests" = x"yes"; then
+  SECP_MSAN_CHECK
+  # MSan on Clang >=16 reports unitialized memory in function parameters and return values, even if
+  # the uninitalized variable is never actually "used". This is called "eager" checking, and it's
+  # sounds like good idea for normal use of MSan. However, it yields many false positives in the
+  # ctime_tests because many return values depend on secret (i.e., "uninitialized") values, and
+  # we're only interested in detecting branches (which count as "uses") on secret data.
+  if test x"$msan_enabled" = x"yes"; then
+    SECP_TRY_APPEND_CFLAGS([-fno-sanitize-memory-param-retval], SECP_CFLAGS)
+    print_msan_notice=yes
+  fi
+fi
+
+if test x"$enable_coverage" = x"yes"; then
+    SECP_CONFIG_DEFINES="$SECP_CONFIG_DEFINES -DCOVERAGE=1"
+    SECP_CFLAGS="-O0 --coverage $SECP_CFLAGS"
+    # If coverage is enabled, and the user has not overridden CFLAGS,
+    # override Autoconf's value "-g -O2" with "-g". Otherwise we'd end up
+    # with "-O0 --coverage -g -O2".
+    if test "$CFLAGS_overridden" = "no"; then
+      CFLAGS="-g"
+    fi
+    LDFLAGS="--coverage $LDFLAGS"
+else
+    # Most likely the CFLAGS already contain -O2 because that is autoconf's default.
+    # We still add it here because passing it twice is not an issue, and handling
+    # this case would just add unnecessary complexity (see #896).
+    SECP_CFLAGS="-O2 $SECP_CFLAGS"
+fi
+
+if test x"$req_asm" = x"auto"; then
+  SECP_X86_64_ASM_CHECK
+  if test x"$has_x86_64_asm" = x"yes"; then
+    set_asm=x86_64
+  fi
+  if test x"$set_asm" = x; then
+    set_asm=no
+  fi
+else
+  set_asm=$req_asm
+  case $set_asm in
+  x86_64)
+    SECP_X86_64_ASM_CHECK
+    if test x"$has_x86_64_asm" != x"yes"; then
+      AC_MSG_ERROR([x86_64 assembly requested but not available])
+    fi
+    ;;
+  arm32)
+    SECP_ARM32_ASM_CHECK
+    if test x"$has_arm32_asm" != x"yes"; then
+      AC_MSG_ERROR([ARM32 assembly requested but not available])
+    fi
+    ;;
+  no)
     ;;
   *)
     AX_CHECK_LINK_FLAG([-Wl,--fatal-warnings], [LDFLAG_WERROR="-Wl,--fatal-warnings"], [LDFLAG_WERROR=""])
@@ -1412,20 +1464,53 @@ fi
 
 dnl Enable multiprocess check
 
-if test "$enable_multiprocess" = "yes"; then
-  if test "$libmultiprocess_found" != "yes"; then
-    AC_MSG_ERROR([--enable-multiprocess=yes option specified but libmultiprocess library was not found. May need to install libmultiprocess library, or specify install path with PKG_CONFIG_PATH environment variable. Running 'pkg-config --debug libmultiprocess' may be helpful for debugging.])
-  fi
-  build_multiprocess=yes
-elif test "$enable_multiprocess" = "auto"; then
-  build_multiprocess=$libmultiprocess_found
-else
-  build_multiprocess=no
-fi
+# Select wide multiplication implementation
+case $set_widemul in
+int128_struct)
+  SECP_CONFIG_DEFINES="$SECP_CONFIG_DEFINES -DUSE_FORCE_WIDEMUL_INT128_STRUCT=1"
+  ;;
+int128)
+  SECP_CONFIG_DEFINES="$SECP_CONFIG_DEFINES -DUSE_FORCE_WIDEMUL_INT128=1"
+  ;;
+int64)
+  SECP_CONFIG_DEFINES="$SECP_CONFIG_DEFINES -DUSE_FORCE_WIDEMUL_INT64=1"
+  ;;
+auto)
+  ;;
+*)
+  AC_MSG_ERROR([invalid wide multiplication implementation])
+  ;;
+esac
 
-AM_CONDITIONAL([BUILD_MULTIPROCESS], [test "$build_multiprocess" = "yes"])
-AM_CONDITIONAL([BUILD_UMKOIN_NODE], [test "$build_multiprocess" = "yes"])
-AM_CONDITIONAL([BUILD_UMKOIN_GUI], [test "$build_multiprocess" = "yes"])
+error_window_size=['window size for ecmult precomputation not an integer in range [2..24]']
+case $set_ecmult_window in
+''|*[[!0-9]]*)
+  # no valid integer
+  AC_MSG_ERROR($error_window_size)
+  ;;
+*)
+  if test "$set_ecmult_window" -lt 2 -o "$set_ecmult_window" -gt 24 ; then
+    # not in range
+    AC_MSG_ERROR($error_window_size)
+  fi
+  SECP_CONFIG_DEFINES="$SECP_CONFIG_DEFINES -DECMULT_WINDOW_SIZE=$set_ecmult_window"
+  ;;
+esac
+
+case $set_ecmult_gen_kb in
+2)
+  SECP_CONFIG_DEFINES="$SECP_CONFIG_DEFINES -DCOMB_BLOCKS=2 -DCOMB_TEETH=5"
+  ;;
+22)
+  SECP_CONFIG_DEFINES="$SECP_CONFIG_DEFINES -DCOMB_BLOCKS=11 -DCOMB_TEETH=6"
+  ;;
+86)
+  SECP_CONFIG_DEFINES="$SECP_CONFIG_DEFINES -DCOMB_BLOCKS=43 -DCOMB_TEETH=6"
+  ;;
+*)
+  AC_MSG_ERROR(['ecmult gen table size not 2, 22 or 86'])
+  ;;
+esac
 
 dnl codegen tools check
 
@@ -1471,23 +1556,17 @@ AM_CONDITIONAL([BUILD_UMKOIN_KERNEL_LIB], [test "$build_experimental_kernel_lib"
 
 AC_LANG_POP
 
-if test "$use_ccache" != "no"; then
-  AC_MSG_CHECKING([if ccache should be used])
-  if test "$CCACHE" = ""; then
-    if test "$use_ccache" = "yes"; then
-      AC_MSG_ERROR([ccache not found.]);
-    else
-      use_ccache=no
-    fi
-  else
-    use_ccache=yes
-    CC="$ac_cv_path_CCACHE $CC"
-    CXX="$ac_cv_path_CCACHE $CXX"
-  fi
-  AC_MSG_RESULT($use_ccache)
-  if test "$use_ccache" = "yes"; then
-    AX_CHECK_COMPILE_FLAG([-fdebug-prefix-map=A=B], [DEBUG_CXXFLAGS="$DEBUG_CXXFLAGS -fdebug-prefix-map=\$(abs_top_srcdir)=."], [], [$CXXFLAG_WERROR])
-    AX_CHECK_PREPROC_FLAG([-fmacro-prefix-map=A=B], [DEBUG_CPPFLAGS="$DEBUG_CPPFLAGS -fmacro-prefix-map=\$(abs_top_srcdir)=."], [], [$CXXFLAG_WERROR])
+if test x"$enable_external_default_callbacks" = x"yes"; then
+  SECP_CONFIG_DEFINES="$SECP_CONFIG_DEFINES -DUSE_EXTERNAL_DEFAULT_CALLBACKS=1"
+fi
+
+###
+### Check for --enable-experimental if necessary
+###
+
+if test x"$enable_experimental" = x"no"; then
+  if test x"$set_asm" = x"arm32"; then
+    AC_MSG_ERROR([ARM32 assembly is experimental. Use --enable-experimental to allow.])
   fi
 fi
 
@@ -1793,3 +1872,23 @@ echo "  LDFLAGS         = $PTHREAD_LIBS $HARDENED_LDFLAGS $SANITIZER_LDFLAGS $CO
 echo "  AR              = $AR"
 echo "  ARFLAGS         = $ARFLAGS"
 echo
+echo "  valgrind                = $enable_valgrind"
+echo "  CC                      = $CC"
+echo "  CPPFLAGS                = $CPPFLAGS"
+echo "  SECP_CFLAGS             = $SECP_CFLAGS"
+echo "  CFLAGS                  = $CFLAGS"
+echo "  LDFLAGS                 = $LDFLAGS"
+
+if test x"$print_msan_notice" = x"yes"; then
+  echo
+  echo "Note:"
+  echo "  MemorySanitizer detected, tried to add -fno-sanitize-memory-param-retval to SECP_CFLAGS"
+  echo "  to avoid false positives in ctime_tests. Pass --disable-ctime-tests to avoid this."
+fi
+
+if test x"$enable_experimental" = x"yes"; then
+  echo
+  echo "WARNING: Experimental build"
+  echo "  Experimental features do not have stable APIs or properties, and may not be safe for"
+  echo "  production use."
+fi

@@ -9,9 +9,19 @@ For an immediately usable, binary version of the Umkoin Core software, see
 What is Umkoin Core?
 ---------------------
 
-Umkoin Core connects to the Umkoin peer-to-peer network to download and fully
-validate blocks and transactions. It also includes a wallet and graphical user
-interface, which can be optionally built.
+Features:
+* secp256k1 ECDSA signing/verification and key generation.
+* Additive and multiplicative tweaking of secret/public keys.
+* Serialization/parsing of secret keys, public keys, signatures.
+* Constant time, constant memory access signing and public key generation.
+* Derandomized ECDSA (via RFC6979 or with a caller provided function.)
+* Very efficient implementation.
+* Suitable for embedded systems.
+* No runtime dependencies.
+* Optional module for public key recovery.
+* Optional module for ECDH key exchange.
+* Optional module for Schnorr signatures according to [BIP-340](https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki).
+* Optional module for ElligatorSwift key exchange according to [BIP-324](https://github.com/bitcoin/bips/blob/master/bip-0324.mediawiki).
 
 Further information about Umkoin Core is available in the [doc folder](/doc).
 
