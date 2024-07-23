@@ -75,4 +75,4 @@ class SetBanTests(UmkoinTestFramework):
         assert_equal(banned['ban_duration'], 1234)
 
 if __name__ == '__main__':
-    SetBanTests().main()
+    SetBanTests(__file__).main()

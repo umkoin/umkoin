@@ -149,4 +149,4 @@ class InitStressTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    InitStressTest().main()
+    InitStressTest(__file__).main()

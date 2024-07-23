@@ -383,4 +383,4 @@ class TestUmkoinCli(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    TestUmkoinCli().main()
+    TestUmkoinCli(__file__).main()

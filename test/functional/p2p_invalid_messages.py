@@ -356,4 +356,4 @@ class InvalidMessagesTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    InvalidMessagesTest().main()
+    InvalidMessagesTest(__file__).main()

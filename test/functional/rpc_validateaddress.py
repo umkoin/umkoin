@@ -200,4 +200,4 @@ class ValidateAddressMainTest(UmkoinTestFramework):
 
 
 if __name__ == "__main__":
-    ValidateAddressMainTest().main()
+    ValidateAddressMainTest(__file__).main()

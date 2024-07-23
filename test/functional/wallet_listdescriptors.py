@@ -136,4 +136,4 @@ class ListDescriptorsTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    ListDescriptorsTest().main()
+    ListDescriptorsTest(__file__).main()

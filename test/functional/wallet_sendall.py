@@ -531,4 +531,4 @@ class SendallTest(UmkoinTestFramework):
         self.sendall_fails_with_transaction_too_large()
 
 if __name__ == '__main__':
-    SendallTest().main()
+    SendallTest(__file__).main()

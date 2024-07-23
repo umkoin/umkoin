@@ -39,4 +39,4 @@ class StartupNotifyTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    StartupNotifyTest().main()
+    StartupNotifyTest(__file__).main()

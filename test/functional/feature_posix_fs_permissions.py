@@ -40,4 +40,4 @@ class PosixFsPermissionsTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    PosixFsPermissionsTest().main()
+    PosixFsPermissionsTest(__file__).main()

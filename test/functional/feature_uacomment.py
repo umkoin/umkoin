@@ -37,4 +37,4 @@ class UacommentTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    UacommentTest().main()
+    UacommentTest(__file__).main()

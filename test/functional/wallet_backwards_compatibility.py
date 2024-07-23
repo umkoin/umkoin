@@ -400,4 +400,4 @@ class BackwardsCompatibilityTest(UmkoinTestFramework):
                 assert_equal(info, addr_info)
 
 if __name__ == '__main__':
-    BackwardsCompatibilityTest().main()
+    BackwardsCompatibilityTest(__file__).main()

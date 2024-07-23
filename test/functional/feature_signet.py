@@ -82,4 +82,4 @@ class SignetBasicTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    SignetBasicTest().main()
+    SignetBasicTest(__file__).main()

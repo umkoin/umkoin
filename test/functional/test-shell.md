@@ -169,7 +169,7 @@ can be called after the TestShell is shut down.
 
 | Test parameter key | Default Value | Description |
 |---|---|---|
-| `bind_to_localhost_only` | `True` | Binds umkoind RPC services to `127.0.0.1` if set to `True`.|
+| `bind_to_localhost_only` | `True` | Binds umkoind P2P services to `127.0.0.1` if set to `True`.|
 | `cachedir` | `"/path/to/umkoin/test/cache"` | Sets the umkoind datadir directory. |
 | `chain`  | `"regtest"` | Sets the chain-type for the underlying test umkoind processes. |
 | `configfile` | `"/path/to/umkoin/test/config.ini"` | Sets the location of the test framework config file. |

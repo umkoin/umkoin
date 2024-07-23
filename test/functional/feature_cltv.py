@@ -195,4 +195,4 @@ class BIP65Test(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    BIP65Test().main()
+    BIP65Test(__file__).main()
