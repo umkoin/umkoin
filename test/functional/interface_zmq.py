@@ -597,4 +597,4 @@ class ZMQTest (UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    ZMQTest().main()
+    ZMQTest(__file__).main()

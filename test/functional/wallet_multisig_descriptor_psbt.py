@@ -154,4 +154,4 @@ class WalletMultisigDescriptorPSBTTest(UmkoinTestFramework):
 
 
 if __name__ == "__main__":
-    WalletMultisigDescriptorPSBTTest().main()
+    WalletMultisigDescriptorPSBTTest(__file__).main()

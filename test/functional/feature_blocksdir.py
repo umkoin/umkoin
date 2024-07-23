@@ -35,4 +35,4 @@ class BlocksdirTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    BlocksdirTest().main()
+    BlocksdirTest(__file__).main()

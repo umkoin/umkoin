@@ -112,4 +112,4 @@ class MutatedBlocksTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    MutatedBlocksTest().main()
+    MutatedBlocksTest(__file__).main()

@@ -146,4 +146,4 @@ class InactiveHDChainsTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    InactiveHDChainsTest().main()
+    InactiveHDChainsTest(__file__).main()

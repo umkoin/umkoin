@@ -34,4 +34,4 @@ class BlockSyncTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    BlockSyncTest().main()
+    BlockSyncTest(__file__).main()

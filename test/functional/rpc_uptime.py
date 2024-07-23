@@ -32,4 +32,4 @@ class UptimeTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    UptimeTest().main()
+    UptimeTest(__file__).main()

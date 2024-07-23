@@ -97,8 +97,8 @@ class AssumeutxoTest(UmkoinTestFramework):
 
         assert_equal(
             dump_output['txoutset_hash'],
-            "61d9c2b29a2571a5fe285fe2d8554f91f93309666fc9b8223ee96338de25ff53")
-        assert_equal(dump_output["nchaintx"], 300)
+            "a4bf3407ccb2cc0145c49ebba8fa91199f8a3903daf0883875941497d2493c27")
+        assert_equal(dump_output["nchaintx"], 334)
         assert_equal(n0.getblockchaininfo()["blocks"], SNAPSHOT_BASE_HEIGHT)
 
         # Mine more blocks on top of the snapshot that n1 hasn't yet seen. This
@@ -164,4 +164,4 @@ class AssumeutxoTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    AssumeutxoTest().main()
+    AssumeutxoTest(__file__).main()

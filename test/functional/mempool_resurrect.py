@@ -55,4 +55,4 @@ class MempoolCoinbaseTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    MempoolCoinbaseTest().main()
+    MempoolCoinbaseTest(__file__).main()

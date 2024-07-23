@@ -324,4 +324,4 @@ class CoinStatsIndexTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    CoinStatsIndexTest().main()
+    CoinStatsIndexTest(__file__).main()

@@ -289,4 +289,4 @@ class DecodeScriptTest(UmkoinTestFramework):
         self.decodescript_miniscript()
 
 if __name__ == '__main__':
-    DecodeScriptTest().main()
+    DecodeScriptTest(__file__).main()

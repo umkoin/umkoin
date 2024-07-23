@@ -306,4 +306,4 @@ class TxDownloadTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    TxDownloadTest().main()
+    TxDownloadTest(__file__).main()

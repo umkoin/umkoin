@@ -126,4 +126,4 @@ class P2PDNSSeeds(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    P2PDNSSeeds().main()
+    P2PDNSSeeds(__file__).main()

@@ -115,4 +115,4 @@ class MinimumChainWorkTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    MinimumChainWorkTest().main()
+    MinimumChainWorkTest(__file__).main()

@@ -62,4 +62,4 @@ class MaxTipAgeTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    MaxTipAgeTest().main()
+    MaxTipAgeTest(__file__).main()

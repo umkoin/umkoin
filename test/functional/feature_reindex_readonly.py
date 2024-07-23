@@ -87,4 +87,4 @@ class BlockstoreReindexTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    BlockstoreReindexTest().main()
+    BlockstoreReindexTest(__file__).main()

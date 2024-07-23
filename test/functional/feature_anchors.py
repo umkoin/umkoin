@@ -141,4 +141,4 @@ class AnchorsTest(UmkoinTestFramework):
 
 
 if __name__ == "__main__":
-    AnchorsTest().main()
+    AnchorsTest(__file__).main()
