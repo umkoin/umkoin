@@ -6,9 +6,7 @@
 #ifndef UMKOIN_INIT_H
 #define UMKOIN_INIT_H
 
-#include <any>
-#include <memory>
-#include <string>
+#include <atomic>
 
 //! Default value for -daemon option
 static constexpr bool DEFAULT_DAEMON = false;
