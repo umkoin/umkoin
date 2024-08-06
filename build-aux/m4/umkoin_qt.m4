@@ -123,7 +123,6 @@ AC_DEFUN([UMKOIN_QT_CONFIGURE],[
       fi
     fi
 
-    AC_DEFINE([QT_STATICPLUGIN], [1], [Define this symbol if qt plugins are static])
     _UMKOIN_QT_CHECK_STATIC_PLUGIN([QMinimalIntegrationPlugin], [-lqminimal])
     AC_DEFINE([QT_QPA_PLATFORM_MINIMAL], [1], [Define this symbol if the minimal qt platform exists])
     if test "$TARGET_OS" = "windows"; then
