@@ -174,7 +174,7 @@ public:
         chainTxData = ChainTxData{
             // Data from RPC: getchaintxstats 4096 00000000000000e649c1988d72593bcaf5ac0b3b833ef5039f124eb3999e08f1
             .nTime    = 1643696274,
-            .nTxCount = 449998,
+            .tx_count = 449998,
             .dTxRate  = 0.001587994677849,
         };
     }
@@ -276,7 +276,7 @@ public:
         chainTxData = ChainTxData{
             // Data from RPC: getchaintxstats 4096 000000000062e3325e42574ceee13bc7873f69a2e0e7fce35063c86c34b05a43
             .nTime    = 1700712904,
-            .nTxCount = 238467,
+            .tx_count = 238467,
             .dTxRate  = 0.000663547274101,
         };
     }
@@ -303,7 +303,7 @@ public:
             chainTxData = ChainTxData{
                 // Data from RPC: getchaintxstats 4096 00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1
                 .nTime    = 16000041600,
-                .nTxCount = 1,
+                .tx_count = 1,
                 .dTxRate  = 0.001898346323372538,
             };
         } else {
@@ -484,14 +484,14 @@ public:
             {
                 .height = 110,
                 .hash_serialized = AssumeutxoHash{uint256S("0x611314483dc02d0591d15b104c54c09491612744815b0659a7530ecb1a4cecbe")},
-                .nChainTx = 111,
+                .m_chain_tx_count = 111,
                 .blockhash = uint256S("0x724bbf18ed0d9f52068ddd6738dbb54245e56e7dc578381bc1f4b0db4616b2f4")
             },
             {
                 // For use by test/functional/feature_assumeutxo.py
                 .height = 299,
                 .hash_serialized = AssumeutxoHash{uint256S("0x4a5e9e1cfeba05a536885f813a56411d904782900eb00a533eab1e5be4f277ba")},
-                .nChainTx = 300,
+                .m_chain_tx_count = 300,
                 .blockhash = uint256S("0x3d2073fc14cc954687a8a30f12a121af3facc560370dc296a8d4e6ff7091259b")
             },
         };
