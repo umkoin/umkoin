@@ -26,6 +26,16 @@
 #include <cstring>
 #include <type_traits>
 
+// Workaround MSVC bug triggering C7595 when calling consteval constructors in
+// initializer lists.
+// A fix may be on the way:
+// https://developercommunity.visualstudio.com/t/consteval-conversion-function-fails/1579014
+#if defined(_MSC_VER)
+auto consteval_ctor(auto&& input) { return input; }
+#else
+#define consteval_ctor(input) (input)
+#endif
+
 static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
     CMutableTransaction txNew;
@@ -76,11 +86,11 @@ public:
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.script_flag_exceptions.emplace( // BIP16 exception
-            uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"), SCRIPT_VERIFY_NONE);
+            uint256("00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"), SCRIPT_VERIFY_NONE);
         consensus.script_flag_exceptions.emplace( // Taproot exception
-            uint256S("0x0000000000006416703a4143581f958afc8325fe6e7b5fc427ff8a2a065f84da"), SCRIPT_VERIFY_P2SH | SCRIPT_VERIFY_WITNESS);
+            uint256("0000000000006416703a4143581f958afc8325fe6e7b5fc427ff8a2a065f84da"), SCRIPT_VERIFY_P2SH | SCRIPT_VERIFY_WITNESS);
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
+        consensus.BIP34Hash = uint256("00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.CSVHeight = 432;
@@ -104,8 +114,8 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1628640000; // August 11th, 2021
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 155843; // Appr. Nov 12th, 2022
 
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000fa4291d4fe51e2d1");  // 153500
-        consensus.defaultAssumeValid = uint256S("0x00000000000009a4af92d8d5ba9bf9fb902e66c97a4af4972ab6228e61959627"); // 153500
+        consensus.nMinimumChainWork = uint256("000000000000000000000000000000000000000000000000fa4291d4fe51e2d1");  // 153500
+        consensus.defaultAssumeValid = uint256("00000000000009a4af92d8d5ba9bf9fb902e66c97a4af4972ab6228e61959627"); // 153500
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -123,8 +133,8 @@ public:
 
         genesis = CreateGenesisBlock(1511563812, 4263252653, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"));
-        assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
+        assert(consensus.hashGenesisBlock == uint256("00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"));
+        assert(genesis.hashMerkleRoot == uint256("550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -148,22 +158,22 @@ public:
 
         checkpointData = {
             {
-                { 5000, uint256S("0x00000000001bdcc3946071fceb5c29ff00d3042d66c08d659d3bd96e10c61dbe")},
-                { 10000, uint256S("0x00000000000987c3cd5479d50415279b5134299a17ca29601e1ff7fb3352b172")},
-                { 15783, uint256S("0x000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64")},
-                { 20058, uint256S("0x00000000001bdaa9b4c169c837970fbeec175ad148f7ec7ddcf01ccbb5357040")},
-                { 22087, uint256S("0x00000000000022e03eeb49ed3d8e622b434b2daa32fbe371da74cb5a3c53e352")},
-                { 22100, uint256S("0x000000000000045eb86c9f6f55ebe6f52a6b499810c06a3c1528c555a6668d57")},
-                { 22150, uint256S("0x000000000000056e1c71a808187950110f7d2af34b7c33b70bc5aafd81577bbe")},
-                { 23299, uint256S("0x000000000001937d0f8f9abf4c76e147daf4cf2149b66349fe29bac7f90eba16")},
-                { 25874, uint256S("0x00000000000083c2a36b0d4df233709f790ad144521362a08f86fba2e0a23232")},
-                { 25875, uint256S("0x00000000000068fc8d92ab2992451f830d36af4efa581d676140e2c49513b4a1")},
-                { 39332, uint256S("0x0000000000003c265a3cf6a3a29e0ac6ab292a591eddf02f5e1d50abb7394c40")},
-                { 67999, uint256S("0x000000000001972d726acfed45ffb647f7a6da7bdc3ab5288c7b2a82948ac65c")},
-                { 96428, uint256S("0x000000000039d6d37440cfe057b1d917bb778ce02fb79ad913435955dcbfced5")},
-                {131105, uint256S("0x00000000001fd629be483b16e42ded9e6055ba0a249dd0bfc0a3cb3736b96bf0")},
-                {148000, uint256S("0x000000000065b1a4a38ff7057ec2c80bbde98eea5a4141a3312ca2c4d0f5b850")},
-                {153000, uint256S("0x000000000000c1f45503eb4caf92acc0709b5efd6852ba6dcf4d9f1ef0cfd517")},
+                { 5000, uint256("00000000001bdcc3946071fceb5c29ff00d3042d66c08d659d3bd96e10c61dbe")},
+                { 10000, uint256("00000000000987c3cd5479d50415279b5134299a17ca29601e1ff7fb3352b172")},
+                { 15783, uint256("000000000010209ee8b532f74717edffffe6d488dc0ea5ab654607849570ec64")},
+                { 20058, uint256("00000000001bdaa9b4c169c837970fbeec175ad148f7ec7ddcf01ccbb5357040")},
+                { 22087, uint256("00000000000022e03eeb49ed3d8e622b434b2daa32fbe371da74cb5a3c53e352")},
+                { 22100, uint256("000000000000045eb86c9f6f55ebe6f52a6b499810c06a3c1528c555a6668d57")},
+                { 22150, uint256("000000000000056e1c71a808187950110f7d2af34b7c33b70bc5aafd81577bbe")},
+                { 23299, uint256("000000000001937d0f8f9abf4c76e147daf4cf2149b66349fe29bac7f90eba16")},
+                { 25874, uint256("00000000000083c2a36b0d4df233709f790ad144521362a08f86fba2e0a23232")},
+                { 25875, uint256("00000000000068fc8d92ab2992451f830d36af4efa581d676140e2c49513b4a1")},
+                { 39332, uint256("0000000000003c265a3cf6a3a29e0ac6ab292a591eddf02f5e1d50abb7394c40")},
+                { 67999, uint256("000000000001972d726acfed45ffb647f7a6da7bdc3ab5288c7b2a82948ac65c")},
+                { 96428, uint256("000000000039d6d37440cfe057b1d917bb778ce02fb79ad913435955dcbfced5")},
+                {131105, uint256("00000000001fd629be483b16e42ded9e6055ba0a249dd0bfc0a3cb3736b96bf0")},
+                {148000, uint256("000000000065b1a4a38ff7057ec2c80bbde98eea5a4141a3312ca2c4d0f5b850")},
+                {153000, uint256("000000000000c1f45503eb4caf92acc0709b5efd6852ba6dcf4d9f1ef0cfd517")},
             }
         };
 
@@ -191,15 +201,15 @@ public:
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.script_flag_exceptions.emplace( // BIP16 exception
-            uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"), SCRIPT_VERIFY_NONE);
+            uint256("00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"), SCRIPT_VERIFY_NONE);
         consensus.BIP34Height = 0;
-        consensus.BIP34Hash = uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
+        consensus.BIP34Hash = uint256("00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429");
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.CSVHeight = 40500;
         consensus.SegwitHeight = 40500;
         consensus.MinBIP9WarningHeight = 40644; // segwit activation height + miner confirmation window
-        consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -217,8 +227,8 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1628640000; // August 11th, 2021
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
 
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000298d8be9ba049e1");  // 177173
-        consensus.defaultAssumeValid = uint256S("0x0000000000171423f711b1ded2bea3d810a5c44ae6f7e707f395238f59db0040"); // 177173
+        consensus.nMinimumChainWork = uint256("0000000000000000000000000000000000000000000000000298d8be9ba049e1");  // 177173
+        consensus.defaultAssumeValid = uint256("0000000000171423f711b1ded2bea3d810a5c44ae6f7e707f395238f59db0040"); // 177173
 
         pchMessageStart[0] = 0x0b;
         pchMessageStart[1] = 0x11;
@@ -231,8 +241,8 @@ public:
 
         genesis = CreateGenesisBlock(1511678228, 1037567534, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"));
-        assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
+        assert(consensus.hashGenesisBlock == uint256("00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"));
+        assert(genesis.hashMerkleRoot == uint256("550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -254,12 +264,12 @@ public:
 
         checkpointData = {
             {
-                {1, uint256S("0x000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a")},
-                {11, uint256S("0x000000006c8d5857a598f1027fa34ecd0f09296a533d2f484a588bf9d09373e0")},
-                {133, uint256S("0x00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce")},
-                {2560, uint256S("0x000000006dc40dec5d9e221e01b88bc9067f62f7a1f9106bac1907b393fa3a9e")},
-                {16344, uint256S("0x000000001623f5d83e1cffec76ee446e02f67e5158daca342842e124a7af892b")},
-                {54999, uint256S("0x00000000015a7e3215de95ec1c0cad52c1de926f71f3f43ce4678a0050f8ed0b")},
+                {1, uint256("000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a")},
+                {11, uint256("000000006c8d5857a598f1027fa34ecd0f09296a533d2f484a588bf9d09373e0")},
+                {133, uint256("00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce")},
+                {2560, uint256("000000006dc40dec5d9e221e01b88bc9067f62f7a1f9106bac1907b393fa3a9e")},
+                {16344, uint256("000000001623f5d83e1cffec76ee446e02f67e5158daca342842e124a7af892b")},
+                {54999, uint256("00000000015a7e3215de95ec1c0cad52c1de926f71f3f43ce4678a0050f8ed0b")},
             }
         };
 
@@ -267,9 +277,9 @@ public:
             // Dumptxoutset at height 179888.
             {
                 .height = 179888,
-                .hash_serialized = AssumeutxoHash{uint256S("0x9708859da4b26c6aed3ca61a5018b34c3b74b2b1f92f3bc24fcda82e31094320")},
+                .hash_serialized = AssumeutxoHash{uint256("9708859da4b26c6aed3ca61a5018b34c3b74b2b1f92f3bc24fcda82e31094320")},
                 .nChainTx = 239355,
-                .blockhash = uint256S("0x000000000048ef633af334fc737c8d8750fb58068bfdecd8995723fcb63079f3")
+                .blockhash = uint256("000000000048ef633af334fc737c8d8750fb58068bfdecd8995723fcb63079f3")
             },
         };
 
@@ -296,8 +306,8 @@ public:
             bin = ParseHex("512103ad5e0edad18cb1f0fc0d28a3d4f1f3e445640337489abb10404f2d1e086be430210359ef5021964fe22d6f8e05b2463c9540ce96883fe3b278760f048f5189f2e6c452ae");
             vSeeds.emplace_back("dnsseed.umkoin.org.");
 
-            consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000000049d414");
-            consensus.defaultAssumeValid = uint256S("0x00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1"); // 0
+            consensus.nMinimumChainWork = uint256("000000000000000000000000000000000000000000000000000000000049d414");
+            consensus.defaultAssumeValid = uint256("00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1"); // 0
             m_assumed_blockchain_size = 1;
             m_assumed_chain_state_size = 0;
             chainTxData = ChainTxData{
@@ -341,7 +351,7 @@ public:
         consensus.nRuleChangeActivationThreshold = 130; // 90% of 144
         consensus.nMinerConfirmationWindow = 144; // nPowTargetTimespan / nPowTargetSpacing
         consensus.MinBIP9WarningHeight = 0;
-        consensus.powLimit = uint256S("00000377ae000000000000000000000000000000000000000000000000000000");
+        consensus.powLimit = uint256("00000377ae000000000000000000000000000000000000000000000000000000");
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
@@ -364,8 +374,8 @@ public:
 
         genesis = CreateGenesisBlock(1600041600, 243630, 0x1e0377ae, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1"));
-        assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
+        assert(consensus.hashGenesisBlock == uint256("00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1"));
+        assert(genesis.hashMerkleRoot == uint256("550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
         vFixedSeeds.clear();
 
@@ -464,8 +474,8 @@ public:
 
         genesis = CreateGenesisBlock(1511512200, 4, 0x207fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"));
-        assert(genesis.hashMerkleRoot == uint256S("0x550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
+        assert(consensus.hashGenesisBlock == uint256("60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"));
+        assert(genesis.hashMerkleRoot == uint256("550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();
@@ -476,23 +486,23 @@ public:
 
         checkpointData = {
             {
-                {0, uint256S("0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d")},
+                {0, uint256("60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d")},
             }
         };
 
         m_assumeutxo_data = {
             {
                 .height = 110,
-                .hash_serialized = AssumeutxoHash{uint256S("0x611314483dc02d0591d15b104c54c09491612744815b0659a7530ecb1a4cecbe")},
+                .hash_serialized = AssumeutxoHash{uint256("611314483dc02d0591d15b104c54c09491612744815b0659a7530ecb1a4cecbe")},
                 .m_chain_tx_count = 111,
-                .blockhash = uint256S("0x724bbf18ed0d9f52068ddd6738dbb54245e56e7dc578381bc1f4b0db4616b2f4")
+                .blockhash = uint256("724bbf18ed0d9f52068ddd6738dbb54245e56e7dc578381bc1f4b0db4616b2f4")
             },
             {
                 // For use by test/functional/feature_assumeutxo.py
                 .height = 299,
-                .hash_serialized = AssumeutxoHash{uint256S("0x4a5e9e1cfeba05a536885f813a56411d904782900eb00a533eab1e5be4f277ba")},
+                .hash_serialized = AssumeutxoHash{uint256("4a5e9e1cfeba05a536885f813a56411d904782900eb00a533eab1e5be4f277ba")},
                 .m_chain_tx_count = 300,
-                .blockhash = uint256S("0x3d2073fc14cc954687a8a30f12a121af3facc560370dc296a8d4e6ff7091259b")
+                .blockhash = uint256("3d2073fc14cc954687a8a30f12a121af3facc560370dc296a8d4e6ff7091259b")
             },
         };
 

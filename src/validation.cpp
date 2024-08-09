@@ -2282,8 +2282,8 @@ DisconnectResult Chainstate::DisconnectBlock(const CBlock& block, const CBlockIn
     // Note: the blocks specified here are different than the ones used in ConnectBlock because DisconnectBlock
     // unwinds the blocks in reverse. As a result, the inconsistency is not discovered until the earlier
     // blocks with the duplicate coinbase transactions are disconnected.
-    bool fEnforceBIP30 = !((pindex->nHeight==91722 && pindex->GetBlockHash() == uint256S("0x000000000020b729598284afb9ae56a533511bb58ca4fd1ef2bb0a6066150464")) ||
-                           (pindex->nHeight==91812 && pindex->GetBlockHash() == uint256S("0x000000000022213d0d4b6a18ea70cc42bb8ef80d7c45a7c993dd9e8b7391d33b")));
+    bool fEnforceBIP30 = !((pindex->nHeight==91722 && pindex->GetBlockHash() == uint256{"000000000020b729598284afb9ae56a533511bb58ca4fd1ef2bb0a6066150464"}) ||
+                           (pindex->nHeight==91812 && pindex->GetBlockHash() == uint256{"000000000022213d0d4b6a18ea70cc42bb8ef80d7c45a7c993dd9e8b7391d33b"}));
 
     // undo transactions in reverse order
     for (int i = block.vtx.size() - 1; i >= 0; i--) {
@@ -6300,14 +6300,14 @@ Chainstate& ChainstateManager::ActivateExistingSnapshot(uint256 base_blockhash)
 
 bool IsBIP30Repeat(const CBlockIndex& block_index)
 {
-    return (block_index.nHeight==91842 && block_index.GetBlockHash() == uint256S("0x0000000000428ff926372c6ea99712fd7b18e3f904a3dd78283857a03ec0900d")) ||
-           (block_index.nHeight==91880 && block_index.GetBlockHash() == uint256S("0x000000000024d0f4c29f736bd6d1ea4c44d0cd5c1439f18ca69f144eef28af3f"));
+    return (block_index.nHeight==91842 && block_index.GetBlockHash() == uint256{"0000000000428ff926372c6ea99712fd7b18e3f904a3dd78283857a03ec0900d"}) ||
+           (block_index.nHeight==91880 && block_index.GetBlockHash() == uint256{"000000000024d0f4c29f736bd6d1ea4c44d0cd5c1439f18ca69f144eef28af3f"});
 }
 
 bool IsBIP30Unspendable(const CBlockIndex& block_index)
 {
-    return (block_index.nHeight==91722 && block_index.GetBlockHash() == uint256S("0x000000000020b729598284afb9ae56a533511bb58ca4fd1ef2bb0a6066150464")) ||
-           (block_index.nHeight==91812 && block_index.GetBlockHash() == uint256S("0x000000000022213d0d4b6a18ea70cc42bb8ef80d7c45a7c993dd9e8b7391d33b"));
+    return (block_index.nHeight==91722 && block_index.GetBlockHash() == uint256{"000000000020b729598284afb9ae56a533511bb58ca4fd1ef2bb0a6066150464"}) ||
+           (block_index.nHeight==91812 && block_index.GetBlockHash() == uint256{"000000000022213d0d4b6a18ea70cc42bb8ef80d7c45a7c993dd9e8b7391d33b"});
 }
 
 static fs::path GetSnapshotCoinsDBPath(Chainstate& cs) EXCLUSIVE_LOCKS_REQUIRED(::cs_main)
