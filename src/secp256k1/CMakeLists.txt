@@ -1,17 +1,10 @@
-cmake_minimum_required(VERSION 3.13)
-
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.15)
-  # MSVC runtime library flags are selected by the CMAKE_MSVC_RUNTIME_LIBRARY abstraction.
-  cmake_policy(SET CMP0091 NEW)
-  # MSVC warning flags are not in CMAKE_<LANG>_FLAGS by default.
-  cmake_policy(SET CMP0092 NEW)
-endif()
+cmake_minimum_required(VERSION 3.16)
 
 project(libsecp256k1
   # The package (a.k.a. release) version is based on semantic versioning 2.0.0 of
   # the API. All changes in experimental modules are treated as
   # backwards-compatible and therefore at most increase the minor version.
-  VERSION 0.5.1
+  VERSION 0.5.2
   DESCRIPTION "Optimized C library for ECDSA signatures and secret/public key operations on curve secp256k1."
   HOMEPAGE_URL "https://github.com/bitcoin-core/secp256k1"
   LANGUAGES C
@@ -34,7 +27,7 @@ endif()
 # All changes in experimental modules are treated as if they don't affect the
 # interface and therefore only increase the revision.
 set(${PROJECT_NAME}_LIB_VERSION_CURRENT 4)
-set(${PROJECT_NAME}_LIB_VERSION_REVISION 1)
+set(${PROJECT_NAME}_LIB_VERSION_REVISION 2)
 set(${PROJECT_NAME}_LIB_VERSION_AGE 2)
 
 set(CMAKE_C_STANDARD 90)
@@ -97,7 +90,7 @@ include(CheckStringOptionValue)
 check_string_option_value(SECP256K1_ECMULT_WINDOW_SIZE)
 add_compile_definitions(ECMULT_WINDOW_SIZE=${SECP256K1_ECMULT_WINDOW_SIZE})
 
-set(SECP256K1_ECMULT_GEN_KB 22 CACHE STRING "The size of the precomputed table for signing in multiples of 1024 bytes (on typical platforms). Larger values result in possibly better signing or key generation performance at the cost of a larger table. Valid choices are 2, 22, 86. The default value is a reasonable setting for desktop machines (currently 22). [default=22]")
+set(SECP256K1_ECMULT_GEN_KB 86 CACHE STRING "The size of the precomputed table for signing in multiples of 1024 bytes (on typical platforms). Larger values result in possibly better signing or key generation performance at the cost of a larger table. Valid choices are 2, 22, 86. The default value is a reasonable setting for desktop machines (currently 86). [default=86]")
 set_property(CACHE SECP256K1_ECMULT_GEN_KB PROPERTY STRINGS 2 22 86)
 check_string_option_value(SECP256K1_ECMULT_GEN_KB)
 if(SECP256K1_ECMULT_GEN_KB EQUAL 2)
