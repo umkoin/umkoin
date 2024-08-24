@@ -257,7 +257,6 @@ UMKOIN_CORE_H = \
   random.h \
   randomenv.h \
   rest.h \
-  reverse_iterator.h \
   rpc/blockchain.h \
   rpc/client.h \
   rpc/mempool.h \
