@@ -517,7 +517,7 @@ public:
         consensus.CSVHeight = 1;    // Always active unless overridden
         consensus.SegwitHeight = 0; // Always active unless overridden
         consensus.MinBIP9WarningHeight = 0;
-        consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256{"7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
         consensus.nPowTargetTimespan = 1 * 12 * 60 * 60; // 12 hours
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -664,6 +664,7 @@ std::optional<ChainType> GetNetworkForMagic(const MessageStartChars& message)
 {
     const auto mainnet_msg = CChainParams::Main()->MessageStart();
     const auto testnet_msg = CChainParams::TestNet()->MessageStart();
+    const auto testnet4_msg = CChainParams::TestNet4()->MessageStart();
     const auto regtest_msg = CChainParams::RegTest({})->MessageStart();
     const auto signet_msg = CChainParams::SigNet({})->MessageStart();
 
@@ -671,6 +672,8 @@ std::optional<ChainType> GetNetworkForMagic(const MessageStartChars& message)
         return ChainType::MAIN;
     } else if (std::equal(message.begin(), message.end(), testnet_msg.data())) {
         return ChainType::TESTNET;
+    } else if (std::equal(message.begin(), message.end(), testnet4_msg.data())) {
+        return ChainType::TESTNET4;
     } else if (std::equal(message.begin(), message.end(), regtest_msg.data())) {
         return ChainType::REGTEST;
     } else if (std::equal(message.begin(), message.end(), signet_msg.data())) {
