@@ -179,14 +179,20 @@ public:
         };
 
         m_assumeutxo_data = {
-            // TODO to be specified in a future patch.
+            // dumptxoutset at height 184670
+            {
+                .height = 184670,
+                .hash_serialized = AssumeutxoHash{uint256{"c19354e88d95754938d666c7e6c9619476545aab49a0382ce7367eaf1f202bfa"}),
+                .nChainTx = 450460,
+                .blockhash = consteval_ctor(uint256{"000000000000051e91debfeac2d29a0f78bfaf2bdf20f3ac9f89adcf1d04f501"}),
+            }
         };
 
         chainTxData = ChainTxData{
-            // Data from RPC: getchaintxstats 4096 00000000000000e649c1988d72593bcaf5ac0b3b833ef5039f124eb3999e08f1
-            .nTime    = 1643696274,
-            .tx_count = 449998,
-            .dTxRate  = 0.001587994677849,
+            // getchaintxstats 4096 000000000000051e91debfeac2d29a0f78bfaf2bdf20f3ac9f89adcf1d04f501
+            .nTime    = 1724426984,
+            .tx_count = 450460,
+            .dTxRate  = 0.000068329949656,
         };
     }
 };
@@ -276,20 +282,20 @@ public:
         };
 
         m_assumeutxo_data = {
-            // Dumptxoutset at height 179888.
+            // dumptxoutset at height 184670
             {
-                .height = 179888,
-                .hash_serialized = AssumeutxoHash{uint256{"9708859da4b26c6aed3ca61a5018b34c3b74b2b1f92f3bc24fcda82e31094320"}},
-                .nChainTx = 239355,
-                .blockhash = consteval_ctor(uint256{"000000000048ef633af334fc737c8d8750fb58068bfdecd8995723fcb63079f3"}),
+                .height = 184670,
+                .hash_serialized = AssumeutxoHash{uint256{"1ae1eca0399a4a472b193f500325471eae6b2def1c12606271ce343f41dc3cff"}),
+                .nChainTx = 244295,
+                .blockhash = consteval_ctor(uint256{"00000000004d3598944324a547f7ea9b01b73ee5e355534026dd1751fa107938"}),
             }
         };
 
         chainTxData = ChainTxData{
-            // Data from RPC: getchaintxstats 4096 000000000062e3325e42574ceee13bc7873f69a2e0e7fce35063c86c34b05a43
-            .nTime    = 1700712904,
-            .tx_count = 238467,
-            .dTxRate  = 0.000663547274101,
+            // getchaintxstats 4096 00000000004d3598944324a547f7ea9b01b73ee5e355534026dd1751fa107938
+            .nTime    = 1724540448,
+            .tx_count = 244205,
+            .dTxRate  = 0.000186968473221,
         };
     }
 };
