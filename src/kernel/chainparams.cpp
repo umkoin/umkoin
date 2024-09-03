@@ -392,7 +392,6 @@ public:
     }
 };
 
-
 /**
  * Signet: test network with an additional consensus parameter (see BIP325).
  */
