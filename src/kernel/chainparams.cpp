@@ -182,8 +182,8 @@ public:
             // dumptxoutset at height 184670
             {
                 .height = 184670,
-                .hash_serialized = AssumeutxoHash{uint256{"c19354e88d95754938d666c7e6c9619476545aab49a0382ce7367eaf1f202bfa"}),
-                .nChainTx = 450460,
+                .hash_serialized = AssumeutxoHash{uint256{"c19354e88d95754938d666c7e6c9619476545aab49a0382ce7367eaf1f202bfa"}},
+                .m_chain_tx_count = 450460,
                 .blockhash = consteval_ctor(uint256{"000000000000051e91debfeac2d29a0f78bfaf2bdf20f3ac9f89adcf1d04f501"}),
             }
         };
@@ -285,8 +285,8 @@ public:
             // dumptxoutset at height 184670
             {
                 .height = 184670,
-                .hash_serialized = AssumeutxoHash{uint256{"1ae1eca0399a4a472b193f500325471eae6b2def1c12606271ce343f41dc3cff"}),
-                .nChainTx = 244295,
+                .hash_serialized = AssumeutxoHash{uint256{"1ae1eca0399a4a472b193f500325471eae6b2def1c12606271ce343f41dc3cff"}},
+                .m_chain_tx_count = 244295,
                 .blockhash = consteval_ctor(uint256{"00000000004d3598944324a547f7ea9b01b73ee5e355534026dd1751fa107938"}),
             }
         };
@@ -317,7 +317,7 @@ public:
         consensus.CSVHeight = 1;
         consensus.SegwitHeight = 1;
         consensus.MinBIP9WarningHeight = 0;
-        consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+        consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 1 * 12 * 60 * 60; // 12 hours
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -358,14 +358,13 @@ public:
                 1,
                 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256{"0x000000006d2b2de2bcee5c82b6d17aac68f0646292849b3ef1f309165eec7933"});
-        assert(genesis.hashMerkleRoot == uint256{"0xe1f926a4a38a8ed8b43214183f6fadd297e026ea02b3c105ea23d258e33ac847"});
+        assert(consensus.hashGenesisBlock == uint256S("0x000000006d2b2de2bcee5c82b6d17aac68f0646292849b3ef1f309165eec7933"));
+        assert(genesis.hashMerkleRoot == uint256S("0xe1f926a4a38a8ed8b43214183f6fadd297e026ea02b3c105ea23d258e33ac847"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("seed.testnet4.umkoin.sprovoost.nl."); // Sjors Provoost
-        vSeeds.emplace_back("seed.testnet4.wiz.biz."); // Jason Maurice
+        vSeeds.emplace_back("dnsseed.umkoin.org."); // vmta
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
@@ -594,7 +593,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256{"0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"}},
+                {0, uint256{"60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"}},
             }
         };
 
