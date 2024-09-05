@@ -52,9 +52,14 @@ Notable changes
 
 - #29855 psbt: Check non witness utxo outpoint early
 
+### Test
+
+- #30552 test: fix constructor of msg_tx
+
 ### Build
 
 - #30283 upnp: fix build with miniupnpc 2.2.8
+- #30633 Fixes for GCC 15 compatibility
 
 ### CI
 
@@ -69,6 +74,7 @@ Thanks to everyone who directly contributed to this release:
 - Ava Chow
 - Cory Fields
 - Martin Zumsande
+- Matt Whitlock
 - Max Edwards
 - Sebastian Falbesoner
 - willcl-ark
