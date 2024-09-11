@@ -8,16 +8,17 @@ thread queue, wallet balance.
 Running
 ---------------------
 
-For benchmarking, you only need to compile `umkoin_bench`.  The bench runner
-warns if you configure with `--enable-debug`, but consider if building without
+For benchmarking, you only need to compile `bench_umkoin`.  The bench runner
+warns if you configure with `-DCMAKE_BUILD_TYPE=Debug`, but consider if building without
 it will impact the benchmark(s) you are interested in by unlatching log printers
 and lock analysis.
 
-    make -C src umkoin_bench
+    cmake -B build -DBUILD_BENCH=ON
+    cmake --build build -t bench_umkoin
 
 After compiling umkoin-core, the benchmarks can be run with:
 
-    src/bench/bench_umkoin
+    build/src/bench/bench_umkoin
 
 The output will look similar to:
 ```
@@ -39,7 +40,7 @@ The output will look similar to:
 Help
 ---------------------
 
-    src/bench/bench_umkoin -?
+    build/src/bench/bench_umkoin -?
 
 To print the various options, like listing the benchmarks without running them
 or using a regex filter to only run certain benchmarks.

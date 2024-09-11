@@ -69,10 +69,10 @@ static std::optional<std::pair<WalletDescriptor, FlatSigningProvider>> CreateWal
 
     FlatSigningProvider keys;
     std::string error;
-    std::unique_ptr<Descriptor> parsed_desc{Parse(desc_str.value(), keys, error, false)};
-    if (!parsed_desc) return std::nullopt;
+    std::vector<std::unique_ptr<Descriptor>> parsed_descs = Parse(desc_str.value(), keys, error, false);
+    if (parsed_descs.empty()) return std::nullopt;
 
-    WalletDescriptor w_desc{std::move(parsed_desc), /*creation_time=*/0, /*range_start=*/0, /*range_end=*/1, /*next_index=*/1};
+    WalletDescriptor w_desc{std::move(parsed_descs.at(0)), /*creation_time=*/0, /*range_start=*/0, /*range_end=*/1, /*next_index=*/1};
     return std::make_pair(w_desc, keys);
 }
 
@@ -186,7 +186,10 @@ FUZZ_TARGET(scriptpubkeyman, .init = initialize_spkm)
                 auto psbt{*opt_psbt};
                 const PrecomputedTransactionData txdata{PrecomputePSBTData(psbt)};
                 const int sighash_type{fuzzed_data_provider.ConsumeIntegralInRange<int>(0, 150)};
-                (void)spk_manager->FillPSBT(psbt, txdata, sighash_type, fuzzed_data_provider.ConsumeBool(), fuzzed_data_provider.ConsumeBool(), nullptr, fuzzed_data_provider.ConsumeBool());
+                auto sign  = fuzzed_data_provider.ConsumeBool();
+                auto bip32derivs = fuzzed_data_provider.ConsumeBool();
+                auto finalize = fuzzed_data_provider.ConsumeBool();
+                (void)spk_manager->FillPSBT(psbt, txdata, sighash_type, sign, bip32derivs, nullptr, finalize);
             }
         );
     }

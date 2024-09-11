@@ -26,6 +26,8 @@
 #include <cstring>
 #include <type_traits>
 
+using namespace util::hex_literals;
+
 // Workaround MSVC bug triggering C7595 when calling consteval constructors in
 // initializer lists.
 // A fix may be on the way:
@@ -71,7 +73,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
     const char* pszTimestamp = "UMK est. 2006. Umkoin est. 2017.";
-    const CScript genesisOutputScript = CScript() << ParseHex("04880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67") << OP_CHECKSIG;
+    const CScript genesisOutputScript = CScript() << "04880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67"_hex_v_u8 << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
@@ -129,8 +131,8 @@ public:
         pchMessageStart[3] = 0xd9;
         nDefaultPort = 6333;
         nPruneAfterHeight = 100000;
-        m_assumed_blockchain_size = 4;
-        m_assumed_chain_state_size = 2;
+        m_assumed_blockchain_size = 8;
+        m_assumed_chain_state_size = 4;
 
         genesis = CreateGenesisBlock(1511563812, 4263252653, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -244,8 +246,8 @@ public:
         pchMessageStart[3] = 0x07;
         nDefaultPort = 16333;
         nPruneAfterHeight = 1000;
-        m_assumed_blockchain_size = 2;
-        m_assumed_chain_state_size = 1;
+        m_assumed_blockchain_size = 8;
+        m_assumed_chain_state_size = 4;
 
         genesis = CreateGenesisBlock(1511678228, 1037567534, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -272,19 +274,14 @@ public:
 
         checkpointData = {
             {
-                {1, uint256{"000000007c5ca2506f5670650ae4c1a18dd898ce53d9bdfe8018aa78c257905a"}},
-                {11, uint256{"000000006c8d5857a598f1027fa34ecd0f09296a533d2f484a588bf9d09373e0"}},
-                {133, uint256{"00000000a8a7e164bafaf076a8e03b2e2fff527366226c5b02b5237590b13dce"}},
-                {2560, uint256{"000000006dc40dec5d9e221e01b88bc9067f62f7a1f9106bac1907b393fa3a9e"}},
-                {16344, uint256{"000000001623f5d83e1cffec76ee446e02f67e5158daca342842e124a7af892b"}},
-                {54999, uint256{"00000000015a7e3215de95ec1c0cad52c1de926f71f3f43ce4678a0050f8ed0b"}},
+                {546, uint256{"0000000019fd269b4a60d4753337f3844b095021d11ad433036dd7cb4e006c09"}},
             }
         };
 
         m_assumeutxo_data = {
             // dumptxoutset at height 184670
             {
-                .height = 184670,
+                .height = 184'670,
                 .hash_serialized = AssumeutxoHash{uint256{"1ae1eca0399a4a472b193f500325471eae6b2def1c12606271ce343f41dc3cff"}},
                 .m_chain_tx_count = 244295,
                 .blockhash = consteval_ctor(uint256{"00000000004d3598944324a547f7ea9b01b73ee5e355534026dd1751fa107938"}),
@@ -317,8 +314,8 @@ public:
         consensus.CSVHeight = 1;
         consensus.SegwitHeight = 1;
         consensus.MinBIP9WarningHeight = 0;
-        consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.nPowTargetTimespan = 1 * 12 * 60 * 60; // 12 hours
+        consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+        consensus.nPowTargetTimespan = 43200; // 12 hours
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.enforce_BIP94 = true;
@@ -345,11 +342,11 @@ public:
         pchMessageStart[3] = 0x28;
         nDefaultPort = 46333;
         nPruneAfterHeight = 1000;
-        m_assumed_blockchain_size = 0;
+        m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 0;
 
         const char* testnet4_genesis_msg = "2024/08/23 Flag Day";
-        const CScript testnet4_genesis_script = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
+        const CScript testnet4_genesis_script = CScript() << "04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f"_hex_v_u8 << OP_CHECKSIG;
         genesis = CreateGenesisBlock(testnet4_genesis_msg,
                 testnet4_genesis_script,
                 1724371200,
@@ -358,8 +355,8 @@ public:
                 1,
                 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000000006d2b2de2bcee5c82b6d17aac68f0646292849b3ef1f309165eec7933"));
-        assert(genesis.hashMerkleRoot == uint256S("0xe1f926a4a38a8ed8b43214183f6fadd297e026ea02b3c105ea23d258e33ac847"));
+        assert(consensus.hashGenesisBlock == uint256{"000000006d2b2de2bcee5c82b6d17aac68f0646292849b3ef1f309165eec7933"});
+        assert(genesis.hashMerkleRoot == uint256{"e1f926a4a38a8ed8b43214183f6fadd297e026ea02b3c105ea23d258e33ac847"});
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -408,12 +405,12 @@ public:
         vSeeds.clear();
 
         if (!options.challenge) {
-            bin = ParseHex("512103ad5e0edad18cb1f0fc0d28a3d4f1f3e445640337489abb10404f2d1e086be430210359ef5021964fe22d6f8e05b2463c9540ce96883fe3b278760f048f5189f2e6c452ae");
+            bin = "512103ad5e0edad18cb1f0fc0d28a3d4f1f3e445640337489abb10404f2d1e086be430210359ef5021964fe22d6f8e05b2463c9540ce96883fe3b278760f048f5189f2e6c452ae"_hex_v_u8;
             vSeeds.emplace_back("dnsseed.umkoin.org.");
 
             consensus.nMinimumChainWork = uint256{"000000000000000000000000000000000000000000000000000000000049d414"};
             consensus.defaultAssumeValid = uint256{"00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1"}; // 0
-            m_assumed_blockchain_size = 1;
+            m_assumed_blockchain_size = 2;
             m_assumed_chain_state_size = 0;
             chainTxData = ChainTxData{
                 // Data from RPC: getchaintxstats 4096 00000202cadc702ef9673c0fa222dc9fce1c5ef52f96d4ba3d952286d37398f1
@@ -673,15 +670,15 @@ std::optional<ChainType> GetNetworkForMagic(const MessageStartChars& message)
     const auto regtest_msg = CChainParams::RegTest({})->MessageStart();
     const auto signet_msg = CChainParams::SigNet({})->MessageStart();
 
-    if (std::equal(message.begin(), message.end(), mainnet_msg.data())) {
+    if (std::ranges::equal(message, mainnet_msg)) {
         return ChainType::MAIN;
-    } else if (std::equal(message.begin(), message.end(), testnet_msg.data())) {
+    } else if (std::ranges::equal(message, testnet_msg)) {
         return ChainType::TESTNET;
-    } else if (std::equal(message.begin(), message.end(), testnet4_msg.data())) {
+    } else if (std::ranges::equal(message, testnet4_msg)) {
         return ChainType::TESTNET4;
-    } else if (std::equal(message.begin(), message.end(), regtest_msg.data())) {
+    } else if (std::ranges::equal(message, regtest_msg)) {
         return ChainType::REGTEST;
-    } else if (std::equal(message.begin(), message.end(), signet_msg.data())) {
+    } else if (std::ranges::equal(message, signet_msg)) {
         return ChainType::SIGNET;
     }
     return std::nullopt;

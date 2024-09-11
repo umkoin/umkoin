@@ -17,4 +17,4 @@ export XCODE_BUILD_ID=15C500b
 export RUN_UNIT_TESTS=false
 export RUN_FUNCTIONAL_TESTS=false
 export GOAL="deploy"
-export UMKOIN_CONFIG="--with-gui --enable-reduce-exports"
+export UMKOIN_CONFIG="-DBUILD_GUI=ON -DREDUCE_EXPORTS=ON"

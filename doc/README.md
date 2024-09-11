@@ -5,7 +5,7 @@ Setup
 ---------------------
 Umkoin Core is the original Umkoin client and it builds the backbone of the network. It downloads and, by default, stores the entire history of Umkoin transactions, which requires some free disk space. Depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few minutes to several hours or more.
 
-To download Umkoin Core, visit [www.umkoin.org](http://www.umkoin.org/en/download.php).
+To download Umkoin Core, visit [www.umkoin.org](http://www.umkoin.org/en/download.html).
 
 Running
 ---------------------
@@ -33,7 +33,7 @@ The following are developer notes on how to build Umkoin Core on your native pla
 - [Dependencies](dependencies.md)
 - [macOS Build Notes](build-osx.md)
 - [Unix Build Notes](build-unix.md)
-- [Windows Build Notes](build-windows.md)
+- [Windows Build Notes](build-windows-msvc.md)
 - [FreeBSD Build Notes](build-freebsd.md)
 - [OpenBSD Build Notes](build-openbsd.md)
 - [NetBSD Build Notes](build-netbsd.md)
