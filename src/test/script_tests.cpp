@@ -1368,6 +1368,13 @@ static CScript ScriptFromHex(const std::string& str)
     return ToScript(*Assert(TryParseHex(str)));
 }
 
+BOOST_AUTO_TEST_CASE(script_byte_array_u8_vector_equivalence)
+{
+    const CScript scriptPubKey1 = CScript() << "04880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67"_hex_v_u8 << OP_CHECKSIG;
+    const CScript scriptPubKey2 = CScript() << "04880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67"_hex << OP_CHECKSIG;
+    BOOST_CHECK(scriptPubKey1 == scriptPubKey2);
+}
+
 BOOST_AUTO_TEST_CASE(script_FindAndDelete)
 {
     // Exercise the FindAndDelete functionality
@@ -1421,7 +1428,7 @@ BOOST_AUTO_TEST_CASE(script_FindAndDelete)
     // prefix, leaving 02ff03 which is push-two-bytes:
     s = ToScript("0302ff030302ff03"_hex);
     d = ToScript("03"_hex);
-    expect = CScript() << "ff03"_hex_v_u8 << "ff03"_hex_v_u8;
+    expect = CScript() << "ff03"_hex << "ff03"_hex;
     BOOST_CHECK_EQUAL(FindAndDelete(s, d), 2);
     BOOST_CHECK(s == expect);
 
