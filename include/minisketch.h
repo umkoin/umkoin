@@ -5,7 +5,8 @@
 #include <stdlib.h>
 
 #ifdef _MSC_VER
-#  include <compat.h>
+#  include <BaseTsd.h>
+   typedef SSIZE_T ssize_t;
 #else
 #  include <unistd.h>
 #endif
@@ -238,7 +239,7 @@ public:
     /** Make this Minisketch a clone of the specified one. */
     Minisketch& operator=(const Minisketch& sketch) noexcept
     {
-        if (sketch.m_minisketch) {
+        if (this != &sketch && sketch.m_minisketch) {
             m_minisketch = std::unique_ptr<minisketch, Deleter>(minisketch_clone(sketch.m_minisketch.get()));
         }
         return *this;
