@@ -4,7 +4,7 @@
 
 #include <addresstype.h>
 #include <bench/bench.h>
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 #include <key.h>
 #include <key_io.h>
 #include <script/descriptor.h>
