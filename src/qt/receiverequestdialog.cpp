@@ -14,7 +14,7 @@
 #include <QDialog>
 #include <QString>
 
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 
 ReceiveRequestDialog::ReceiveRequestDialog(QWidget* parent)
     : QDialog(parent, GUIUtil::dialog_flags),
