@@ -4,7 +4,7 @@
 
 #include <common/settings.h>
 
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 
 #include <tinyformat.h>
 #include <univalue.h>

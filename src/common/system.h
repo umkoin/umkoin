@@ -6,7 +6,7 @@
 #ifndef UMKOIN_COMMON_SYSTEM_H
 #define UMKOIN_COMMON_SYSTEM_H
 
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 
 #include <cstdint>
 #include <string>
