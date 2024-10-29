@@ -192,14 +192,6 @@ static SECP256K1_INLINE void *checked_malloc(const secp256k1_callback* cb, size_
 # endif
 #endif
 
-#if defined(_WIN32)
-# define I64FORMAT "I64d"
-# define I64uFORMAT "I64u"
-#else
-# define I64FORMAT "lld"
-# define I64uFORMAT "llu"
-#endif
-
 #if defined(__GNUC__)
 # define SECP256K1_GNUC_EXT __extension__
 #else
@@ -237,6 +229,22 @@ static SECP256K1_INLINE int secp256k1_memcmp_var(const void *s1, const void *s2,
         }
     }
     return 0;
+}
+
+/* Return 1 if all elements of array s are 0 and otherwise return 0.
+ * Constant-time. */
+static SECP256K1_INLINE int secp256k1_is_zero_array(const unsigned char *s, size_t len) {
+    unsigned char acc = 0;
+    int ret;
+    size_t i;
+
+    for (i = 0; i < len; i++) {
+        acc |= s[i];
+    }
+    ret = (acc == 0);
+    /* acc may contain secret values. Try to explicitly clear it. */
+    acc = 0;
+    return ret;
 }
 
 /** If flag is true, set *r equal to *a; otherwise leave it. Constant-time.  Both *r and *a must be initialized and non-negative.*/
