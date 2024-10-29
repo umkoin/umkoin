@@ -2,6 +2,7 @@ Checks: '
 -*,
 umkoin-*,
 bugprone-argument-comment,
+bugprone-move-forwarding-reference,
 bugprone-string-constructor,
 bugprone-use-after-move,
 bugprone-lambda-function-name,
