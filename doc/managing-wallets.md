@@ -20,7 +20,7 @@ By default, wallets are created in the `wallets` folder of the data directory, w
 | Operating System | Default wallet directory                                    |
 | -----------------|:------------------------------------------------------------|
 | Linux            | `/home/<user>/.umkoin/wallets`                             |
-| Windows          | `C:\Users\<user>\AppData\Roaming\Umkoin\wallets`           |
+| Windows          | `C:\Users\<user>\AppData\Local\Umkoin\wallets`             |
 | macOS            | `/Users/<user>/Library/Application Support/Umkoin/wallets` |
 
 ### 1.2 Encrypting the Wallet
