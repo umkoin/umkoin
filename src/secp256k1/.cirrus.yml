@@ -20,9 +20,7 @@ env:
   EXPERIMENTAL: no
   ECDH: no
   RECOVERY: no
-  EXTRAKEYS: no
   SCHNORRSIG: no
-  MUSIG: no
   ELLSWIFT: no
   ### test options
   SECP256K1_TEST_ITERS:
@@ -68,9 +66,7 @@ task:
   env:
     ECDH: yes
     RECOVERY: yes
-    EXTRAKEYS: yes
     SCHNORRSIG: yes
-    MUSIG: yes
     ELLSWIFT: yes
   matrix:
      # Currently only gcc-snapshot, the other compilers are tested on GHA with QEMU
@@ -86,9 +82,7 @@ task:
   env:
     ECDH: yes
     RECOVERY: yes
-    EXTRAKEYS: yes
     SCHNORRSIG: yes
-    MUSIG: yes
     ELLSWIFT: yes
     WRAPPER_CMD: 'valgrind --error-exitcode=42'
     SECP256K1_TEST_ITERS: 2

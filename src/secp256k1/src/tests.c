@@ -3982,34 +3982,6 @@ static void test_add_neg_y_diff_x(void) {
     CHECK(secp256k1_gej_eq_ge_var(&sumj, &res));
 }
 
-static void test_ge_bytes(void) {
-    int i;
-
-    for (i = 0; i < COUNT + 1; i++) {
-        unsigned char buf[64];
-        secp256k1_ge p, q;
-
-        if (i == 0) {
-            secp256k1_ge_set_infinity(&p);
-        } else {
-            testutil_random_ge_test(&p);
-        }
-
-        if (!secp256k1_ge_is_infinity(&p)) {
-            secp256k1_ge_to_bytes(buf, &p);
-
-            secp256k1_ge_from_bytes(&q, buf);
-            CHECK(secp256k1_ge_eq_var(&p, &q));
-
-            secp256k1_ge_from_bytes_ext(&q, buf);
-            CHECK(secp256k1_ge_eq_var(&p, &q));
-        }
-        secp256k1_ge_to_bytes_ext(buf, &p);
-        secp256k1_ge_from_bytes_ext(&q, buf);
-        CHECK(secp256k1_ge_eq_var(&p, &q));
-    }
-}
-
 static void run_ge(void) {
     int i;
     for (i = 0; i < COUNT * 32; i++) {
@@ -4017,7 +3989,6 @@ static void run_ge(void) {
     }
     test_add_neg_y_diff_x();
     test_intialized_inf();
-    test_ge_bytes();
 }
 
 static void test_gej_cmov(const secp256k1_gej *a, const secp256k1_gej *b) {
@@ -6638,6 +6609,14 @@ static void permute(size_t *arr, size_t n) {
     }
 }
 
+static void rand_pk(secp256k1_pubkey *pk) {
+    unsigned char seckey[32];
+    secp256k1_keypair keypair;
+    testrand256(seckey);
+    CHECK(secp256k1_keypair_create(CTX, &keypair, seckey) == 1);
+    CHECK(secp256k1_keypair_pub(CTX, pk, &keypair) == 1);
+}
+
 static void test_sort_api(void) {
     secp256k1_pubkey pks[2];
     const secp256k1_pubkey *pks_ptr[2];
@@ -6645,8 +6624,8 @@ static void test_sort_api(void) {
     pks_ptr[0] = &pks[0];
     pks_ptr[1] = &pks[1];
 
-    testutil_random_pubkey_test(&pks[0]);
-    testutil_random_pubkey_test(&pks[1]);
+    rand_pk(&pks[0]);
+    rand_pk(&pks[1]);
 
     CHECK(secp256k1_ec_pubkey_sort(CTX, pks_ptr, 2) == 1);
     CHECK_ILLEGAL(CTX, secp256k1_ec_pubkey_sort(CTX, NULL, 2));
@@ -6699,7 +6678,7 @@ static void test_sort(void) {
         int j;
         const secp256k1_pubkey *pk_ptr[5];
         for (j = 0; j < 5; j++) {
-            testutil_random_pubkey_test(&pk[j]);
+            rand_pk(&pk[j]);
             pk_ptr[j] = &pk[j];
         }
         secp256k1_ec_pubkey_sort(CTX, pk_ptr, 5);
@@ -7448,10 +7427,6 @@ static void run_ecdsa_wycheproof(void) {
 # include "modules/schnorrsig/tests_impl.h"
 #endif
 
-#ifdef ENABLE_MODULE_MUSIG
-# include "modules/musig/tests_impl.h"
-#endif
-
 #ifdef ENABLE_MODULE_ELLSWIFT
 # include "modules/ellswift/tests_impl.h"
 #endif
@@ -7469,18 +7444,6 @@ static void run_secp256k1_memczero_test(void) {
     memset(buf2, 0, sizeof(buf2));
     secp256k1_memczero(buf1, sizeof(buf1) , 1);
     CHECK(secp256k1_memcmp_var(buf1, buf2, sizeof(buf1)) == 0);
-}
-
-
-static void run_secp256k1_is_zero_array_test(void) {
-    unsigned char buf1[3] = {0, 1};
-    unsigned char buf2[3] = {1, 0};
-
-    CHECK(secp256k1_is_zero_array(buf1, 0) == 1);
-    CHECK(secp256k1_is_zero_array(buf1, 1) == 1);
-    CHECK(secp256k1_is_zero_array(buf1, 2) == 0);
-    CHECK(secp256k1_is_zero_array(buf2, 1) == 0);
-    CHECK(secp256k1_is_zero_array(buf2, 2) == 0);
 }
 
 static void run_secp256k1_byteorder_tests(void) {
@@ -7816,17 +7779,12 @@ int main(int argc, char **argv) {
     run_schnorrsig_tests();
 #endif
 
-#ifdef ENABLE_MODULE_MUSIG
-    run_musig_tests();
-#endif
-
 #ifdef ENABLE_MODULE_ELLSWIFT
     run_ellswift_tests();
 #endif
 
     /* util tests */
     run_secp256k1_memczero_test();
-    run_secp256k1_is_zero_array_test();
     run_secp256k1_byteorder_tests();
 
     run_cmov_tests();
