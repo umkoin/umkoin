@@ -4,7 +4,7 @@ AC_PREREQ([2.60])
 # the API. All changes in experimental modules are treated as
 # backwards-compatible and therefore at most increase the minor version.
 define(_PKG_VERSION_MAJOR, 0)
-define(_PKG_VERSION_MINOR, 5)
+define(_PKG_VERSION_MINOR, 6)
 define(_PKG_VERSION_PATCH, 1)
 define(_PKG_VERSION_IS_RELEASE, false)
 
@@ -13,9 +13,9 @@ define(_PKG_VERSION_IS_RELEASE, false)
 # https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
 # All changes in experimental modules are treated as if they don't affect the
 # interface and therefore only increase the revision.
-define(_LIB_VERSION_CURRENT, 4)
+define(_LIB_VERSION_CURRENT, 5)
 define(_LIB_VERSION_REVISION, 1)
-define(_LIB_VERSION_AGE, 2)
+define(_LIB_VERSION_AGE, 0)
 
 AC_INIT([libsecp256k1],m4_join([.], _PKG_VERSION_MAJOR, _PKG_VERSION_MINOR, _PKG_VERSION_PATCH)m4_if(_PKG_VERSION_IS_RELEASE, [true], [], [-dev]),[https://github.com/umkoin-core/secp256k1/issues],[libsecp256k1],[https://github.com/umkoin-core/secp256k1])
 
@@ -250,8 +250,8 @@ fi
 print_msan_notice=no
 if test x"$enable_ctime_tests" = x"yes"; then
   SECP_MSAN_CHECK
-  # MSan on Clang >=16 reports unitialized memory in function parameters and return values, even if
-  # the uninitalized variable is never actually "used". This is called "eager" checking, and it's
+  # MSan on Clang >=16 reports uninitialized memory in function parameters and return values, even if
+  # the uninitialized variable is never actually "used". This is called "eager" checking, and it's
   # sounds like good idea for normal use of MSan. However, it yields many false positives in the
   # ctime_tests because many return values depend on secret (i.e., "uninitialized") values, and
   # we're only interested in detecting branches (which count as "uses") on secret data.
