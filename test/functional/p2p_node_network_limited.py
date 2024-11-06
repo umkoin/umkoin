@@ -172,4 +172,4 @@ class NodeNetworkLimitedTest(UmkoinTestFramework):
         self.test_avoid_requesting_historical_blocks()
 
 if __name__ == '__main__':
-    NodeNetworkLimitedTest().main()
+    NodeNetworkLimitedTest(__file__).main()

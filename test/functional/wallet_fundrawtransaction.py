@@ -1523,4 +1523,4 @@ class RawTransactionsTest(UmkoinTestFramework):
         wallet.unloadwallet()
 
 if __name__ == '__main__':
-    RawTransactionsTest().main()
+    RawTransactionsTest(__file__).main()

@@ -117,4 +117,4 @@ class PingPongTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    PingPongTest().main()
+    PingPongTest(__file__).main()

@@ -196,4 +196,4 @@ class BytesPerSigOpTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    BytesPerSigOpTest().main()
+    BytesPerSigOpTest(__file__).main()

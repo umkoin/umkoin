@@ -412,4 +412,4 @@ class BIP68Test(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    BIP68Test().main()
+    BIP68Test(__file__).main()

@@ -131,4 +131,4 @@ class ScantxoutsetTest(UmkoinTestFramework):
 
 
 if __name__ == "__main__":
-    ScantxoutsetTest().main()
+    ScantxoutsetTest(__file__).main()

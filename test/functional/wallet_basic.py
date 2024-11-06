@@ -818,4 +818,4 @@ class WalletTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    WalletTest().main()
+    WalletTest(__file__).main()

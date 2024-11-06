@@ -330,4 +330,4 @@ class ListTransactionsTest(UmkoinTestFramework):
 
 
 if __name__ == '__main__':
-    ListTransactionsTest().main()
+    ListTransactionsTest(__file__).main()
