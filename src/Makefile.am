@@ -707,7 +707,6 @@ libumkoin_common_a_SOURCES = \
   outputtype.cpp \
   policy/feerate.cpp \
   policy/policy.cpp \
-  policy/truc_policy.cpp \
   protocol.cpp \
   psbt.cpp \
   rpc/external_signer.cpp \
