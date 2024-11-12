@@ -244,8 +244,8 @@ public:
         pchMessageStart[3] = 0x07;
         nDefaultPort = 16333;
         nPruneAfterHeight = 1000;
-        m_assumed_blockchain_size = 8;
-        m_assumed_chain_state_size = 4;
+        m_assumed_blockchain_size = 42;
+        m_assumed_chain_state_size = 3;
 
         genesis = CreateGenesisBlock(1511678228, 1037567534, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -518,10 +518,10 @@ public:
         consensus.SegwitHeight = 0; // Always active unless overridden
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256{"7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-        consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
+        consensus.nPowTargetTimespan = 43200; // 12 hours
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
-        consensus.enforce_BIP94 = false;
+        consensus.enforce_BIP94 = true;
         consensus.fPowNoRetargeting = true;
         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
         consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)
