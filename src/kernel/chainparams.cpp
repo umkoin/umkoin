@@ -86,7 +86,7 @@ public:
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.script_flag_exceptions.emplace( // BIP16 exception
-            uint256{"00000000470b9e0dd4f6fb72c93e0c655f68069899a5b2a0b4e413ef8006469a"}, SCRIPT_VERIFY_NONE);
+            uint256{"0000000000281e753b0fc8c003269be3ad8e7af0689763840f884f302297f14a"}, SCRIPT_VERIFY_NONE);
         consensus.script_flag_exceptions.emplace( // Taproot exception
             uint256{"0000000000006416703a4143581f958afc8325fe6e7b5fc427ff8a2a065f84da"}, SCRIPT_VERIFY_P2SH | SCRIPT_VERIFY_WITNESS);
         consensus.BIP34Height = 0;
@@ -208,7 +208,7 @@ public:
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.script_flag_exceptions.emplace( // BIP16 exception
-            uint256{"00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"}, SCRIPT_VERIFY_NONE);
+            uint256{"000000003179f186e3103c23f0c7b8fe73f6146e77e4f89a7710772f9970561c"}, SCRIPT_VERIFY_NONE);
         consensus.BIP34Height = 0;
         consensus.BIP34Hash = uint256{"00000000243306f10d1ba825689fb5b892c80a1ea1b41d79cad46b8b0ab09429"};
         consensus.BIP65Height = 0;
@@ -340,11 +340,11 @@ public:
         pchMessageStart[3] = 0x28;
         nDefaultPort = 46333;
         nPruneAfterHeight = 1000;
-        m_assumed_blockchain_size = 1;
+        m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
 
         const char* testnet4_genesis_msg = "2024/08/23 Flag Day";
-        const CScript testnet4_genesis_script = CScript() << ParseHex("000000000000000000000000000000000000000000000000000000000000000000") << OP_CHECKSIG;
+        const CScript testnet4_genesis_script = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
         genesis = CreateGenesisBlock(testnet4_genesis_msg,
                 testnet4_genesis_script,
                 1724371200,
