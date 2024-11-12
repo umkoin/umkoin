@@ -593,7 +593,7 @@ public:
         };
 
         m_assumeutxo_data = {
-            {
+            {   // For use by unit tests
                 .height = 110,
                 .hash_serialized = AssumeutxoHash{uint256{"611314483dc02d0591d15b104c54c09491612744815b0659a7530ecb1a4cecbe"}},
                 .m_chain_tx_count = 111,
