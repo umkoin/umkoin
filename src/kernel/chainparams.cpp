@@ -312,7 +312,7 @@ public:
         consensus.CSVHeight = 1;
         consensus.SegwitHeight = 1;
         consensus.MinBIP9WarningHeight = 0;
-        consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
+        consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPowTargetTimespan = 43200; // 12 hours
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -518,13 +518,13 @@ public:
         consensus.SegwitHeight = 0; // Always active unless overridden
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256{"7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-        consensus.nPowTargetTimespan = 43200; // 12 hours
+        consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
-        consensus.enforce_BIP94 = true;
+        consensus.enforce_BIP94 = false;
         consensus.fPowNoRetargeting = true;
-        consensus.nRuleChangeActivationThreshold = 54; // 75% for testchains
-        consensus.nMinerConfirmationWindow = 72; // Faster than normal for regtest (72 instead of 144)
+        consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
+        consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)
 
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;
@@ -664,19 +664,16 @@ std::optional<ChainType> GetNetworkForMagic(const MessageStartChars& message)
 {
     const auto mainnet_msg = CChainParams::Main()->MessageStart();
     const auto testnet_msg = CChainParams::TestNet()->MessageStart();
-    const auto testnet4_msg = CChainParams::TestNet4()->MessageStart();
     const auto regtest_msg = CChainParams::RegTest({})->MessageStart();
     const auto signet_msg = CChainParams::SigNet({})->MessageStart();
 
-    if (std::ranges::equal(message, mainnet_msg)) {
+    if (std::equal(message.begin(), message.end(), mainnet_msg.data())) {
         return ChainType::MAIN;
-    } else if (std::ranges::equal(message, testnet_msg)) {
+    } else if (std::equal(message.begin(), message.end(), testnet_msg.data())) {
         return ChainType::TESTNET;
-    } else if (std::ranges::equal(message, testnet4_msg)) {
-        return ChainType::TESTNET4;
-    } else if (std::ranges::equal(message, regtest_msg)) {
+    } else if (std::equal(message.begin(), message.end(), regtest_msg.data())) {
         return ChainType::REGTEST;
-    } else if (std::ranges::equal(message, signet_msg)) {
+    } else if (std::equal(message.begin(), message.end(), signet_msg.data())) {
         return ChainType::SIGNET;
     }
     return std::nullopt;
