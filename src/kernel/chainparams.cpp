@@ -312,7 +312,7 @@ public:
         consensus.CSVHeight = 1;
         consensus.SegwitHeight = 1;
         consensus.MinBIP9WarningHeight = 0;
-        consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
         consensus.nPowTargetTimespan = 43200; // 12 hours
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -340,7 +340,7 @@ public:
         pchMessageStart[3] = 0x28;
         nDefaultPort = 46333;
         nPruneAfterHeight = 1000;
-        m_assumed_blockchain_size = 0;
+        m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 0;
 
         const char* testnet4_genesis_msg = "2024/08/23 Flag Day";
@@ -353,8 +353,8 @@ public:
                 1,
                 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000000006d2b2de2bcee5c82b6d17aac68f0646292849b3ef1f309165eec7933"));
-        assert(genesis.hashMerkleRoot == uint256S("0xe1f926a4a38a8ed8b43214183f6fadd297e026ea02b3c105ea23d258e33ac847"));
+        assert(consensus.hashGenesisBlock == uint256{"000000006d2b2de2bcee5c82b6d17aac68f0646292849b3ef1f309165eec7933"});
+        assert(genesis.hashMerkleRoot == uint256{"e1f926a4a38a8ed8b43214183f6fadd297e026ea02b3c105ea23d258e33ac847"});
 
         vFixedSeeds.clear();
         vSeeds.clear();
