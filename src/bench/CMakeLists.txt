@@ -3,12 +3,11 @@
 # file COPYING or https://opensource.org/license/mit/.
 
 include(GenerateHeaders)
-generate_header_from_raw(data/block47789.raw)
+generate_header_from_raw(data/block47789.raw benchmark::data)
 
 add_executable(bench_umkoin
   bench_umkoin.cpp
   bench.cpp
-  data.cpp
   nanobench.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/data/block47789.raw.h
 # Benchmarks:
