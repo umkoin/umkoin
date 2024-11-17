@@ -46,7 +46,7 @@ file(GLOB ts_files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} locale/*.ts)
 set_source_files_properties(${ts_files} PROPERTIES OUTPUT_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/locale)
 qt5_add_translation(qm_files ${ts_files})
 
-configure_file(umkoin_locale.qrc umkoin_locale.qrc COPYONLY)
+configure_file(umkoin_locale.qrc umkoin_locale.qrc USE_SOURCE_PERMISSIONS COPYONLY)
 
 # The umkoinqt sources have to include headers in
 # order to parse them to collect translatable strings.
