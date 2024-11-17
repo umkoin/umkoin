@@ -1,9 +1,0 @@
-QT_TS = \
-  qt/locale/umkoin_da.ts \
-  qt/locale/umkoin_de.ts \
-  qt/locale/umkoin_en.ts \
-  qt/locale/umkoin_es.ts \
-  qt/locale/umkoin_fr.ts \
-  qt/locale/umkoin_it.ts \
-  qt/locale/umkoin_nl.ts \
-  qt/locale/umkoin_uk.ts
