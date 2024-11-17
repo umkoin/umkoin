@@ -34,6 +34,11 @@ public:
     }
     std::unique_ptr<interfaces::Echo> makeEcho() override { return interfaces::MakeEcho(); }
     interfaces::Ipc* ipc() override { return m_ipc.get(); }
+    // umkoin-gui accepts -ipcbind option even though it does not use it
+    // directly. It just returns true here to accept the option because
+    // umkoin-node accepts the option, and umkoin-gui accepts all umkoin-node
+    // options and will start the node with those options.
+    bool canListenIpc() override { return true; }
     node::NodeContext m_node;
     std::unique_ptr<interfaces::Ipc> m_ipc;
 };

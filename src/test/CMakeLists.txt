@@ -177,7 +177,7 @@ if(WITH_MULTIPROCESS)
     PRIVATE
       ipc_tests.cpp
   )
-  target_link_libraries(test_umkoin umkoin_ipc_test)
+  target_link_libraries(test_umkoin umkoin_ipc_test umkoin_ipc)
 endif()
 
 function(add_boost_test source_file)
