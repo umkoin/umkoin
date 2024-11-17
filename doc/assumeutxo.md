@@ -17,7 +17,7 @@ Once you've obtained the snapshot, you can use the RPC command `loadtxoutset` to
 load it.
 
 ```
-$ umkoin-cli loadtxoutset /path/to/input
+$ umkoin-cli -rpcclienttimeout=0 loadtxoutset /path/to/input
 ```
 
 After the snapshot has loaded, the syncing process of both the snapshot chain
