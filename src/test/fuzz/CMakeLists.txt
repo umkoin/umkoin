@@ -132,6 +132,7 @@ target_link_libraries(fuzz
   test_fuzz
   umkoin_cli
   umkoin_common
+  umkoin_util
   minisketch
   leveldb
   univalue
