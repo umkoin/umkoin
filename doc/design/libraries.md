@@ -4,7 +4,7 @@
 |--------------------------|-------------|
 | *libumkoin_cli*         | RPC client functionality used by *umkoin-cli* executable |
 | *libumkoin_common*      | Home for common functionality shared by different executables and libraries. Similar to *libumkoin_util*, but higher-level (see [Dependencies](#dependencies)). |
-| *libumkoin_consensus*   | Stable, backwards-compatible consensus functionality used by *libumkoin_node* and *libumkoin_wallet*. |
+| *libumkoin_consensus*   | Consensus functionality used by *libumkoin_node* and *libumkoin_wallet*. |
 | *libumkoin_crypto*      | Hardware-optimized functions for data encryption, hashing, message authentication, and key derivation. |
 | *libumkoin_kernel*      | Consensus engine and support library used for validation by *libumkoin_node*. |
 | *libumkoinqt*           | GUI functionality used by *umkoin-qt* and *umkoin-gui* executables. |
