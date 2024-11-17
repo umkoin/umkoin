@@ -63,7 +63,7 @@ build/src/test/test_umkoin --run_test=getarg_tests/doubledash
 ```
 
 `test_umkoin` creates a temporary working (data) directory with a randomly
-generated pathname within `test_common_Umkoin Core/`, which in turn is within
+generated pathname within `test_common umkoin/`, which in turn is within
 the system's temporary directory (see
 [`temp_directory_path`](https://en.cppreference.com/w/cpp/filesystem/temp_directory_path)).
 This data directory looks like a simplified form of the standard `umkoind` data
@@ -73,7 +73,7 @@ have a `debug.log` file, for example.
 The location of the temporary data directory can be specified with the
 `-testdatadir` option. This can make debugging easier. The directory
 path used is the argument path appended with
-`/test_common_Umkoin Core/<test-name>/datadir`.
+`/test_common umkoin/<test-name>/datadir`.
 The directory path is created if necessary.
 Specifying this argument also causes the data directory
 not to be removed after the last test. This is useful for looking at
@@ -83,11 +83,11 @@ so no leftover state is used.)
 
 ```bash
 $ build/src/test/test_umkoin --run_test=getarg_tests/doubledash -- -testdatadir=/somewhere/mydatadir
-Test directory (will not be deleted): "/somewhere/mydatadir/test_common_Umkoin Core/getarg_tests/doubledash/datadir"
+Test directory (will not be deleted): "/somewhere/mydatadir/test_common umkoin/getarg_tests/doubledash/datadir"
 Running 1 test case...
 
 *** No errors detected
-$ ls -l '/somewhere/mydatadir/test_common_Umkoin Core/getarg_tests/doubledash/datadir'
+$ ls -l '/somewhere/mydatadir/test_common umkoin/getarg_tests/doubledash/datadir'
 total 8
 drwxrwxr-x 2 admin admin 4096 Nov 27 22:45 blocks
 -rw-rw-r-- 1 admin admin 1003 Nov 27 22:45 debug.log
