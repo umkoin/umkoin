@@ -14,6 +14,7 @@ export NO_DEPENDS=1
 export RUN_UNIT_TESTS=false
 export RUN_FUNCTIONAL_TESTS=false
 export RUN_FUZZ_TESTS=false
+export RUN_CHECK_DEPS=false
 export RUN_TIDY=true
 export GOAL="install"
 export UMKOIN_CONFIG="\
@@ -24,4 +25,3 @@ export UMKOIN_CONFIG="\
  -DCMAKE_C_FLAGS_RELWITHDEBINFO='-O0 -g0' \
  -DCMAKE_CXX_FLAGS_RELWITHDEBINFO='-O0 -g0' \
 "
-export CCACHE_MAXSIZE=200M
