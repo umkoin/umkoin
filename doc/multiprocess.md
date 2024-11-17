@@ -4,7 +4,7 @@ _This document describes usage of the multiprocess feature. For design informati
 
 ## Build Option
 
-On unix systems, the `--enable-multiprocess` build option can be passed to `./configure` to build new `umkoin-node`, `umkoin-wallet`, and `umkoin-gui` executables alongside existing `umkoind` and `umkoin-qt` executables.
+On Unix systems, the `-DWITH_MULTIPROCESS=ON` build option can be passed to build the supplemental `umkoin-node` and `umkoin-gui` multiprocess executables.
 
 ## Debugging
 
@@ -17,18 +17,18 @@ The multiprocess feature requires [Cap'n Proto](https://capnproto.org/) and [lib
 ```
 cd <UMKOIN_SOURCE_DIRECTORY>
 make -C depends NO_QT=1 MULTIPROCESS=1
-CONFIG_SITE=$PWD/depends/x86_64-pc-linux-gnu/share/config.site ./configure
-make
-src/umkoin-node -regtest -printtoconsole -debug=ipc
-UMKOIND=umkoin-node test/functional/test_runner.py
+cmake -B build --toolchain=depends/x86_64-pc-linux-gnu/toolchain.cmake
+cmake --build build
+build/src/umkoin-node -regtest -printtoconsole -debug=ipc
+UMKOIND=$(pwd)/build/src/umkoin-node build/test/functional/test_runner.py
 ```
 
-The configure script will pick up settings and library locations from the depends directory, so there is no need to pass `--enable-multiprocess` as a separate flag when using the depends system (it's controlled by the `MULTIPROCESS=1` option).
+The `cmake` build will pick up settings and library locations from the depends directory, so there is no need to pass `-DWITH_MULTIPROCESS=ON` as a separate flag when using the depends system (it's controlled by the `MULTIPROCESS=1` option).
 
-Alternately, you can install [Cap'n Proto](https://capnproto.org/) and [libmultiprocess](https://github.com/chaincodelabs/libmultiprocess) packages on your system, and just run `./configure --enable-multiprocess` without using the depends system. The configure script will be able to locate the installed packages via [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/). See [Installation](https://github.com/chaincodelabs/libmultiprocess/blob/master/doc/install.md) section of the libmultiprocess readme for install steps. See [build-unix.md](build-unix.md) and [build-osx.md](build-osx.md) for information about installing dependencies in general.
+Alternately, you can install [Cap'n Proto](https://capnproto.org/) and [libmultiprocess](https://github.com/chaincodelabs/libmultiprocess) packages on your system, and just run `cmake -B build -DWITH_MULTIPROCESS=ON` without using the depends system. The `cmake` build will be able to locate the installed packages via [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/). See [Installation](https://github.com/chaincodelabs/libmultiprocess/blob/master/doc/install.md) section of the libmultiprocess readme for install steps. See [build-unix.md](build-unix.md) and [build-osx.md](build-osx.md) for information about installing dependencies in general.
 
 ## Usage
 
-`umkoin-node` is a drop-in replacement for `umkoind`, and `umkoin-gui` is a drop-in replacement for `umkoin-qt`, and there are no differences in use or external behavior between the new and old executables. But internally after [#10102](https://github.com/bitcoin/bitcoin/pull/10102), `umkoin-gui` will spawn a `umkoin-node` process to run P2P and RPC code, communicating with it across a socket pair, and `umkoin-node` will spawn `umkoin-wallet` to run wallet code, also communicating over a socket pair. This will let node, wallet, and GUI code run in separate address spaces for better isolation, and allow future improvements like being able to start and stop components independently on different machines and environments.
-[#19460](https://github.com/bitcoin/bitcoin/pull/19460) also adds a new `umkoin-node` `-ipcbind` option and an `umkoind-wallet` `-ipcconnect` option to allow new wallet processes to connect to an existing node process.
-And [#19461](https://github.com/bitcoin/bitcoin/pull/19461) adds a new `umkoin-gui` `-ipcconnect` option to allow new GUI processes to connect to an existing node process.
+`bitcoin-node` is a drop-in replacement for `bitcoind`, and `bitcoin-gui` is a drop-in replacement for `bitcoin-qt`, and there are no differences in use or external behavior between the new and old executables. But internally after [#10102](https://github.com/bitcoin/bitcoin/pull/10102), `bitcoin-gui` will spawn a `bitcoin-node` process to run P2P and RPC code, communicating with it across a socket pair, and `bitcoin-node` will spawn `bitcoin-wallet` to run wallet code, also communicating over a socket pair. This will let node, wallet, and GUI code run in separate address spaces for better isolation, and allow future improvements like being able to start and stop components independently on different machines and environments.
+[#19460](https://github.com/bitcoin/bitcoin/pull/19460) also adds a new `bitcoin-node` `-ipcbind` option and an `bitcoind-wallet` `-ipcconnect` option to allow new wallet processes to connect to an existing node process.
+And [#19461](https://github.com/bitcoin/bitcoin/pull/19461) adds a new `bitcoin-gui` `-ipcconnect` option to allow new GUI processes to connect to an existing node process.
