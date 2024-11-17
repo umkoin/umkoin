@@ -7,17 +7,16 @@ To quickly get started fuzzing Umkoin Core using [libFuzzer](https://llvm.org/do
 ```sh
 $ git clone https://github.com/umkoin/umkoin
 $ cd umkoin/
-$ cmake -B build_fuzz \
-   -DCMAKE_C_COMPILER="clang" \
-   -DCMAKE_CXX_COMPILER="clang++" \
-   -DBUILD_FOR_FUZZING=ON \
-   -DSANITIZERS=undefined,address,fuzzer
+$ cmake --preset=libfuzzer
 # macOS users: If you have problem with this step then make sure to read "macOS hints for
 # libFuzzer" on https://github.com/umkoin/umkoin/blob/master/doc/fuzzing.md#macos-hints-for-libfuzzer
 $ cmake --build build_fuzz
 $ FUZZ=process_message build_fuzz/src/test/fuzz/fuzz
 # abort fuzzing using ctrl-c
 ```
+
+One can use `--prefix=libfuzzer-nosan` to do the same without common sanitizers enabled.
+See [further](#run-without-sanitizers-for-increased-throughput) for more information.
 
 There is also a runner script to execute all fuzz targets. Refer to
 `./test/fuzz/test_runner.py --help` for more details.
@@ -28,7 +27,7 @@ There is also a runner script to execute all fuzz targets. Refer to
 
 ## Fuzzing harnesses and output
 
-[`process_message`](https://github.com/umkoin/umkoin/blob/master/src/test/fuzz/process_message.cpp) is a fuzzing harness for the [`ProcessMessage(...)` function (`net_processing`)](https://github.com/umkoin/umkoin/blob/master/src/net_processing.cpp). The available fuzzing harnesses are found in [`src/test/fuzz/`](https://github.com/umkoin/umkoin/tree/master/src/test/fuzz).
+[`process_message`](https://github.com/umkoin/umkoin/blob/master/src/test/fuzz/process_message.cpp) is a fuzzing harness for the [`ProcessMessage(...)` function (`net_processing`)](https://github.com/bitcoin/bitcoin/blob/master/src/net_processing.cpp). The available fuzzing harnesses are found in [`src/test/fuzz/`](https://github.com/bitcoin/bitcoin/tree/master/src/test/fuzz).
 
 The fuzzer will output `NEW` every time it has created a test input that covers new areas of the code under test. For more information on how to interpret the fuzzer output, see the [libFuzzer documentation](https://llvm.org/docs/LibFuzzer.html).
 
@@ -107,8 +106,8 @@ INFO: seed corpus: files: 991 min: 1b max: 1858b total: 288291b rss: 150Mb
 Fuzzing on a harness compiled with `-DSANITIZERS=address,fuzzer,undefined` is
 good for finding bugs. However, the very slow execution even under libFuzzer
 will limit the ability to find new coverage. A good approach is to perform
-occasional long runs without the additional bug-detectors (just
-`-DSANITIZERS=fuzzer`) and then merge new inputs into a corpus as described in
+occasional long runs without the additional bug-detectors
+(`--preset=libfuzzer-nosan`) and then merge new inputs into a corpus as described in
 the qa-assets repo
 (https://github.com/bitcoin-core/qa-assets/blob/main/.github/PULL_REQUEST_TEMPLATE.md).
 Patience is useful; even with improved throughput, libFuzzer may need days and
@@ -145,11 +144,9 @@ You may also need to take care of giving the correct path for `clang` and
 Full configuration step that was tested on macOS with `brew` installed `llvm`:
 
 ```sh
-$ cmake -B build_fuzz \
+$ cmake --preset=libfuzzer \
    -DCMAKE_C_COMPILER="$(brew --prefix llvm)/bin/clang" \
    -DCMAKE_CXX_COMPILER="$(brew --prefix llvm)/bin/clang++" \
-   -DBUILD_FOR_FUZZING=ON \
-   -DSANITIZERS=undefined,address,fuzzer \
    -DAPPEND_LDFLAGS=-Wl,-no_warn_duplicate_libraries
 ```
 
