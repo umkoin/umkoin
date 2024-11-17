@@ -608,7 +608,7 @@ void MinerTestingSetup::TestPrioritisedMining(const CScript& scriptPubKey, const
 BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
 {
     // Note that by default, these tests run with size accounting enabled.
-    CScript scriptPubKey = CScript() << "04880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67"_hex_v_u8 << OP_CHECKSIG;
+    CScript scriptPubKey = CScript() << "04880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67"_hex << OP_CHECKSIG;
     std::unique_ptr<CBlockTemplate> pblocktemplate;
 
     CTxMemPool& tx_mempool{*m_node.mempool};
