@@ -40,7 +40,7 @@ The output will look similar to:
 Help
 ---------------------
 
-    build/src/bench/bench_umkoin -?
+    build/src/bench/bench_umkoin -h
 
 To print the various options, like listing the benchmarks without running them
 or using a regex filter to only run certain benchmarks.
