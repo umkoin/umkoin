@@ -61,7 +61,7 @@
 #include <validation.h>
 #include <validationinterface.h>
 
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 
 #include <any>
 #include <memory>

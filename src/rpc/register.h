@@ -5,7 +5,7 @@
 #ifndef UMKOIN_RPC_REGISTER_H
 #define UMKOIN_RPC_REGISTER_H
 
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 
 /** These are in one header file to avoid creating tons of single-function
  * headers for everything under src/rpc/ */

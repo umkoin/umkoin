@@ -5,7 +5,7 @@
 #ifndef UMKOIN_QT_RPCCONSOLE_H
 #define UMKOIN_QT_RPCCONSOLE_H
 
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 
 #include <qt/clientmodel.h>
 #include <qt/guiutil.h>

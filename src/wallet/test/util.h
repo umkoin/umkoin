@@ -5,7 +5,7 @@
 #ifndef UMKOIN_WALLET_TEST_UTIL_H
 #define UMKOIN_WALLET_TEST_UTIL_H
 
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 
 #include <addresstype.h>
 #include <wallet/db.h>

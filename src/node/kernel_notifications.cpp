@@ -4,7 +4,7 @@
 
 #include <node/kernel_notifications.h>
 
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 
 #include <chain.h>
 #include <common/args.h>

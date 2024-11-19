@@ -5,7 +5,7 @@
 
 #include <wallet/wallet.h>
 
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 #include <addresstype.h>
 #include <blockfilter.h>
 #include <chain.h>

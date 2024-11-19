@@ -5,7 +5,7 @@
 
 #include <util/fs_helpers.h>
 
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 
 #include <logging.h>
 #include <sync.h>

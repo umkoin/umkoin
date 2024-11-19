@@ -11,7 +11,7 @@
 #include <qt/walletmodel.h>
 
 #include <common/signmessage.h> // For MessageSign(), MessageVerify()
-#include <config/umkoin-config.h> // IWYU pragma: keep
+#include <umkoin-build-config.h> // IWYU pragma: keep
 #include <key_io.h>
 #include <wallet/wallet.h>
 
