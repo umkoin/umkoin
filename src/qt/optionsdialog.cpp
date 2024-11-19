@@ -139,7 +139,7 @@ OptionsDialog::OptionsDialog(QWidget* parent, bool enableWallet)
     }
 
 #ifdef ENABLE_EXTERNAL_SIGNER
-    ui->externalSignerPath->setToolTip(ui->externalSignerPath->toolTip().arg(PACKAGE_NAME));
+    ui->externalSignerPath->setToolTip(ui->externalSignerPath->toolTip().arg(CLIENT_NAME));
 #else
     //: "External signing" means using devices such as hardware wallets.
     ui->externalSignerPath->setToolTip(tr("Compiled without external signing support (required for external signing)"));
@@ -148,12 +148,12 @@ OptionsDialog::OptionsDialog(QWidget* parent, bool enableWallet)
     /* Display elements init */
     QDir translations(":translations");
 
-    ui->umkoinAtStartup->setToolTip(ui->umkoinAtStartup->toolTip().arg(PACKAGE_NAME));
-    ui->umkoinAtStartup->setText(ui->umkoinAtStartup->text().arg(PACKAGE_NAME));
+    ui->umkoinAtStartup->setToolTip(ui->umkoinAtStartup->toolTip().arg(CLIENT_NAME));
+    ui->umkoinAtStartup->setText(ui->umkoinAtStartup->text().arg(CLIENT_NAME));
 
-    ui->openUmkoinConfButton->setToolTip(ui->openUmkoinConfButton->toolTip().arg(PACKAGE_NAME));
+    ui->openUmkoinConfButton->setToolTip(ui->openUmkoinConfButton->toolTip().arg(CLIENT_NAME));
 
-    ui->lang->setToolTip(ui->lang->toolTip().arg(PACKAGE_NAME));
+    ui->lang->setToolTip(ui->lang->toolTip().arg(CLIENT_NAME));
     ui->lang->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
     for (const QString &langStr : translations.entryList())
     {
