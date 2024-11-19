@@ -48,6 +48,7 @@ UMKOIND_PROC_WAIT_TIMEOUT = 60
 NUM_XOR_BYTES = 8
 # The null blocks key (all 0s)
 NULL_BLK_XOR_KEY = bytes([0] * NUM_XOR_BYTES)
+UMKOIN_PID_FILENAME_DEFAULT = "umkoind.pid"
 
 
 class FailedToStartError(Exception):

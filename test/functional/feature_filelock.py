@@ -7,7 +7,10 @@ import random
 import string
 
 from test_framework.test_framework import UmkoinTestFramework
-from test_framework.test_node import ErrorMatch
+from test_framework.test_node import (
+    UMKOIN_PID_FILENAME_DEFAULT,
+    ErrorMatch,
+)
 
 class FilelockTest(UmkoinTestFramework):
     def add_options(self, parser):
@@ -33,7 +36,7 @@ class FilelockTest(UmkoinTestFramework):
         self.log.info("Check that cookie and PID file are not deleted when attempting to start a second umkoind using the same datadir")
         cookie_file = datadir / ".cookie"
         assert cookie_file.exists()  # should not be deleted during the second umkoind instance shutdown
-        pid_file = datadir / "umkoind.pid"
+        pid_file = datadir / UMKOIN_PID_FILENAME_DEFAULT
         assert pid_file.exists()
 
         if self.is_wallet_compiled():
