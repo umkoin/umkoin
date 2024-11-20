@@ -290,13 +290,14 @@ target_link_libraries(umkoin_node
     core_interface
     umkoin_common
     umkoin_util
+    $<TARGET_NAME_IF_EXISTS:umkoin_zmq>
     leveldb
     minisketch
     univalue
     Boost::headers
-    $<TARGET_NAME_IF_EXISTS:libevent::libevent>
+    libevent::core
+    libevent::extra
     $<TARGET_NAME_IF_EXISTS:libevent::pthreads>
-    $<TARGET_NAME_IF_EXISTS:umkoin_zmq>
     $<TARGET_NAME_IF_EXISTS:USDT::headers>
 )
 
@@ -366,7 +367,8 @@ if(BUILD_CLI)
     umkoin_cli
     umkoin_common
     umkoin_util
-    $<TARGET_NAME_IF_EXISTS:libevent::libevent>
+    libevent::core
+    libevent::extra
   )
   list(APPEND installable_targets umkoin-cli)
 endif()
