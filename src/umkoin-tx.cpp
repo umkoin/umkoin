@@ -113,8 +113,11 @@ static int AppInitRawTx(int argc, char* argv[])
             strUsage += FormatParagraph(LicenseInfo());
         } else {
             strUsage += "\n"
-                "Usage:  umkoin-tx [options] <hex-tx> [commands]  Update hex-encoded umkoin transaction\n"
-                "or:     umkoin-tx [options] -create [commands]   Create hex-encoded umkoin transaction\n"
+                "The umkoin-tx tool is used for creating and modifying umkoin transactions.\n\n"
+                "umkoin-tx can be used with \"<hex-tx> [commands]\" to update a hex-encoded umkoin transaction, or with \"-create [commands]\" to create a hex-encoded umkoin transaction.\n"
+                "\n"
+                "Usage: umkoin-tx [options] <hex-tx> [commands]\n"
+                "or:    umkoin-tx [options] -create [commands]\n"
                 "\n";
             strUsage += gArgs.GetHelpMessage();
         }

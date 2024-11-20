@@ -61,17 +61,18 @@ static std::optional<int> WalletAppInit(ArgsManager& args, int argc, char* argv[
     }
     const bool missing_args{argc < 2};
     if (missing_args || HelpRequested(args) || args.IsArgSet("-version")) {
-        std::string strUsage = strprintf("%s umkoin-wallet version", CLIENT_NAME) + " " + FormatFullVersion() + "\n";
+        std::string strUsage = strprintf("%s umkoin-wallet utility version", CLIENT_NAME) + " " + FormatFullVersion() + "\n";
 
         if (args.IsArgSet("-version")) {
             strUsage += FormatParagraph(LicenseInfo());
         } else {
             strUsage += "\n"
-                        "umkoin-wallet is an offline tool for creating and interacting with " CLIENT_NAME " wallet files.\n"
-                        "By default umkoin-wallet will act on wallets in the default mainnet wallet directory in the datadir.\n"
-                        "To change the target wallet, use the -datadir, -wallet and -regtest/-signet/-testnet/-testnet4 arguments.\n\n"
-                        "Usage:\n"
-                        "  umkoin-wallet [options] <command>\n";
+                "umkoin-wallet is an offline tool for creating and interacting with " CLIENT_NAME " wallet files.\n\n"
+                "By default umkoin-wallet will act on wallets in the default mainnet wallet directory in the datadir.\n\n"
+                "To change the target wallet, use the -datadir, -wallet and -regtest / -signet / -testnet arguments.\n"
+                "\n"
+                "Usage: umkoin-wallet [options] <command>\n"
+                "\n";
             strUsage += "\n" + args.GetHelpMessage();
         }
         tfm::format(std::cout, "%s", strUsage);

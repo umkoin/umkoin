@@ -152,10 +152,16 @@ static int AppInitRPC(int argc, char* argv[])
             strUsage += FormatParagraph(LicenseInfo());
         } else {
             strUsage += "\n"
-                "Usage:  umkoin-cli [options] <command> [params]  Send command to " CLIENT_NAME "\n"
-                "or:     umkoin-cli [options] -named <command> [name=value]...  Send command to " CLIENT_NAME " (with named arguments)\n"
-                "or:     umkoin-cli [options] help                List commands\n"
-                "or:     umkoin-cli [options] help <command>      Get help for a command\n";
+                "The umkoin-cli utility provides a command line interface to interact with a " CLIENT_NAME " RPC server.\n"
+                "\nIt can be used to query network information, manage wallets, create or broadcast transactions, and control the " CLIENT_NAME " server.\n"
+                "\nUse the \"help\" command to list all commands. Use \"help <command>\" to show help for that command.\n"
+                "The -named option allows you to specify parameters using the key=value format, eliminating the need to pass unused positional parameters.\n"
+                "\n"
+                "Usage: umkoin-cli [options] <command> [params]\n"
+                "or:    umkoin-cli [options] -named <command> [name=value]...\n"
+                "or:    umkoin-cli [options] help\n"
+                "or:    umkoin-cli [options] help <command>\n"
+                "\n";
             strUsage += "\n" + gArgs.GetHelpMessage();
         }
 
