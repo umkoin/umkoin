@@ -97,8 +97,8 @@ public:
         consensus.SegwitHeight = 432;
         consensus.MinBIP9WarningHeight = 576; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-        consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 86400; // one day
+        consensus.nPowTargetSpacing = 600; // 10 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.enforce_BIP94 = false;
         consensus.fPowNoRetargeting = false;
@@ -211,8 +211,8 @@ public:
         consensus.SegwitHeight = 40500;
         consensus.MinBIP9WarningHeight = 40644; // segwit activation height + miner confirmation window
         consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-        consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 86400; // one day
+        consensus.nPowTargetSpacing = 600; // 10 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.enforce_BIP94 = false;
         consensus.fPowNoRetargeting = false;
@@ -311,9 +311,9 @@ public:
         consensus.CSVHeight = 1;
         consensus.SegwitHeight = 1;
         consensus.MinBIP9WarningHeight = 0;
-        consensus.powLimit = uint256{"00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-        consensus.nPowTargetTimespan = 1 * 12 * 60 * 60; // 12 hours
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.nPowTargetTimespan = 86400; // one day
+        consensus.nPowTargetSpacing = 600; // 10 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.enforce_BIP94 = true;
         consensus.fPowNoRetargeting = false;
@@ -339,7 +339,7 @@ public:
         pchMessageStart[3] = 0x28;
         nDefaultPort = 46333;
         nPruneAfterHeight = 1000;
-        m_assumed_blockchain_size = 0;
+        m_assumed_blockchain_size = 1;
         m_assumed_chain_state_size = 0;
 
         const char* testnet4_genesis_msg = "2024/08/23 Flag Day";
@@ -352,8 +352,8 @@ public:
                 1,
                 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256{"0x000000006d2b2de2bcee5c82b6d17aac68f0646292849b3ef1f309165eec7933"});
-        assert(genesis.hashMerkleRoot == uint256{"0xe1f926a4a38a8ed8b43214183f6fadd297e026ea02b3c105ea23d258e33ac847"});
+        assert(consensus.hashGenesisBlock == uint256S("0x000000006d2b2de2bcee5c82b6d17aac68f0646292849b3ef1f309165eec7933"));
+        assert(genesis.hashMerkleRoot == uint256S("0xe1f926a4a38a8ed8b43214183f6fadd297e026ea02b3c105ea23d258e33ac847"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -444,8 +444,8 @@ public:
         consensus.BIP66Height = 1;
         consensus.CSVHeight = 1;
         consensus.SegwitHeight = 1;
-        consensus.nPowTargetTimespan = 1 * 24 * 60 * 60; // one day
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 86400; // one day
+        consensus.nPowTargetSpacing = 600; // 10 minutes
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.enforce_BIP94 = false;
         consensus.fPowNoRetargeting = false;
@@ -518,8 +518,8 @@ public:
         consensus.SegwitHeight = 0; // Always active unless overridden
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256{"7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"};
-        consensus.nPowTargetTimespan = 12 * 60 * 60; // 12 hours
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 43200; // 12 hours
+        consensus.nPowTargetSpacing = 600; // 10 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.enforce_BIP94 = true;
         consensus.fPowNoRetargeting = true;
@@ -576,7 +576,7 @@ public:
 
         genesis = CreateGenesisBlock(1511512200, 4, 0x207fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256{"60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"});
+        assert(consensus.hashGenesisBlock == uint256{"0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"});
         assert(genesis.hashMerkleRoot == uint256{"550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"});
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
