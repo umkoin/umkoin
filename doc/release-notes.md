@@ -1,7 +1,7 @@
-27.x Release Notes
+27.2rc1 Release Notes
 =====================
 
-Umkoin Core version 27.x is now available from:
+Umkoin Core version 27.2rc1 is now available from:
 
   <http://www.umkoin.org/bin/umkoin-core-27.x/>
 
