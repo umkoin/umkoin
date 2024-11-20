@@ -343,7 +343,7 @@ static void secp256k1_nonce_function_musig_sha256_tagged(secp256k1_sha256 *sha) 
     sha->s[2] = 0x0391bc43ul;
     sha->s[3] = 0x0e6258eeul;
     sha->s[4] = 0x29d26b72ul;
-    sha->s[5] = 0x8343937eul;
+    sha->s[5] = 0x6343937eul;
     sha->s[6] = 0xb7a0a4fbul;
     sha->s[7] = 0xff568a30ul;
     sha->bytes = 64;
