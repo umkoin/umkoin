@@ -1,9 +1,9 @@
-27.2rc1 Release Notes
+27.2 Release Notes
 =====================
 
-Umkoin Core version 27.2rc1 is now available from:
+Umkoin Core version 27.2 is now available from:
 
-  <http://www.umkoin.org/bin/umkoin-core-27.x/>
+  <http://www.umkoin.org/bin/umkoin-core-27.2/>
 
 This release includes various bug fixes and performance
 improvements, as well as updated translations.
@@ -56,6 +56,10 @@ Notable changes
 
 - #30552 test: fix constructor of msg_tx
 
+### Doc
+
+- #30504 doc: use proper doxygen formatting for CTxMemPool::cs
+
 ### Build
 
 - #30283 upnp: fix build with miniupnpc 2.2.8
@@ -77,6 +81,7 @@ Thanks to everyone who directly contributed to this release:
 - Matt Whitlock
 - Max Edwards
 - Sebastian Falbesoner
+- Vasil Dimov
 - willcl-ark
 
 As well as to everyone that helped with translations on
