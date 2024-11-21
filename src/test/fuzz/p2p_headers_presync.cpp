@@ -1,3 +1,4 @@
+#include <arith_uint256.h>
 #include <blockencodings.h>
 #include <net.h>
 #include <net_processing.h>
@@ -89,10 +90,23 @@ CBlockHeader ConsumeHeader(FuzzedDataProvider& fuzzed_data_provider, const uint2
 {
     CBlockHeader header;
     header.nNonce = 0;
-    // Either use the previous difficulty or let the fuzzer choose
-    header.nBits = fuzzed_data_provider.ConsumeBool() ?
-                       prev_nbits :
-                       fuzzed_data_provider.ConsumeIntegralInRange<uint32_t>(0x17058EBE, 0x1D00FFFF);
+    // Either use the previous difficulty or let the fuzzer choose. The upper target in the
+    // range comes from the bits value of the genesis block, which is 0x1d00ffff. The lower
+    // target comes from the bits value of mainnet block 150000, which is 0x1c0097d0.
+    // Calling lower_target.SetCompact(0x1c0097d0) and upper_target.SetCompact(0x1d00ffff)
+    // should return the values below.
+    //
+    // RPC commands to verify:
+    // getblockheader 0000000053d3d3b583afbe4751ca900a4facdfbe4c12f03c1a96d17889e84b3e (getblockhash 1)
+    // getblockheader 000000000036851ac004c9fbb0411a6848644644297d5652c77ebee67e7099ba (gerblockhash 150000)
+    if (fuzzed_data_provider.ConsumeBool()) {
+        header.nBits = prev_nbits;
+    } else {
+        arith_uint256 lower_target = UintToArith256(uint256{"0000000000000000000342190000000000000000000000000000000000000000"});
+        arith_uint256 upper_target = UintToArith256(uint256{"00000000ffff0000000000000000000000000000000000000000000000000000"});
+        arith_uint256 target = ConsumeArithUInt256InRange(fuzzed_data_provider, lower_target, upper_target);
+        header.nBits = target.GetCompact();
+    }
     header.nTime = ConsumeTime(fuzzed_data_provider);
     header.hashPrevBlock = prev_hash;
     header.nVersion = fuzzed_data_provider.ConsumeIntegral<int32_t>();
