@@ -278,9 +278,9 @@ public:
         m_assumeutxo_data = {
             // Dumptxoutset at height 179888.
             {
-                .height = 179888,
+                .height = 179'888,
                 .hash_serialized = AssumeutxoHash{uint256{"9708859da4b26c6aed3ca61a5018b34c3b74b2b1f92f3bc24fcda82e31094320"}},
-                .nChainTx = 239355,
+                .m_chain_tx_count = 239355,
                 .blockhash = consteval_ctor(uint256{"000000000048ef633af334fc737c8d8750fb58068bfdecd8995723fcb63079f3"}),
             }
         };
@@ -357,9 +357,7 @@ public:
 
         vFixedSeeds.clear();
         vSeeds.clear();
-        // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("seed.testnet4.umkoin.sprovoost.nl."); // Sjors Provoost
-        vSeeds.emplace_back("seed.testnet4.wiz.biz."); // Jason Maurice
+        vSeeds.emplace_back("dnsseed.umkoin.org.");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
@@ -576,7 +574,7 @@ public:
 
         genesis = CreateGenesisBlock(1511512200, 4, 0x207fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256{"0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"});
+        assert(consensus.hashGenesisBlock == uint256{"60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"});
         assert(genesis.hashMerkleRoot == uint256{"550ccf92f28cb76c3f8ccd5073a0175182ac8b03abe96d6b18da9b46f2e2941d"});
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
@@ -588,7 +586,7 @@ public:
 
         checkpointData = {
             {
-                {0, uint256{"0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"}},
+                {0, uint256{"60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d"}},
             }
         };
 
