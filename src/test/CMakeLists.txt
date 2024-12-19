@@ -18,7 +18,6 @@ generate_header_from_raw(data/asmap.raw test::data)
 # SOURCES property is processed to gather test suite macros.
 add_executable(test_umkoin
   main.cpp
-  $<TARGET_OBJECTS:umkoin_consensus>
   ${CMAKE_CURRENT_BINARY_DIR}/data/asmap.raw.h
   ${CMAKE_CURRENT_BINARY_DIR}/data/base58_encode_decode.json.h
   ${CMAKE_CURRENT_BINARY_DIR}/data/bip341_wallet_vectors.json.h
@@ -151,6 +150,7 @@ target_link_libraries(test_umkoin
   test_util
   umkoin_cli
   umkoin_node
+  umkoin_consensus
   minisketch
   secp256k1
   Boost::headers
