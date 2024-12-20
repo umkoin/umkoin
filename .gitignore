@@ -21,3 +21,7 @@ test/lint/test_runner/target/
 /guix-build-*
 
 /ci/scratch/
+
+#temporary files
+*.orig
+*.rej
