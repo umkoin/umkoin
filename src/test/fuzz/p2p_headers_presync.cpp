@@ -102,7 +102,7 @@ CBlockHeader ConsumeHeader(FuzzedDataProvider& fuzzed_data_provider, const uint2
     //
     // RPC commands to verify:
     // getblockheader 0000000053d3d3b583afbe4751ca900a4facdfbe4c12f03c1a96d17889e84b3e (getblockhash 1)
-    // getblockheader 000000000036851ac004c9fbb0411a6848644644297d5652c77ebee67e7099ba (gerblockhash 150000)
+    // getblockheader 000000000036851ac004c9fbb0411a6848644644297d5652c77ebee67e7099ba (getblockhash 150000)
     if (fuzzed_data_provider.ConsumeBool()) {
         header.nBits = prev_nbits;
     } else {
@@ -153,6 +153,7 @@ void initialize()
 
 FUZZ_TARGET(p2p_headers_presync, .init = initialize)
 {
+    SeedRandomStateForTest(SeedRand::ZEROS);
     ChainstateManager& chainman = *g_testing_setup->m_node.chainman;
 
     LOCK(NetEventsInterface::g_msgproc_mutex);
