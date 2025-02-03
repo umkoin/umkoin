@@ -62,7 +62,6 @@
 #include <stdexcept>
 
 using namespace util::hex_literals;
-using kernel::BlockTreeDB;
 using node::ApplyArgsManOptions;
 using node::BlockAssembler;
 using node::BlockManager;
@@ -252,14 +251,14 @@ ChainTestingSetup::ChainTestingSetup(const ChainType chainType, TestOpts opts)
             .chainparams = chainman_opts.chainparams,
             .blocks_dir = m_args.GetBlocksDirPath(),
             .notifications = chainman_opts.notifications,
+            .block_tree_db_params = DBParams{
+                .path = m_args.GetDataDirNet() / "blocks" / "index",
+                .cache_bytes = m_kernel_cache_sizes.block_tree_db,
+                .memory_only = opts.block_tree_db_in_memory,
+                .wipe_data = m_args.GetBoolArg("-reindex", false),
+            },
         };
         m_node.chainman = std::make_unique<ChainstateManager>(*Assert(m_node.shutdown_signal), chainman_opts, blockman_opts);
-        LOCK(m_node.chainman->GetMutex());
-        m_node.chainman->m_blockman.m_block_tree_db = std::make_unique<BlockTreeDB>(DBParams{
-            .path = m_args.GetDataDirNet() / "blocks" / "index",
-            .cache_bytes = m_kernel_cache_sizes.block_tree_db,
-            .memory_only = true,
-        });
     };
     m_make_chainman();
 }
@@ -285,9 +284,7 @@ void ChainTestingSetup::LoadVerifyActivateChainstate()
     auto& chainman{*Assert(m_node.chainman)};
     node::ChainstateLoadOptions options;
     options.mempool = Assert(m_node.mempool.get());
-    options.block_tree_db_in_memory = m_block_tree_db_in_memory;
     options.coins_db_in_memory = m_coins_db_in_memory;
-    options.wipe_block_tree_db = m_args.GetBoolArg("-reindex", false);
     options.wipe_chainstate_db = m_args.GetBoolArg("-reindex", false) || m_args.GetBoolArg("-reindex-chainstate", false);
     options.prune = chainman.m_blockman.IsPruneMode();
     options.check_blocks = m_args.GetIntArg("-checkblocks", DEFAULT_CHECKBLOCKS);
@@ -597,7 +594,7 @@ CBlock getBlockeb0d0()
 {
     CBlock block;
     DataStream stream{
-        "00000020af876e6efcd7c6a3d8768ce32cce1db4a6045123ea73ea2d47ac0000000000002abd5d5b435c03a757ae5c8990baaaa1030f07c2b8013b793c82aa9c56b335d855c5b55c0b18011b6610b78f01010000000001010000000000000000000000000000000000000000000000000000000000000000ffffffff1f022a680456c5b55c085ffffff2c41400000d2f6e6f64655374726174756d2f00000000030000000000000000266a24aa21a9ede2f61c3f71d1defd3fa999dfa36953755c690689799962b48bebd836974e8cf980010b27010000001976a914ac2eb3e500b3670964ef81c2acbe276f8083ecfd88ac80f0fa02000000001976a914a09b7a0ea8e3f56bb71f1af38406a12ffc048fe988ac0120000000000000000000000000000000000000000000000000000000000000000000000000"_hex,
+        "/00000020af876e6efcd7c6a3d8768ce32cce1db4a6045123ea73ea2d47ac0000000000002abd5d5b435c03a757ae5c8990baaaa1030f07c2b8013b793c82aa9c56b335d855c5b55c0b18011b6610b78f01010000000001010000000000000000000000000000000000000000000000000000000000000000ffffffff1f022a680456c5b55c085ffffff2c41400000d2f6e6f64655374726174756d2f00000000030000000000000000266a24aa21a9ede2f61c3f71d1defd3fa999dfa36953755c690689799962b48bebd836974e8cf980010b27010000001976a914ac2eb3e500b3670964ef81c2acbe276f8083ecfd88ac80f0fa02000000001976a914a09b7a0ea8e3f56bb71f1af38406a12ffc048fe988ac0120000000000000000000000000000000000000000000000000000000000000000000000000"_hex,
     };
     stream >> TX_WITH_WITNESS(block);
     return block;
