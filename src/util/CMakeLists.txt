@@ -36,6 +36,9 @@ add_library(umkoin_util STATIC EXCLUDE_FROM_ALL
   ../sync.cpp
 )
 
+# Workaround for https://gitlab.kitware.com/cmake/cmake/-/issues/24058
+set_target_properties(umkoin_util PROPERTIES OPTIMIZE_DEPENDENCIES OFF)
+
 target_link_libraries(umkoin_util
   PRIVATE
     core_interface
