@@ -115,8 +115,8 @@ example:
 BUILDDIR=$PWD/build contrib/devtools/gen-umkoin-conf.sh
 ```
 
-security-check.py and test-security-check.py
-============================================
+security-check.py
+=================
 
 Perform basic security checks on a series of executables.
 
