@@ -236,7 +236,7 @@ target_link_libraries(umkoin-qt
 )
 
 import_plugins(umkoin-qt)
-set(installable_targets umkoin-qt)
+install_binary_component(umkoin-qt HAS_MANPAGE)
 if(WIN32)
   set_target_properties(umkoin-qt PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
@@ -253,16 +253,11 @@ if(WITH_MULTIPROCESS)
     umkoin_ipc
   )
   import_plugins(umkoin-gui)
-  list(APPEND installable_targets umkoin-gui)
+  install_binary_component(umkoin-gui)
   if(WIN32)
     set_target_properties(umkoin-gui PROPERTIES WIN32_EXECUTABLE TRUE)
   endif()
 endif()
-
-install(TARGETS ${installable_targets}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  COMPONENT GUI
-)
 
 if(BUILD_GUI_TESTS)
   add_subdirectory(test)

@@ -2,7 +2,6 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit/.
 
-include(GNUInstallDirs)
 include(AddWindowsResources)
 
 configure_file(${PROJECT_SOURCE_DIR}/cmake/umkoin-build-config.h.in umkoin-build-config.h USE_SOURCE_PERMISSIONS @ONLY)
@@ -170,8 +169,8 @@ target_link_libraries(umkoin_common
     $<$<PLATFORM_ID:Windows>:ws2_32>
 )
 
+include(InstallBinaryComponent)
 
-set(installable_targets)
 if(ENABLE_WALLET)
   add_subdirectory(wallet)
 
@@ -189,7 +188,7 @@ if(ENABLE_WALLET)
       umkoin_util
       Boost::headers
     )
-    list(APPEND installable_targets umkoin-wallet)
+    install_binary_component(umkoin-wallet HAS_MANPAGE)
   endif()
 endif()
 
@@ -318,7 +317,7 @@ if(BUILD_DAEMON)
     umkoin_node
     $<TARGET_NAME_IF_EXISTS:umkoin_wallet>
   )
-  list(APPEND installable_targets umkoind)
+  install_binary_component(umkoind HAS_MANPAGE)
 endif()
 if(WITH_MULTIPROCESS AND BUILD_DAEMON)
   add_executable(umkoin-node
@@ -331,7 +330,7 @@ if(WITH_MULTIPROCESS AND BUILD_DAEMON)
     umkoin_ipc
     $<TARGET_NAME_IF_EXISTS:umkoin_wallet>
   )
-  list(APPEND installable_targets umkoin-node)
+  install_binary_component(umkoin-node)
 endif()
 
 if(WITH_MULTIPROCESS AND BUILD_TESTS)
@@ -374,7 +373,7 @@ if(BUILD_CLI)
     libevent::core
     libevent::extra
   )
-  list(APPEND installable_targets umkoin-cli)
+  install_binary_component(umkoin-cli HAS_MANPAGE)
 endif()
 
 
@@ -387,7 +386,7 @@ if(BUILD_TX)
     umkoin_util
     univalue
   )
-  list(APPEND installable_targets umkoin-tx)
+  install_binary_component(umkoin-tx HAS_MANPAGE)
 endif()
 
 
@@ -399,7 +398,7 @@ if(BUILD_UTIL)
     umkoin_common
     umkoin_util
   )
-  list(APPEND installable_targets umkoin-util)
+  install_binary_component(umkoin-util HAS_MANPAGE)
 endif()
 
 
@@ -444,18 +443,4 @@ endif()
 
 if(BUILD_FUZZ_BINARY)
   add_subdirectory(test/fuzz)
-endif()
-
-
-install(TARGETS ${installable_targets}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
-unset(installable_targets)
-
-if(INSTALL_MAN)
-  # TODO: these stubs are no longer needed. man pages should be generated at install time.
-  install(DIRECTORY ../doc/man/
-    DESTINATION ${CMAKE_INSTALL_MANDIR}/man1
-    FILES_MATCHING PATTERN *.1
-  )
 endif()
