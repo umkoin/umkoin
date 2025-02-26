@@ -8,7 +8,7 @@ declare -A LIBS
 LIBS[cli]="libumkoin_cli.a"
 LIBS[common]="libumkoin_common.a"
 LIBS[consensus]="libumkoin_consensus.a"
-LIBS[crypto]="crypto/libumkoin_crypto.a crypto/libumkoin_crypto_x86_shani.a crypto/libumkoin_crypto_sse41.a crypto/libumkoin_crypto_avx2.a"
+LIBS[crypto]="crypto/libumkoin_crypto.a"
 LIBS[node]="libumkoin_node.a"
 LIBS[util]="util/libumkoin_util.a"
 LIBS[wallet]="wallet/libumkoin_wallet.a"
