@@ -123,23 +123,27 @@ if(NOT BUILD_SHARED_LIBS)
   set(all_kernel_static_link_libs "")
   get_target_static_link_libs(umkoinkernel all_kernel_static_link_libs)
 
-  install(TARGETS ${all_kernel_static_link_libs} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT umkoinkernel)
+  install(TARGETS ${all_kernel_static_link_libs} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT libumkoinkernel)
   list(TRANSFORM all_kernel_static_link_libs PREPEND "-l")
   # LIBS_PRIVATE is substituted in the pkg-config file.
   list(JOIN all_kernel_static_link_libs " " LIBS_PRIVATE)
 endif()
 
 configure_file(${PROJECT_SOURCE_DIR}/libumkoinkernel.pc.in ${PROJECT_BINARY_DIR}/libumkoinkernel.pc @ONLY)
-install(FILES ${PROJECT_BINARY_DIR}/libumkoinkernel.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig" COMPONENT umkoinkernel)
+install(FILES ${PROJECT_BINARY_DIR}/libumkoinkernel.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig" COMPONENT libumkoinkernel)
+
+# Add a convenience libumkoinkernel target as a synonym for umkoinkernel.
+add_custom_target(libumkoinkernel)
+add_dependencies(libumkoinkernel umkoinkernel)
 
 install(TARGETS umkoinkernel
   RUNTIME
     DESTINATION ${CMAKE_INSTALL_BINDIR}
-    COMPONENT umkoinkernel
+    COMPONENT libumkoinkernel
   LIBRARY
     DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    COMPONENT umkoinkernel
+    COMPONENT libumkoinkernel
   ARCHIVE
     DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    COMPONENT umkoinkernel
+    COMPONENT libumkoinkernel
 )
