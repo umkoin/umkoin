@@ -18,8 +18,8 @@ We use automated scripts to help extract translations in both Qt, and non-Qt sou
 
 To automatically regenerate the `umkoin_en.ts` file, run the following commands:
 ```sh
-cmake -B build --preset dev-mode -DWITH_BDB=ON -DBUILD_GUI=ON
-cmake --build build --target translate
+cmake --preset dev-mode -DWITH_USDT=OFF
+cmake --build build_dev_mode --target translate
 ```
 
 **Example Qt translation**
@@ -82,3 +82,6 @@ To create a new language template, you will need to edit the languages manifest 
 
 **Note:** that the language translation file **must end in `.qm`** (the compiled extension), and not `.ts`.
 
+### Questions and general assistance
+
+If you are a translator, you should also subscribe to the mailing list, https://groups.google.com/forum/#!forum/umkoin-translators. Announcements will be posted during application pre-releases to notify translators to check for updates.
