@@ -102,6 +102,10 @@ set_target_properties(umkoinkernel PROPERTIES
   CXX_VISIBILITY_PRESET default
 )
 
+# Add a convenience libumkoinkernel target as a synonym for umkoinkernel.
+add_custom_target(libumkoinkernel)
+add_dependencies(libumkoinkernel umkoinkernel)
+
 # When building the static library, install all static libraries the
 # umkoinkernel depends on.
 if(NOT BUILD_SHARED_LIBS)
@@ -110,6 +114,7 @@ if(NOT BUILD_SHARED_LIBS)
     get_target_property(linked_libraries ${target} LINK_LIBRARIES)
     foreach(dep ${linked_libraries})
       if(TARGET ${dep})
+        add_dependencies(libumkoinkernel ${dep})
         get_target_property(dep_type ${dep} TYPE)
         if(dep_type STREQUAL "STATIC_LIBRARY")
           list(APPEND ${libs_out} ${dep})
@@ -131,10 +136,6 @@ endif()
 
 configure_file(${PROJECT_SOURCE_DIR}/libumkoinkernel.pc.in ${PROJECT_BINARY_DIR}/libumkoinkernel.pc @ONLY)
 install(FILES ${PROJECT_BINARY_DIR}/libumkoinkernel.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig" COMPONENT libumkoinkernel)
-
-# Add a convenience libumkoinkernel target as a synonym for umkoinkernel.
-add_custom_target(libumkoinkernel)
-add_dependencies(libumkoinkernel umkoinkernel)
 
 install(TARGETS umkoinkernel
   RUNTIME
