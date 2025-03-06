@@ -2,14 +2,10 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://opensource.org/license/mit/.
 
-include(GenerateHeaders)
-generate_header_from_raw(data/block47789.raw benchmark::data)
-
 add_executable(bench_umkoin
   bench_umkoin.cpp
   bench.cpp
   nanobench.cpp
-  ${CMAKE_CURRENT_BINARY_DIR}/data/block47789.raw.h
 # Benchmarks:
   addrman.cpp
   base58.cpp
@@ -54,6 +50,11 @@ add_executable(bench_umkoin
   util_time.cpp
   verify_script.cpp
   xor.cpp
+)
+
+include(TargetDataSources)
+target_raw_data_sources(bench_umkoin NAMESPACE benchmark::data
+  data/block47789.raw
 )
 
 target_link_libraries(bench_umkoin
