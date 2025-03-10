@@ -103,7 +103,7 @@ class umkoin-qt,umkoind,umkoin-cli,umkoin-wallet bold
 
 - *libumkoin_kernel* should only depend on *libumkoin_util*, *libumkoin_consensus*, and *libumkoin_crypto*.
 
-- The only thing that should depend on *libumkoin_kernel* internally should be *libumkoin_node*. GUI and wallet libraries *libumkoinqt* and *libumkoin_wallet* in particular should not depend on *libumkoin_kernel* and the unneeded functionality it would pull in, like block validation. To the extent that GUI and wallet code need scripting and signing functionality, they should be get able it from *libumkoin_consensus*, *libumkoin_common*, *libumkoin_crypto*, and *libumkoin_util*, instead of *libumkoin_kernel*.
+- The only thing that should depend on *libumkoin_kernel* internally should be *libumkoin_node*. GUI and wallet libraries *libumkoinqt* and *libumkoin_wallet* in particular should not depend on *libumkoin_kernel* and the unneeded functionality it would pull in, like block validation. To the extent that GUI and wallet code need scripting and signing functionality, they should be able to get it from *libumkoin_consensus*, *libumkoin_common*, *libumkoin_crypto*, and *libumkoin_util*, instead of *libumkoin_kernel*.
 
 - GUI, node, and wallet code internal implementations should all be independent of each other, and the *libumkoinqt*, *libumkoin_node*, *libumkoin_wallet* libraries should never reference each other's symbols. They should only call each other through [`src/interfaces/`](../../src/interfaces/) abstract interfaces.
 
