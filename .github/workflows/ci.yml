@@ -238,10 +238,10 @@ jobs:
         if: matrix.job-type == 'standard'
         working-directory: build
         env:
-          UMKOIND: '${{ github.workspace }}\build\src\Release\umkoind.exe'
-          UMKOINCLI: '${{ github.workspace }}\build\src\Release\umkoin-cli.exe'
-          UMKOINUTIL: '${{ github.workspace }}\build\src\Release\umkoin-util.exe'
-          UMKOINWALLET: '${{ github.workspace }}\build\src\Release\umkoin-wallet.exe'
+          UMKOIND: '${{ github.workspace }}\build\bin\Release\umkoind.exe'
+          UMKOINCLI: '${{ github.workspace }}\build\bin\Release\umkoin-cli.exe'
+          UMKOINUTIL: '${{ github.workspace }}\build\bin\Release\umkoin-util.exe'
+          UMKOINWALLET: '${{ github.workspace }}\build\bin\Release\umkoin-wallet.exe'
           TEST_RUNNER_EXTRA: ${{ github.event_name != 'pull_request' && '--extended' || '' }}
         shell: cmd
         run: py -3 test\functional\test_runner.py --jobs %NUMBER_OF_PROCESSORS% --ci --quiet --tmpdirprefix=%RUNNER_TEMP% --combinedlogslen=99999999 --timeout-factor=%TEST_RUNNER_TIMEOUT_FACTOR% %TEST_RUNNER_EXTRA%
@@ -258,7 +258,7 @@ jobs:
         if: matrix.job-type == 'fuzz'
         working-directory: build
         env:
-          UMKOINFUZZ: '${{ github.workspace }}\build\src\test\fuzz\Release\fuzz.exe'
+          UMKOINFUZZ: '${{ github.workspace }}\build\bin\Release\fuzz.exe'
         shell: cmd
         run: |
           py -3 test\fuzz\test_runner.py --par %NUMBER_OF_PROCESSORS% --loglevel DEBUG %RUNNER_TEMP%\qa-assets\fuzz_corpora

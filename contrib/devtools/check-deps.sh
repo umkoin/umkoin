@@ -8,10 +8,10 @@ declare -A LIBS
 LIBS[cli]="libumkoin_cli.a"
 LIBS[common]="libumkoin_common.a"
 LIBS[consensus]="libumkoin_consensus.a"
-LIBS[crypto]="crypto/libumkoin_crypto.a"
+LIBS[crypto]="libumkoin_crypto.a"
 LIBS[node]="libumkoin_node.a"
-LIBS[util]="util/libumkoin_util.a"
-LIBS[wallet]="wallet/libumkoin_wallet.a"
+LIBS[util]="libumkoin_util.a"
+LIBS[wallet]="libumkoin_wallet.a"
 
 # Declare allowed dependencies "X Y" where X is allowed to depend on Y. This
 # list is taken from doc/design/libraries.md.
@@ -187,7 +187,7 @@ fi
 # shellcheck disable=SC2046
 cmake --build "$BUILD_DIR" -j"$(nproc)" -t $(lib_targets)
 TEMP_DIR="$(mktemp -d)"
-cd "$BUILD_DIR/src"
+cd "$BUILD_DIR/lib"
 extract_symbols "$TEMP_DIR"
 if check_libraries "$TEMP_DIR"; then
     echo "Success! No unexpected dependencies were detected."

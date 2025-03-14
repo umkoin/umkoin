@@ -18,7 +18,7 @@ and lock analysis.
 
 After compiling umkoin-core, the benchmarks can be run with:
 
-    build/src/bench/bench_umkoin
+    build/bin/bench_umkoin
 
 The output will look similar to:
 ```
@@ -40,7 +40,7 @@ The output will look similar to:
 Help
 ---------------------
 
-    build/src/bench/bench_umkoin -h
+    build/bin/bench_umkoin -h
 
 To print the various options, like listing the benchmarks without running them
 or using a regex filter to only run certain benchmarks.

@@ -430,13 +430,13 @@ USDT support.
 To list probes in Umkoin Core, use `info probes` in `gdb`:
 
 ```
-$ gdb ./build/src/umkoind
+$ gdb ./build/bin/umkoind
 …
 (gdb) info probes
 Type Provider   Name             Where              Semaphore Object
-stap net        inbound_message  0x000000000014419e 0x0000000000d29bd2 /build/src/umkoind
-stap net        outbound_message 0x0000000000107c05 0x0000000000d29bd0 /build/src/umkoind
-stap validation block_connected  0x00000000002fb10c 0x0000000000d29bd8 /build/src/umkoind
+stap net        inbound_message  0x000000000014419e 0x0000000000d29bd2 /build/bin/umkoind
+stap net        outbound_message 0x0000000000107c05 0x0000000000d29bd0 /build/bin/umkoind
+stap validation block_connected  0x00000000002fb10c 0x0000000000d29bd8 /build/bin/umkoind
 …
 ```
 
@@ -446,7 +446,7 @@ The `readelf` tool can be used to display the USDT tracepoints in Umkoin Core.
 Look for the notes with the description `NT_STAPSDT`.
 
 ```
-$ readelf -n ./build/src/umkoind | grep NT_STAPSDT -A 4 -B 2
+$ readelf -n ./build/bin/umkoind | grep NT_STAPSDT -A 4 -B 2
 Displaying notes found in: .note.stapsdt
   Owner                 Data size	Description
   stapsdt              0x0000005d	NT_STAPSDT (SystemTap probe descriptors)
@@ -470,7 +470,7 @@ between distributions. For example, on
 [ubuntu binary]: https://github.com/iovisor/bcc/blob/master/INSTALL.md#ubuntu---binary
 
 ```
-$ tplist -l ./build/src/umkoind -v
+$ tplist -l ./build/bin/umkoind -v
 b'net':b'outbound_message' [sema 0xd29bd0]
   1 location(s)
   6 argument(s)

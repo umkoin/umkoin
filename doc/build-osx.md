@@ -201,8 +201,8 @@ cmake --build build --target deploy
 
 ## Running Umkoin Core
 
-Umkoin Core should now be available at `./build/src/umkoind`.
-If you compiled support for the GUI, it should be available at `./build/src/qt/umkoin-qt`.
+Umkoin Core should now be available at `./build/bin/umkoind`.
+If you compiled support for the GUI, it should be available at `./build/bin/umkoin-qt`.
 
 The first time you run `umkoind` or `umkoin-qt`, it will start downloading the blockchain.
 This process could take many hours, or even days on slower than average systems.
@@ -232,8 +232,8 @@ tail -f $HOME/Library/Application\ Support/Umkoin/debug.log
 ## Other commands:
 
 ```shell
-./build/src/umkoind -daemon      # Starts the umkoin daemon.
-./build/src/umkoin-cli --help    # Outputs a list of command-line options.
-./build/src/umkoin-cli help      # Outputs a list of RPC commands when the daemon is running.
-./build/src/qt/umkoin-qt -server # Starts the umkoin-qt server mode, allows umkoin-cli control
+./build/bin/umkoind -daemon      # Starts the umkoin daemon.
+./build/bin/umkoin-cli --help    # Outputs a list of command-line options.
+./build/bin/umkoin-cli help      # Outputs a list of RPC commands when the daemon is running.
+./build/bin/umkoin-qt -server # Starts the umkoin-qt server mode, allows umkoin-cli control
 ```

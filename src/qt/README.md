@@ -11,7 +11,7 @@ When following your systems build instructions, make sure to install the `Qt` de
 To run:
 
 ```sh
-./build/src/qt/umkoin-qt
+./build/bin/umkoin-qt
 ```
 
 ## Files and Directories

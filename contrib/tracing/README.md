@@ -188,7 +188,7 @@ In a different terminal, starting Umkoin Core in SigNet mode and with
 re-indexing enabled.
 
 ```
-$ ./build/src/umkoind -signet -reindex
+$ ./build/bin/umkoind -signet -reindex
 ```
 
 This produces the following output.

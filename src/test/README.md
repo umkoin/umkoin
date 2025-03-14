@@ -24,7 +24,7 @@ tests from subtrees.
 
 Run `test_umkoin --list_content` for the full list of tests.
 
-To run the unit tests manually, launch `build/src/test/test_umkoin`. To recompile
+To run the unit tests manually, launch `build/bin/test_umkoin`. To recompile
 after a test file was modified, run `cmake --build build` and then run the test again. If you
 modify a non-test file, use `cmake --build build --target test_umkoin` to recompile only what's needed
 to run the unit tests.
@@ -33,7 +33,7 @@ To add more unit tests, add `BOOST_AUTO_TEST_CASE` functions to the existing
 .cpp files in the `test/` directory or add new .cpp files that
 implement new `BOOST_AUTO_TEST_SUITE` sections.
 
-To run the GUI unit tests manually, launch `build/src/qt/test/test_umkoin-qt`
+To run the GUI unit tests manually, launch `build/bin/test_umkoin-qt`
 
 To add more GUI unit tests, add them to the `src/qt/test/` directory and
 the `src/qt/test/test_main.cpp` file.
@@ -50,19 +50,19 @@ test_umkoin --help
 For example, to run only the tests in the `getarg_tests` file, with full logging:
 
 ```bash
-build/src/test/test_umkoin --log_level=all --run_test=getarg_tests
+build/bin/test_umkoin --log_level=all --run_test=getarg_tests
 ```
 
 or
 
 ```bash
-build/src/test/test_umkoin -l all -t getarg_tests
+build/bin/test_umkoin -l all -t getarg_tests
 ```
 
 or to run only the doubledash test in `getarg_tests`
 
 ```bash
-build/src/test/test_umkoin --run_test=getarg_tests/doubledash
+build/bin/test_umkoin --run_test=getarg_tests/doubledash
 ```
 
 The `--log_level=` (or `-l`) argument controls the verbosity of the test output.
@@ -71,7 +71,7 @@ The `test_umkoin` runner also accepts some of the command line arguments accepte
 `umkoind`. Use `--` to separate these sets of arguments:
 
 ```bash
-build/src/test/test_umkoin --log_level=all --run_test=getarg_tests -- -printtoconsole=1
+build/bin/test_umkoin --log_level=all --run_test=getarg_tests -- -printtoconsole=1
 ```
 
 The `-printtoconsole=1` after the two dashes sends debug logging, which
@@ -98,7 +98,7 @@ what the test wrote to `debug.log` after it completes, for example.
 so no leftover state is used.)
 
 ```bash
-$ build/src/test/test_umkoin --run_test=getarg_tests/doubledash -- -testdatadir=/somewhere/mydatadir
+$ build/bin/test_umkoin --run_test=getarg_tests/doubledash -- -testdatadir=/somewhere/mydatadir
 Test directory (will not be deleted): "/somewhere/mydatadir/test_common umkoin/getarg_tests/doubledash/datadir"
 Running 1 test case...
 
@@ -138,13 +138,13 @@ For debugging you can launch the `test_umkoin` executable with `gdb` or `lldb` a
 start debugging, just like you would with any other program:
 
 ```bash
-gdb build/src/test/test_umkoin
+gdb build/bin/test_umkoin
 ```
 
 #### Segmentation faults
 
 If you hit a segmentation fault during a test run, you can diagnose where the fault
-is happening by running `gdb ./build/src/test/test_umkoin` and then using the `bt` command
+is happening by running `gdb ./build/bin/test_umkoin` and then using the `bt` command
 within gdb.
 
 Another tool that can be used to resolve segmentation faults is
@@ -162,7 +162,7 @@ Running the tests and hitting a segmentation fault should now produce a file cal
 
 You can then explore the core dump using
 ```bash
-gdb build/src/test/test_umkoin core
+gdb build/bin/test_umkoin core
 
 (gdb) bt  # produce a backtrace for where a segfault occurred
 ```

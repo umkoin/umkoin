@@ -9,12 +9,12 @@ import tempfile
 import argparse
 
 BINARIES = [
-'src/umkoind',
-'src/umkoin-cli',
-'src/umkoin-tx',
-'src/umkoin-wallet',
-'src/umkoin-util',
-'src/qt/umkoin-qt',
+'bin/umkoind',
+'bin/umkoin-cli',
+'bin/umkoin-tx',
+'bin/umkoin-wallet',
+'bin/umkoin-util',
+'bin/umkoin-qt',
 ]
 
 parser = argparse.ArgumentParser(
