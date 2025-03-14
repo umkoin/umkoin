@@ -58,7 +58,7 @@ fn main() {
     }
 
     let build_dir = Path::new(build_dir);
-    let test_exe = build_dir.join("src/test/test_umkoin");
+    let test_exe = build_dir.join("bin/test_umkoin");
 
     sanity_check(&test_exe);
 
