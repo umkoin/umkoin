@@ -15,13 +15,9 @@
 # Previous releases
 /releases
 
-#build tests
-test/lint/test_runner/target/
+# cargo default target dir
+target/
 
 /guix-build-*
 
 /ci/scratch/
-
-#temporary files
-*.orig
-*.rej
