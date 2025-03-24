@@ -48,7 +48,7 @@ class ToolWalletTest(UmkoinTestFramework):
         if "dump" in args and self.options.bdbro:
             default_args.append("-withinternalbdb")
 
-        return subprocess.Popen([self.options.umkoinwallet] + default_args + list(args), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        return subprocess.Popen(self.get_binaries().wallet_argv() + default_args + list(args), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
     def assert_raises_tool_error(self, error, *args):
         p = self.umkoin_wallet_process(*args)
