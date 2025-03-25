@@ -3,7 +3,7 @@ Upstream-Name: Umkoin
 Source: https://github.com/umkoin/umkoin
 
 Files: *
-Copyright: 2017-2024, Umkoin Core Developers
+Copyright: 2017-2025, Umkoin Core Developers
 License: Expat
 Comment: The Umkoin Core Developers encompasses all contributors to the
          project, listed in the release notes or the git log.
