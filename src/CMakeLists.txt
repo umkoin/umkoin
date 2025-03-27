@@ -301,6 +301,7 @@ add_library(umkoin_node STATIC EXCLUDE_FROM_ALL
   signet.cpp
   torcontrol.cpp
   txdb.cpp
+  txgraph.cpp
   txmempool.cpp
   txorphanage.cpp
   txrequest.cpp
