@@ -88,6 +88,10 @@ class Binaries:
         "Return argv array that should be used to invoke umkoin-wallet"
         return self._argv(self.paths.umkoinwallet)
 
+    def chainstate_argv(self):
+        "Return argv array that should be used to invoke umkoin-chainstate"
+        return self._argv(self.paths.umkoinchainstate)
+
     def _argv(self, bin_path):
         """Return argv array that should be used to invoke the command.
         Normally this will return binary paths directly from the paths object,
@@ -291,6 +295,7 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
             "umkoind": ("umkoind", "UMKOIND"),
             "umkoin-cli": ("umkoincli", "UMKOINCLI"),
             "umkoin-util": ("umkoinutil", "UMKOINUTIL"),
+            "umkoin-chainstate": ("umkoinchainstate", "UMKOINCHAINSTATE"),
             "umkoin-wallet": ("umkoinwallet", "UMKOINWALLET"),
         }
         for binary, [attribute_name, env_variable_name] in binaries.items():
@@ -1022,6 +1027,11 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         if not self.is_umkoin_util_compiled():
             raise SkipTest("umkoin-util has not been compiled")
 
+    def skip_if_no_umkoin_chainstate(self):
+        """Skip the running test if umkoin-chainstate has not been compiled."""
+        if not self.is_umkoin_chainstate_compiled():
+            raise SkipTest("umkoin-chainstate has not been compiled")
+
     def skip_if_no_cli(self):
         """Skip the running test if umkoin-cli has not been compiled."""
         if not self.is_cli_compiled():
@@ -1072,6 +1082,10 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
     def is_umkoin_util_compiled(self):
         """Checks whether umkoin-util was compiled."""
         return self.config["components"].getboolean("ENABLE_UMKOIN_UTIL")
+
+    def is_umkoin_chainstate_compiled(self):
+        """Checks whether umkoin-chainstate was compiled."""
+        return self.config["components"].getboolean("ENABLE_UMKOIN_CHAINSTATE")
 
     def is_zmq_compiled(self):
         """Checks whether the zmq module was compiled."""
