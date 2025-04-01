@@ -138,6 +138,7 @@ add_executable(fuzz
 )
 target_link_libraries(fuzz
   core_interface
+  fuzzer_interface
   test_fuzz
   umkoin_cli
   umkoin_common
