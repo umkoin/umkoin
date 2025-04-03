@@ -20,7 +20,7 @@ target_link_libraries(test_umkoin-qt
   test_util
   umkoin_node
   Boost::headers
-  Qt5::Test
+  Qt6::Test
 )
 
 import_plugins(test_umkoin-qt)
