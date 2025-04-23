@@ -8,7 +8,7 @@
 | *libumkoin_crypto*      | Hardware-optimized functions for data encryption, hashing, message authentication, and key derivation. |
 | *libumkoin_kernel*      | Consensus engine and support library used for validation by *libumkoin_node*. |
 | *libumkoinqt*           | GUI functionality used by *umkoin-qt* and *umkoin-gui* executables. |
-| *libumkoin_ipc*         | IPC functionality used by *umkoin-node*, *umkoin-wallet*, *umkoin-gui* executables to communicate when [`-DWITH_MULTIPROCESS=ON`](multiprocess.md) is used. |
+| *libumkoin_ipc*         | IPC functionality used by *umkoin-node*, *umkoin-wallet*, *umkoin-gui* executables to communicate when [`-DENABLE_IPC=ON`](multiprocess.md) is used. |
 | *libumkoin_node*        | P2P and RPC server functionality used by *umkoind* and *umkoin-qt* executables. |
 | *libumkoin_util*        | Home for common functionality shared by different executables and libraries. Similar to *libumkoin_common*, but lower-level (see [Dependencies](#dependencies)). |
 | *libumkoin_wallet*      | Wallet functionality used by *umkoind* and *umkoin-wallet* executables. |

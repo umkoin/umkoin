@@ -269,7 +269,7 @@ if(WIN32)
   set_target_properties(umkoin-qt PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
 
-if(WITH_MULTIPROCESS)
+if(ENABLE_IPC)
   add_executable(umkoin-gui
     main.cpp
     ../init/umkoin-gui.cpp
