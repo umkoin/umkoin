@@ -17,4 +17,5 @@ export FUZZ_TESTS_CONFIG="--valgrind"
 export GOAL="all"
 export UMKOIN_CONFIG="\
  -DBUILD_FOR_FUZZING=ON \
+ -DCMAKE_CXX_FLAGS='-Wno-error=array-bounds' \
 "
