@@ -34,7 +34,7 @@
 ["0x4e 0x00000000","0 EQUAL", "P2SH,STRICTENC", "OK"],
 ["0x4f 1000 ADD","999 EQUAL", "P2SH,STRICTENC", "OK"],
 ["0", "IF 0x50 ENDIF 1", "P2SH,STRICTENC", "OK", "0x50 is reserved (ok if not executed)"],
-["0x51", "0x5f ADD 0x60 EQUAL", "P2SH,STRICTENC", "OK", "0x51 through 0x60 push 1 through 16 onto stack"],
+["0x51", "0x67 ADD 0x60 EQUAL", "P2SH,STRICTENC", "OK", "0x51 through 0x60 push 1 through 16 onto stack"],
 ["1","NOP", "P2SH,STRICTENC", "OK"],
 ["0", "IF VER ELSE 1 ENDIF", "P2SH,STRICTENC", "OK", "VER non-functional (ok if not executed)"],
 ["0", "IF RESERVED RESERVED1 RESERVED2 ELSE 1 ENDIF", "P2SH,STRICTENC", "OK", "RESERVED ok in un-executed IF"],
@@ -569,7 +569,7 @@
 ["0x01 0x0c", "0x5c EQUAL", "", "OK", "OP_12 pushes 0x0c"],
 ["0x01 0x0d", "0x5d EQUAL", "", "OK", "OP_13 pushes 0x0d"],
 ["0x01 0x0e", "0x5e EQUAL", "", "OK", "OP_14 pushes 0x0e"],
-["0x01 0x0f", "0x5f EQUAL", "", "OK", "OP_15 pushes 0x0f"],
+["0x01 0x0f", "0x67 EQUAL", "", "OK", "OP_15 pushes 0x0f"],
 ["0x01 0x10", "0x60 EQUAL", "", "OK", "OP_16 pushes 0x10"],
 
 ["Equivalency of different numeric encodings"],
@@ -735,7 +735,7 @@
 ["0x4e03000000ffff","0x01 NOP", "P2SH,STRICTENC","BAD_OPCODE", "PUSHDATA4 with not enough bytes"],
 
 ["1", "IF 0x50 ENDIF 1", "P2SH,STRICTENC","BAD_OPCODE", "0x50 is reserved"],
-["0x52", "0x5f ADD 0x60 EQUAL", "P2SH,STRICTENC","EVAL_FALSE", "0x51 through 0x60 push 1 through 16 onto stack"],
+["0x52", "0x67 ADD 0x60 EQUAL", "P2SH,STRICTENC","EVAL_FALSE", "0x51 through 0x60 push 1 through 16 onto stack"],
 ["0","NOP", "P2SH,STRICTENC","EVAL_FALSE",""],
 ["1", "IF VER ELSE 1 ENDIF", "P2SH,STRICTENC", "BAD_OPCODE", "VER non-functional"],
 ["0", "IF VERIF ELSE 1 ENDIF", "P2SH,STRICTENC", "BAD_OPCODE", "VERIF illegal everywhere"],
@@ -2609,6 +2609,63 @@
 [["00", "645168", 0.00000001], "0x22 0x0020f913eacf2e38a5d6fc3a8311d72ae704cb83866350a984dd3e5eb76d2a8c28e8", "HASH160 0x14 0xdbb7d1c0a56b7a9c423300c8cca6e6e065baf1dc EQUAL", "P2SH,WITNESS,MINIMALIF", "MINIMALIF"],
 [["645168", 0.00000001], "0x22 0x0020f913eacf2e38a5d6fc3a8311d72ae704cb83866350a984dd3e5eb76d2a8c28e8", "HASH160 0x14 0xdbb7d1c0a56b7a9c423300c8cca6e6e065baf1dc EQUAL", "P2SH,WITNESS", "UNBALANCED_CONDITIONAL"],
 [["645168", 0.00000001], "0x22 0x0020f913eacf2e38a5d6fc3a8311d72ae704cb83866350a984dd3e5eb76d2a8c28e8", "HASH160 0x14 0xdbb7d1c0a56b7a9c423300c8cca6e6e065baf1dc EQUAL", "P2SH,WITNESS,MINIMALIF", "UNBALANCED_CONDITIONAL"],
+
+["Tapscript tests"],
+[
+    [
+        "1ffe1234567890",
+        "00",
+        "#SCRIPT# HASH256 DUP SHA1 DROP DUP DROP TOALTSTACK HASH256 DUP DROP TOALTSTACK FROMALTSTACK",
+        "#CONTROLBLOCK#",
+        0.00000001
+    ],
+    "",
+    "0x51 0x20 #TAPROOTOUTPUT#",
+    "P2SH,WITNESS,TAPROOT",
+    "OK",
+    "TAPSCRIPT Tests testing tapscript with many different op codes including ALTSTACK interactions"
+],
+[
+    [
+        "abcdef",
+        "#SCRIPT# 1 IF SHA256 ENDIF SIZE SWAP DROP 32 EQUAL",
+        "#CONTROLBLOCK#",
+        0.00000001
+    ],
+    "",
+    "0x51 0x20 #TAPROOTOUTPUT#",
+    "P2SH,WITNESS,TAPROOT",
+    "OK",
+    "TAPSCRIPT Test IF conditional when true"
+],
+[
+    [
+        "abcdef",
+        "#SCRIPT# 0 IF SHA256 ENDIF SIZE SWAP DROP 32 EQUAL",
+        "#CONTROLBLOCK#",
+        0.00000001
+    ],
+    "",
+    "0x51 0x20 #TAPROOTOUTPUT#",
+    "P2SH,WITNESS,TAPROOT",
+    "EVAL_FALSE",
+    "TAPSCRIPT Test IF conditional when false"
+],
+[
+    [
+        "aa",
+        "bb",
+        "cc",
+        "#SCRIPT# EQUAL IF DROP DROP ENDIF",
+        "#CONTROLBLOCK#",
+        0.00000001
+    ],
+    "",
+    "0x51 0x20 #TAPROOTOUTPUT#",
+    "P2SH,WITNESS,TAPROOT",
+    "OK",
+    "TAPSCRIPT Test that DROP operations do not execute inside of a false IF conditional"
+],
 
 ["NULLFAIL should cover all signatures and signatures only"],
 ["0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0", "0x01 0x14 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0x01 0x14 CHECKMULTISIG NOT", "DERSIG", "OK", "BIP66 and NULLFAIL-compliant"],
