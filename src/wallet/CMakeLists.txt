@@ -46,6 +46,6 @@ target_link_libraries(umkoin_wallet
 )
 
 if(USE_BDB)
-  target_sources(umkoin_wallet PRIVATE bdb.cpp salvage.cpp)
+  target_sources(umkoin_wallet PRIVATE bdb.cpp)
   target_link_libraries(umkoin_wallet PUBLIC BerkeleyDB::BerkeleyDB)
 endif()
