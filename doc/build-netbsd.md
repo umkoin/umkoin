@@ -55,14 +55,6 @@ It is not necessary to build wallet functionality to run umkoind or the GUI.
 pkgin install sqlite3
 ```
 
-###### Legacy Wallet Support
-
-`db4` is required to enable support for legacy wallets.
-
-```bash
-pkgin install db4
-```
-
 #### GUI Dependencies
 ###### Qt6
 
