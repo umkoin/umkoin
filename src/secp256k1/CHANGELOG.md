@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+#### Removed
+- Removed previously deprecated function aliases `secp256k1_ec_privkey_negate`, `secp256k1_ec_privkey_tweak_add` and
+  `secp256k1_ec_privkey_tweak_mul`. Use `secp256k1_ec_seckey_negate`, `secp256k1_ec_seckey_tweak_add` and
+  `secp256k1_ec_seckey_tweak_mul` instead.
+
 ## [0.6.0] - 2024-11-04
 
 #### Added
@@ -110,7 +115,7 @@ We strongly recommend updating to 0.3.1 if you use or plan to use Clang >=14 to 
  - Fix "constant-timeness" issue with Clang >=14 that could leave applications using libsecp256k1 vulnerable to a timing side-channel attack. The fix avoids secret-dependent control flow and secret-dependent memory accesses in conditional moves of memory objects when libsecp256k1 is compiled with Clang >=14.
 
 #### Added
-  - Added tests against [Project Wycheproof's](https://github.com/google/wycheproof/) set of ECDSA test vectors (Bitcoin "low-S" variant), a fixed set of test cases designed to trigger various edge cases.
+  - Added tests against [Project Wycheproof's](https://github.com/C2SP/wycheproof/) set of ECDSA test vectors (Bitcoin "low-S" variant), a fixed set of test cases designed to trigger various edge cases.
 
 #### Changed
  - Increased minimum required CMake version to 3.13. CMake builds remain experimental.
