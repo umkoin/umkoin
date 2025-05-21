@@ -70,7 +70,7 @@ BOOST_FIXTURE_TEST_SUITE(miner_tests, MinerTestingSetup)
 static CFeeRate blockMinFeeRate = CFeeRate(DEFAULT_BLOCK_MIN_TX_FEE);
 
 constexpr static struct {
-    unsigned char extranonce;
+    unsigned int extranonce;
     unsigned int nonce;
 } BLOCKINFO[]{{8, 582909131},  {0, 971462344},  {2, 1169481553}, {6, 66147495},  {7, 427785981},  {8, 80538907},
               {8, 207348013},  {2, 1951240923}, {4, 215054351},  {1, 491520534}, {8, 1282281282}, {4, 639565734},
