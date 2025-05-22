@@ -206,6 +206,7 @@ if(ENABLE_WALLET)
       wallet/wallettool.cpp
     )
     add_windows_resources(umkoin-wallet umkoin-wallet-res.rc)
+    add_windows_application_manifest(umkoin-wallet)
     target_link_libraries(umkoin-wallet
       core_interface
       umkoin_wallet
@@ -339,6 +340,7 @@ if(BUILD_DAEMON)
     init/umkoind.cpp
   )
   add_windows_resources(umkoind umkoind-res.rc)
+  add_windows_application_manifest(umkoind)
   target_link_libraries(umkoind
     core_interface
     umkoin_node
@@ -392,6 +394,7 @@ target_link_libraries(umkoin_cli
 if(BUILD_CLI)
   add_executable(umkoin-cli umkoin-cli.cpp)
   add_windows_resources(umkoin-cli umkoin-cli-res.rc)
+  add_windows_application_manifest(umkoin-cli)
   target_link_libraries(umkoin-cli
     core_interface
     umkoin_cli
@@ -407,6 +410,7 @@ endif()
 if(BUILD_TX)
   add_executable(umkoin-tx umkoin-tx.cpp)
   add_windows_resources(umkoin-tx umkoin-tx-res.rc)
+  add_windows_application_manifest(umkoin-tx)
   target_link_libraries(umkoin-tx
     core_interface
     umkoin_common
@@ -420,6 +424,7 @@ endif()
 if(BUILD_UTIL)
   add_executable(umkoin-util umkoin-util.cpp)
   add_windows_resources(umkoin-util umkoin-util-res.rc)
+  add_windows_application_manifest(umkoin-util)
   target_link_libraries(umkoin-util
     core_interface
     umkoin_common

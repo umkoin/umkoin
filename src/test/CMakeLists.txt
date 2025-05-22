@@ -142,6 +142,8 @@ target_raw_data_sources(test_umkoin NAMESPACE test::data
   data/asmap.raw
 )
 
+add_windows_application_manifest(test_umkoin)
+
 target_link_libraries(test_umkoin
   core_interface
   test_util

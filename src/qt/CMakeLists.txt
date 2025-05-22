@@ -256,6 +256,7 @@ add_executable(umkoin-qt
 )
 
 add_windows_resources(umkoin-qt res/umkoin-qt-res.rc)
+add_windows_application_manifest(umkoin-qt)
 
 target_link_libraries(umkoin-qt
   core_interface
