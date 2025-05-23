@@ -4,7 +4,7 @@ Umkoin Core integration/staging tree
 http://www.umkoin.org
 
 For an immediately usable, binary version of the Umkoin Core software, see
-[http://www.umkoin.org/en/download.php](http://www.umkoin.org/en/download.php).
+http://www.umkoin.org/en/download/.
 
 What is Umkoin Core?
 ---------------------
@@ -19,7 +19,7 @@ License
 -------
 
 Umkoin Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
+information or see https://opensource.org/license/MIT.
 
 Development Process
 -------------------
