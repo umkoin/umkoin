@@ -27,6 +27,8 @@ e.g. for `-onlynet=onion`.
 
 You can use the `getnodeaddresses` RPC to fetch a number of onion peers known to your node; run `umkoin-cli help getnodeaddresses` for details.
 
+`umkoin rpc` can also be substituted for `umkoin-cli`.
+
 ## 1. Run Umkoin Core behind a Tor proxy
 
 The first step is running Umkoin Core behind a Tor proxy. This will already anonymize all
@@ -63,6 +65,8 @@ outgoing connections, but more is possible.
 In a typical situation, this suffices to run behind a Tor proxy:
 
     ./umkoind -proxy=127.0.0.1:9050
+
+`umkoin node` or `umkoin gui` can also be substituted for `umkoind`.
 
 ## 2. Automatically create a Umkoin Core onion service
 

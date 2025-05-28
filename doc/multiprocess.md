@@ -25,8 +25,8 @@ make -C depends NO_QT=1 MULTIPROCESS=1
 HOST_PLATFORM="x86_64-pc-linux-gnu"
 cmake -B build --toolchain=depends/$HOST_PLATFORM/toolchain.cmake
 cmake --build build
-build/bin/umkoin-node -regtest -printtoconsole -debug=ipc
-UMKOIND=$(pwd)/build/bin/umkoin-node build/test/functional/test_runner.py
+build/bin/umkoin -m node -regtest -printtoconsole -debug=ipc
+UMKOIN_CMD="umkoin -m" build/test/functional/test_runner.py
 ```
 
 The `cmake` build will pick up settings and library locations from the depends directory, so there is no need to pass `-DENABLE_IPC=ON` as a separate flag when using the depends system (it's controlled by the `MULTIPROCESS=1` option).
@@ -41,6 +41,11 @@ By default when `-DENABLE_IPC=ON` is enabled, the libmultiprocess sources at [..
 
 ## Usage
 
-`umkoin-node` is a drop-in replacement for `umkoind`, and `umkoin-gui` is a drop-in replacement for `umkoin-qt`, and there are no differences in use or external behavior between the new and old executables. But internally after [#10102](https://github.com/bitcoin/bitcoin/pull/10102), `umkoin-gui` will spawn a `umkoin-node` process to run P2P and RPC code, communicating with it across a socket pair, and `umkoin-node` will spawn `umkoin-wallet` to run wallet code, also communicating over a socket pair. This will let node, wallet, and GUI code run in separate address spaces for better isolation, and allow future improvements like being able to start and stop components independently on different machines and environments.
-[#19460](https://github.com/bitcoin/bitcoin/pull/19460) also adds a new `bitcoin-node` `-ipcbind` option and a `bitcoind-wallet` `-ipcconnect` option to allow new wallet processes to connect to an existing node process.
-And [#19461](https://github.com/bitcoin/bitcoin/pull/19461) adds a new `bitcoin-gui` `-ipcconnect` option to allow new GUI processes to connect to an existing node process.
+Recommended way to use multiprocess binaries is to invoke `umkoin` CLI like `umkoin -m node -debug=ipc` or `umkoin -m gui -printtoconsole -debug=ipc`.
+
+When the `-m` (`--multiprocess`) option is used the `umkoin` command will execute multiprocess binaries instead of monolithic ones (`umkoin-node` instead of `umkoind`, and `umkoin-gui` instead of `umkoin-qt`). The multiprocess binaries can also be invoked directly, but this is not recommended as they may change or be renamed in the future, and they are not installed in the PATH.
+
+The multiprocess binaries currently function the same as the monolithic binaries, except they support an `-ipcbind` option.
+
+In the future, after [#10102](https://github.com/bitcoin/bitcoin/pull/10102) they will have other differences. Specifically `umkoin-gui` will spawn a `umkoin-node` process to run P2P and RPC code, communicating with it across a socket pair, and `umkoin-node` will spawn `umkoin-wallet` to run wallet code, also communicating over a socket pair. This will let node, wallet, and GUI code run in separate address spaces for better isolation, and allow future improvements like being able to start and stop components independently on different machines and environments. [#19460](https://github.com/bitcoin/bitcoin/pull/19460) also adds a new `umkoin-wallet -ipcconnect` option to allow new wallet processes to connect to an existing node process.
+And [#19461](https://github.com/bitcoin/bitcoin/pull/19461) adds a new `umkoin-gui -ipcconnect` option to allow new GUI processes to connect to an existing node process.

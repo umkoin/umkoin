@@ -87,6 +87,8 @@ For instance:
                -zmqpubrawtx=ipc:///tmp/umkoind.tx.raw \
                -zmqpubhashtxhwm=10000
 
+`umkoin node` or `umkoin gui` can also be substituted for `umkoind`.
+
 Notification types correspond to message topics (details in next section). For instance,
 for the notification `-zmqpubhashtx` the topic is `hashtx`. These options can also be
 provided in umkoin.conf.

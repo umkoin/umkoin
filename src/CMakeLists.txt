@@ -332,6 +332,12 @@ target_link_libraries(umkoin_node
     $<TARGET_NAME_IF_EXISTS:USDT::headers>
 )
 
+# Umkoin wrapper executable that can call other executables.
+if(BUILD_UMKOIN_BIN)
+  add_executable(umkoin umkoin.cpp)
+  target_link_libraries(umkoin core_interface umkoin_util)
+  install_binary_component(umkoin)
+endif()
 
 # Umkoin Core umkoind.
 if(BUILD_DAEMON)

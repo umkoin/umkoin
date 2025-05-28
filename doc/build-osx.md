@@ -199,6 +199,10 @@ cmake --build build --target deploy
 Umkoin Core should now be available at `./build/bin/umkoind`.
 If you compiled support for the GUI, it should be available at `./build/bin/umkoin-qt`.
 
+There is also a multifunction command line interface at `./build/bin/umkoin`
+supporting subcommands like `umkoin node`, `umkoin gui`, `umkoin rpc`, and
+others that can be listed with `umkoin help`.
+
 The first time you run `umkoind` or `umkoin-qt`, it will start downloading the blockchain.
 This process could take many hours, or even days on slower than average systems.
 

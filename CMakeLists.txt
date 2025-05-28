@@ -94,6 +94,7 @@ endif()
 #=============================
 include(CMakeDependentOption)
 # When adding a new option, end the <help_text> with a full stop for consistency.
+option(BUILD_UMKOIN_BIN "Build umkoin executable." ON)
 option(BUILD_DAEMON "Build umkoind executable." ON)
 option(BUILD_GUI "Build umkoin-qt executable." OFF)
 option(BUILD_CLI "Build umkoin-cli executable." ON)
@@ -202,6 +203,7 @@ target_link_libraries(core_interface INTERFACE
 
 if(BUILD_FOR_FUZZING)
   message(WARNING "BUILD_FOR_FUZZING=ON will disable all other targets and force BUILD_FUZZ_BINARY=ON.")
+  set(BUILD_UMKOIN_BIN OFF)
   set(BUILD_DAEMON OFF)
   set(BUILD_CLI OFF)
   set(BUILD_TX OFF)
@@ -647,6 +649,7 @@ message("\n")
 message("Configure summary")
 message("=================")
 message("Executables:")
+message("  umkoin ............................. ${BUILD_UMKOIN_BIN}")
 message("  umkoind ............................ ${BUILD_DAEMON}")
 if(BUILD_DAEMON AND ENABLE_IPC)
   set(umkoin_daemon_status ON)

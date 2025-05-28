@@ -23,7 +23,7 @@ function(add_maintenance_targets)
     return()
   endif()
 
-  foreach(target IN ITEMS umkoind umkoin-qt umkoin-cli umkoin-tx umkoin-util umkoin-wallet test_umkoin bench_umkoin)
+  foreach(target IN ITEMS umkoin umkoind umkoin-qt umkoin-cli umkoin-tx umkoin-util umkoin-wallet test_umkoin bench_umkoin)
     if(TARGET ${target})
       list(APPEND executables $<TARGET_FILE:${target}>)
     endif()
@@ -43,7 +43,7 @@ function(add_maintenance_targets)
 endfunction()
 
 function(add_windows_deploy_target)
-  if(MINGW AND TARGET umkoin-qt AND TARGET umkoind AND TARGET umkoin-cli AND TARGET umkoin-tx AND TARGET umkoin-wallet AND TARGET umkoin-util AND TARGET test_umkoin)
+  if(MINGW AND TARGET umkoin AND TARGET umkoin-qt AND TARGET umkoind AND TARGET umkoin-cli AND TARGET umkoin-tx AND TARGET umkoin-wallet AND TARGET umkoin-util AND TARGET test_umkoin)
     find_program(MAKENSIS_EXECUTABLE makensis)
     if(NOT MAKENSIS_EXECUTABLE)
       add_custom_target(deploy
@@ -59,6 +59,7 @@ function(add_windows_deploy_target)
     add_custom_command(
       OUTPUT ${PROJECT_BINARY_DIR}/umkoin-win64-setup.exe
       COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/release
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoin>
       COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-qt> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoin-qt>
       COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoind> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoind>
       COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-cli> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoin-cli>

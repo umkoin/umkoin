@@ -17,6 +17,9 @@ Unpack the files into a directory and run:
 
 - `bin/umkoin-qt` (GUI) or
 - `bin/umkoind` (headless)
+- `bin/umkoin` (wrapper command)
+
+The `umkoin` command supports subcommands like `umkoin gui`, `umkoin node`, and `umkoin rpc` exposing different functionality. Subcommands can be listed with `umkoin help`.
 
 ### Windows
 

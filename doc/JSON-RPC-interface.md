@@ -62,6 +62,8 @@ umkoin-cli -named createwallet wallet_name=mywallet load_on_startup=true
 umkoin-cli -named createwallet mywallet load_on_startup=true
 ```
 
+`umkoin rpc` can also be substituted for `umkoin-cli -named`, and is a newer alternative.
+
 ## Versioning
 
 The RPC interface might change from one major version of Umkoin Core to the

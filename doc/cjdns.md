@@ -113,3 +113,5 @@ To see which CJDNS peers your node is connected to, use `umkoin-cli -netinfo 4`
 or the `getpeerinfo` RPC (i.e. `umkoin-cli getpeerinfo`).
 
 You can use the `getnodeaddresses` RPC to fetch a number of CJDNS peers known to your node; run `umkoin-cli help getnodeaddresses` for details.
+
+`umkoin rpc` can also be substituted for `umkoin-cli`.
