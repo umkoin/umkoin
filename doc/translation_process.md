@@ -8,7 +8,7 @@ Transifex is setup to monitor the GitHub repo for updates, and when code contain
 
 Multiple language support is critical in assisting Umkoin’s global adoption, and growth. One of Umkoin’s greatest strengths is cross-border money transfers, any help making that easier is greatly appreciated.
 
-See the [Transifex Umkoin project](https://www.transifex.com/umkoin/umkoin-core/) to assist with translations.
+See the [Transifex Umkoin project](https://explore.transifex.com/umkoin/umkoin-core/) to assist in translations. You should also join the translation mailing list for announcements - see details below.
 
 ### Writing code with translations
 We use automated scripts to help extract translations in both Qt, and non-Qt source files. It is rarely necessary to manually edit the files in `src/qt/locale/`. The translation source files must adhere to the following format:
@@ -39,9 +39,9 @@ git commit
 ```
 
 ### Creating a Transifex account
-Visit the [Transifex Signup](https://www.transifex.com/signup/) page to create an account. Take note of your username and password, as they will be required to configure the command-line tool.
+Visit the [Transifex Signup](https://app.transifex.com/signup/open-source/) page to create an account. Take note of your username and password, as they will be required to configure the command-line tool.
 
-You can find the Umkoin translation project at [https://www.transifex.com/umkoin/umkoin-core/](https://www.transifex.com/umkoin/umkoin-core/).
+You can find the Umkoin translation project at [https://www.transifex.com/umkoin/umkoin-core/](https://explore.transifex.com/umkoin/umkoin-core/).
 
 ### Installing the Transifex client command-line tool
 The client is used to fetch updated translations. Please check installation instructions and any other details at https://developers.transifex.com/docs/cli.
