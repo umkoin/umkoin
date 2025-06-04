@@ -1,0 +1,12 @@
+--- doc/man/umkoin-qt.1
++++ ../bitcoin/doc/man/bitcoin-qt.1
+@@ -836,7 +837,7 @@ Reset all settings changed in the GUI
+ .IP
+ Show splash screen on startup (default: 1)
+ .SH COPYRIGHT
+-Copyright (C) 2009-2024 The Bitcoin Core developers
++Copyright (C) 2017-2025 The Umkoin Core developers
+ 
+ Please contribute if you find Umkoin Core useful. Visit
+-<https://bitcoincore.org/> for further information about the software.
++<http://www.umkoin.org/> for further information about the software.
