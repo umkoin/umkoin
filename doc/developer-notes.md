@@ -221,7 +221,6 @@ Configure with clang as the compiler:
 
 ```sh
 cmake -B build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-cmake --build build -j $(nproc)
 ```
 
 The output is denoised of errors from external dependencies.
@@ -1286,7 +1285,7 @@ The ultimate upstream of the few externally managed subtrees are:
 
 - src/leveldb
   - Upstream at https://github.com/google/leveldb ; maintained by Google. Open
-    important PRs to the subtree to avoid delay.
+    important PRs to the Umkoin Core subtree to avoid delay.
   - **Note**: Follow the instructions in [Upgrading LevelDB](#upgrading-leveldb) when
     merging upstream changes to the LevelDB subtree.
 
