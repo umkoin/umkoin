@@ -64,7 +64,7 @@ outgoing connections, but more is possible.
 
 In a typical situation, this suffices to run behind a Tor proxy:
 
-    ./umkoind -proxy=127.0.0.1:9050
+    umkoind -proxy=127.0.0.1:9050
 
 `umkoin node` or `umkoin gui` can also be substituted for `umkoind`.
 
@@ -191,25 +191,25 @@ should be equal to binding address and port for inbound Tor connections (127.0.0
 
 In a typical situation, where you're only reachable via Tor, this should suffice:
 
-    ./umkoind -proxy=127.0.0.1:9050 -externalip=7zvj7a2imdgkdbg4f2dryd5rgtrn7upivr5eeij4cicjh65pooxeshid.onion -listen
+    umkoind -proxy=127.0.0.1:9050 -externalip=7zvj7a2imdgkdbg4f2dryd5rgtrn7upivr5eeij4cicjh65pooxeshid.onion -listen
 
 (obviously, replace the .onion address with your own). It should be noted that you still
 listen on all devices and another node could establish a clearnet connection, when knowing
 your address. To mitigate this, additionally bind the address of your Tor proxy:
 
-    ./umkoind ... -bind=127.0.0.1:6334=onion
+    umkoind ... -bind=127.0.0.1:6334=onion
 
 If you don't care too much about hiding your node, and want to be reachable on IPv4
 as well, use `discover` instead:
 
-    ./umkoind ... -discover
+    umkoind ... -discover
 
 and open port 6333 on your firewall (or use port mapping, i.e., `-natpmp`).
 
 If you only want to use Tor to reach .onion addresses, but not use it as a proxy
 for normal IPv4/IPv6 communication, use:
 
-    ./umkoind -onion=127.0.0.1:9050 -externalip=7zvj7a2imdgkdbg4f2dryd5rgtrn7upivr5eeij4cicjh65pooxeshid.onion -discover
+    umkoind -onion=127.0.0.1:9050 -externalip=7zvj7a2imdgkdbg4f2dryd5rgtrn7upivr5eeij4cicjh65pooxeshid.onion -discover
 
 ## 4. Privacy recommendations
 
