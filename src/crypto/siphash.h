@@ -5,7 +5,7 @@
 #ifndef UMKOIN_CRYPTO_SIPHASH_H
 #define UMKOIN_CRYPTO_SIPHASH_H
 
-#include <stdint.h>
+#include <cstdint>
 
 #include <span.h>
 #include <uint256.h>
