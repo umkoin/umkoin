@@ -6328,10 +6328,10 @@ bool IsBIP30Repeat(const CBlockIndex& block_index)
            (block_index.nHeight==91880 && block_index.GetBlockHash() == uint256{"000000000024d0f4c29f736bd6d1ea4c44d0cd5c1439f18ca69f144eef28af3f"});
 }
 
-bool IsBIP30Unspendable(const CBlockIndex& block_index)
+bool IsBIP30Unspendable(const uint256& block_hash, int block_height)
 {
-    return (block_index.nHeight==91722 && block_index.GetBlockHash() == uint256{"000000000020b729598284afb9ae56a533511bb58ca4fd1ef2bb0a6066150464"}) ||
-           (block_index.nHeight==91812 && block_index.GetBlockHash() == uint256{"000000000022213d0d4b6a18ea70cc42bb8ef80d7c45a7c993dd9e8b7391d33b"});
+    return (block_height==91722 && block_hash == uint256{"000000000020b729598284afb9ae56a533511bb58ca4fd1ef2bb0a6066150464"}) ||
+           (block_height==91812 && block_hash == uint256{"000000000022213d0d4b6a18ea70cc42bb8ef80d7c45a7c993dd9e8b7391d33b"});
 }
 
 static fs::path GetSnapshotCoinsDBPath(Chainstate& cs) EXCLUSIVE_LOCKS_REQUIRED(::cs_main)
