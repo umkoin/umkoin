@@ -1,13 +1,17 @@
-Umkoin Core version 28.x is now available from:
+Umkoin Core version 28.2 is now available from:
 
-  <http://www.umkoin.org/bin/umkoin-core-28.x>
+  <https://bitcoincore.org/bin/bitcoin-core-28.2/>
 
 This release includes new features, various bug fixes and performance
 improvements, as well as updated translations.
 
 Please report bugs using the issue tracker at GitHub:
 
-  <https://github.com/umkoin/umkoin/issues>
+  <https://github.com/bitcoin/bitcoin/issues>
+
+To receive security and update notifications, please subscribe to:
+
+  <https://bitcoincore.org/en/list/announcements/join/>
 
 How to Upgrade
 ==============
@@ -64,6 +68,7 @@ Notable changes
 Credits
 =======
 
+Thanks to everyone who directly contributed to this release:
 - 0xB10C
 - achow101
 - Brandon Odiwuor
@@ -74,7 +79,5 @@ Credits
 - MarcoFalke
 - Sjors Provoost
 
-Thanks to everyone who directly contributed to this release:
-
 As well as to everyone that helped with translations on
-[Transifex](https://www.transifex.com/umkoin/umkoin-core/).
+[Transifex](https://www.transifex.com/umkoin/umkoin/).
