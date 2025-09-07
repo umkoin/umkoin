@@ -227,7 +227,7 @@ popd
 
 Then open a Pull Request to the [guix.sigs repository](https://github.com/umkoin/guix.sigs).
 
-## After 1 or more people have guix-built and their results match
+## After 6 or more people have guix-built and their results match
 
 After verifying signatures, combine the `all.SHA256SUMS.asc` file from all signers into `SHA256SUMS.asc`:
 
