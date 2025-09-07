@@ -21,13 +21,6 @@ Upgrading directly from a version of Umkoin Core that has reached its EOL is
 possible, but it might take some time if the data directory needs to be migrated. Old
 wallet versions of Umkoin Core are generally supported.
 
-Running Umkoin Core binaries on macOS requires self signing.
-```
-cd /path/to/umkoin-28.x/bin
-xattr -d com.apple.quarantine umkoin-cli umkoin-qt umkoin-tx umkoin-util umkoin-wallet umkoind test_umkoin
-codesign -s - umkoin-cli umkoin-qt umkoin-tx umkoin-util umkoin-wallet umkoind test_umkoin
-```
-
 Compatibility
 ==============
 
@@ -42,8 +35,9 @@ Notable changes
 
 ### Build
 
-- #31627 depends: Fix spacing issue
+- #31407 guix: Notarize MacOS app bundle and codesign all MacOS and Windows binaries
 - #31500 depends: Fix compiling libevent package on NetBSD
+- #31627 depends: Fix spacing issue
 - #32070 build: use make < 3.82 syntax for define directive
 
 ### Test
@@ -64,6 +58,7 @@ Credits
 =======
 
 - 0xB10C
+- achow101
 - Brandon Odiwuor
 - Hennadii Stepanov
 - kehiy
