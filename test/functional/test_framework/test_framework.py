@@ -84,6 +84,10 @@ class Binaries:
         # Add -nonamed because "umkoin rpc" enables -named by default, but umkoin-cli doesn't
         return self._argv("rpc", self.paths.umkoincli) + ["-nonamed"]
 
+    def tx_argv(self):
+        "Return argv array that should be used to invoke umkoin-tx"
+        return self._argv("tx", self.paths.umkointx)
+
     def util_argv(self):
         "Return argv array that should be used to invoke umkoin-util"
         return self._argv("util", self.paths.umkoinutil)
@@ -272,9 +276,8 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         self.options.timeout_factor = self.options.timeout_factor or (4 if self.options.valgrind else 1)
         self.options.previous_releases_path = previous_releases_path
 
-        config = configparser.ConfigParser()
-        config.read_file(open(self.options.configfile))
-        self.config = config
+        self.config = configparser.ConfigParser()
+        self.config.read_file(open(self.options.configfile))
         self.binary_paths = self.get_binary_paths()
         if self.options.v1transport:
             self.options.v2transport=False
@@ -286,19 +289,20 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
 
         paths = types.SimpleNamespace()
         binaries = {
-            "umkoind": ("umkoind", "UMKOIND"),
-            "umkoin-cli": ("umkoincli", "UMKOINCLI"),
-            "umkoin-util": ("umkoinutil", "UMKOINUTIL"),
-            "umkoin-chainstate": ("umkoinchainstate", "UMKOINCHAINSTATE"),
-            "umkoin-wallet": ("umkoinwallet", "UMKOINWALLET"),
+            "umkoind": "UMKOIND",
+            "umkoin-cli": "UMKOINCLI",
+            "umkoin-util": "UMKOINUTIL",
+            "umkoin-tx": "UMKOINTX",
+            "umkoin-chainstate": "UMKOINCHAINSTATE",
+            "umkoin-wallet": "UMKOINWALLET",
         }
-        for binary, [attribute_name, env_variable_name] in binaries.items():
+        for binary, env_variable_name in binaries.items():
             default_filename = os.path.join(
                 self.config["environment"]["BUILDDIR"],
                 "bin",
                 binary + self.config["environment"]["EXEEXT"],
             )
-            setattr(paths, attribute_name, os.getenv(env_variable_name, default=default_filename))
+            setattr(paths, env_variable_name.lower(), os.getenv(env_variable_name, default=default_filename))
         # UMKOIN_CMD environment variable can be specified to invoke umkoin
         # wrapper binary instead of other executables.
         paths.umkoin_cmd = shlex.split(os.getenv("UMKOIN_CMD", "")) or None
@@ -314,10 +318,8 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
 
         self.options.cachedir = os.path.abspath(self.options.cachedir)
 
-        config = self.config
-
         os.environ['PATH'] = os.pathsep.join([
-            os.path.join(config['environment']['BUILDDIR'], 'bin'),
+            os.path.join(self.config["environment"]["BUILDDIR"], "bin"),
             os.environ['PATH']
         ])
 
@@ -1000,6 +1002,11 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         if not self.is_wallet_tool_compiled():
             raise SkipTest("umkoin-wallet has not been compiled")
 
+    def skip_if_no_umkoin_tx(self):
+        """Skip the running test if umkoin-tx has not been compiled."""
+        if not self.is_umkoin_tx_compiled():
+            raise SkipTest("umkoin-tx has not been compiled")
+
     def skip_if_no_umkoin_util(self):
         """Skip the running test if umkoin-util has not been compiled."""
         if not self.is_umkoin_util_compiled():
@@ -1053,6 +1060,10 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
     def is_wallet_tool_compiled(self):
         """Checks whether umkoin-wallet was compiled."""
         return self.config["components"].getboolean("ENABLE_WALLET_TOOL")
+
+    def is_umkoin_tx_compiled(self):
+        """Checks whether umkoin-tx was compiled."""
+        return self.config["components"].getboolean("BUILD_UMKOIN_TX")
 
     def is_umkoin_util_compiled(self):
         """Checks whether umkoin-util was compiled."""

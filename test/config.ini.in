@@ -17,6 +17,7 @@ RPCAUTH=@abs_top_srcdir@/share/rpcauth/rpcauth.py
 # Which components are enabled. These are commented out by cmake if they were disabled during configuration.
 @ENABLE_WALLET_TRUE@ENABLE_WALLET=true
 @BUILD_UMKOIN_CLI_TRUE@ENABLE_CLI=true
+@BUILD_UMKOIN_TX_TRUE@BUILD_UMKOIN_TX=true
 @BUILD_UMKOIN_UTIL_TRUE@ENABLE_UMKOIN_UTIL=true
 @BUILD_UMKOIN_CHAINSTATE_TRUE@ENABLE_UMKOIN_CHAINSTATE=true
 @BUILD_UMKOIN_WALLET_TRUE@ENABLE_WALLET_TOOL=true
