@@ -33,7 +33,6 @@ class ReplaceByFeeTest(UmkoinTestFramework):
             [
             ],
         ]
-        self.supports_cli = False
         self.uses_wallet = None
 
     def run_test(self):
