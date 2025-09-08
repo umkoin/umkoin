@@ -1,0 +1,19 @@
+--- test/get_previous_releases.py
++++ ../bitcoin/test/get_previous_releases.py
+@@ -11,11 +11,14 @@
+ import argparse
+ import contextlib
+ from fnmatch import fnmatch
++import hashlib
+ import os
+ from pathlib import Path
++import platform
+ import re
+ import shutil
+ import subprocess
+ import sys
+-import hashlib
+-
++import time
++import urllib.request
++import zipfile
