@@ -6,7 +6,7 @@ libsecp256k1
 
 High-performance high-assurance C library for digital signatures and other cryptographic primitives on the secp256k1 elliptic curve.
 
-This library is intended to be the highest quality publicly available library for cryptography on the secp256k1 curve. However, the primary focus of its development has been for usage in the Bitcoin system and usage unlike Bitcoin's may be less well tested, verified, or suffer from a less well thought out interface. Correct usage requires some care and consideration that the library is fit for your application's purpose.
+This library is intended to be the highest quality publicly available library for cryptography on the secp256k1 curve. However, the primary focus of its development has been for usage in the Umkoin system and usage unlike Umkoin's may be less well tested, verified, or suffer from a less well thought out interface. Correct usage requires some care and consideration that the library is fit for your application's purpose.
 
 Features:
 * secp256k1 ECDSA signing/verification and key generation.
@@ -135,11 +135,13 @@ To cross compile for Android with [NDK](https://developer.android.com/ndk/guides
 
 ### Building on Windows
 
-The following example assumes Visual Studio 2022. Using clang-cl is recommended.
+To build on Windows with Visual Studio, a proper [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html#visual-studio-generators) must be specified for a new build tree.
+
+The following example assumes using of Visual Studio 2022 and CMake v3.21+.
 
 In "Developer Command Prompt for VS 2022":
 
-    >cmake -B build -T ClangCL
+    >cmake -G "Visual Studio 17 2022" -A x64 -B build
     >cmake --build build --config RelWithDebInfo
 
 Usage examples

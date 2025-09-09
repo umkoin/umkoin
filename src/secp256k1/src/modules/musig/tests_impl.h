@@ -548,39 +548,40 @@ static void musig_nonce_test(void) {
     }
 }
 
+static void sha256_tag_test_internal(secp256k1_sha256 *sha_tagged, unsigned char *tag, size_t taglen) {
+    secp256k1_sha256 sha;
+    secp256k1_sha256_initialize_tagged(&sha, tag, taglen);
+    test_sha256_eq(&sha, sha_tagged);
+}
+
 /* Checks that the initialized tagged hashes have the expected
  * state. */
 static void sha256_tag_test(void) {
     secp256k1_sha256 sha;
     {
-        /* "KeyAgg list" */
-        static const unsigned char tag[] = {'K', 'e', 'y', 'A', 'g', 'g', ' ', 'l', 'i', 's', 't'};
+        char tag[] = "KeyAgg list";
         secp256k1_musig_keyagglist_sha256(&sha);
-        test_sha256_tag_midstate(&sha, tag, sizeof(tag));
+        sha256_tag_test_internal(&sha, (unsigned char*)tag, sizeof(tag) - 1);
     }
     {
-        /* "KeyAgg coefficient" */
-        static const unsigned char tag[] = {'K', 'e', 'y', 'A', 'g', 'g', ' ', 'c', 'o', 'e', 'f', 'f', 'i', 'c', 'i', 'e', 'n', 't'};
+        char tag[] = "KeyAgg coefficient";
         secp256k1_musig_keyaggcoef_sha256(&sha);
-        test_sha256_tag_midstate(&sha, tag, sizeof(tag));
+        sha256_tag_test_internal(&sha, (unsigned char*)tag, sizeof(tag) - 1);
     }
     {
-        /* "MuSig/aux" */
-        static const unsigned char tag[] = { 'M', 'u', 'S', 'i', 'g', '/', 'a', 'u', 'x' };
+        unsigned char tag[] = "MuSig/aux";
         secp256k1_nonce_function_musig_sha256_tagged_aux(&sha);
-        test_sha256_tag_midstate(&sha, tag, sizeof(tag));
+        sha256_tag_test_internal(&sha, (unsigned char*)tag, sizeof(tag) - 1);
     }
     {
-        /* "MuSig/nonce" */
-        static const unsigned char tag[] = { 'M', 'u', 'S', 'i', 'g', '/', 'n', 'o', 'n', 'c', 'e' };
+        unsigned char tag[] = "MuSig/nonce";
         secp256k1_nonce_function_musig_sha256_tagged(&sha);
-        test_sha256_tag_midstate(&sha, tag, sizeof(tag));
+        sha256_tag_test_internal(&sha, (unsigned char*)tag, sizeof(tag) - 1);
     }
     {
-        /* "MuSig/noncecoef" */
-        static const unsigned char tag[] = { 'M', 'u', 'S', 'i', 'g', '/', 'n', 'o', 'n', 'c', 'e', 'c', 'o', 'e', 'f' };
+        unsigned char tag[] = "MuSig/noncecoef";
         secp256k1_musig_compute_noncehash_sha256_tagged(&sha);
-        test_sha256_tag_midstate(&sha, tag, sizeof(tag));
+        sha256_tag_test_internal(&sha, (unsigned char*)tag, sizeof(tag) - 1);
     }
 }
 

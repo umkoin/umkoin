@@ -236,7 +236,7 @@
           "flags" : [
             "EdgeCaseSharedSecret"
           ],
-          "public" : "3056301006072a8648ce3d020106052b8104000a034200045563c76c19377638f7d517bdbe0ace467eb5d4dd9fb4bf18332bab8f07b1d80c261332d46e316711278bacccd88005ee4c115fa84089fd190674626e5ed1ebfe",
+          "public" : "3056301006072a8648ce3d020106052b8104000a034200045563c76c19377638f7d517bdbe0ace467eb5d4dd9fb4bf16332bab8f07b1d80c261332d46e316711278bacccd88005ee4c115fa84089fd190674626e5ed1ebfe",
           "private" : "00a2b6442a37f8a3764aeff4011a4c422b389a1e509669c43f279c8b7e32d80c3a",
           "shared" : "0000000000000000000000000000000000000001000000000000000000000001",
           "result" : "valid"
@@ -786,7 +786,7 @@
           "flags" : [
             "EdgeCaseEphemeralKey"
           ],
-          "public" : "3056301006072a8648ce3d020106052b8104000a03420004fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2c0e994b14ea72f8c3eb95c71ef692575e775058332d7e52d0995cf8038871b67d",
+          "public" : "3056301006072a8648ce3d020106052b8104000a03420004fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2c0e994b14ea72f8c3eb95c71ef692575e775056332d7e52d0995cf8038871b67d",
           "private" : "2bc15cf3981eab61e594ebf591290a045ca9326a8d3dd49f3de1190d39270bb8",
           "shared" : "e97fb4c4fb33d6a114da6e0d180e54f99ec1ece9ff558871054e99d221930d16",
           "result" : "valid"
@@ -1160,7 +1160,7 @@
           "flags" : [
             "EdgeCaseEphemeralKey"
           ],
-          "public" : "3056301006072a8648ce3d020106052b8104000a03420004ffffffffffffffff0000000000000000fffffffffffffffefffffffffffffff53a54141598334650d1f99a12850769f53d34529b07ae591244c6ed702f1aa171",
+          "public" : "3056301006072a8648ce3d020106052b8104000a03420004ffffffffffffffff0000000000000000fffffffffffffffefffffffffffffff53a54141596334650d1f99a12850769f53d34529b07ae591244c6ed702f1aa171",
           "private" : "2bc15cf3981eab61e594ebf591290a045ca9326a8d3dd49f3de1190d39270bb8",
           "shared" : "119aa477afad550e98db77bfb4e71a4b6ec79ec4fe17b7283f9b8bb7b9fdb5ec",
           "result" : "valid"
@@ -2337,7 +2337,7 @@
           "flags" : [
             "EdgeCaseDoubling"
           ],
-          "public" : "3056301006072a8648ce3d020106052b8104000a034200046b910d9e9943cbeff717ca9546aa5677e06118f5f04a0246b5bab73505775d65c87a4c1fd7bc584c56991119699b90b4b3a568e508eaa83f118332da9152b13a",
+          "public" : "3056301006072a8648ce3d020106052b8104000a034200046b910d9e9943cbeff717ca9546aa5677e06118f5f04a0246b5bab73505775d65c87a4c1fd7bc584c56991119699b90b4b3a568e508eaa83f116332da9152b13a",
           "private" : "00c1781d86cac2c052b865f228e64bd1ce433c78ca7dfca9e8b810473e2ce17da5",
           "shared" : "e2ae03b844b3f279d5cd16bff20ab5cad07e4c984f21cbe73e1997a02bd2c291",
           "result" : "valid"
@@ -2359,7 +2359,7 @@
           "flags" : [
             "EdgeCaseDoubling"
           ],
-          "public" : "3056301006072a8648ce3d020106052b8104000a034200047f420fcef93b0b9d0a9f86b2c65e18938e17aa84eade2a7a6440adec914cb2f6ec1663baab8af308333399adceff908ee33c8f86b3df9ef93a51520931f851ec",
+          "public" : "3056301006072a8648ce3d020106052b8104000a034200047f420fcef93b0b9d0a9f86b2c65e18938e17aa84eade2a7a6440adec914cb2f6ec1663baab8af306333399adceff908ee33c8f86b3df9ef93a51520931f851ec",
           "private" : "00c1781d86cac2c052b865f228e64bd1ce433c78ca7dfca9e8b810473e2ce17da5",
           "shared" : "d96cdd08e6eeeca690989b659024f324e18c2faf5c50958da6985f70826095c5",
           "result" : "valid"
@@ -2955,7 +2955,7 @@
           ],
           "public" : "3056301006072a8648ce3d020106052b8104000a03420004cfd6d84113fc920b44bf6d67cb841691dbae07bd6732e5dec045e60d90b98f7110cbf8c9ffaef36f3d53132b1c10db5672acd5df5b87cb98d19daf87b0de3573",
           "private" : "00c1781d86cac2c052b865f228e64bd1ce433c78ca7dfca9e8b810473e2ce17da5",
-          "shared" : "51c10b8332b33faf529c58cc2da45a23bbfecc1d4e0aa4ea54fd819b7e31e555",
+          "shared" : "51c10b6332b33faf529c58cc2da45a23bbfecc1d4e0aa4ea54fd819b7e31e555",
           "result" : "valid"
         },
         {
@@ -3505,7 +3505,7 @@
           ],
           "public" : "3056301006072a8648ce3d020106052b8104000a03420004882773ec7e10605c8f9e2e3b8700943be26bcc4c9d1fedf2bdcfb36994f23c7f8e5d05b2fdd2954b6188736ebe3f5646602a58d978b716b5304ea56777691db3",
           "private" : "00c1781d86cac2c052b865f228e64bd1ce433c78ca7dfca9e8b810473e2ce17da5",
-          "shared" : "99f6151fba28067eac73354920fcc1fa17fea63225a583323cb6c3d4054ecaca",
+          "shared" : "99f6151fba28067eac73354920fcc1fa17fea63225a563323cb6c3d4054ecaca",
           "result" : "valid"
         },
         {
@@ -3536,7 +3536,7 @@
           "flags" : [
             "EdgeCaseDoubling"
           ],
-          "public" : "3056301006072a8648ce3d020106052b8104000a0342000452d9a44bf0bc729e5f3ffc8a73a4da332e2962b22013391b60eb66de6e1b83431eb0d9c6e92a424bc24ab23caf99e3cda830263689653626f8be91590fb75cbd",
+          "public" : "3056301006072a8648ce3d020106052b8104000a0342000452d9a44bf0bc729e5f3ffc8a73a4da332e2962b22013391b60eb66de6e1b63431eb0d9c6e92a424bc24ab23caf99e3cda830263689653626f8be91590fb75cbd",
           "private" : "00c1781d86cac2c052b865f228e64bd1ce433c78ca7dfca9e8b810473e2ce17da5",
           "shared" : "9e232223afd0d57a7b150f65700ac60a78bae2aafc0cf9d1a820452ca1e57a14",
           "result" : "valid"
@@ -5254,7 +5254,7 @@
           ],
           "public" : "3056301006072a8648ce3d020106052b8104000a0342000432bdd978eb62b1f369a56d0949ab8551a7ad527d9602e891ce457586c2a8569e981e67fae053b03fc33e1a291f0a3beb58fceb2e85bb1205dacee1232dfd316b",
           "private" : "00fffffffffffffffffffffffffffffffebaaedce6af48a03bbfca5e8cd0364141",
-          "shared" : "8c5934793505a6a1f84d41283341680c4923f1f4d562989a11cc626fea5eda5a",
+          "shared" : "8c5934793505a6a1f84d41263341680c4923f1f4d562989a11cc626fea5eda5a",
           "result" : "valid"
         },
         {
