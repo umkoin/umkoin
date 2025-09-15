@@ -84,7 +84,7 @@ For instance:
     $ umkoind -zmqpubhashtx=tcp://127.0.0.1:26332 \
                -zmqpubhashtx=tcp://192.168.1.2:26332 \
                -zmqpubhashblock="tcp://[::1]:26333" \
-               -zmqpubrawtx=ipc:///tmp/umkoind.tx.raw \
+               -zmqpubrawtx=unix:/tmp/umkoind.tx.raw \
                -zmqpubhashtxhwm=10000
 
 Each PUB notification has a topic and body, where the header
