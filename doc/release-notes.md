@@ -1,6 +1,6 @@
-Umkoin Core version 29.x is now available from:
+Umkoin Core version 29.1rc1 is now available from:
 
-  <http://www.umkoin.org/bin/umkoin-core-29.x/>
+  <http://www.umkoin.org/bin/umkoin-core-29.1/test.rc1/>
 
 This release includes various bug fixes and performance
 improvements, as well as updated translations.
