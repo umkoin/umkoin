@@ -25,8 +25,7 @@ ExecStart=/usr/bin/umkoind -pid=/run/umkoind/umkoind.pid \
                             -shutdownnotify='systemd-notify --stopping'
 
 # Make sure the config directory is readable by the service user
-PermissionsStartOnly=true
-ExecStartPre=/bin/chgrp umkoin /etc/umkoin
+ExecStartPre=!/bin/chgrp umkoin /etc/umkoin
 
 # Process management
 ####################
@@ -44,7 +43,6 @@ TimeoutStopSec=600
 
 # Run as umkoin:umkoin
 User=umkoin
-Group=umkoin
 
 # /run/umkoind
 RuntimeDirectory=umkoind
