@@ -1,0 +1,10 @@
+set(ts_files
+  umkoin_da.ts
+  umkoin_de.ts
+  umkoin_en.ts
+  umkoin_es.ts
+  umkoin_fr.ts
+  umkoin_it.ts
+  umkoin_nl.ts
+  umkoin_uk.ts
+)
