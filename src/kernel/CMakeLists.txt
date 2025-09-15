@@ -79,19 +79,22 @@ add_library(umkoinkernel
   ../validation.cpp
   ../validationinterface.cpp
   ../versionbits.cpp
+  $<TARGET_OBJECTS:umkoin_clientversion>
+  $<TARGET_OBJECTS:umkoin_crypto>
+  $<TARGET_OBJECTS:leveldb>
+  $<TARGET_OBJECTS:crc32c>
 )
 target_link_libraries(umkoinkernel
   PRIVATE
     core_interface
-    umkoin_clientversion
-    umkoin_crypto
-    leveldb
-    secp256k1
+    secp256k1_objs
     $<$<PLATFORM_ID:Windows>:bcrypt>
     $<TARGET_NAME_IF_EXISTS:USDT::headers>
   PUBLIC
     Boost::headers
 )
+
+target_include_directories(umkoinkernel PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/leveldb/include>)
 
 # libumkoinkernel requires default symbol visibility, explicitly
 # specify that here so that things still work even when user
@@ -106,34 +109,6 @@ set_target_properties(umkoinkernel PROPERTIES
 # Add a convenience libumkoinkernel target as a synonym for umkoinkernel.
 add_custom_target(libumkoinkernel)
 add_dependencies(libumkoinkernel umkoinkernel)
-
-# When building the static library, install all static libraries the
-# umkoinkernel depends on.
-if(NOT BUILD_SHARED_LIBS)
-  # Recursively get all the static libraries a target depends on and put them in libs_out
-  function(get_target_static_link_libs target libs_out)
-    get_target_property(linked_libraries ${target} LINK_LIBRARIES)
-    foreach(dep ${linked_libraries})
-      if(TARGET ${dep})
-        add_dependencies(libumkoinkernel ${dep})
-        get_target_property(dep_type ${dep} TYPE)
-        if(dep_type STREQUAL "STATIC_LIBRARY")
-          list(APPEND ${libs_out} ${dep})
-          get_target_static_link_libs(${dep} ${libs_out})
-        endif()
-      endif()
-    endforeach()
-    set(${libs_out} ${${libs_out}} PARENT_SCOPE)
-  endfunction()
-
-  set(all_kernel_static_link_libs "")
-  get_target_static_link_libs(umkoinkernel all_kernel_static_link_libs)
-
-  install(TARGETS ${all_kernel_static_link_libs} ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT libumkoinkernel)
-  list(TRANSFORM all_kernel_static_link_libs PREPEND "-l")
-  # LIBS_PRIVATE is substituted in the pkg-config file.
-  list(JOIN all_kernel_static_link_libs " " LIBS_PRIVATE)
-endif()
 
 configure_file(${PROJECT_SOURCE_DIR}/libumkoinkernel.pc.in ${PROJECT_BINARY_DIR}/libumkoinkernel.pc @ONLY)
 install(FILES ${PROJECT_BINARY_DIR}/libumkoinkernel.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig" COMPONENT libumkoinkernel)
