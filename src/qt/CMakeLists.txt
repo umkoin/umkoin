@@ -279,7 +279,7 @@ if(ENABLE_IPC)
     umkoin_ipc
   )
   import_plugins(umkoin-gui)
-  install_binary_component(umkoin-gui)
+  install_binary_component(umkoin-gui INTERNAL)
   if(WIN32)
     set_target_properties(umkoin-gui PROPERTIES WIN32_EXECUTABLE TRUE)
   endif()

@@ -16,7 +16,7 @@
 
   - [Berkeley DB database based wallets](#berkeley-db-database-based-wallets)
 
-- [Notes](#notes)
+- [Installed Files](#installed-files)
 
 ## Data directory location
 
@@ -83,7 +83,7 @@ Wallets are SQLite databases.
 
 3. A wallet database path can be specified with the `-wallet` option.
 
-4. `wallet.dat` files must not be shared across different node instances, as that can result in key-reuse and double-spends due the lack of synchronization between instances.
+4. `wallet.dat` files must not be shared across different node instances, as that can result in key-reuse and double-spends due to the lack of synchronization between instances.
 
 5. Any copy or backup of the wallet should be done through a `backupwallet` call in order to update and lock the wallet, preventing any file corruption caused by updates during the copy.
 
@@ -123,8 +123,40 @@ Subdirectory | File(s)           | Description
 `./`         | `wallet.dat`      | Personal wallet (a BDB database) with keys and transactions
 `./`         | `.walletlock`     | BDB wallet lock file
 
-## Notes
+### Notes
 
 <a name="note1">1</a>. The `/` (slash, U+002F) is used as the platform-independent path component separator in this document.
 
 <a name="note2">2</a>. `NNNNN` matches `[0-9]{5}` regex.
+
+## Installed Files
+
+This table describes the files installed by Umkoin Core across different platforms.
+
+| **Path**                                                   | **Description**                                                             |
+|------------------------------------------------------------|-----------------------------------------------------------------------------|
+| [README.md](README.md) or [readme.txt](README_windows.txt) | Project information and instructions                                        |
+| umkoin.conf                                               | [Generated](../contrib/devtools/gen-umkoin-conf.sh) configuration file     |
+| bin/umkoin                                                | Command-line tool for interacting with Umkoin. Calls other binaries below. |
+| bin/umkoin-cli                                            | Tool for making node and wallet RPC calls.                                  |
+| bin/umkoin-qt                                             | Umkoin node and wallet GUI                                                 |
+| bin/umkoin-tx                                             | Tool for creating and modifying transactions                                |
+| bin/umkoin-util                                           | Miscellaneous utilities                                                     |
+| bin/umkoin-wallet                                         | Umkoin wallet tool                                                         |
+| bin/umkoind                                               | Umkoin node and wallet daemon                                              |
+| *lib/libumkoinkernel.so*                                  | Shared library containing core consensus and validation code                |
+| *lib/pkgconfig/libumkoinkernel.pc*                        | Pkg-config metadata for linking to `libumkoinkernel`                       |
+| *libexec/bench_umkoin*                                    | Benchmarking tool for measuring node performance                            |
+| *libexec/umkoin-chainstate*                               | Tool to validate and connect blocks                                         |
+| *libexec/umkoin-gui*                                      | IPC-enabled alternative to `umkoin-qt`                                     |
+| *libexec/umkoin-node*                                     | IPC-enabled alternative to `umkoind`                                       |
+| libexec/test_umkoin                                       | Unit test binary                                                            |
+| *libexec/test_umkoin-qt*                                  | GUI-specific unit tests                                                     |
+| share/man/man1/                                            | Man pages for command-line tools like `umkoin-cli`, `umkoind`, and others |
+| share/rpcauth/                                             | Documentation and scripts for RPC authentication setup                      |
+
+### Notes
+
+- *Italicized* files are only installed in source builds if relevant CMake options are enabled. They are not included in binary releases.
+- README and umkoin.conf files are included in binary releases but not installed in source builds.
+- On Windows, binaries have a `.exe` suffix (e.g., `umkoin-cli.exe`).

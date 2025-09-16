@@ -322,7 +322,7 @@ if(ENABLE_IPC AND BUILD_DAEMON)
     umkoin_ipc
     $<TARGET_NAME_IF_EXISTS:umkoin_wallet>
   )
-  install_binary_component(umkoin-node)
+  install_binary_component(umkoin-node INTERNAL)
 endif()
 
 if(ENABLE_IPC AND BUILD_TESTS)
@@ -424,6 +424,7 @@ if(BUILD_UTIL_CHAINSTATE)
       core_interface
       umkoinkernel
   )
+  install_binary_component(umkoin-chainstate INTERNAL)
 endif()
 
 
