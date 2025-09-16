@@ -123,9 +123,6 @@ def check_ELF_CONTROL_FLOW(binary) -> bool:
 
 def check_ELF_FORTIFY(binary) -> bool:
 
-    # umkoin-util does not currently contain any fortified functions
-    if 'Umkoin Core umkoin-util utility version ' in binary.strings:
-        return True
     # umkoin wrapper does not currently contain any fortified functions
     if '--monolithic' in binary.strings:
         return True
