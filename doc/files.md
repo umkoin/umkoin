@@ -150,8 +150,8 @@ This table describes the files installed by Umkoin Core across different platfor
 | *lib/pkgconfig/libumkoinkernel.pc*                        | Pkg-config metadata for linking to `libumkoinkernel`                       |
 | *libexec/bench_umkoin*                                    | Benchmarking tool for measuring node performance                            |
 | *libexec/umkoin-chainstate*                               | Tool to validate and connect blocks                                         |
-| *libexec/umkoin-gui*                                      | IPC-enabled alternative to `umkoin-qt`                                     |
-| *libexec/umkoin-node*                                     | IPC-enabled alternative to `umkoind`                                       |
+| libexec/umkoin-gui                                        | IPC-enabled alternative to `umkoin-qt`                                     |
+| libexec/umkoin-node                                       | IPC-enabled alternative to `umkoind`                                       |
 | libexec/test_umkoin                                       | Unit test binary                                                            |
 | *libexec/test_umkoin-qt*                                  | GUI-specific unit tests                                                     |
 | share/man/man1/                                            | Man pages for command-line tools like `umkoin-cli`, `umkoind`, and others |
