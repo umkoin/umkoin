@@ -15,3 +15,4 @@ export UMKOIN_CONFIG="-DBUILD_GUI=ON -DWITH_ZMQ=ON -DREDUCE_EXPORTS=ON -DCMAKE_E
 export CI_OS_NAME="macos"
 export NO_DEPENDS=1
 export OSX_SDK=""
+export UMKOIN_CMD="umkoin -m" # Used in functional tests

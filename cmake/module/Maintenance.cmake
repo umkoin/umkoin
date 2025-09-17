@@ -23,7 +23,7 @@ function(add_maintenance_targets)
     return()
   endif()
 
-  foreach(target IN ITEMS umkoin umkoind umkoin-qt umkoin-cli umkoin-tx umkoin-util umkoin-wallet test_umkoin bench_umkoin)
+  foreach(target IN ITEMS umkoin umkoind umkoin-node umkoin-qt umkoin-gui umkoin-cli umkoin-tx umkoin-util umkoin-wallet test_umkoin bench_umkoin)
     if(TARGET ${target})
       list(APPEND executables $<TARGET_FILE:${target}>)
     endif()

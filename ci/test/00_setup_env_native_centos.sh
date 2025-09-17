@@ -18,3 +18,4 @@ export UMKOIN_CONFIG="\
  -DREDUCE_EXPORTS=ON \
  -DCMAKE_BUILD_TYPE=Debug \
 "
+export UMKOIN_CMD="umkoin -m" # Used in functional tests
