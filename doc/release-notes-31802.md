@@ -1,3 +1,0 @@
-A new (experimental) Mining interface was introduced to support Stratum v2 or other mining client software, see #31098. When the node is started with `umkoin node -m -ipcbind=unix` the node will listen on a unix socket for IPC client connections. The `-m` option launches a new binary `umkoin-node` instead of `umkoind`.
-
-IPC connectivity introduces new dependencies (see [multiprocess.md](multiprocess.md)), which are only included in the `umkoin-node` and `umkoin-gui` binaries (not in `umkoind` and `umkoin-qt`). Those new binaries are now built by default (controlled by `ENABLE_IPC`). If you don't intend to use IPC, nothing changes and there is no need to use `umkoin -m`, `umkoin-node` or `umkoin-gui`(#31802)
