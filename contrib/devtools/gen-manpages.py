@@ -9,6 +9,7 @@ import tempfile
 import argparse
 
 BINARIES = [
+'bin/umkoin',
 'bin/umkoind',
 'bin/umkoin-cli',
 'bin/umkoin-tx',
