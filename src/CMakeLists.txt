@@ -293,7 +293,7 @@ if(BUILD_UMKOIN_BIN)
   add_windows_resources(umkoin umkoin-res.rc)
   add_windows_application_manifest(umkoin)
   target_link_libraries(umkoin core_interface umkoin_util)
-  install_binary_component(umkoin)
+  install_binary_component(umkoin HAS_MANPAGE)
 endif()
 
 # Umkoin Core umkoind.
