@@ -1,6 +1,6 @@
-Umkoin Core version 29.1 is now available from:
+Umkoin Core version 29.2rc1 is now available from:
 
-  <http://www.umkoin.org/bin/umkoin-core-29.1/>
+  <http://www.umkoin.org/bin/umkoin-core-29.2/test.rc1/>
 
 This release includes various bug fixes and performance
 improvements, as well as updated translations.
@@ -33,19 +33,37 @@ unsupported systems.
 Notable changes
 ===============
 
+### P2P
+
+- #32646 p2p: Add witness mutation check inside FillBlock
+- #33296 net: check for empty header before calling FillBlock
+- #33395 net: do not apply whitelist permissions to onion inbounds
+
 ### CI
 
 - #32999 ci: Use APT_LLVM_V in msan task
 - #33099 ci: allow for any libc++ intrumentation & use it for TSAN
 - #33258 ci: use LLVM 21
+- #33364 ci: always use tag for LLVM checkout
+
+### Misc
+
+- #33310 trace: Workaround GCC bug compiling with old systemtap
+- #33340 Fix benchmark CSV output
 
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
 
+- Eugene Siegel
 - fanquake
+- Greg Sanders
+- Hennadii Stepanov
+- Luke Dashjr
 - MarcoFalke
+- Martin Zumsande
+- Vasil Dimov
 
 As well as to everyone that helped with translations on
 [Transifex](https://explore.transifex.com/umkoin/umkoin-core/).
