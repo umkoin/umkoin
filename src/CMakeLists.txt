@@ -292,7 +292,7 @@ if(BUILD_UMKOIN_BIN)
   add_executable(umkoin umkoin.cpp)
   add_windows_resources(umkoin umkoin-res.rc)
   add_windows_application_manifest(umkoin)
-  target_link_libraries(umkoin core_interface umkoin_util)
+  target_link_libraries(umkoin core_interface umkoin_common umkoin_util)
   install_binary_component(umkoin HAS_MANPAGE)
 endif()
 

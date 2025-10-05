@@ -39,6 +39,7 @@ public:
     // umkoin-node accepts the option, and umkoin-gui accepts all umkoin-node
     // options and will start the node with those options.
     bool canListenIpc() override { return true; }
+    const char* exeName() override { return EXE_NAME; }
     node::NodeContext m_node;
     std::unique_ptr<interfaces::Ipc> m_ipc;
 };
