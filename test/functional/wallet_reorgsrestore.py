@@ -104,7 +104,7 @@ class ReorgsRestoreTest(UmkoinTestFramework):
 
         # Disconnect tip and sync wallet state
         tip = wallet.getbestblockhash()
-        tip_height = wallet.getblockstats(hash_or_height=self.convert_to_json_for_cli(tip))["height"]
+        tip_height = wallet.getblockstats(hash_or_height=tip)["height"]
         wallet.invalidateblock(tip)
         wallet.syncwithvalidationinterfacequeue()
 
