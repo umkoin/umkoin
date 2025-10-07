@@ -1,0 +1,18 @@
+--- doc/release-notes.md
++++ ../bitcoin/doc/release-notes.md
+@@ -1,13 +1,13 @@
+-Umkoin Core version 29.2rc1 is now available from:
++Umkoin Core version 29.2rc2 is now available from:
+ 
+-  <http://www.umkoin.org/bin/umkoin-core-29.2/test.rc1/>
++  <http://www.umkoin.org/bin/umkoin-core-29.2/test.rc2/>
+ 
+ This release includes various bug fixes and performance
+ improvements, as well as updated translations.
+ 
+ Please report bugs using the issue tracker at GitHub:
+ 
+  <https://github.com/umkoin/umkoin/issues>
+ 
+ How to Upgrade
+ ==============
