@@ -343,7 +343,7 @@ static void secp256k1_nonce_function_musig_sha256_tagged(secp256k1_sha256 *sha) 
     sha->s[2] = 0x0391bc43ul;
     sha->s[3] = 0x0e6258eeul;
     sha->s[4] = 0x29d26b72ul;
-    sha->s[5] = 0x8343937eul;
+    sha->s[5] = 0x6343937eul;
     sha->s[6] = 0xb7a0a4fbul;
     sha->s[7] = 0xff568a30ul;
     sha->bytes = 64;
@@ -385,10 +385,10 @@ static void secp256k1_nonce_function_musig(secp256k1_scalar *k, const unsigned c
         secp256k1_scalar_set_b32(&k[i], buf, NULL);
 
         /* Attempt to erase secret data */
-        secp256k1_memclear(buf, sizeof(buf));
+        secp256k1_memclear_explicit(buf, sizeof(buf));
         secp256k1_sha256_clear(&sha_tmp);
     }
-    secp256k1_memclear(rand, sizeof(rand));
+    secp256k1_memclear_explicit(rand, sizeof(rand));
     secp256k1_sha256_clear(&sha);
 }
 
@@ -518,7 +518,7 @@ int secp256k1_musig_nonce_gen_counter(const secp256k1_context* ctx, secp256k1_mu
     if (!secp256k1_musig_nonce_gen_internal(ctx, secnonce, pubnonce, buf, seckey, &pubkey, msg32, keyagg_cache, extra_input32)) {
         return 0;
     }
-    secp256k1_memclear(seckey, sizeof(seckey));
+    secp256k1_memclear_explicit(seckey, sizeof(seckey));
     return 1;
 }
 
@@ -679,7 +679,7 @@ int secp256k1_musig_partial_sign(const secp256k1_context* ctx, secp256k1_musig_p
     ret = secp256k1_musig_secnonce_load(ctx, k, &pk, secnonce);
     /* Set nonce to zero to avoid nonce reuse. This will cause subsequent calls
      * of this function to fail */
-    memset(secnonce, 0, sizeof(*secnonce));
+    secp256k1_memzero_explicit(secnonce, sizeof(*secnonce));
     if (!ret) {
         secp256k1_musig_partial_sign_clear(&sk, k);
         return 0;
