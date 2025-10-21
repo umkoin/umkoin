@@ -354,7 +354,7 @@ BOOST_AUTO_TEST_CASE(merkle_block_3_and_serialize)
     DataStream merkleStream{};
     merkleStream << merkleBlock;
 
-    constexpr auto expected{"0000002084cdff15bdbfbc485d50e1c84d27f251d15500df641fd42c8a2a0000000000001c5f18324ad728d2c680045ce96c990a1cb567552d5f5b950346ad4e0f92af85ccf4375d76d6001bb118a567010"_hex};
+    constexpr auto expected{"0100000079cda856b143d9db2c1caff01d1aecc8630d30625d10e8b4b8b0000000000000b50cc069d6a3e33e3ff84a5c41d9d3febe7c770fdcc96b2c3ff60abe184f196367291b4d4c86041b8fa45d630100000001b50cc069d6a3e33e3ff84a5c41d9d3febe7c770fdcc96b2c3ff60abe184f19630101"_hex};
     BOOST_CHECK_EQUAL_COLLECTIONS(merkleStream.begin(), merkleStream.end(), expected.begin(), expected.end());
 }
 
