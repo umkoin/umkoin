@@ -16,7 +16,9 @@ import pathlib
 import platform
 import random
 import re
+import shlex
 import time
+import types
 
 from . import coverage
 from .authproxy import AuthServiceProxy, JSONRPCException
@@ -233,6 +235,98 @@ def check_json_precision():
     satoshis = int(json.loads(json.dumps(float(n))) * 1.0e8)
     if satoshis != 2000000000000003:
         raise RuntimeError("JSON encode/decode loses precision")
+
+
+class Binaries:
+    """Helper class to provide information about umkoin binaries
+
+    Attributes:
+        paths: Object returned from get_binary_paths() containing information
+            which binaries and command lines to use from environment variables and
+            the config file.
+        bin_dir: An optional string containing a directory path to look for
+            binaries, which takes precedence over the paths above, if specified.
+            This is used by tests calling binaries from previous releases.
+    """
+    def __init__(self, paths, bin_dir):
+        self.paths = paths
+        self.bin_dir = bin_dir
+
+    def node_argv(self, **kwargs):
+        "Return argv array that should be used to invoke umkoind"
+        return self._argv("node", self.paths.umkoind, **kwargs)
+
+    def rpc_argv(self):
+        "Return argv array that should be used to invoke umkoin-cli"
+        # Add -nonamed because "umkoin rpc" enables -named by default, but umkoin-cli doesn't
+        return self._argv("rpc", self.paths.umkoincli) + ["-nonamed"]
+
+    def tx_argv(self):
+        "Return argv array that should be used to invoke umkoin-tx"
+        return self._argv("tx", self.paths.umkointx)
+
+    def util_argv(self):
+        "Return argv array that should be used to invoke umkoin-util"
+        return self._argv("util", self.paths.umkoinutil)
+
+    def wallet_argv(self):
+        "Return argv array that should be used to invoke umkoin-wallet"
+        return self._argv("wallet", self.paths.umkoinwallet)
+
+    def chainstate_argv(self):
+        "Return argv array that should be used to invoke umkoin-chainstate"
+        return self._argv("chainstate", self.paths.umkoinchainstate)
+
+    def _argv(self, command, bin_path, need_ipc=False):
+        """Return argv array that should be used to invoke the command. It
+        either uses the umkoin wrapper executable (if UMKOIN_CMD is set or
+        need_ipc is True), or the direct binary path (umkoind, etc). When
+        bin_dir is set (by tests calling binaries from previous releases) it
+        always uses the direct path."""
+        if self.bin_dir is not None:
+            return [os.path.join(self.bin_dir, os.path.basename(bin_path))]
+        elif self.paths.umkoin_cmd is not None or need_ipc:
+            # If the current test needs IPC functionality, use the umkoin
+            # wrapper binary and append -m so it calls multiprocess binaries.
+            umkoin_cmd = self.paths.umkoin_cmd or [self.paths.umkoin_bin]
+            return umkoin_cmd + (["-m"] if need_ipc else []) + [command]
+        else:
+            return [bin_path]
+
+
+def get_binary_paths(config):
+    """Get paths of all binaries from environment variables or their default values"""
+
+    paths = types.SimpleNamespace()
+    binaries = {
+        "umkoin": "UMKOIN_BIN",
+        "umkoind": "UMKOIND",
+        "umkoin-cli": "UMKOINCLI",
+        "umkoin-util": "UMKOINUTIL",
+        "umkoin-tx": "UMKOINTX",
+        "umkoin-chainstate": "UMKOINCHAINSTATE",
+        "umkoin-wallet": "UMKOINWALLET",
+    }
+    # Set paths to umkoin core binaries allowing overrides with environment
+    # variables.
+    for binary, env_variable_name in binaries.items():
+        default_filename = os.path.join(
+            config["environment"]["BUILDDIR"],
+            "bin",
+            binary + config["environment"]["EXEEXT"],
+        )
+        setattr(paths, env_variable_name.lower(), os.getenv(env_variable_name, default=default_filename))
+    # UMKOIN_CMD environment variable can be specified to invoke umkoin
+    # wrapper binary instead of other executables.
+    paths.umkoin_cmd = shlex.split(os.getenv("UMKOIN_CMD", "")) or None
+    return paths
+
+
+def export_env_build_path(config):
+    os.environ["PATH"] = os.pathsep.join([
+        os.path.join(config["environment"]["BUILDDIR"], "bin"),
+        os.environ["PATH"],
+    ])
 
 
 def count_bytes(hex_string):
