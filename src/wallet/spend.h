@@ -6,7 +6,7 @@
 #define UMKOIN_WALLET_SPEND_H
 
 #include <consensus/amount.h>
-#include <policy/fees.h>
+#include <policy/fees/block_policy_estimator.h>
 #include <util/result.h>
 #include <wallet/coinselection.h>
 #include <wallet/transaction.h>
