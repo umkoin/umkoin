@@ -56,6 +56,8 @@ add_executable(bench_umkoin
   verify_script.cpp
 )
 
+add_windows_application_manifest(bench_umkoin)
+
 include(TargetDataSources)
 target_raw_data_sources(bench_umkoin NAMESPACE benchmark::data
   data/block47789.raw

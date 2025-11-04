@@ -14,6 +14,8 @@ add_executable(test_umkoin-qt
   ../../init/umkoin-qt.cpp
 )
 
+add_windows_application_manifest(test_umkoin-qt)
+
 target_link_libraries(test_umkoin-qt
   core_interface
   umkoinqt
