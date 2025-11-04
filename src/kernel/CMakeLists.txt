@@ -96,19 +96,14 @@ target_link_libraries(umkoinkernel
 
 target_include_directories(umkoinkernel PRIVATE $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/leveldb/include>)
 
-# libumkoinkernel requires default symbol visibility, explicitly
-# specify that here so that things still work even when user
-# configures with -DREDUCE_EXPORTS=ON
-#
-# Note this is a quick hack that will be removed as we
-# incrementally define what to export from the library.
-set_target_properties(umkoinkernel PROPERTIES
-  CXX_VISIBILITY_PRESET default
-)
-
 # Add a convenience libumkoinkernel target as a synonym for umkoinkernel.
 add_custom_target(libumkoinkernel)
 add_dependencies(libumkoinkernel umkoinkernel)
+
+get_target_property(umkoinkernel_type umkoinkernel TYPE)
+if(umkoinkernel_type STREQUAL "STATIC_LIBRARY")
+  target_compile_definitions(umkoinkernel PUBLIC UMKOINKERNEL_STATIC)
+endif()
 
 configure_file(${PROJECT_SOURCE_DIR}/libumkoinkernel.pc.in ${PROJECT_BINARY_DIR}/libumkoinkernel.pc @ONLY)
 install(FILES ${PROJECT_BINARY_DIR}/libumkoinkernel.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig" COMPONENT libumkoinkernel)
@@ -124,3 +119,5 @@ install(TARGETS umkoinkernel
     DESTINATION ${CMAKE_INSTALL_LIBDIR}
     COMPONENT libumkoinkernel
 )
+
+install(FILES umkoinkernel.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT libumkoinkernel)

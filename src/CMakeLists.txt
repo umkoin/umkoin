@@ -404,28 +404,30 @@ endif()
 
 if(BUILD_KERNEL_LIB)
   add_subdirectory(kernel)
-endif()
-
-if(BUILD_UTIL_CHAINSTATE)
-  add_executable(umkoin-chainstate
-    umkoin-chainstate.cpp
-  )
-  add_windows_application_manifest(umkoin-chainstate)
-  # TODO: The `SKIP_BUILD_RPATH` property setting can be deleted
-  #       in the future after reordering Guix script commands to
-  #       perform binary checks after the installation step.
-  # Relevant discussions:
-  # - https://github.com/hebasto/bitcoin/pull/236#issuecomment-2183120953
-  # - https://github.com/bitcoin/bitcoin/pull/30312#issuecomment-2191235833
-  set_target_properties(umkoin-chainstate PROPERTIES
-    SKIP_BUILD_RPATH OFF
-  )
-  target_link_libraries(umkoin-chainstate
-    PRIVATE
-      core_interface
-      umkoinkernel
-  )
-  install_binary_component(umkoin-chainstate INTERNAL)
+  if (BUILD_KERNEL_TEST)
+    add_subdirectory(test/kernel)
+  endif()
+  if(BUILD_UTIL_CHAINSTATE)
+    add_executable(umkoin-chainstate
+      umkoin-chainstate.cpp
+    )
+    add_windows_application_manifest(umkoin-chainstate)
+    # TODO: The `SKIP_BUILD_RPATH` property setting can be deleted
+    #       in the future after reordering Guix script commands to
+    #       perform binary checks after the installation step.
+    # Relevant discussions:
+    # - https://github.com/hebasto/bitcoin/pull/236#issuecomment-2183120953
+    # - https://github.com/bitcoin/bitcoin/pull/30312#issuecomment-2191235833
+    set_target_properties(umkoin-chainstate PROPERTIES
+      SKIP_BUILD_RPATH OFF
+    )
+    target_link_libraries(umkoin-chainstate
+      PRIVATE
+        core_interface
+        umkoinkernel
+    )
+    install_binary_component(umkoin-chainstate INTERNAL)
+  endif()
 endif()
 
 
