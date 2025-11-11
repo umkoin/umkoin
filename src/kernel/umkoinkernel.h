@@ -1204,31 +1204,12 @@ UMKOINKERNEL_API umkk_BlockValidationResult umkk_block_validation_state_get_bloc
 ///@{
 
 /**
- * @brief Get the block tree entry of the current chain tip. Once returned,
- * there is no guarantee that it remains in the active chain.
- *
- * @param[in] chain Non-null.
- * @return          The block tree entry of the current tip, or null if the chain is empty.
- */
-UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_get_tip(
-    const umkk_Chain* chain) UMKOINKERNEL_ARG_NONNULL(1);
-
-/**
  * @brief Return the height of the tip of the chain.
  *
  * @param[in] chain Non-null.
  * @return          The current height.
  */
 UMKOINKERNEL_API int32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_get_height(
-    const umkk_Chain* chain) UMKOINKERNEL_ARG_NONNULL(1);
-
-/**
- * @brief Get the block tree entry of the genesis block.
- *
- * @param[in] chain Non-null.
- * @return          The block tree entry of the genesis block, or null if the chain is empty.
- */
-UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_get_genesis(
     const umkk_Chain* chain) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**

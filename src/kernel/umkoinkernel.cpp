@@ -1230,22 +1230,10 @@ const umkk_Chain* umkk_chainstate_manager_get_active_chain(const umkk_Chainstate
     return umkk_Chain::ref(&WITH_LOCK(umkk_ChainstateManager::get(chainman).m_chainman->GetMutex(), return umkk_ChainstateManager::get(chainman).m_chainman->ActiveChain()));
 }
 
-const umkk_BlockTreeEntry* umkk_chain_get_tip(const umkk_Chain* chain)
-{
-    LOCK(::cs_main);
-    return umkk_BlockTreeEntry::ref(umkk_Chain::get(chain).Tip());
-}
-
 int umkk_chain_get_height(const umkk_Chain* chain)
 {
     LOCK(::cs_main);
     return umkk_Chain::get(chain).Height();
-}
-
-const umkk_BlockTreeEntry* umkk_chain_get_genesis(const umkk_Chain* chain)
-{
-    LOCK(::cs_main);
-    return umkk_BlockTreeEntry::ref(umkk_Chain::get(chain).Genesis());
 }
 
 const umkk_BlockTreeEntry* umkk_chain_get_by_height(const umkk_Chain* chain, int height)

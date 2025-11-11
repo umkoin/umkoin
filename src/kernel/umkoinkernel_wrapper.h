@@ -968,11 +968,6 @@ class ChainView : public View<umkk_Chain>
 public:
     explicit ChainView(const umkk_Chain* ptr) : View{ptr} {}
 
-    BlockTreeEntry Tip() const
-    {
-        return umkk_chain_get_tip(get());
-    }
-
     int32_t Height() const
     {
         return umkk_chain_get_height(get());
@@ -981,11 +976,6 @@ public:
     int CountEntries() const
     {
         return umkk_chain_get_height(get()) + 1;
-    }
-
-    BlockTreeEntry Genesis() const
-    {
-        return umkk_chain_get_genesis(get());
     }
 
     BlockTreeEntry GetByHeight(int height) const
