@@ -386,7 +386,7 @@ typedef struct {
     umkk_NotifyWarningSet warning_set;      //!< A warning issued by the kernel library during validation.
     umkk_NotifyWarningUnset warning_unset;  //!< A previous condition leading to the issuance of a warning is no longer given.
     umkk_NotifyFlushError flush_error;      //!< An error encountered when flushing data to disk.
-    umkk_NotifyFatalError fatal_error;      //!< A un-recoverable system error encountered by the library.
+    umkk_NotifyFatalError fatal_error;      //!< An unrecoverable system error encountered by the library.
 } umkk_NotificationInterfaceCallbacks;
 
 /**
@@ -608,7 +608,7 @@ UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_script_pubkey_verify(
     const umkk_Transaction* tx_to,
     const umkk_TransactionOutput** spent_outputs, size_t spent_outputs_len,
     unsigned int input_index,
-    unsigned int flags,
+    umkk_ScriptVerificationFlags flags,
     umkk_ScriptVerifyStatus* status) UMKOINKERNEL_ARG_NONNULL(1, 3);
 
 /**
