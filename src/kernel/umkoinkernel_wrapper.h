@@ -8,6 +8,7 @@
 #include <kernel/umkoinkernel.h>
 
 #include <array>
+#include <exception>
 #include <functional>
 #include <memory>
 #include <optional>
