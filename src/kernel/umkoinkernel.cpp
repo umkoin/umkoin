@@ -497,6 +497,9 @@ struct umkk_Txid: Handle<umkk_Txid, Txid> {};
 
 umkk_Transaction* umkk_transaction_create(const void* raw_transaction, size_t raw_transaction_len)
 {
+    if (raw_transaction == nullptr && raw_transaction_len != 0) {
+        return nullptr;
+    }
     try {
         DataStream stream{std::span{reinterpret_cast<const std::byte*>(raw_transaction), raw_transaction_len}};
         return umkk_Transaction::create(std::make_shared<const CTransaction>(deserialize, TX_WITH_WITNESS, stream));
@@ -556,6 +559,9 @@ void umkk_transaction_destroy(umkk_Transaction* transaction)
 
 umkk_ScriptPubkey* umkk_script_pubkey_create(const void* script_pubkey, size_t script_pubkey_len)
 {
+    if (script_pubkey == nullptr && script_pubkey_len != 0) {
+        return nullptr;
+    }
     auto data = std::span{reinterpret_cast<const uint8_t*>(script_pubkey), script_pubkey_len};
     return umkk_ScriptPubkey::create(data.begin(), data.end());
 }
@@ -1033,6 +1039,9 @@ int umkk_chainstate_manager_import_blocks(umkk_ChainstateManager* chainman, cons
 
 umkk_Block* umkk_block_create(const void* raw_block, size_t raw_block_length)
 {
+    if (raw_block == nullptr && raw_block_length != 0) {
+        return nullptr;
+    }
     auto block{std::make_shared<CBlock>()};
 
     DataStream stream{std::span{reinterpret_cast<const std::byte*>(raw_block), raw_block_length}};
