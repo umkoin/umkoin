@@ -40,11 +40,15 @@ add_test(NAME test_umkoin-qt
   COMMAND test_umkoin-qt
 )
 if(WIN32 AND VCPKG_TARGET_TRIPLET)
-  # On Windows, vcpkg configures Qt with `-opengl dynamic`, which makes
-  # the "minimal" platform plugin unusable due to internal Qt bugs.
-  set_tests_properties(test_umkoin-qt PROPERTIES
-    ENVIRONMENT "QT_QPA_PLATFORM=windows"
+  set(plugin_path "$<SHELL_PATH:$<PATH:GET_PARENT_PATH,$<PATH:GET_PARENT_PATH,$<TARGET_PROPERTY:Qt6::QWindowsIntegrationPlugin,LOCATION_$<CONFIG>>>>>")
+  set_property(TEST test_umkoin-qt APPEND PROPERTY
+    ENVIRONMENT_MODIFICATION
+      # On Windows, vcpkg configures Qt with `-opengl dynamic`, which makes
+      # the "minimal" platform plugin unusable due to internal Qt bugs.
+      QT_QPA_PLATFORM=set:windows
+      QT_PLUGIN_PATH=set:${plugin_path}
   )
+  unset(plugin_path)
 endif()
 
 install_binary_component(test_umkoin-qt INTERNAL)
