@@ -18,30 +18,6 @@ function(setup_split_debug_script)
   endif()
 endfunction()
 
-function(add_maintenance_targets)
-  if(NOT TARGET Python3::Interpreter)
-    return()
-  endif()
-
-  foreach(target IN ITEMS umkoin umkoind umkoin-node umkoin-qt umkoin-gui umkoin-cli umkoin-tx umkoin-util umkoin-wallet test_umkoin bench_umkoin)
-    if(TARGET ${target})
-      list(APPEND executables $<TARGET_FILE:${target}>)
-    endif()
-  endforeach()
-
-  add_custom_target(check-symbols
-    COMMAND ${CMAKE_COMMAND} -E echo "Running symbol and dynamic library checks..."
-    COMMAND Python3::Interpreter ${PROJECT_SOURCE_DIR}/contrib/guix/symbol-check.py ${executables}
-    VERBATIM
-  )
-
-  add_custom_target(check-security
-    COMMAND ${CMAKE_COMMAND} -E echo "Checking binary security..."
-    COMMAND Python3::Interpreter ${PROJECT_SOURCE_DIR}/contrib/guix/security-check.py ${executables}
-    VERBATIM
-  )
-endfunction()
-
 function(add_windows_deploy_target)
   if(MINGW AND TARGET umkoin AND TARGET umkoin-qt AND TARGET umkoind AND TARGET umkoin-cli AND TARGET umkoin-tx AND TARGET umkoin-wallet AND TARGET umkoin-util AND TARGET test_umkoin)
     find_program(MAKENSIS_EXECUTABLE makensis)
