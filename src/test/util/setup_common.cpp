@@ -382,7 +382,7 @@ TestChain100Setup::TestChain100Setup(
         LOCK(::cs_main);
         assert(
             m_node.chainman->ActiveChain().Tip()->GetBlockHash().ToString() ==
-            "571d80a9967ae599cec0448b0b0ba1cfb606f584d8069bd7166b86854ba7a191");
+            "0c8c5f79505775a0f6aed6aca2350718ceb9c6f2c878667864d5c7a6d8ffa2a6");
     }
 }
 
@@ -535,22 +535,24 @@ CMutableTransaction TestChain100Setup::CreateValidMempoolTransaction(CTransactio
 std::vector<CTransactionRef> TestChain100Setup::PopulateMempool(FastRandomContext& det_rand, size_t num_transactions, bool submit)
 {
     std::vector<CTransactionRef> mempool_transactions;
-    std::deque<std::pair<COutPoint, CAmount>> unspent_prevouts;
+    std::deque<std::pair<COutPoint, CAmount>> unspent_prevouts, undo_info;
     std::transform(m_coinbase_txns.begin(), m_coinbase_txns.end(), std::back_inserter(unspent_prevouts),
         [](const auto& tx){ return std::make_pair(COutPoint(tx->GetHash(), 0), tx->vout[0].nValue); });
     while (num_transactions > 0 && !unspent_prevouts.empty()) {
-        // The number of inputs and outputs are random, between 1 and 24.
+        // The number of inputs and outputs are randomly chosen, between 1-5
+        // and 1-25 respectively.
         CMutableTransaction mtx = CMutableTransaction();
-        const size_t num_inputs = det_rand.randrange(24) + 1;
+        const size_t num_inputs = det_rand.randrange(5) + 1;
         CAmount total_in{0};
         for (size_t n{0}; n < num_inputs; ++n) {
             if (unspent_prevouts.empty()) break;
             const auto& [prevout, amount] = unspent_prevouts.front();
+            undo_info.emplace_back(prevout, amount);
             mtx.vin.emplace_back(prevout, CScript());
             total_in += amount;
             unspent_prevouts.pop_front();
         }
-        const size_t num_outputs = det_rand.randrange(24) + 1;
+        const size_t num_outputs = det_rand.randrange(25) + 1;
         const CAmount fee = 100 * det_rand.randrange(30);
         const CAmount amount_per_output = (total_in - fee) / num_outputs;
         for (size_t n{0}; n < num_outputs; ++n) {
@@ -558,16 +560,7 @@ std::vector<CTransactionRef> TestChain100Setup::PopulateMempool(FastRandomContex
             mtx.vout.emplace_back(amount_per_output, spk);
         }
         CTransactionRef ptx = MakeTransactionRef(mtx);
-        mempool_transactions.push_back(ptx);
-        if (amount_per_output > 3000) {
-            // If the value is high enough to fund another transaction + fees, keep track of it so
-            // it can be used to build a more complex transaction graph. Insert randomly into
-            // unspent_prevouts for extra randomness in the resulting structures.
-            for (size_t n{0}; n < num_outputs; ++n) {
-                unspent_prevouts.emplace_back(COutPoint(ptx->GetHash(), n), amount_per_output);
-                std::swap(unspent_prevouts.back(), unspent_prevouts[det_rand.randrange(unspent_prevouts.size())]);
-            }
-        }
+        bool success{true};
         if (submit) {
             LOCK2(cs_main, m_node.mempool->cs);
             LockPoints lp;
@@ -575,9 +568,31 @@ std::vector<CTransactionRef> TestChain100Setup::PopulateMempool(FastRandomContex
             changeset->StageAddition(ptx, /*fee=*/(total_in - num_outputs * amount_per_output),
                     /*time=*/0, /*entry_height=*/1, /*entry_sequence=*/0,
                     /*spends_coinbase=*/false, /*sigops_cost=*/4, lp);
-            changeset->Apply();
+            if (changeset->CheckMemPoolPolicyLimits()) {
+                changeset->Apply();
+                --num_transactions;
+            } else {
+                success = false;
+                // Add the inputs back to unspent prevouts
+                for (const auto& [prevout, amount] : undo_info) {
+                    unspent_prevouts.emplace_back(prevout, amount);
+                    std::swap(unspent_prevouts.back(), unspent_prevouts[det_rand.randrange(unspent_prevouts.size())]);
+                }
+            }
         }
-        --num_transactions;
+        if (success) {
+            mempool_transactions.push_back(ptx);
+            if (amount_per_output > 3000) {
+                // If the value is high enough to fund another transaction + fees, keep track of it so
+                // it can be used to build a more complex transaction graph. Insert randomly into
+                // unspent_prevouts for extra randomness in the resulting structures.
+                for (size_t n{0}; n < num_outputs; ++n) {
+                    unspent_prevouts.emplace_back(COutPoint(ptx->GetHash(), n), amount_per_output);
+                    std::swap(unspent_prevouts.back(), unspent_prevouts[det_rand.randrange(unspent_prevouts.size())]);
+                }
+            }
+        }
+        undo_info.clear();
     }
     return mempool_transactions;
 }
@@ -590,7 +605,7 @@ CBlock getBlockeb0d0()
 {
     CBlock block;
     DataStream stream{
-        "00000020af876e6efcd7c6a3d8768ce32cce1db4a6045123ea73ea2d47ac0000000000002abd5d5b435c03a757ae5c8990baaaa1030f07c2b8013b793c82aa9c56b335d855c5b55c0b18011b6610b78f01010000000001010000000000000000000000000000000000000000000000000000000000000000ffffffff1f022a680456c5b55c085ffffff2c41400000d2f6e6f64655374726174756d2f00000000030000000000000000266a24aa21a9ede2f61c3f71d1defd3fa999dfa36953755c690689799962b48bebd836974e8cf980010b27010000001976a914ac2eb3e500b3670964ef81c2acbe276f8083ecfd88ac80f0fa02000000001976a914a09b7a0ea8e3f56bb71f1af38406a12ffc048fe988ac0120000000000000000000000000000000000000000000000000000000000000000000000000"_hex,
+        "/00000020af876e6efcd7c6a3d8768ce32cce1db4a6045123ea73ea2d47ac0000000000002abd5d5b435c03a757ae5c8990baaaa1030f07c2b8013b793c82aa9c56b335d855c5b55c0b18011b6610b78f01010000000001010000000000000000000000000000000000000000000000000000000000000000ffffffff1f022a680456c5b55c085ffffff2c41400000d2f6e6f64655374726174756d2f00000000030000000000000000266a24aa21a9ede2f61c3f71d1defd3fa999dfa36953755c690689799962b48bebd836974e8cf980010b27010000001976a914ac2eb3e500b3670964ef81c2acbe276f8083ecfd88ac80f0fa02000000001976a914a09b7a0ea8e3f56bb71f1af38406a12ffc048fe988ac0120000000000000000000000000000000000000000000000000000000000000000000000000"_hex,
     };
     stream >> TX_WITH_WITNESS(block);
     return block;
