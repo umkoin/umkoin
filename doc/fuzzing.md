@@ -8,8 +8,6 @@ To quickly get started fuzzing Umkoin Core using [libFuzzer](https://llvm.org/do
 $ git clone https://github.com/umkoin/umkoin
 $ cd umkoin/
 $ cmake --preset=libfuzzer
-# macOS users: If you have problem with this step then make sure to read "macOS hints for
-# libFuzzer" on https://github.com/umkoin/umkoin/blob/master/doc/fuzzing.md#macos-hints-for-libfuzzer
 $ cmake --build build_fuzz
 $ FUZZ=process_message build_fuzz/bin/fuzz
 # abort fuzzing using ctrl-c
@@ -23,13 +21,16 @@ There is also a runner script to execute all fuzz targets. Refer to
 
 For source-based coverage reports, see [developer notes](/doc/developer-notes.md#compiling-for-fuzz-coverage).
 
+macOS users: We recommend fuzzing on Linux, see [macOS notes](#macos-notes) for
+more information.
+
 ## Overview of Umkoin Core fuzzing
 
 [Google](https://github.com/google/fuzzing/) has a good overview of fuzzing in general, with contributions from key architects of some of the most-used fuzzers. [This paper](https://agroce.github.io/umkoin_report.pdf) includes an external overview of the status of Umkoin Core fuzzing, as of summer 2021.  [John Regehr](https://blog.regehr.org/archives/1687) provides good advice on writing code that assists fuzzers in finding bugs, which is useful for developers to keep in mind.
 
 ## Fuzzing harnesses and output
 
-[`process_message`](https://github.com/umkoin/umkoin/blob/master/src/test/fuzz/process_message.cpp) is a fuzzing harness for the [`ProcessMessage(...)` function (`net_processing`)](https://github.com/bitcoin/bitcoin/blob/master/src/net_processing.cpp). The available fuzzing harnesses are found in [`src/test/fuzz/`](https://github.com/umkoin/umkoin/tree/master/src/test/fuzz).
+[`process_message`](https://github.com/umkoin/umkoin/blob/master/src/test/fuzz/process_message.cpp) is a fuzzing harness for the [`ProcessMessage(...)` function (`net_processing`)](https://github.com/umkoin/umkoin/blob/master/src/net_processing.cpp). The available fuzzing harnesses are found in [`src/test/fuzz/`](https://github.com/umkoin/umkoin/tree/master/src/test/fuzz).
 
 The fuzzer will output `NEW` every time it has created a test input that covers new areas of the code under test. For more information on how to interpret the fuzzer output, see the [libFuzzer documentation](https://llvm.org/docs/LibFuzzer.html).
 
@@ -150,7 +151,7 @@ Patience is useful; even with improved throughput, libFuzzer may need days and
 
 If you find coverage increasing inputs when fuzzing you are highly encouraged to submit them for inclusion in the [`bitcoin-core/qa-assets`](https://github.com/bitcoin-core/qa-assets) repo.
 
-Every single pull request submitted against the Umkoin Core repo is automatically tested against all inputs in the [`bitcoin-core/qa-assets`](https://github.com/bitcoin-core/qa-assets) repo. Contributing new coverage increasing inputs is an easy way to help make Umkoin Core more robust.
+Every single pull request submitted against the Bitcoin Core repo is automatically tested against all inputs in the [`bitcoin-core/qa-assets`](https://github.com/bitcoin-core/qa-assets) repo. Contributing new coverage increasing inputs is an easy way to help make Umkoin Core more robust.
 
 ## Building and debugging fuzz tests
 
@@ -183,29 +184,14 @@ There are 3 ways fuzz tests can be built:
    tests would not be useful. This build is only useful for ensuring fuzz tests
    compile and link.
 
-## macOS hints for libFuzzer
+## macOS notes
 
-The default Clang/LLVM version supplied by Apple on macOS does not include
-fuzzing libraries, so macOS users will need to install a full version, for
-example using `brew install llvm`.
+Support for fuzzing on macOS is not officially maintained by this project. If
+you are running into issues on macOS, we recommend fuzzing on Linux instead for
+best results. On macOS this can be done within Docker or a virtual machine.
 
-You may also need to take care of giving the correct path for `clang` and
-`clang++`, like `CC=/path/to/clang CXX=/path/to/clang++` if the non-systems
-`clang` does not come first in your path.
-
-Using `lld` is required due to issues with Apple's `ld` and `LLVM`.
-
-Full configuration step for macOS:
-
-```sh
-$ brew install llvm lld
-$ cmake --preset=libfuzzer \
-   -DCMAKE_C_COMPILER="$(brew --prefix llvm)/bin/clang" \
-   -DCMAKE_CXX_COMPILER="$(brew --prefix llvm)/bin/clang++" \
-   -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld"
-```
-
-Read the [libFuzzer documentation](https://llvm.org/docs/LibFuzzer.html) for more information. This [libFuzzer tutorial](https://github.com/google/fuzzing/blob/master/tutorial/libFuzzerTutorial.md) might also be of interest.
+Reproducing and debugging fuzz testcases on macOS is supported, by building the
+fuzz binary without support for any specific fuzzing engine.
 
 # Fuzzing Umkoin Core using afl++
 
@@ -225,10 +211,6 @@ $ cmake -B build_fuzz \
    -DCMAKE_CXX_COMPILER="$(pwd)/AFLplusplus/afl-clang-lto++" \
    -DBUILD_FOR_FUZZING=ON
 $ cmake --build build_fuzz
-# For macOS you may need to ignore x86 compilation checks when running "cmake --build". If so,
-# try compiling using: AFL_NO_X86=1 cmake --build build_fuzz
-# Also, it might be required to run "afl-system-config" to adjust the shared
-# memory parameters.
 $ mkdir -p inputs/ outputs/
 $ echo A > inputs/thin-air-input
 $ FUZZ=bech32 ./AFLplusplus/afl-fuzz -i inputs/ -o outputs/ -- build_fuzz/bin/fuzz
