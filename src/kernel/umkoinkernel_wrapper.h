@@ -786,6 +786,11 @@ public:
     {
     }
 
+    bool operator==(const BlockTreeEntry& other) const
+    {
+        return umkk_block_tree_entry_equals(get(), other.get()) != 0;
+    }
+
     std::optional<BlockTreeEntry> GetPrevious() const
     {
         auto entry{umkk_block_tree_entry_get_previous(get())};

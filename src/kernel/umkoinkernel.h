@@ -933,6 +933,17 @@ UMKOINKERNEL_API int32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_g
 UMKOINKERNEL_API const umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_get_block_hash(
     const umkk_BlockTreeEntry* block_tree_entry) UMKOINKERNEL_ARG_NONNULL(1);
 
+/**
+ * @brief Check if two block tree entries are equal. Two block tree entries are equal when they
+ * point to the same block.
+ *
+ * @param[in] entry1 Non-null.
+ * @param[in] entry2 Non-null.
+ * @return           1 if the block tree entries are equal, 0 otherwise.
+ */
+UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_equals(
+    const umkk_BlockTreeEntry* entry1, const umkk_BlockTreeEntry* entry2) UMKOINKERNEL_ARG_NONNULL(1, 2);
+
 ///@}
 
 /** @name ChainstateManagerOptions

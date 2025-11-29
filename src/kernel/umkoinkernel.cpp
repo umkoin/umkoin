@@ -1117,6 +1117,11 @@ const umkk_BlockHash* umkk_block_tree_entry_get_block_hash(const umkk_BlockTreeE
     return umkk_BlockHash::ref(umkk_BlockTreeEntry::get(entry).phashBlock);
 }
 
+int umkk_block_tree_entry_equals(const umkk_BlockTreeEntry* entry1, const umkk_BlockTreeEntry* entry2)
+{
+    return &umkk_BlockTreeEntry::get(entry1) == &umkk_BlockTreeEntry::get(entry2);
+}
+
 umkk_BlockHash* umkk_block_hash_create(const unsigned char block_hash[32])
 {
     return umkk_BlockHash::create(std::span<const unsigned char>{block_hash, 32});
