@@ -105,7 +105,7 @@ option(BUILD_UTIL "Build umkoin-util executable." ${BUILD_TESTS})
 
 option(BUILD_UTIL_CHAINSTATE "Build experimental umkoin-chainstate executable." OFF)
 option(BUILD_KERNEL_LIB "Build experimental umkoinkernel library." ${BUILD_UTIL_CHAINSTATE})
-option(BUILD_KERNEL_TEST "Build tests for the experimental umkoinkernel library." ${BUILD_KERNEL_LIB})
+cmake_dependent_option(BUILD_KERNEL_TEST "Build tests for the experimental umkoinkernel library." ON "BUILD_KERNEL_LIB" OFF)
 
 option(ENABLE_WALLET "Enable wallet." ON)
 if(ENABLE_WALLET)
