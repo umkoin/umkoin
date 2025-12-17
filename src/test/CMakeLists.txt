@@ -167,20 +167,7 @@ if(ENABLE_WALLET)
 endif()
 
 if(ENABLE_IPC)
-  target_link_libraries(umkoin_ipc_test
-    PRIVATE
-      core_interface
-      univalue
-      Boost::headers
-  )
-
-  target_sources(test_umkoin
-    PRIVATE
-      ipc_tests.cpp
-  )
-  target_link_libraries(test_umkoin umkoin_ipc_test umkoin_ipc)
-
-  configure_file(.clang-tidy.in .clang-tidy USE_SOURCE_PERMISSIONS COPYONLY)
+  add_subdirectory(${PROJECT_SOURCE_DIR}/src/ipc/test ipc)
 endif()
 
 function(add_boost_test source_file)

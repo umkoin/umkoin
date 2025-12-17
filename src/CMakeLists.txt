@@ -325,22 +325,6 @@ if(ENABLE_IPC AND BUILD_DAEMON)
   install_binary_component(umkoin-node INTERNAL)
 endif()
 
-if(ENABLE_IPC AND BUILD_TESTS)
-    # umkoin_ipc_test library target is defined here in src/CMakeLists.txt
-    # instead of src/test/CMakeLists.txt so capnp files in src/test/ are able to
-    # reference capnp files in src/ipc/capnp/ by relative path. The Cap'n Proto
-    # compiler only allows importing by relative path when the importing and
-    # imported files are underneath the same compilation source prefix, so the
-    # source prefix must be src/, not src/test/
-    add_library(umkoin_ipc_test STATIC EXCLUDE_FROM_ALL
-      test/ipc_test.cpp
-    )
-    target_capnp_sources(umkoin_ipc_test ${PROJECT_SOURCE_DIR}
-      test/ipc_test.capnp
-    )
-    add_dependencies(umkoin_ipc_test umkoin_ipc_headers)
-endif()
-
 
 add_library(umkoin_cli STATIC EXCLUDE_FROM_ALL
   compat/stdin.cpp
