@@ -181,7 +181,7 @@ public:
         m_headers_sync_params = HeadersSyncParams{
             .commitment_period = 445,
             .redownload_buffer_size = 11402, // 11402/445 = ~25.6 commitments
-         };
+        };
     }
 };
 
@@ -281,7 +281,7 @@ public:
         m_headers_sync_params = HeadersSyncParams{
             .commitment_period = 440,
             .redownload_buffer_size = 11266, // 11255/440 = ~25.6 commitments
-         };
+        };
     }
 };
 
@@ -381,7 +381,7 @@ public:
         m_headers_sync_params = HeadersSyncParams{
             .commitment_period = 275,
             .redownload_buffer_size = 7017, // 7017/275 = ~25.5 commitments
-         };
+        };
     }
 };
 
