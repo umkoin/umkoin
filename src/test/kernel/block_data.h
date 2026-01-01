@@ -1,3 +1,7 @@
+// Copyright (c) The Bitcoin Core developers
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or https://opensource.org/license/mit.
+
 #ifndef UMKOIN_TEST_KERNEL_BLOCK_DATA_H
 #define UMKOIN_TEST_KERNEL_BLOCK_DATA_H
 #include <array>
