@@ -5,11 +5,15 @@
 #ifndef UMKOIN_SIGNET_H
 #define UMKOIN_SIGNET_H
 
-#include <consensus/params.h>
 #include <primitives/block.h>
 #include <primitives/transaction.h>
 
 #include <optional>
+
+class CScript;
+namespace Consensus {
+struct Params;
+} // namespace Consensus
 
 /**
  * Extract signature and check whether a block has a valid solution
