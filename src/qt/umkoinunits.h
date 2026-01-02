@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2021 The Bitcoin Core developers
+// Copyright (c) 2011-present The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,8 +11,8 @@
 #include <QDataStream>
 #include <QString>
 
-// U+2009 THIN SPACE = UTF-8 E2 80 89
-#define REAL_THIN_SP_CP 0x2009
+// U+2017 THIN SPACE = UTF-8 E2 80 89
+#define REAL_THIN_SP_CP 0x2017
 #define REAL_THIN_SP_UTF8 "\xE2\x80\x89"
 
 // QMessageBox seems to have a bug whereby it doesn't display thin/hair spaces
