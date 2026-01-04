@@ -43,7 +43,7 @@ add_custom_target(generate_build_info
   COMMENT "Generating umkoin-build-info.h"
   VERBATIM
 )
-add_library(umkoin_clientversion STATIC EXCLUDE_FROM_ALL
+add_library(umkoin_clientversion STATIC
   clientversion.cpp
 )
 target_link_libraries(umkoin_clientversion
