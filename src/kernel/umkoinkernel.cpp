@@ -495,6 +495,7 @@ struct umkk_BlockHash : Handle<umkk_BlockHash, uint256> {};
 struct umkk_TransactionInput : Handle<umkk_TransactionInput, CTxIn> {};
 struct umkk_TransactionOutPoint: Handle<umkk_TransactionOutPoint, COutPoint> {};
 struct umkk_Txid: Handle<umkk_Txid, Txid> {};
+struct umkk_PrecomputedTransactionData : Handle<umkk_PrecomputedTransactionData, PrecomputedTransactionData> {};
 
 umkk_Transaction* umkk_transaction_create(const void* raw_transaction, size_t raw_transaction_len)
 {
@@ -608,10 +609,46 @@ void umkk_transaction_output_destroy(umkk_TransactionOutput* output)
     delete output;
 }
 
+umkk_PrecomputedTransactionData* umkk_precomputed_transaction_data_create(
+    const umkk_Transaction* tx_to,
+    const umkk_TransactionOutput** spent_outputs_, size_t spent_outputs_len)
+{
+    try {
+        const CTransaction& tx{*umkk_Transaction::get(tx_to)};
+        auto txdata{umkk_PrecomputedTransactionData::create()};
+        if (spent_outputs_ != nullptr && spent_outputs_len > 0) {
+            assert(spent_outputs_len == tx.vin.size());
+            std::vector<CTxOut> spent_outputs;
+            spent_outputs.reserve(spent_outputs_len);
+            for (size_t i = 0; i < spent_outputs_len; i++) {
+                const CTxOut& tx_out{umkk_TransactionOutput::get(spent_outputs_[i])};
+                spent_outputs.push_back(tx_out);
+            }
+            umkk_PrecomputedTransactionData::get(txdata).Init(tx, std::move(spent_outputs));
+        } else {
+            umkk_PrecomputedTransactionData::get(txdata).Init(tx, {});
+        }
+
+        return txdata;
+    } catch (...) {
+        return nullptr;
+    }
+}
+
+umkk_PrecomputedTransactionData* umkk_precomputed_transaction_data_copy(const umkk_PrecomputedTransactionData* precomputed_txdata)
+{
+    return umkk_PrecomputedTransactionData::copy(precomputed_txdata);
+}
+
+void umkk_precomputed_transaction_data_destroy(umkk_PrecomputedTransactionData* precomputed_txdata)
+{
+    delete precomputed_txdata;
+}
+
 int umkk_script_pubkey_verify(const umkk_ScriptPubkey* script_pubkey,
                               const int64_t amount,
                               const umkk_Transaction* tx_to,
-                              const umkk_TransactionOutput** spent_outputs_, size_t spent_outputs_len,
+                              const umkk_PrecomputedTransactionData* precomputed_txdata,
                               const unsigned int input_index,
                               const umkk_ScriptVerificationFlags flags,
                               umkk_ScriptVerifyStatus* status)
@@ -624,30 +661,17 @@ int umkk_script_pubkey_verify(const umkk_ScriptPubkey* script_pubkey,
         return 0;
     }
 
-    if (flags & umkk_ScriptVerificationFlags_TAPROOT && spent_outputs_ == nullptr) {
+    const CTransaction& tx{*umkk_Transaction::get(tx_to)};
+    assert(input_index < tx.vin.size());
+
+    const PrecomputedTransactionData& txdata{precomputed_txdata ? umkk_PrecomputedTransactionData::get(precomputed_txdata) : PrecomputedTransactionData(tx)};
+
+    if (flags & umkk_ScriptVerificationFlags_TAPROOT && txdata.m_spent_outputs.empty()) {
         if (status) *status = umkk_ScriptVerifyStatus_ERROR_SPENT_OUTPUTS_REQUIRED;
         return 0;
     }
 
     if (status) *status = umkk_ScriptVerifyStatus_OK;
-
-    const CTransaction& tx{*umkk_Transaction::get(tx_to)};
-    std::vector<CTxOut> spent_outputs;
-    if (spent_outputs_ != nullptr) {
-        assert(spent_outputs_len == tx.vin.size());
-        spent_outputs.reserve(spent_outputs_len);
-        for (size_t i = 0; i < spent_outputs_len; i++) {
-            const CTxOut& tx_out{umkk_TransactionOutput::get(spent_outputs_[i])};
-            spent_outputs.push_back(tx_out);
-        }
-    }
-
-    assert(input_index < tx.vin.size());
-    PrecomputedTransactionData txdata{tx};
-
-    if (spent_outputs_ != nullptr && flags & umkk_ScriptVerificationFlags_TAPROOT) {
-        txdata.Init(tx, std::move(spent_outputs));
-    }
 
     bool result = VerifyScript(tx.vin[input_index].scriptSig,
                                umkk_ScriptPubkey::get(script_pubkey),

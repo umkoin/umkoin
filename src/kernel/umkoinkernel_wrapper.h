@@ -367,6 +367,7 @@ public:
     const CType* get() const { return m_ptr.get(); }
 };
 
+class PrecomputedTransactionData;
 class Transaction;
 class TransactionOutput;
 
@@ -385,7 +386,7 @@ private:
 public:
     bool Verify(int64_t amount,
                 const Transaction& tx_to,
-                std::span<const TransactionOutput> spent_outputs,
+                const PrecomputedTransactionData* precomputed_txdata,
                 unsigned int input_index,
                 ScriptVerificationFlags flags,
                 ScriptVerifyStatus& status) const;
@@ -626,29 +627,30 @@ public:
         : Handle{view} {}
 };
 
+class PrecomputedTransactionData : public Handle<umkk_PrecomputedTransactionData, umkk_precomputed_transaction_data_copy, umkk_precomputed_transaction_data_destroy>
+{
+public:
+    explicit PrecomputedTransactionData(const Transaction& tx_to, std::span<const TransactionOutput> spent_outputs)
+        : Handle{umkk_precomputed_transaction_data_create(
+            tx_to.get(),
+            reinterpret_cast<const umkk_TransactionOutput**>(
+                const_cast<TransactionOutput*>(spent_outputs.data())),
+            spent_outputs.size())} {}
+};
+
 template <typename Derived>
 bool ScriptPubkeyApi<Derived>::Verify(int64_t amount,
                                       const Transaction& tx_to,
-                                      const std::span<const TransactionOutput> spent_outputs,
+                                      const PrecomputedTransactionData* precomputed_txdata,
                                       unsigned int input_index,
                                       ScriptVerificationFlags flags,
                                       ScriptVerifyStatus& status) const
 {
-    const umkk_TransactionOutput** spent_outputs_ptr = nullptr;
-    std::vector<const umkk_TransactionOutput*> raw_spent_outputs;
-    if (spent_outputs.size() > 0) {
-        raw_spent_outputs.reserve(spent_outputs.size());
-
-        for (const auto& output : spent_outputs) {
-            raw_spent_outputs.push_back(output.get());
-        }
-        spent_outputs_ptr = raw_spent_outputs.data();
-    }
     auto result = umkk_script_pubkey_verify(
         impl(),
         amount,
         tx_to.get(),
-        spent_outputs_ptr, spent_outputs.size(),
+        precomputed_txdata ? precomputed_txdata->get() : nullptr,
         input_index,
         static_cast<umkk_ScriptVerificationFlags>(flags),
         reinterpret_cast<umkk_ScriptVerifyStatus*>(&status));

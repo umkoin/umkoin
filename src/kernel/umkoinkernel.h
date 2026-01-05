@@ -282,6 +282,16 @@ typedef struct umkk_TransactionInput umkk_TransactionInput;
  */
 typedef struct umkk_TransactionOutPoint umkk_TransactionOutPoint;
 
+/**
+ * Opaque data structure for holding precomputed transaction data.
+ *
+ * Reusable when verifying multiple inputs of the same transaction.
+ * This avoids recomputing transaction hashes for each input.
+ *
+ * Required when verifying a taproot input.
+ */
+typedef struct umkk_PrecomputedTransactionData umkk_PrecomputedTransactionData;
+
 typedef struct umkk_Txid umkk_Txid;
 
 /** Current sync state passed to tip changed callbacks. */
@@ -571,6 +581,40 @@ UMKOINKERNEL_API void umkk_transaction_destroy(umkk_Transaction* transaction);
 
 ///@}
 
+/** @name PrecomputedTransactionData
+ * Functions for working with precomputed transaction data.
+ */
+///@{
+
+/**
+ * @brief Create precomputed transaction data for script verification.
+ *
+ * @param[in] tx_to             Non-null.
+ * @param[in] spent_outputs     Nullable for non-taproot verification. Points to an array of
+ *                              outputs spent by the transaction.
+ * @param[in] spent_outputs_len Length of the spent_outputs array.
+ * @return                      The precomputed data, or null on error.
+ */
+UMKOINKERNEL_API umkk_PrecomputedTransactionData* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_precomputed_transaction_data_create(
+    const umkk_Transaction* tx_to,
+    const umkk_TransactionOutput** spent_outputs, size_t spent_outputs_len) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Copy precomputed transaction data.
+ *
+ * @param[in] precomputed_txdata Non-null.
+ * @return                       The copied precomputed transaction data.
+ */
+UMKOINKERNEL_API umkk_PrecomputedTransactionData* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_precomputed_transaction_data_copy(
+    const umkk_PrecomputedTransactionData* precomputed_txdata) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * Destroy the precomputed transaction data.
+ */
+UMKOINKERNEL_API void umkk_precomputed_transaction_data_destroy(umkk_PrecomputedTransactionData* precomputed_txdata);
+
+///@}
+
 /** @name ScriptPubkey
  * Functions for working with script pubkeys.
  */
@@ -598,26 +642,25 @@ UMKOINKERNEL_API umkk_ScriptPubkey* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_script_
  * @brief Verify if the input at input_index of tx_to spends the script pubkey
  * under the constraints specified by flags. If the
  * `umkk_ScriptVerificationFlags_WITNESS` flag is set in the flags bitfield, the
- * amount parameter is used. If the taproot flag is set, the spent outputs
- * parameter is used to validate taproot transactions.
+ * amount parameter is used. If the taproot flag is set, the precomputed data
+ * must contain the spent outputs.
  *
- * @param[in] script_pubkey     Non-null, script pubkey to be spent.
- * @param[in] amount            Amount of the script pubkey's associated output. May be zero if
- *                              the witness flag is not set.
- * @param[in] tx_to             Non-null, transaction spending the script_pubkey.
- * @param[in] spent_outputs     Nullable if the taproot flag is not set. Points to an array of
- *                              outputs spent by the transaction.
- * @param[in] spent_outputs_len Length of the spent_outputs array.
- * @param[in] input_index       Index of the input in tx_to spending the script_pubkey.
- * @param[in] flags             Bitfield of umkk_ScriptVerificationFlags controlling validation constraints.
- * @param[out] status           Nullable, will be set to an error code if the operation fails, or OK otherwise.
- * @return                      1 if the script is valid, 0 otherwise.
+ * @param[in] script_pubkey      Non-null, script pubkey to be spent.
+ * @param[in] amount             Amount of the script pubkey's associated output. May be zero if
+ *                               the witness flag is not set.
+ * @param[in] tx_to              Non-null, transaction spending the script_pubkey.
+ * @param[in] precomputed_txdata Nullable if the taproot flag is not set. Otherwise, precomputed data
+ *                               for tx_to with the spent outputs must be provided.
+ * @param[in] input_index        Index of the input in tx_to spending the script_pubkey.
+ * @param[in] flags              Bitfield of umkk_ScriptVerificationFlags controlling validation constraints.
+ * @param[out] status            Nullable, will be set to an error code if the operation fails, or OK otherwise.
+ * @return                       1 if the script is valid, 0 otherwise.
  */
 UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_script_pubkey_verify(
     const umkk_ScriptPubkey* script_pubkey,
     int64_t amount,
     const umkk_Transaction* tx_to,
-    const umkk_TransactionOutput** spent_outputs, size_t spent_outputs_len,
+    const umkk_PrecomputedTransactionData* precomputed_txdata,
     unsigned int input_index,
     umkk_ScriptVerificationFlags flags,
     umkk_ScriptVerifyStatus* status) UMKOINKERNEL_ARG_NONNULL(1, 3);
