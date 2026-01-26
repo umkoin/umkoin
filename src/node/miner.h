@@ -50,6 +50,11 @@ struct CBlockTemplate
     /* A vector of package fee rates, ordered by the sequence in which
      * packages are selected for inclusion in the block template.*/
     std::vector<FeePerVSize> m_package_feerates;
+    /*
+     * Template containing all coinbase transaction fields that are set by our
+     * miner code.
+     */
+    CoinbaseTx m_coinbase_tx;
 };
 
 /** Generate a new block, without valid proof-of-work */
@@ -123,7 +128,7 @@ private:
  * accounts for the BIP94 timewarp rule, so does not necessarily reflect the
  * consensus limit.
  */
-int64_t GetMinimumTime(const CBlockIndex* pindexPrev, const int64_t difficulty_adjustment_interval);
+int64_t GetMinimumTime(const CBlockIndex* pindexPrev, int64_t difficulty_adjustment_interval);
 
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev);
 
@@ -157,6 +162,7 @@ std::optional<BlockRef> GetTip(ChainstateManager& chainman);
 /* Waits for the connected tip to change until timeout has elapsed. During node initialization, this will wait until the tip is connected (regardless of `timeout`).
  * Returns the current tip, or nullopt if the node is shutting down. */
 std::optional<BlockRef> WaitTipChanged(ChainstateManager& chainman, KernelNotifications& kernel_notifications, const uint256& current_tip, MillisecondsDouble& timeout);
+
 } // namespace node
 
 #endif // UMKOIN_NODE_MINER_H

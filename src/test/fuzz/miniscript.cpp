@@ -11,6 +11,7 @@
 #include <test/fuzz/FuzzedDataProvider.h>
 #include <test/fuzz/fuzz.h>
 #include <test/fuzz/util.h>
+#include <test/fuzz/util/descriptor.h>
 #include <util/strencodings.h>
 
 #include <algorithm>
@@ -124,10 +125,14 @@ struct ParserContext {
         return a < b;
     }
 
-    std::optional<std::string> ToString(const Key& key) const
+    std::optional<std::string> ToString(const Key& key, bool& has_priv_key) const
     {
+        has_priv_key = false;
         auto it = TEST_DATA.dummy_key_idx_map.find(key);
-        if (it == TEST_DATA.dummy_key_idx_map.end()) return {};
+        if (it == TEST_DATA.dummy_key_idx_map.end()) {
+            return HexStr(key);
+        }
+        has_priv_key = true;
         uint8_t idx = it->second;
         return HexStr(std::span{&idx, 1});
     }
@@ -1234,9 +1239,12 @@ FUZZ_TARGET(miniscript_smart, .init = FuzzInitSmart)
 /* Fuzz tests that test parsing from a string, and roundtripping via string. */
 FUZZ_TARGET(miniscript_string, .init = FuzzInit)
 {
+    constexpr auto is_too_expensive{[](std::span<const uint8_t> buf) { return HasTooManySubFrag(buf) || HasTooManyWrappers(buf); }};
+
     if (buffer.empty()) return;
     FuzzedDataProvider provider(buffer.data(), buffer.size());
     auto str = provider.ConsumeBytesAsString(provider.remaining_bytes() - 1);
+    if (is_too_expensive(MakeUCharSpan(str))) return;
     const ParserContext parser_ctx{(MsCtx)provider.ConsumeBool()};
     auto parsed = miniscript::FromString(str, parser_ctx);
     if (!parsed) return;

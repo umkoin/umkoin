@@ -292,7 +292,17 @@ typedef struct umkk_TransactionOutPoint umkk_TransactionOutPoint;
  */
 typedef struct umkk_PrecomputedTransactionData umkk_PrecomputedTransactionData;
 
+/**
+ * Opaque data structure for holding a umkk_Txid.
+ *
+ * This is a type-safe identifier for a transaction.
+ */
 typedef struct umkk_Txid umkk_Txid;
+
+/**
+ * Opaque data structure for holding a umkk_BlockHeader.
+ */
+typedef struct umkk_BlockHeader umkk_BlockHeader;
 
 /** Current sync state passed to tip changed callbacks. */
 typedef uint8_t umkk_SynchronizationState;
@@ -760,7 +770,7 @@ UMKOINKERNEL_API void umkk_logging_disable();
  *
  * @param[in] options Sets formatting options of the log messages.
  */
-UMKOINKERNEL_API void umkk_logging_set_options(const umkk_LoggingOptions options);
+UMKOINKERNEL_API void umkk_logging_set_options(umkk_LoggingOptions options);
 
 /**
  * @brief Set the log level of the global internal logger. This does not
@@ -835,7 +845,7 @@ UMKOINKERNEL_API void umkk_logging_connection_destroy(umkk_LoggingConnection* lo
  * @return               An allocated chain parameters opaque struct.
  */
 UMKOINKERNEL_API umkk_ChainParameters* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_parameters_create(
-    const umkk_ChainType chain_type);
+    umkk_ChainType chain_type);
 
 /**
  * Copy the chain parameters.
@@ -956,6 +966,15 @@ UMKOINKERNEL_API void umkk_context_destroy(umkk_Context* context);
  * @return                     The previous block tree entry, or null on error or if the current block tree entry is the genesis block.
  */
 UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_get_previous(
+    const umkk_BlockTreeEntry* block_tree_entry) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Return the umkk_BlockHeader associated with this entry.
+ *
+ * @param[in] block_tree_entry Non-null.
+ * @return                     umkk_BlockHeader.
+ */
+UMKOINKERNEL_API umkk_BlockHeader* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_get_block_header(
     const umkk_BlockTreeEntry* block_tree_entry) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1082,6 +1101,29 @@ UMKOINKERNEL_API void umkk_chainstate_manager_options_destroy(umkk_ChainstateMan
  */
 UMKOINKERNEL_API umkk_ChainstateManager* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_create(
     const umkk_ChainstateManagerOptions* chainstate_manager_options) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get the umkk_BlockTreeEntry whose associated umkk_BlockHeader has the most
+ * known cumulative proof of work.
+ *
+ * @param[in] chainstate_manager Non-null.
+ * @return                       The umkk_BlockTreeEntry.
+ */
+UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_get_best_entry(
+    const umkk_ChainstateManager* chainstate_manager) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Processes and validates the provided umkk_BlockHeader.
+ *
+ * @param[in] chainstate_manager        Non-null.
+ * @param[in] header                    Non-null umkk_BlockHeader to be validated.
+ * @param[out] block_validation_state   The result of the umkk_BlockHeader validation.
+ * @return                              0 if umkk_BlockHeader processing completed successfully, non-zero on error.
+ */
+UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_process_block_header(
+    umkk_ChainstateManager* chainstate_manager,
+    const umkk_BlockHeader* header,
+    umkk_BlockValidationState* block_validation_state) UMKOINKERNEL_ARG_NONNULL(1, 2, 3);
 
 /**
  * @brief Triggers the start of a reindex if the wipe options were previously
@@ -1215,6 +1257,17 @@ UMKOINKERNEL_API const umkk_Transaction* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_bl
     const umkk_Block* block, size_t transaction_index) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
+ * @brief Get the umkk_BlockHeader from the block.
+ *
+ * Creates a new umkk_BlockHeader object from the block's header data.
+ *
+ * @param[in] block Non-null umkk_Block
+ * @return          umkk_BlockHeader.
+ */
+UMKOINKERNEL_API umkk_BlockHeader* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_get_header(
+    const umkk_Block* block) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
  * @brief Calculate and return the hash of a block.
  *
  * @param[in] block Non-null.
@@ -1251,16 +1304,36 @@ UMKOINKERNEL_API void umkk_block_destroy(umkk_Block* block);
 ///@{
 
 /**
- * Returns the validation mode from an opaque block validation state pointer.
+ * Create a new umkk_BlockValidationState.
+ */
+UMKOINKERNEL_API umkk_BlockValidationState* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_validation_state_create();
+
+/**
+ * Returns the validation mode from an opaque umkk_BlockValidationState pointer.
  */
 UMKOINKERNEL_API umkk_ValidationMode umkk_block_validation_state_get_validation_mode(
     const umkk_BlockValidationState* block_validation_state) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
- * Returns the validation result from an opaque block validation state pointer.
+ * Returns the validation result from an opaque umkk_BlockValidationState pointer.
  */
 UMKOINKERNEL_API umkk_BlockValidationResult umkk_block_validation_state_get_block_validation_result(
     const umkk_BlockValidationState* block_validation_state) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Copies the umkk_BlockValidationState.
+ *
+ * @param[in] block_validation_state Non-null.
+ * @return                           The copied umkk_BlockValidationState.
+ */
+UMKOINKERNEL_API umkk_BlockValidationState* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_validation_state_copy(
+    const umkk_BlockValidationState* block_validation_state) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * Destroy the umkk_BlockValidationState.
+ */
+UMKOINKERNEL_API void umkk_block_validation_state_destroy(
+    umkk_BlockValidationState* block_validation_state) UMKOINKERNEL_ARG_NONNULL(1);
 
 ///@}
 
@@ -1612,6 +1685,93 @@ UMKOINKERNEL_API void umkk_block_hash_to_bytes(
  * Destroy the block hash.
  */
 UMKOINKERNEL_API void umkk_block_hash_destroy(umkk_BlockHash* block_hash);
+
+///@}
+
+/**
+ * @name Block Header
+ * Functions for working with block headers.
+ */
+///@{
+
+/**
+ * @brief Create a umkk_BlockHeader from serialized data.
+ *
+ * @param[in] raw_block_header      Non-null, serialized header data (80 bytes)
+ * @param[in] raw_block_header_len  Length of serialized header (must be 80)
+ * @return                          umkk_BlockHeader, or null on error.
+ */
+UMKOINKERNEL_API umkk_BlockHeader* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_create(
+    const void* raw_block_header, size_t raw_block_header_len);
+
+/**
+ * @brief Copy a umkk_BlockHeader.
+ *
+ * @param[in] header    Non-null umkk_BlockHeader.
+ * @return              Copied umkk_BlockHeader.
+ */
+UMKOINKERNEL_API umkk_BlockHeader* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_copy(
+    const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get the umkk_BlockHash.
+ *
+ * @param[in] header    Non-null header
+ * @return              umkk_BlockHash.
+ */
+UMKOINKERNEL_API umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_hash(
+    const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get the previous umkk_BlockHash from umkk_BlockHeader. The returned hash
+ * is unowned and only valid for the lifetime of the umkk_BlockHeader.
+ *
+ * @param[in] header    Non-null umkk_BlockHeader
+ * @return              Previous umkk_BlockHash
+ */
+UMKOINKERNEL_API const umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_prev_hash(
+    const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get the timestamp from umkk_BlockHeader.
+ *
+ * @param[in] header    Non-null umkk_BlockHeader
+ * @return              Block timestamp (Unix epoch seconds)
+ */
+UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_timestamp(
+    const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get the nBits difficulty target from umkk_BlockHeader.
+ *
+ * @param[in] header    Non-null umkk_BlockHeader
+ * @return              Difficulty target (compact format)
+ */
+UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_bits(
+    const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get the version from umkk_BlockHeader.
+ *
+ * @param[in] header    Non-null umkk_BlockHeader
+ * @return              Block version
+ */
+UMKOINKERNEL_API int32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_version(
+    const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get the nonce from umkk_BlockHeader.
+ *
+ * @param[in] header    Non-null umkk_BlockHeader
+ * @return              Nonce
+ */
+UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_nonce(
+    const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * Destroy the umkk_BlockHeader.
+ */
+UMKOINKERNEL_API void umkk_block_header_destroy(umkk_BlockHeader* header);
 
 ///@}
 

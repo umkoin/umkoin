@@ -322,10 +322,10 @@ bool PSBTInputSigned(const PSBTInput& input)
     return !input.final_script_sig.empty() || !input.final_script_witness.IsNull();
 }
 
-bool PSBTInputSignedAndVerified(const PartiallySignedTransaction psbt, unsigned int input_index, const PrecomputedTransactionData* txdata)
+bool PSBTInputSignedAndVerified(const PartiallySignedTransaction& psbt, unsigned int input_index, const PrecomputedTransactionData* txdata)
 {
     CTxOut utxo;
-    assert(psbt.inputs.size() >= input_index);
+    assert(input_index < psbt.inputs.size());
     const PSBTInput& input = psbt.inputs[input_index];
 
     if (input.non_witness_utxo) {

@@ -62,6 +62,7 @@ add_executable(test_umkoin
   miniscript_tests.cpp
   minisketch_tests.cpp
   multisig_tests.cpp
+  bip328_tests.cpp
   net_peer_connection_tests.cpp
   net_peer_eviction_tests.cpp
   net_tests.cpp
@@ -76,6 +77,7 @@ add_executable(test_umkoin
   pool_tests.cpp
   pow_tests.cpp
   prevector_tests.cpp
+  private_broadcast_tests.cpp
   raii_event_tests.cpp
   random_tests.cpp
   rbf_tests.cpp

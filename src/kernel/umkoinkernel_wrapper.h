@@ -685,7 +685,7 @@ public:
     }
 };
 
-class BlockHashView: public View<umkk_BlockHash>, public BlockHashApi<BlockHashView>
+class BlockHashView : public View<umkk_BlockHash>, public BlockHashApi<BlockHashView>
 {
 public:
     explicit BlockHashView(const umkk_BlockHash* ptr) : View{ptr} {}
@@ -702,6 +702,69 @@ public:
 
     BlockHash(const BlockHashView& view)
         : Handle{view} {}
+};
+
+template <typename Derived>
+class BlockHeaderApi
+{
+private:
+    auto impl() const
+    {
+        return static_cast<const Derived*>(this)->get();
+    }
+
+    friend Derived;
+    BlockHeaderApi() = default;
+
+public:
+    BlockHash Hash() const
+    {
+        return BlockHash{umkk_block_header_get_hash(impl())};
+    }
+
+    BlockHashView PrevHash() const
+    {
+        return BlockHashView{umkk_block_header_get_prev_hash(impl())};
+    }
+
+    uint32_t Timestamp() const
+    {
+        return umkk_block_header_get_timestamp(impl());
+    }
+
+    uint32_t Bits() const
+    {
+        return umkk_block_header_get_bits(impl());
+    }
+
+    int32_t Version() const
+    {
+        return umkk_block_header_get_version(impl());
+    }
+
+    uint32_t Nonce() const
+    {
+        return umkk_block_header_get_nonce(impl());
+    }
+};
+
+class BlockHeaderView : public View<umkk_BlockHeader>, public BlockHeaderApi<BlockHeaderView>
+{
+public:
+    explicit BlockHeaderView(const umkk_BlockHeader* ptr) : View{ptr} {}
+};
+
+class BlockHeader : public Handle<umkk_BlockHeader, umkk_block_header_copy, umkk_block_header_destroy>, public BlockHeaderApi<BlockHeader>
+{
+public:
+    explicit BlockHeader(std::span<const std::byte> raw_header)
+        : Handle{umkk_block_header_create(reinterpret_cast<const unsigned char*>(raw_header.data()), raw_header.size())} {}
+
+    BlockHeader(const BlockHeaderView& view)
+        : Handle{view} {}
+
+    BlockHeader(umkk_BlockHeader* header)
+        : Handle{header} {}
 };
 
 class Block : public Handle<umkk_Block, umkk_block_copy, umkk_block_destroy>
@@ -729,6 +792,11 @@ public:
     BlockHash GetHash() const
     {
         return BlockHash{umkk_block_get_hash(get())};
+    }
+
+    BlockHeader GetHeader() const
+    {
+        return BlockHeader{umkk_block_get_header(get())};
     }
 
     std::vector<std::byte> ToBytes() const
@@ -809,6 +877,11 @@ public:
     {
         return BlockHashView{umkk_block_tree_entry_get_block_hash(get())};
     }
+
+    BlockHeader GetHeader() const
+    {
+        return BlockHeader{umkk_block_tree_entry_get_block_header(get())};
+    }
 };
 
 class KernelNotifications
@@ -831,28 +904,42 @@ public:
     virtual void FatalErrorHandler(std::string_view error) {}
 };
 
-class BlockValidationState
+template <typename Derived>
+class BlockValidationStateApi
 {
 private:
-    const umkk_BlockValidationState* m_state;
+    auto impl() const
+    {
+        return static_cast<const Derived*>(this)->get();
+    }
+
+    friend Derived;
+    BlockValidationStateApi() = default;
 
 public:
-    BlockValidationState(const umkk_BlockValidationState* state) : m_state{state} {}
-
-    BlockValidationState(const BlockValidationState&) = delete;
-    BlockValidationState& operator=(const BlockValidationState&) = delete;
-    BlockValidationState(BlockValidationState&&) = delete;
-    BlockValidationState& operator=(BlockValidationState&&) = delete;
-
     ValidationMode GetValidationMode() const
     {
-        return static_cast<ValidationMode>(umkk_block_validation_state_get_validation_mode(m_state));
+        return static_cast<ValidationMode>(umkk_block_validation_state_get_validation_mode(impl()));
     }
 
     BlockValidationResult GetBlockValidationResult() const
     {
-        return static_cast<BlockValidationResult>(umkk_block_validation_state_get_block_validation_result(m_state));
+        return static_cast<BlockValidationResult>(umkk_block_validation_state_get_block_validation_result(impl()));
     }
+};
+
+class BlockValidationStateView : public View<umkk_BlockValidationState>, public BlockValidationStateApi<BlockValidationStateView>
+{
+public:
+    explicit BlockValidationStateView(const umkk_BlockValidationState* ptr) : View{ptr} {}
+};
+
+class BlockValidationState : public Handle<umkk_BlockValidationState, umkk_block_validation_state_copy, umkk_block_validation_state_destroy>, public BlockValidationStateApi<BlockValidationState>
+{
+public:
+    explicit BlockValidationState() : Handle{umkk_block_validation_state_create()} {}
+
+    BlockValidationState(const BlockValidationStateView& view) : Handle{view} {}
 };
 
 class ValidationInterface
@@ -860,7 +947,7 @@ class ValidationInterface
 public:
     virtual ~ValidationInterface() = default;
 
-    virtual void BlockChecked(Block block, const BlockValidationState state) {}
+    virtual void BlockChecked(Block block, BlockValidationStateView state) {}
 
     virtual void PowValidBlock(BlockTreeEntry entry, Block block) {}
 
@@ -918,7 +1005,7 @@ public:
             umkk_ValidationInterfaceCallbacks{
                 .user_data = heap_vi.release(),
                 .user_data_destroy = +[](void* user_data) { delete static_cast<user_type>(user_data); },
-                .block_checked = +[](void* user_data, umkk_Block* block, const umkk_BlockValidationState* state) { (*static_cast<user_type>(user_data))->BlockChecked(Block{block}, BlockValidationState{state}); },
+                .block_checked = +[](void* user_data, umkk_Block* block, const umkk_BlockValidationState* state) { (*static_cast<user_type>(user_data))->BlockChecked(Block{block}, BlockValidationStateView{state}); },
                 .pow_valid_block = +[](void* user_data, umkk_Block* block, const umkk_BlockTreeEntry* entry) { (*static_cast<user_type>(user_data))->PowValidBlock(BlockTreeEntry{entry}, Block{block}); },
                 .block_connected = +[](void* user_data, umkk_Block* block, const umkk_BlockTreeEntry* entry) { (*static_cast<user_type>(user_data))->BlockConnected(Block{block}, BlockTreeEntry{entry}); },
                 .block_disconnected = +[](void* user_data, umkk_Block* block, const umkk_BlockTreeEntry* entry) { (*static_cast<user_type>(user_data))->BlockDisconnected(Block{block}, BlockTreeEntry{entry}); },
@@ -1130,6 +1217,11 @@ public:
         return res == 0;
     }
 
+    bool ProcessBlockHeader(const BlockHeader& header, BlockValidationState& state)
+    {
+        return umkk_chainstate_manager_process_block_header(get(), header.get(), state.get()) == 0;
+    }
+
     ChainView GetChain() const
     {
         return ChainView{umkk_chainstate_manager_get_active_chain(get())};
@@ -1140,6 +1232,11 @@ public:
         auto entry{umkk_chainstate_manager_get_block_tree_entry_by_hash(get(), block_hash.get())};
         if (!entry) return std::nullopt;
         return entry;
+    }
+
+    BlockTreeEntry GetBestEntry() const
+    {
+        return umkk_chainstate_manager_get_best_entry(get());
     }
 
     std::optional<Block> ReadBlock(const BlockTreeEntry& entry) const

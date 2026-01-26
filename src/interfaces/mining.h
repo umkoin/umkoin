@@ -42,8 +42,29 @@ public:
     // Sigop cost per transaction, not including coinbase transaction.
     virtual std::vector<int64_t> getTxSigops() = 0;
 
-    virtual CTransactionRef getCoinbaseTx() = 0;
+    /**
+     * Return serialized dummy coinbase transaction.
+     *
+     * @note deprecated: use getCoinbaseTx()
+     */
+    virtual CTransactionRef getCoinbaseRawTx() = 0;
+
+    /** Return fields needed to construct a coinbase transaction */
+    virtual node::CoinbaseTx getCoinbaseTx() = 0;
+
+    /**
+     * Return scriptPubKey with SegWit OP_RETURN.
+     *
+     * @note deprecated: use getCoinbaseTx()
+     */
     virtual std::vector<unsigned char> getCoinbaseCommitment() = 0;
+
+    /**
+     * Return which output in the dummy coinbase contains the SegWit OP_RETURN.
+     *
+     * @note deprecated. Scan outputs from getCoinbaseTx() outputs field for the
+     *       SegWit marker.
+     */
     virtual int getWitnessCommitmentIndex() = 0;
 
     /**
@@ -84,7 +105,7 @@ public:
      * On testnet this will additionally return a template with difficulty 1 if
      * the tip is more than 20 minutes old.
      */
-    virtual std::unique_ptr<BlockTemplate> waitNext(const node::BlockWaitOptions options = {}) = 0;
+    virtual std::unique_ptr<BlockTemplate> waitNext(node::BlockWaitOptions options = {}) = 0;
 
     /**
      * Interrupts the current wait for the next block template.

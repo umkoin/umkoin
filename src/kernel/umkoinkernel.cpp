@@ -8,13 +8,12 @@
 
 #include <chain.h>
 #include <coins.h>
-#include <consensus/amount.h>
 #include <consensus/validation.h>
+#include <dbwrapper.h>
 #include <kernel/caches.h>
 #include <kernel/chainparams.h>
 #include <kernel/checks.h>
 #include <kernel/context.h>
-#include <kernel/cs_main.h>
 #include <kernel/notifications_interface.h>
 #include <kernel/warning.h>
 #include <logging.h>
@@ -27,9 +26,9 @@
 #include <serialize.h>
 #include <streams.h>
 #include <sync.h>
-#include <tinyformat.h>
 #include <uint256.h>
 #include <undo.h>
+#include <util/check.h>
 #include <util/fs.h>
 #include <util/result.h>
 #include <util/signalinterrupt.h>
@@ -38,14 +37,15 @@
 #include <validation.h>
 #include <validationinterface.h>
 
-#include <cassert>
 #include <cstddef>
 #include <cstring>
 #include <exception>
 #include <functional>
+#include <iterator>
 #include <list>
 #include <memory>
 #include <span>
+#include <stdexcept>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -496,6 +496,7 @@ struct umkk_TransactionInput : Handle<umkk_TransactionInput, CTxIn> {};
 struct umkk_TransactionOutPoint: Handle<umkk_TransactionOutPoint, COutPoint> {};
 struct umkk_Txid: Handle<umkk_Txid, Txid> {};
 struct umkk_PrecomputedTransactionData : Handle<umkk_PrecomputedTransactionData, PrecomputedTransactionData> {};
+struct umkk_BlockHeader: Handle<umkk_BlockHeader, CBlockHeader> {};
 
 umkk_Transaction* umkk_transaction_create(const void* raw_transaction, size_t raw_transaction_len)
 {
@@ -885,6 +886,21 @@ const umkk_BlockTreeEntry* umkk_block_tree_entry_get_previous(const umkk_BlockTr
     return umkk_BlockTreeEntry::ref(umkk_BlockTreeEntry::get(entry).pprev);
 }
 
+umkk_BlockValidationState* umkk_block_validation_state_create()
+{
+    return umkk_BlockValidationState::create();
+}
+
+umkk_BlockValidationState* umkk_block_validation_state_copy(const umkk_BlockValidationState* state)
+{
+    return umkk_BlockValidationState::copy(state);
+}
+
+void umkk_block_validation_state_destroy(umkk_BlockValidationState* state)
+{
+    delete state;
+}
+
 umkk_ValidationMode umkk_block_validation_state_get_validation_mode(const umkk_BlockValidationState* block_validation_state_)
 {
     auto& block_validation_state = umkk_BlockValidationState::get(block_validation_state_);
@@ -1029,6 +1045,12 @@ const umkk_BlockTreeEntry* umkk_chainstate_manager_get_block_tree_entry_by_hash(
     return umkk_BlockTreeEntry::ref(block_index);
 }
 
+const umkk_BlockTreeEntry* umkk_chainstate_manager_get_best_entry(const umkk_ChainstateManager* chainstate_manager)
+{
+    auto& chainman = *umkk_ChainstateManager::get(chainstate_manager).m_chainman;
+    return umkk_BlockTreeEntry::ref(WITH_LOCK(chainman.GetMutex(), return chainman.m_best_header));
+}
+
 void umkk_chainstate_manager_destroy(umkk_ChainstateManager* chainman)
 {
     {
@@ -1097,6 +1119,12 @@ const umkk_Transaction* umkk_block_get_transaction_at(const umkk_Block* block, s
     return umkk_Transaction::ref(&umkk_Block::get(block)->vtx[index]);
 }
 
+umkk_BlockHeader* umkk_block_get_header(const umkk_Block* block)
+{
+    const auto& block_ptr = umkk_Block::get(block);
+    return umkk_BlockHeader::create(static_cast<const CBlockHeader&>(*block_ptr));
+}
+
 int umkk_block_to_bytes(const umkk_Block* block, umkk_WriteBytes writer, void* user_data)
 {
     try {
@@ -1126,6 +1154,11 @@ umkk_Block* umkk_block_read(const umkk_ChainstateManager* chainman, const umkk_B
         return nullptr;
     }
     return umkk_Block::create(block);
+}
+
+umkk_BlockHeader* umkk_block_tree_entry_get_block_header(const umkk_BlockTreeEntry* entry)
+{
+    return umkk_BlockHeader::create(umkk_BlockTreeEntry::get(entry).GetBlockHeader());
 }
 
 int32_t umkk_block_tree_entry_get_height(const umkk_BlockTreeEntry* entry)
@@ -1264,6 +1297,22 @@ int umkk_chainstate_manager_process_block(
     return result ? 0 : -1;
 }
 
+int umkk_chainstate_manager_process_block_header(
+    umkk_ChainstateManager* chainstate_manager,
+    const umkk_BlockHeader* header,
+    umkk_BlockValidationState* state)
+{
+    try {
+        auto& chainman = umkk_ChainstateManager::get(chainstate_manager).m_chainman;
+        auto result = chainman->ProcessNewBlockHeaders({&umkk_BlockHeader::get(header), 1}, /*min_pow_checked=*/true, umkk_BlockValidationState::get(state), /*ppindex=*/nullptr);
+
+        return result ? 0 : -1;
+    } catch (const std::exception& e) {
+        LogError("Failed to process block header: %s", e.what());
+        return -1;
+    }
+}
+
 const umkk_Chain* umkk_chainstate_manager_get_active_chain(const umkk_ChainstateManager* chainman)
 {
     return umkk_Chain::ref(&WITH_LOCK(umkk_ChainstateManager::get(chainman).m_chainman->GetMutex(), return umkk_ChainstateManager::get(chainman).m_chainman->ActiveChain()));
@@ -1285,4 +1334,62 @@ int umkk_chain_contains(const umkk_Chain* chain, const umkk_BlockTreeEntry* entr
 {
     LOCK(::cs_main);
     return umkk_Chain::get(chain).Contains(&umkk_BlockTreeEntry::get(entry)) ? 1 : 0;
+}
+
+umkk_BlockHeader* umkk_block_header_create(const void* raw_block_header, size_t raw_block_header_len)
+{
+    if (raw_block_header == nullptr && raw_block_header_len != 0) {
+        return nullptr;
+    }
+    auto header{std::make_unique<CBlockHeader>()};
+    DataStream stream{std::span{reinterpret_cast<const std::byte*>(raw_block_header), raw_block_header_len}};
+
+    try {
+        stream >> *header;
+    } catch (...) {
+        LogError("Block header decode failed.");
+        return nullptr;
+    }
+
+    return umkk_BlockHeader::ref(header.release());
+}
+
+umkk_BlockHeader* umkk_block_header_copy(const umkk_BlockHeader* header)
+{
+    return umkk_BlockHeader::copy(header);
+}
+
+umkk_BlockHash* umkk_block_header_get_hash(const umkk_BlockHeader* header)
+{
+    return umkk_BlockHash::create(umkk_BlockHeader::get(header).GetHash());
+}
+
+const umkk_BlockHash* umkk_block_header_get_prev_hash(const umkk_BlockHeader* header)
+{
+    return umkk_BlockHash::ref(&umkk_BlockHeader::get(header).hashPrevBlock);
+}
+
+uint32_t umkk_block_header_get_timestamp(const umkk_BlockHeader* header)
+{
+    return umkk_BlockHeader::get(header).nTime;
+}
+
+uint32_t umkk_block_header_get_bits(const umkk_BlockHeader* header)
+{
+    return umkk_BlockHeader::get(header).nBits;
+}
+
+int32_t umkk_block_header_get_version(const umkk_BlockHeader* header)
+{
+    return umkk_BlockHeader::get(header).nVersion;
+}
+
+uint32_t umkk_block_header_get_nonce(const umkk_BlockHeader* header)
+{
+    return umkk_BlockHeader::get(header).nNonce;
+}
+
+void umkk_block_header_destroy(umkk_BlockHeader* header)
+{
+    delete header;
 }

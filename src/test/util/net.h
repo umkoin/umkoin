@@ -40,6 +40,8 @@ struct ConnmanTestMsg : public CConnman {
         m_msgproc = msgproc;
     }
 
+    void SetAddrman(AddrMan& in) { addrman = in; }
+
     void SetPeerConnectTimeout(std::chrono::seconds timeout)
     {
         m_peer_connect_timeout = timeout;
@@ -143,6 +145,7 @@ constexpr ConnectionType ALL_CONNECTION_TYPES[]{
     ConnectionType::FEELER,
     ConnectionType::BLOCK_RELAY,
     ConnectionType::ADDR_FETCH,
+    ConnectionType::PRIVATE_BROADCAST,
 };
 
 constexpr auto ALL_NETWORKS = std::array{
