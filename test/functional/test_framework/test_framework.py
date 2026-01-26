@@ -943,6 +943,11 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         if not self.is_umkoin_chainstate_compiled():
             raise SkipTest("umkoin-chainstate has not been compiled")
 
+    def skip_if_no_umkoin_bench(self):
+        """Skip the running test if bench_umkoin has not been compiled."""
+        if not self.is_bench_compiled():
+            raise SkipTest("bench_umkoin has not been compiled")
+
     def skip_if_no_cli(self):
         """Skip the running test if umkoin-cli has not been compiled."""
         if not self.is_cli_compiled():
@@ -975,6 +980,10 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
         """Skip the running test if Valgrind is being used."""
         if self.options.valgrind:
             raise SkipTest("This test is not compatible with Valgrind.")
+
+    def is_bench_compiled(self):
+        """Checks whether bench_umkoin was compiled."""
+        return self.config["components"].getboolean("BUILD_BENCH")
 
     def is_cli_compiled(self):
         """Checks whether umkoin-cli was compiled."""

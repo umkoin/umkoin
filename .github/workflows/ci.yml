@@ -320,6 +320,7 @@ jobs:
           UMKOIN_BIN: '${{ github.workspace }}\build\bin\Release\umkoin.exe'
           UMKOIND: '${{ github.workspace }}\build\bin\Release\umkoind.exe'
           UMKOINCLI: '${{ github.workspace }}\build\bin\Release\umkoin-cli.exe'
+          UMKOIN_BENCH: '${{ github.workspace }}\build\bin\Release\bench_umkoin.exe'
           UMKOINTX: '${{ github.workspace }}\build\bin\Release\umkoin-tx.exe'
           UMKOINUTIL: '${{ github.workspace }}\build\bin\Release\umkoin-util.exe'
           UMKOINWALLET: '${{ github.workspace }}\build\bin\Release\umkoin-wallet.exe'
@@ -482,9 +483,6 @@ jobs:
           ./src/secp256k1/bin/tests.exe
           ./src/univalue/object.exe
           ./src/univalue/unitester.exe
-
-      - name: Run benchmarks
-        run: ./bin/bench_umkoin.exe -sanity-check
 
       - name: Adjust paths in test/config.ini
         shell: pwsh

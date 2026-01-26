@@ -261,6 +261,10 @@ class Binaries:
         # Add -nonamed because "umkoin rpc" enables -named by default, but umkoin-cli doesn't
         return self._argv("rpc", self.paths.umkoincli) + ["-nonamed"]
 
+    def bench_argv(self):
+        "Return argv array that should be used to invoke bench_umkoin"
+        return self._argv("bench", self.paths.umkoin_bench)
+
     def tx_argv(self):
         "Return argv array that should be used to invoke umkoin-tx"
         return self._argv("tx", self.paths.umkointx)
@@ -301,6 +305,7 @@ def get_binary_paths(config):
     binaries = {
         "umkoin": "UMKOIN_BIN",
         "umkoind": "UMKOIND",
+        "bench_umkoin": "UMKOIN_BENCH",
         "umkoin-cli": "UMKOINCLI",
         "umkoin-util": "UMKOINUTIL",
         "umkoin-tx": "UMKOINTX",
