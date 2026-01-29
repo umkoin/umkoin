@@ -7,13 +7,15 @@
 #define UMKOIN_COMMON_SYSTEM_H
 
 #include <umkoin-build-config.h> // IWYU pragma: keep
+#include <util/time.h>
 
+#include <chrono>
 #include <cstdint>
 #include <optional>
 #include <string>
 
-// Application startup time (used for uptime calculation)
-int64_t GetStartupTime();
+/// Monotonic uptime (not affected by system time changes).
+SteadyClock::duration GetUptime();
 
 void SetupEnvironment();
 [[nodiscard]] bool SetupNetworking();
