@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 """ Tests the utxocache:* tracepoint API interface.
-    See https://github.com/umkoin/umkoin/blob/master/doc/tracing.md#context-utxocache
+    See https://github.com/bitcoin/bitcoin/blob/master/doc/tracing.md#context-utxocache
 """
 
 import ctypes
@@ -109,7 +109,8 @@ FLUSHMODE_NAME = {
     0: "NONE",
     1: "IF_NEEDED",
     2: "PERIODIC",
-    3: "ALWAYS",
+    3: "FORCE_FLUSH",
+    4: "FORCE_SYNC",
 }
 
 
@@ -161,7 +162,7 @@ class UTXOCacheTracepointTest(UmkoinTestFramework):
 
     def test_uncache(self):
         """ Tests the utxocache:uncache tracepoint API.
-        https://github.com/umkoin/umkoin/blob/master/doc/tracing.md#tracepoint-utxocacheuncache
+        https://github.com/bitcoin/bitcoin/blob/master/doc/tracing.md#tracepoint-utxocacheuncache
         """
         # To trigger an UTXO uncache from the cache, we create an invalid transaction
         # spending a not-cached, but existing UTXO. During transaction validation, this
@@ -226,8 +227,8 @@ class UTXOCacheTracepointTest(UmkoinTestFramework):
 
     def test_add_spent(self):
         """ Tests the utxocache:add utxocache:spent tracepoint API
-            See https://github.com/umkoin/umkoin/blob/master/doc/tracing.md#tracepoint-utxocacheadd
-            and https://github.com/umkoin/umkoin/blob/master/doc/tracing.md#tracepoint-utxocachespent
+            See https://github.com/bitcoin/bitcoin/blob/master/doc/tracing.md#tracepoint-utxocacheadd
+            and https://github.com/bitcoin/bitcoin/blob/master/doc/tracing.md#tracepoint-utxocachespent
         """
 
         self.log.info(
@@ -347,7 +348,7 @@ class UTXOCacheTracepointTest(UmkoinTestFramework):
 
     def test_flush(self):
         """ Tests the utxocache:flush tracepoint API.
-            See https://github.com/umkoin/umkoin/blob/master/doc/tracing.md#tracepoint-utxocacheflush"""
+            See https://github.com/bitcoin/bitcoin/blob/master/doc/tracing.md#tracepoint-utxocacheflush"""
 
         self.log.info("test the utxocache:flush tracepoint API")
         self.log.info("hook into the utxocache:flush tracepoint")
@@ -385,12 +386,12 @@ class UTXOCacheTracepointTest(UmkoinTestFramework):
         bpf["utxocache_flush"].open_perf_buffer(handle_utxocache_flush)
 
         self.log.info("stop the node to flush the UTXO cache")
-        UTXOS_IN_CACHE = 2 # might need to be changed if the earlier tests are modified
+        UTXOS_IN_CACHE = 3 # might need to be changed if the earlier tests are modified
         # A node shutdown causes two flushes. One that flushes UTXOS_IN_CACHE
         # UTXOs and one that flushes 0 UTXOs. Normally the 0-UTXO-flush is the
         # second flush, however it can happen that the order changes.
-        expected_flushes.append({"mode": "ALWAYS", "for_prune": False, "size": UTXOS_IN_CACHE})
-        expected_flushes.append({"mode": "ALWAYS", "for_prune": False, "size": 0})
+        expected_flushes.append({"mode": "FORCE_FLUSH", "for_prune": False, "size": UTXOS_IN_CACHE})
+        expected_flushes.append({"mode": "FORCE_FLUSH", "for_prune": False, "size": 0})
         self.stop_node(0)
 
         bpf.perf_buffer_poll(timeout=200)
@@ -415,7 +416,7 @@ class UTXOCacheTracepointTest(UmkoinTestFramework):
         bpf["utxocache_flush"].open_perf_buffer(handle_utxocache_flush)
 
         self.log.info("prune blockchain to trigger a flush for pruning")
-        expected_flushes.append({"mode": "NONE", "for_prune": True, "size": 0})
+        expected_flushes.append({"mode": "NONE", "for_prune": True, "size": BLOCKS_TO_MINE})
         self.nodes[0].pruneblockchain(315)
 
         bpf.perf_buffer_poll(timeout=500)
