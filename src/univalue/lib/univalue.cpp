@@ -1,5 +1,5 @@
 // Copyright 2014 BitPay Inc.
-// Copyright 2015 Bitcoin Core Developers
+// Copyright 2015 Umkoin Core Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://opensource.org/licenses/mit-license.php.
 
@@ -7,7 +7,6 @@
 
 #include <iomanip>
 #include <map>
-#include <memory>
 #include <sstream>
 #include <string>
 #include <utility>
