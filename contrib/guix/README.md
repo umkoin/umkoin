@@ -120,7 +120,7 @@ source contrib/shell/git-utils.bash && uname -m && find guix-build-$(git_head_ve
 
 Much like how Gitian build outputs are attested to in a `gitian.sigs`
 repository, Guix build outputs are attested to in the [`guix.sigs`
-repository](https://github.com/umkoin/guix.sigs).
+repository](https://github.com/bitcoin-core/guix.sigs).
 
 After you've cloned the `guix.sigs` repository, to attest to the current
 worktree's commit/tag:
@@ -261,7 +261,7 @@ details.
   Set the path where _extracted_ SDKs can be found. This is passed through to
   the depends tree. Note that this should be set to the _parent_ directory of
   the actual SDK (e.g. `SDK_PATH=$HOME/Downloads/macOS-SDKs` instead of
-  `$HOME/Downloads/macOS-SDKs/Xcode-12.2-15C500b-extracted-SDK-with-libcxx-headers`).
+  `$HOME/Downloads/macOS-SDKs/Xcode-26.2-17C52-extracted-SDK-with-libcxx-headers`).
 
   The path that this environment variable points to **must be a directory**, and
   **NOT a symlink to a directory**.

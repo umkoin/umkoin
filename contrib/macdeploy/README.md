@@ -15,14 +15,14 @@ When complete, it will have produced `Umkoin-Core.zip`.
 A free Apple Developer Account is required to proceed.
 
 Our macOS SDK can be extracted from
-[Xcode_15.2.xip](https://download.developer.apple.com/Developer_Tools/Xcode_15.2/Xcode_15.2.xip).
+[Xcode_26.2_Universal.xip](https://download.developer.apple.com/Developer_Tools/Xcode_26.2/Xcode_26.2_Universal.xip).
 
 Alternatively, after logging in to your account go to 'Downloads', then 'More'
-and search for [`Xcode 15`](https://developer.apple.com/download/all/?q=Xcode%2015).
+and search for [`Xcode 26.2`](https://developer.apple.com/download/all/?q=Xcode%2026.2).
 
 An Apple ID and cookies enabled for the hostname are needed to download this.
 
-The `sha256sum` of the downloaded XIP archive should be `04e93680c6ddbec84666531be412de778afc8eac6ab2037f4c2be7290818b59b`.
+The `sha256sum` of the downloaded XIP archive should be `8f29ab6a9ac6670d3cf53545ffdb1c317d11607fa8db38fc56d3391df7783fbd`.
 
 To extract the `.xip` on Linux:
 
@@ -33,13 +33,13 @@ git clone https://github.com/bitcoin-core/apple-sdk-tools.git
 
 # Unpack the .xip and place the resulting Xcode.app in your current
 # working directory
-python3 apple-sdk-tools/extract_xcode.py -f Xcode_15.2.xip | cpio -d -i
+python3 apple-sdk-tools/extract_xcode.py -f Xcode_26.2_Universal.xip | cpio -d -i
 ```
 
 On macOS:
 
 ```bash
-xip -x Xcode_15.2.xip
+xip -x Xcode_26.2_Universal.xip
 ```
 
 ### Step 2: Generating the SDK tarball from `Xcode.app`
@@ -51,8 +51,8 @@ path to `Xcode.app` (extracted in the previous stage) as the first argument.
 ./contrib/macdeploy/gen-sdk.py '/path/to/Xcode.app'
 ```
 
-The generated archive should be: `code-15.2-15C500b-extracted-SDK-with-libcxx-headers.tar.gz`.
-The `sha256sum` should be `7c74146250fc6b6ea37b3f00b17a019fcade109cfe609989edecbbd6f228bfce`.
+The generated archive should be: `Xcode-26.2-17C52-extracted-SDK-with-libcxx-headers.tar`.
+The `sha256sum` should be `44cb02ded9a68c2061941628a45715260b9d5bb52281a185d67950937f03b7ee`.
 
 ## Deterministic macOS App Notes
 
