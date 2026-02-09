@@ -116,6 +116,7 @@ void MinerTestingSetup::TestPackageSelection(const CScript& scriptPubKey, const 
     auto mining{MakeMining()};
     BlockAssembler::Options options;
     options.coinbase_output_script = scriptPubKey;
+    options.include_dummy_extranonce = true;
 
     LOCK(tx_mempool.cs);
     BOOST_CHECK(tx_mempool.size() == 0);
@@ -334,6 +335,7 @@ void MinerTestingSetup::TestBasicMining(const CScript& scriptPubKey, const std::
 
     BlockAssembler::Options options;
     options.coinbase_output_script = scriptPubKey;
+    options.include_dummy_extranonce = true;
 
     {
         CTxMemPool& tx_mempool{MakeMempool()};
@@ -660,6 +662,7 @@ void MinerTestingSetup::TestPrioritisedMining(const CScript& scriptPubKey, const
 
     BlockAssembler::Options options;
     options.coinbase_output_script = scriptPubKey;
+    options.include_dummy_extranonce = true;
 
     CTxMemPool& tx_mempool{MakeMempool()};
     LOCK(tx_mempool.cs);
@@ -749,6 +752,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     CScript scriptPubKey = CScript() << "04880766d2f2a4f8e8a2ca8ef5f6baf014f2ac460acc69604df1af697ec9cd9d01548a7d6015e0cabfcbc160316143d9aae4a17c944f611b8daf18fb1492935d67"_hex << OP_CHECKSIG;
     BlockAssembler::Options options;
     options.coinbase_output_script = scriptPubKey;
+    options.include_dummy_extranonce = true;
 
     // Create and check a simple template
     std::unique_ptr<BlockTemplate> block_template = mining->createNewBlock(options);
