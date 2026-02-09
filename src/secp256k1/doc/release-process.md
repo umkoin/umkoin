@@ -12,7 +12,7 @@ It is best if the maintainers are present during the release, so they can help e
 
 This process also assumes that there will be no minor releases for old major releases.
 
-We aim to cut a regular release every 3-4 months, approximately twice as frequent as major Bitcoin Core releases. Every second release should be published one month before the feature freeze of the next major Bitcoin Core release, allowing sufficient time to update the library in Core.
+We aim to cut a regular release every 3-4 months, approximately twice as frequent as major Umkoin Core releases. Every second release should be published one month before the feature freeze of the next major Umkoin Core release, allowing sufficient time to update the library in Core.
 
 ## Sanity checks
 Perform these checks when reviewing the release PR (see below):
@@ -61,7 +61,7 @@ Perform these checks when reviewing the release PR (see below):
 4. Open a PR to the master branch with a commit (using message `"release cleanup: bump version after $MAJOR.$MINOR.$PATCH"`, for example) that
    * sets `_PKG_VERSION_IS_RELEASE` to `false` and increments `_PKG_VERSION_PATCH` and `_LIB_VERSION_REVISION` in `configure.ac`,
    * increments the `$PATCH` component of `project(libsecp256k1 VERSION ...)` and `${PROJECT_NAME}_LIB_VERSION_REVISION` in `CMakeLists.txt`, and
-   * adds an `[Unreleased]` section header to the [CHANGELOG.md](../CHANGELOG.md).
+   * adds an `[Unreleased]` section header and a corresponding `[Unreleased]` link at the bottom of [CHANGELOG.md](../CHANGELOG.md).
 
    If other maintainers are not present to approve the PR, it can be merged without ACKs.
 5. Create a new GitHub release with a link to the corresponding entry in [CHANGELOG.md](../CHANGELOG.md).
