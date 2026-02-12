@@ -76,8 +76,8 @@ class ChainstateWriteCrashTest(UmkoinTestFramework):
     def restart_node(self, node_index, expected_tip):
         """Start up a given node id, wait for the tip to reach the given block hash, and calculate the utxo hash.
 
-        Exceptions on startup should indicate node crash (due to -dbcrashratio), in which case we try again. Give up
-        after 60 seconds. Returns the utxo hash of the given node."""
+        Exceptions during startup or subsequent RPC calls should indicate a node crash (due to -dbcrashratio), in which case we try again. Give up
+        after a timeout. Returns the utxo hash of the given node."""
 
         time_start = time.time()
         while time.time() - time_start < 120:
@@ -93,12 +93,11 @@ class ChainstateWriteCrashTest(UmkoinTestFramework):
                 # should raise an exception if umkoind doesn't exit.
                 self.wait_for_node_exit(node_index, timeout=10)
             self.crashed_on_restart += 1
-            time.sleep(1)
 
         # If we got here, umkoind isn't coming back up on restart.  Could be a
         # bug in umkoind, or we've gotten unlucky with our dbcrash ratio --
         # perhaps we generated a test case that blew up our cache?
-        # TODO: If this happens a lot, we should try to restart without -dbcrashratio
+        # If this happens, the test should try to restart without -dbcrashratio
         # and make sure that recovery happens.
         raise AssertionError(f"Unable to successfully restart node {node_index} in allotted time")
 
