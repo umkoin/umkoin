@@ -20,6 +20,7 @@ target_link_libraries(umkoin_ipc
   PRIVATE
     core_interface
     univalue
+    Boost::headers
 )
 
 if(BUILD_TESTS)
