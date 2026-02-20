@@ -496,7 +496,7 @@ void UmkoinGUI::createActions()
                 action->setEnabled(false);
             }
             m_migrate_wallet_menu->addSeparator();
-            QAction* restore_migrate_file_action = m_migrate_wallet_menu->addAction(tr("Restore and Migrate Wallet File..."));
+            QAction* restore_migrate_file_action = m_migrate_wallet_menu->addAction(tr("Restore and Migrate Wallet File…"));
             restore_migrate_file_action->setEnabled(true);
 
             connect(restore_migrate_file_action, &QAction::triggered, [this] {
