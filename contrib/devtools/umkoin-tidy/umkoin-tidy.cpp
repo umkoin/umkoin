@@ -5,7 +5,6 @@
 #include "nontrivial-threadlocal.h"
 
 #include <clang-tidy/ClangTidyModule.h>
-#include <clang-tidy/ClangTidyModuleRegistry.h>
 
 class UmkoinModule final : public clang::tidy::ClangTidyModule
 {
