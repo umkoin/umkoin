@@ -306,6 +306,9 @@ class MempoolClusterTest(UmkoinTestFramework):
 
         assert_equal(node.getrawmempool(), [])
 
+        # Key should exist and be trivially optimal
+        assert node.getmempoolinfo()["optimal"]
+
         # Not in-mempool
         not_mempool_tx = self.wallet.create_self_transfer()
         assert_raises_rpc_error(-5, "Transaction not in mempool", node.getmempoolcluster, not_mempool_tx["txid"])
@@ -366,6 +369,9 @@ class MempoolClusterTest(UmkoinTestFramework):
         third_chunkweight = third_chunk_tx["tx"].get_weight()
         chunkfee = first_chunk_tx["fee"] + second_chunk_tx["fee"] + third_chunk_tx["fee"]
         assert_equal(first_chunk_info, {'clusterweight': first_chunkweight + second_chunkweight + third_chunkweight, 'txcount': 3, 'chunks': [{'chunkfee': first_chunk_tx["fee"], 'chunkweight': first_chunkweight, 'txs': [first_chunk_tx["txid"]]}, {'chunkfee': second_chunk_tx["fee"], 'chunkweight': second_chunkweight, 'txs': [second_chunk_tx["txid"]]}, {'chunkfee': third_chunk_tx["fee"], 'chunkweight': third_chunkweight, 'txs': [third_chunk_tx["txid"]]}]})
+
+        # We expect known optimality directly after txn submission
+        assert node.getmempoolinfo()["optimal"]
 
         # If we prioritise the last transaction it can join the second transaction's chunk.
         node.prioritisetransaction(third_chunk_tx["txid"], 0, int(third_chunk_tx["fee"]*COIN) + 1)
