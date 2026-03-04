@@ -25,6 +25,7 @@
 #include <versionbits.h>
 #include <pow.h>
 
+#include <test/util/common.h>
 #include <test/util/setup_common.h>
 
 #include <memory>
