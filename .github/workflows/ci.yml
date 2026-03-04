@@ -59,6 +59,8 @@ jobs:
     name: 'test ancestor commits'
     needs: runners
     runs-on: ${{ needs.runners.outputs.provider == 'cirrus' && 'ghcr.io/cirruslabs/ubuntu-runner-amd64:24.04-md' || 'ubuntu-24.04' }}
+    env:
+      TEST_RUNNER_PORT_MIN: "14000"  # Use a larger port, to avoid colliding with CIRRUS_CACHE_HOST port 12321.
     if: github.event_name == 'pull_request' && github.event.pull_request.commits != 1
     timeout-minutes: 360  # Use maximum time, see https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes.
     steps:

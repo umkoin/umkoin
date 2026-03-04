@@ -426,7 +426,7 @@ BOOST_AUTO_TEST_CASE(stop_active_wait_drains_queue)
     }
     BOOST_CHECK_EQUAL(threadPool.WorkQueueSize(), num_tasks);
 
-    // Delay release so Stop() drain all tasks from the calling thread
+    // Delay release so Stop() drains all tasks from the calling thread
     std::thread unblocker([&blocker, &threadPool]() {
         while (threadPool.WorkQueueSize() > 0) {
             std::this_thread::yield();
