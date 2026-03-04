@@ -179,7 +179,7 @@ CTxMemPool::CTxMemPool(Options opts, bilingual_str& error)
     m_txgraph = MakeTxGraph(
         /*max_cluster_count=*/m_opts.limits.cluster_count,
         /*max_cluster_size=*/m_opts.limits.cluster_size_vbytes * WITNESS_SCALE_FACTOR,
-        /*acceptable_iters=*/ACCEPTABLE_ITERS,
+        /*acceptable_cost=*/ACCEPTABLE_COST,
         /*fallback_order=*/[&](const TxGraph::Ref& a, const TxGraph::Ref& b) noexcept {
             const Txid& txid_a = static_cast<const CTxMemPoolEntry&>(a).GetTx().GetHash();
             const Txid& txid_b = static_cast<const CTxMemPoolEntry&>(b).GetTx().GetHash();
@@ -221,7 +221,7 @@ void CTxMemPool::Apply(ChangeSet* changeset)
 
         addNewTransaction(it);
     }
-    if (!m_txgraph->DoWork(POST_CHANGE_WORK)) {
+    if (!m_txgraph->DoWork(/*max_cost=*/POST_CHANGE_COST)) {
         LogDebug(BCLog::MEMPOOL, "Mempool in non-optimal ordering after addition(s).");
     }
 }
@@ -380,7 +380,7 @@ void CTxMemPool::removeForReorg(CChain& chain, std::function<bool(txiter)> check
     for (indexed_transaction_set::const_iterator it = mapTx.begin(); it != mapTx.end(); it++) {
         assert(TestLockPointValidity(chain, it->GetLockPoints()));
     }
-    if (!m_txgraph->DoWork(POST_CHANGE_WORK)) {
+    if (!m_txgraph->DoWork(/*max_cost=*/POST_CHANGE_COST)) {
         LogDebug(BCLog::MEMPOOL, "Mempool in non-optimal ordering after reorg.");
     }
 }
@@ -425,7 +425,7 @@ void CTxMemPool::removeForBlock(const std::vector<CTransactionRef>& vtx, unsigne
     }
     lastRollingFeeUpdate = GetTime();
     blockSinceLastRollingFeeBump = true;
-    if (!m_txgraph->DoWork(POST_CHANGE_WORK)) {
+    if (!m_txgraph->DoWork(/*max_cost=*/POST_CHANGE_COST)) {
         LogDebug(BCLog::MEMPOOL, "Mempool in non-optimal ordering after block.");
     }
 }
