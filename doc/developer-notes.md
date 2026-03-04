@@ -384,13 +384,13 @@ other input.
 
 Valgrind is a programming tool for memory debugging, memory leak detection, and
 profiling. The repo contains a Valgrind suppressions file
-([`valgrind.supp`](https://github.com/umkoin/umkoin/blob/master/contrib/valgrind.supp))
+([`valgrind.supp`](/test/sanitizer_suppressions/valgrind.supp))
 which includes known Valgrind warnings in our dependencies that cannot be fixed
 in-tree. Example use:
 
 ```shell
-$ valgrind --suppressions=contrib/valgrind.supp build/bin/test_umkoin
-$ valgrind --suppressions=contrib/valgrind.supp --leak-check=full \
+$ valgrind --suppressions=test/sanitizer_suppressions/valgrind.supp build/bin/test_umkoin
+$ valgrind --suppressions=test/sanitizer_suppressions/valgrind.supp --leak-check=full \
       --show-leak-kinds=all build/bin/test_umkoin --log_level=test_suite
 $ valgrind -v --leak-check=full build/bin/umkoind -printtoconsole
 $ ./build/test/functional/test_runner.py --valgrind
