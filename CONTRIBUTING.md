@@ -56,10 +56,10 @@ Communication Channels
 
 Most communication about Bitcoin Core development happens on IRC, in the
 `#umkoin-core-dev` channel on Libera Chat. The easiest way to participate on IRC is
-with the web client, [web.libera.chat](https://web.libera.chat/#bitcoin-core-dev). Chat
+with the web client, [web.libera.chat](https://web.libera.chat/#umkoin-core-dev). Chat
 history logs can be found
-on [https://www.erisian.com.au/umkoin-core-dev/](https://www.erisian.com.au/bitcoin-core-dev/)
-and [https://gnusha.org/umkoin-core-dev/](https://gnusha.org/bitcoin-core-dev/).
+on [https://www.erisian.com.au/umkoin-core-dev/](https://www.erisian.com.au/umkoin-core-dev/)
+and [https://gnusha.org/umkoin-core-dev/](https://gnusha.org/umkoin-core-dev/).
 
 Discussion about codebase improvements happens in GitHub issues and pull
 requests.
@@ -184,7 +184,7 @@ subsequent comment to the PR.
 ### Translation changes
 
 Note that translations should not be submitted as pull requests. Please see
-[Translation Process](https://github.com/umkoin/umkoin/blob/master/doc/translation_process.md)
+[Translation Process](/doc/translation_process.md)
 for more information on helping with translations.
 
 ### Work in Progress Changes and Requests for Comments
