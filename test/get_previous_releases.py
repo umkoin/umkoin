@@ -3,10 +3,6 @@
 # Copyright (c) 2018-present The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#
-# Download or build previous releases.
-# Needs curl and tar to download a release, or the build dependencies when
-# building a release.
 
 import argparse
 import contextlib
@@ -20,49 +16,81 @@ import shutil
 import subprocess
 import sys
 import time
-import urllib.request
 import zipfile
 
+sys.path.append(str(Path(__file__).resolve().parent))
+from download_utils import download_from_url
+
+TAR = os.getenv('TAR', 'tar')
+
 SHA256_SUMS = {
-"a605473e985a0cc372c96cc7bc9f0b8c76bbdaa9c37cc169706c594c7abc62b3": "umkoin-0.19.1-aarch64-linux-gnu.tar.gz",
-"908ea674e22400b0119e029680df8f5f57cbe07d18900501dd349ca7554077f8": "umkoin-0.19.1-arm-linux-gnueabihf.tar.gz",
-"a82668eeb603c182377affbc8c29c0b352f73426ce675471b99ed6959bbd91d6": "umkoin-0.19.1-i686-pc-linux-gnu.tar.gz",
-"20005082dd17a717f0d79ee234f7fd5bdff489e55895b7084b357eec4361bd26": "umkoin-0.19.1-osx64.tar.gz",
-"ee3dddecfa5c858856f8006342c484b668f34d5d41f8f1d3237fbf3626a4f075": "umkoin-0.19.1-riscv64-linux-gnu.tar.gz",
-"c8b1d803c03e52538d62759caed010e52924c5c0a4f4cf840199c200399dc628": "umkoin-0.19.1-x86_64-linux-gnu.tar.gz",
+    "0e2819135366f150d9906e294b61dff58fd1996ebd26c2f8e979d6c0b7a79580": {"tag": "v0.14.3", "archive": "umkoin-0.14.3-aarch64-linux-gnu.tar.gz"},
+    "d86fc90824a85c38b25c8488115178d5785dbc975f5ff674f9f5716bc8ad6e65": {"tag": "v0.14.3", "archive": "umkoin-0.14.3-arm-linux-gnueabihf.tar.gz"},
+    "1b0a7408c050e3d09a8be8e21e183ef7ee570385dc41216698cc3ab392a484e7": {"tag": "v0.14.3", "archive": "umkoin-0.14.3-osx64.tar.gz"},
+    "706e0472dbc933ed2757650d54cbcd780fd3829ebf8f609b32780c7eedebdbc9": {"tag": "v0.14.3", "archive": "umkoin-0.14.3-x86_64-linux-gnu.tar.gz"},
+    "5ea84b6a4c1b03d5f4d1a718fbed215e2fd0e66ca7d59ca6141218d163ce1301": {"tag": "v0.14.3", "archive": "umkoin-0.14.3-win64.zip"},
 
-"ad356f577f3fffe646ffbe73bd3655612f794e9cc57995984f9f88581ea6fbb3": "umkoin-0.20.1-aarch64-linux-gnu.tar.gz",
-"2ef0bf4045ecdbd4fc34c1c818c0d4b5f52ca37709d71e8e0388f5272fb17214": "umkoin-0.20.1-arm-linux-gnueabihf.tar.gz",
-"6f6411c8409e91b070f54edf76544cdc85cfd2b9ffe0dba200fb68cddb1e3010": "umkoin-0.20.1-osx64.tar.gz",
-"e55c32e91800156032dcc2ff9bc654df2068b46bab24e63328755a1c2fd588e2": "umkoin-0.20.1-riscv64-linux-gnu.tar.gz",
-"2430e4c813ea0de28ef939170e05a36eaa1d2031589abe3b32491d5835f7b70e": "umkoin-0.20.1-x86_64-linux-gnu.tar.gz",
+    "60c93e3462c303eb080be7cf623f1a7684b37fd47a018ad3848bc23e13c84e1c": {"tag": "v0.20.1", "archive": "umkoin-0.20.1-aarch64-linux-gnu.tar.gz"},
+    "55b577e0fb306fb429d4be6c9316607753e8543e5946b542d75d876a2f08654c": {"tag": "v0.20.1", "archive": "umkoin-0.20.1-arm-linux-gnueabihf.tar.gz"},
+    "b9024dde373ea7dad707363e07ec7e265383204127539ae0c234bff3a61da0d1": {"tag": "v0.20.1", "archive": "umkoin-0.20.1-osx64.tar.gz"},
+    "fa71cb52ee5e0459cbf5248cdec72df27995840c796f58b304607a1ed4c165af": {"tag": "v0.20.1", "archive": "umkoin-0.20.1-riscv64-linux-gnu.tar.gz"},
+    "376194f06596ecfa40331167c39bc70c355f960280bd2a645fdbf18f66527397": {"tag": "v0.20.1", "archive": "umkoin-0.20.1-x86_64-linux-gnu.tar.gz"},
+    "e59fba67afce011d32b5d723a3a0be12da1b8a34f5d7966e504520c48d64716d": {"tag": "v0.20.1", "archive": "umkoin-0.20.1-win64.zip"},
 
-"25ea92c1318f062da3cc6eee34226a14589afec553dfdc8aef60fc359a55f773": "umkoin-0.21.0-aarch64-linux-gnu.tar.gz",
-"c24629badfdaa8cfc357e834c8814480f414cb28fc5f974cbeb14433f050ff19": "umkoin-0.21.0-arm-linux-gnueabihf.tar.gz",
-"53ec97ec51de214793172e20bb72b7639981720fa69ae81fb2f7c3e132218dcf": "umkoin-0.21.0-osx64.tar.gz",
-"ffcd9504c957f0b0d8ec24911f1a3fd023315edad853e5fa8908d869af0b0769": "umkoin-0.21.0-riscv64-linux-gnu.tar.gz",
-"4f0e60e22b501d2494d1cca6f6f507fa9a5ee0639af86901878500df6665d2d1": "umkoin-0.21.0-x86_64-linux-gnu.tar.gz",
+    "43416854330914992bbba2d0e9adf2a6fff4130be9af8ae2ef1186e743d9a3fe": {"tag": "v0.21.0", "archive": "umkoin-0.21.0-aarch64-linux-gnu.tar.gz"},
+    "f028af308eda45a3c4c90f9332f96b075bf21e3495c945ebce48597151808176": {"tag": "v0.21.0", "archive": "umkoin-0.21.0-arm-linux-gnueabihf.tar.gz"},
+    "695fb624fa6423f5da4f443b60763dd1d77488bfe5ef63760904a7b54e91298d": {"tag": "v0.21.0", "archive": "umkoin-0.21.0-osx64.tar.gz"},
+    "f8b2adfeae021a672effbc7bd40d5c48d6b94e53b2dd660f787340bf1a52e4e9": {"tag": "v0.21.0", "archive": "umkoin-0.21.0-riscv64-linux-gnu.tar.gz"},
+    "da7766775e3f9c98d7a9145429f2be8297c2672fe5b118fd3dc2411fb48e0032": {"tag": "v0.21.0", "archive": "umkoin-0.21.0-x86_64-linux-gnu.tar.gz"},
+    "1d0052c4ce80227fb6d0bc1c4e673ba21033e219c1f935d25f130ef7f43360d4": {"tag": "v0.21.0", "archive": "umkoin-0.21.0-win64.zip"},
 
-"d2b2b69917aa2f3389066e637fb38cd18ea8aa51b0b117edc878e600926a005b": "umkoin-22.0-aarch64-linux-gnu.tar.gz",
-"d4a6d99c21d200af3a24d0fad374a12834d44b9885f6677c52d6b293da559fdd": "umkoin-22.0-arm-linux-gnueabihf.tar.gz",
-"9e3ad3ea0fd71d7e65af3bda5d08702bcc2f3a7919321d9264ecb196b4787e21": "umkoin-22.0-osx64.tar.gz",
-"babb1a1a1b976f6593d692f6ff77f6c27d4fbbba242be7ca773f7d2229f0e52d": "umkoin-22.0-powerpc64le-linux-gnu.tar.gz",
-"d2a4b19a71edcddadf97ffd60a9ce0d09fdbe03ae5cb2fb8a30b7d4d0bf8e745": "umkoin-22.0-powerpc64-linux-gnu.tar.gz",
-"b1f9c2cff853c1adc2a6601dfce9fc3e7f3aa92d4aac4f08d6a6fc1fc5d1b954": "umkoin-22.0-riscv64-linux-gnu.tar.gz",
-"23ad8e83cb5761979f7d53b19814eda0d8e883588e30c758a4ef48fb01c6cc0a": "umkoin-22.0-x86_64-linux-gnu.tar.gz",
+    "ac718fed08570a81b3587587872ad85a25173afa5f9fbbd0c03ba4d1714cfa3e": {"tag": "v22.0", "archive": "umkoin-22.0-aarch64-linux-gnu.tar.gz"},
+    "b8713c6c5f03f5258b54e9f436e2ed6d85449aa24c2c9972f91963d413e86311": {"tag": "v22.0", "archive": "umkoin-22.0-arm-linux-gnueabihf.tar.gz"},
+    "2744d199c3343b2d94faffdfb2c94d75a630ba27301a70e47b0ad30a7e0155e9": {"tag": "v22.0", "archive": "umkoin-22.0-osx64.tar.gz"},
+    "2cca5f99007d060aca9d8c7cbd035dfe2f040dd8200b210ce32cdf858479f70d": {"tag": "v22.0", "archive": "umkoin-22.0-powerpc64-linux-gnu.tar.gz"},
+    "91b1e012975c5a363b5b5fcc81b5b7495e86ff703ec8262d4b9afcfec633c30d": {"tag": "v22.0", "archive": "umkoin-22.0-powerpc64le-linux-gnu.tar.gz"},
+    "9cc3a62c469fe57e11485fdd32c916f10ce7a2899299855a2e479256ff49ff3c": {"tag": "v22.0", "archive": "umkoin-22.0-riscv64-linux-gnu.tar.gz"},
+    "59ebd25dd82a51638b7a6bb914586201e67db67b919b2a1ff08925a7936d1b16": {"tag": "v22.0", "archive": "umkoin-22.0-x86_64-linux-gnu.tar.gz"},
+    "9485e4b52ed6cebfe474ab4d7d0c1be6d0bb879ba7246a8239326b2230a77eb1": {"tag": "v22.0", "archive": "umkoin-22.0-win64.zip"},
 
-"87fc9e3325f1912474ef84a8cdeadff06b00bab870823675418cca18c56b1fef": "umkoin-23.0.1-x86_64-linux-gnu.tar.gz",
-"f0006a4bb38d19945251bcefc3315f2903bfafadeaf8ba63a8b89b5bb9274798": "umkoin-23.0.1-arm64-apple-darwin.dmg",
-"e77014ed1637aed8c54ec3dbc63c44a5e682dda73ad0c334ea9c533be9204c6a": "umkoin-23.0.1-riscv64-linux-gnu.tar.gz",
-"4b979209f344c2b19d27731e253ee18644cb966a630fd350ea6ae12e5526f6ea": "umkoin-23.0.1-x86_64-apple-darwin.dmg",
-"364575f19b05c92b4cd5aecd890e43a82b6bc5abf7311182d5e232aea20f83ea": "umkoin-23.0.1-powerpc64-linux-gnu.tar.gz",
-"614158b6c71d465a3c70c699d5521d8759ef5517d4f56b69d4e58f47be50b451": "umkoin-23.0.1-arm-linux-gnueabihf.tar.gz",
-"1ddef0fa86b3ab7ae971b13093bea496842c6f92def4bd6b9aeceb56f4814c9c": "umkoin-23.0.1-x86_64-apple-darwin.tar.gz",
-"53916f01c420e7655762494b11bf3e43d0513b5ed7836bbb62420c4336b3f526": "umkoin-23.0.1-powerpc64le-linux-gnu.tar.gz",
-"3cf2f22fd005bf2b8f877c3fb2c2c114a440776d7a1d25a668c10284d879d682": "umkoin-23.0.1-win64-setup.exe",
-"ccf081444a29ba6a3183b0ad612512ab891811721117a7a6595b35bc79a2cce7": "umkoin-23.0.1-aarch64-linux-gnu.tar.gz",
-"e9d715097126d6b0ec9cd267e07dfcd1dba595588b689b8aaad73ae267526cf5": "umkoin-23.0.1-arm64-apple-darwin.tar.gz",
-"26cd05901c333857f117583d20345e26caa2b52b950ec8aa1596a181a3bc8709": "umkoin-23.0.1-win64.zip"
+    "06f4c78271a77752ba5990d60d81b1751507f77efda1e5981b4e92fd4d9969fb": {"tag": "v23.0", "archive": "umkoin-23.0-aarch64-linux-gnu.tar.gz"},
+    "952c574366aff76f6d6ad1c9ee45a361d64fa04155e973e926dfe7e26f9703a3": {"tag": "v23.0", "archive": "umkoin-23.0-arm-linux-gnueabihf.tar.gz"},
+    "7c8bc63731aa872b7b334a8a7d96e33536ad77d49029bad179b09dca32cd77ac": {"tag": "v23.0", "archive": "umkoin-23.0-arm64-apple-darwin.tar.gz"},
+    "2caa5898399e415f61d9af80a366a3008e5856efa15aaff74b88acf429674c99": {"tag": "v23.0", "archive": "umkoin-23.0-powerpc64-linux-gnu.tar.gz"},
+    "217dd0469d0f4962d22818c368358575f6a0abcba8804807bb75325eb2f28b19": {"tag": "v23.0", "archive": "umkoin-23.0-powerpc64le-linux-gnu.tar.gz"},
+    "078f96b1e92895009c798ab827fb3fde5f6719eee886bd0c0e93acab18ea4865": {"tag": "v23.0", "archive": "umkoin-23.0-riscv64-linux-gnu.tar.gz"},
+    "c816780583009a9dad426dc0c183c89be9da98906e1e2c7ebae91041c1aaaaf3": {"tag": "v23.0", "archive": "umkoin-23.0-x86_64-apple-darwin.tar.gz"},
+    "2cca490c1f2842884a3c5b0606f179f9f937177da4eadd628e3f7fd7e25d26d0": {"tag": "v23.0", "archive": "umkoin-23.0-x86_64-linux-gnu.tar.gz"},
+    "004b2e25b21e0f14cbcce6acec37f221447abbb3ea7931c689e508054bfc6cf6": {"tag": "v23.0", "archive": "umkoin-23.0-win64.zip"},
+
+    "0b48b9e69b30037b41a1e6b78fb7cbcc48c7ad627908c99686e81f3802454609": {"tag": "v24.0.1", "archive": "umkoin-24.0.1-aarch64-linux-gnu.tar.gz"},
+    "37d7660f0277301744e96426bbb001d2206b8d4505385dfdeedf50c09aaaef60": {"tag": "v24.0.1", "archive": "umkoin-24.0.1-arm-linux-gnueabihf.tar.gz"},
+    "90ed59e86bfda1256f4b4cad8cc1dd77ee0efec2492bcb5af61402709288b62c": {"tag": "v24.0.1", "archive": "umkoin-24.0.1-arm64-apple-darwin.tar.gz"},
+    "7590645e8676f8b5fda62dc20174474c4ac8fd0defc83a19ed908ebf2e94dc11": {"tag": "v24.0.1", "archive": "umkoin-24.0.1-powerpc64-linux-gnu.tar.gz"},
+    "79e89a101f23ff87816675b98769cd1ee91059f95c5277f38f48f21a9f7f8509": {"tag": "v24.0.1", "archive": "umkoin-24.0.1-powerpc64le-linux-gnu.tar.gz"},
+    "6b163cef7de4beb07b8cb3347095e0d76a584019b1891135cd1268a1f05b9d88": {"tag": "v24.0.1", "archive": "umkoin-24.0.1-riscv64-linux-gnu.tar.gz"},
+    "e2f751512f3c0f00eb68ba946d9c829e6cf99422a61e8f5e0a7c109c318674d0": {"tag": "v24.0.1", "archive": "umkoin-24.0.1-x86_64-apple-darwin.tar.gz"},
+    "49df6e444515d457ea0b885d66f521f2a26ca92ccf73d5296082e633544253bf": {"tag": "v24.0.1", "archive": "umkoin-24.0.1-x86_64-linux-gnu.tar.gz"},
+    "8784ce304f22c495392d3adfd7fc2c645d093db9bd4d42666c41adf540539fff": {"tag": "v24.0.1", "archive": "umkoin-24.0.1-win64.zip"},
+
+    "3a7bdd959a0b426624f63f394f25e5b7769a5a2f96f8126dcc2ea53f3fa5212b": {"tag": "v25.0", "archive": "umkoin-25.0-aarch64-linux-gnu.tar.gz"},
+    "e537c8630b05e63242d979c3004f851fd73c2a10b5b4fdbb161788427c7b3c0f": {"tag": "v25.0", "archive": "umkoin-25.0-arm-linux-gnueabihf.tar.gz"},
+    "3b35075d6c1209743611c705a13575be2668bc069bc6301ce78a2e1e53ebe7cc": {"tag": "v25.0", "archive": "umkoin-25.0-arm64-apple-darwin.tar.gz"},
+    "0c8e135a6fd297270d3b65196042d761453493a022b5ff7fb847fc911e938214": {"tag": "v25.0", "archive": "umkoin-25.0-powerpc64-linux-gnu.tar.gz"},
+    "fa8af160782f5adfcea570f72b947073c1663b3e9c3cd0f82b216b609fe47573": {"tag": "v25.0", "archive": "umkoin-25.0-powerpc64le-linux-gnu.tar.gz"},
+    "fe6e347a66043946920c72c9c4afca301968101e6b82fb90a63d7885ebcceb32": {"tag": "v25.0", "archive": "umkoin-25.0-riscv64-linux-gnu.tar.gz"},
+    "5708fc639cdfc27347cccfd50db9b73b53647b36fb5f3a4a93537cbe8828c27f": {"tag": "v25.0", "archive": "umkoin-25.0-x86_64-apple-darwin.tar.gz"},
+    "33930d432593e49d58a9bff4c30078823e9af5d98594d2935862788ce8a20aec": {"tag": "v25.0", "archive": "umkoin-25.0-x86_64-linux-gnu.tar.gz"},
+    "7154b35ecc8247589070ae739b7c73c4dee4794bea49eb18dc66faed65b819e7": {"tag": "v25.0", "archive": "umkoin-25.0-win64.zip"},
+
+    "10581b6d4aeb091c08c9e69eb4e4ced000038c009286dc1edb8a876656ccf6df": {"tag": "v28.2", "archive": "umkoin-28.2-aarch64-linux-gnu.tar.gz"},
+    "c08135c249688438b1ed6f48a2f192ffaae7c7111ffee5cfad59fdae355bb47f": {"tag": "v28.2", "archive": "umkoin-28.2-arm-linux-gnueabihf.tar.gz"},
+    "c0270ed50effc174f7ff3332dba5183a8693999dac2ba78b37d8c8797b3ea2b2": {"tag": "v28.2", "archive": "umkoin-28.2-arm64-apple-darwin.tar.gz"},
+    "21c54bc7520e873c8b52c817af257a8a4aee15d81bb2492e5bd51af055ae4469": {"tag": "v28.2", "archive": "umkoin-28.2-powerpc64-linux-gnu.tar.gz"},
+    "8ad2bf5dd0a7fd04afa9cd2b1309621f8662f00c799f1971cd44ba9eb9d18ef1": {"tag": "v28.2", "archive": "umkoin-28.2-riscv64-linux-gnu.tar.gz"},
+    "866a4b703a2095301151c17dcc753e19e4dba61ec68d19709ec4f81ff4320103": {"tag": "v28.2", "archive": "umkoin-28.2-x86_64-apple-darwin.tar.gz"},
+    "98add5f220c01b387343b70edeb6273403fe081e22cd85fda132704cdcaa98aa": {"tag": "v28.2", "archive": "umkoin-28.2-x86_64-linux-gnu.tar.gz"},
+    "da0869639c323bbf6f264f1829083b9514e10179b90c34b09d8cbcab8a1897e3": {"tag": "v28.2", "archive": "umkoin-28.2-win64.zip"},
 }
 
 
@@ -74,45 +102,6 @@ def pushd(new_dir) -> None:
         yield
     finally:
         os.chdir(previous_dir)
-
-
-def download_from_url(url, archive):
-    last_print_time = time.time()
-
-    def progress_hook(progress_bytes, total_size):
-        nonlocal last_print_time
-        now = time.time()
-        percent = min(100, (progress_bytes * 100) / total_size)
-        bar_length = 40
-        filled_length = int(bar_length * percent / 100)
-        bar = '#' * filled_length + '-' * (bar_length - filled_length)
-        if now - last_print_time >= 1 or percent >= 100:
-            print(f'\rDownloading: [{bar}] {percent:.1f}%', flush=True, end="")
-            last_print_time = now
-
-    with urllib.request.urlopen(url) as response:
-        if response.status != 200:
-            raise RuntimeError(f"HTTP request failed with status code: {response.status}")
-
-        sock_info = response.fp.raw._sock.getpeername()
-        print(f"Connected to {sock_info[0]}")
-
-        total_size = int(response.getheader("Content-Length"))
-        progress_bytes = 0
-
-        with open(archive, 'wb') as file:
-            while True:
-                chunk = response.read(8192)
-                if not chunk:
-                    break
-                file.write(chunk)
-                progress_bytes += len(chunk)
-                progress_hook(progress_bytes, total_size)
-
-        if progress_bytes < total_size:
-            raise RuntimeError(f"Download incomplete: expected {total_size} bytes, got {progress_bytes} bytes")
-
-    print('\n', flush=True, end="") # Flush to avoid error output on the same line.
 
 
 def download_binary(tag, args) -> int:
@@ -139,8 +128,6 @@ def download_binary(tag, args) -> int:
 
     archive = f'umkoin-{tag[1:]}-{host}.{archive_format}'
     archive_url = f'https://bitcoincore.org/{bin_path}/{archive}'
-
-    print(f'Fetching: {archive_url}')
 
     try:
         download_from_url(archive_url, archive)
@@ -186,7 +173,7 @@ def download_binary(tag, args) -> int:
             print(f"Zip extraction failed: {e}", file=sys.stderr)
             return 1
     else:
-        ret = subprocess.run(['tar', '-zxf', archive, '-C', tag,
+        ret = subprocess.run([TAR, '-zxf', archive, '-C', tag,
                               '--strip-components=1',
                               'umkoin-{tag}'.format(tag=tag[1:])]).returncode
         if ret != 0:
