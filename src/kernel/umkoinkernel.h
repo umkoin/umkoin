@@ -349,6 +349,8 @@ typedef void (*umkk_ValidationInterfaceBlockDisconnected)(void* user_data, umkk_
 
 /**
  * Function signature for serializing data.
+ *
+ * Returns 0 to indicate success.
  */
 typedef int (*umkk_WriteBytes)(const void* bytes, size_t size, void* userdata);
 
