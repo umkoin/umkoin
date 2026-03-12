@@ -1,5 +1,5 @@
-qt_details_version := 6.7.3
-qt_details_download_path := https://download.qt.io/archive/qt/6.7/$(qt_details_version)/submodules
+qt_details_version := 6.8.3
+qt_details_download_path := https://download.qt.io/archive/qt/6.8/$(qt_details_version)/submodules
 qt_details_suffix := everywhere-src-$(qt_details_version).tar.xz
 
 qt_details_qtbase_file_name := qtbase-$(qt_details_suffix)

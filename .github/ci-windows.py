@@ -109,7 +109,6 @@ def check_manifests(ci_type):
         "fuzz.exe",
         "bench_umkoin.exe",
         "test_umkoin-qt.exe",
-        "test_kernel.exe",
         "umkoin-chainstate.exe",
     }
     for entry in release_dir.iterdir():
