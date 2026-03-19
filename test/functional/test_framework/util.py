@@ -75,7 +75,10 @@ def summarise_dict_differences(thing1, thing2):
 def assert_equal(thing1, thing2, *args):
     if thing1 != thing2 and not args and isinstance(thing1, dict) and isinstance(thing2, dict):
         d1,d2 = summarise_dict_differences(thing1, thing2)
-        raise AssertionError("not(%s == %s)\n  in particular not(%s == %s)" % (thing1, thing2, d1, d2))
+        if d1 != thing1 or d2 != thing2:
+            raise AssertionError(f"not({thing1!s} == {thing2!s})\n  in particular not({d1!s} == {d2!s})")
+        else:
+            raise AssertionError(f"not({thing1!s} == {thing2!s})")
     if thing1 != thing2 or any(thing1 != arg for arg in args):
         raise AssertionError("not(%s)" % " == ".join(str(arg) for arg in (thing1, thing2) + args))
 
@@ -726,7 +729,7 @@ def dumb_sync_blocks(*, src, dst, height=None):
     height = height or src.getblockcount()
     for i in range(dst.getblockcount() + 1, height + 1):
         block_hash = src.getblockhash(i)
-        block = src.getblock(blockhash=block_hash, verbose=0)
+        block = src.getblock(blockhash=block_hash, verbosity=0)
         dst.submitblock(block)
     assert_equal(dst.getblockcount(), height)
 

@@ -33,7 +33,6 @@ add_library(umkoin_util STATIC EXCLUDE_FROM_ALL
   ../random.cpp
   ../randomenv.cpp
   ../streams.cpp
-  ../support/lockedpool.cpp
   ../sync.cpp
 )
 
