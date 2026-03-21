@@ -577,6 +577,15 @@ UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_count_i
     const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
+ * @brief Get a transaction's nLockTime value.
+ *
+ * @param[in] transaction Non-null.
+ * @return                The nLockTime value.
+ */
+UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_get_locktime(
+    const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
  * @brief Get the txid of a transaction. The returned txid is not owned and
  * depends on the lifetime of the transaction.
  *
@@ -1503,6 +1512,15 @@ UMKOINKERNEL_API umkk_TransactionInput* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_tra
  * @return                      The transaction out point.
  */
 UMKOINKERNEL_API const umkk_TransactionOutPoint* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_input_get_out_point(
+    const umkk_TransactionInput* transaction_input) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get a transaction input's nSequence value.
+ *
+ * @param[in] transaction_input Non-null.
+ * @return                      The nSequence value.
+ */
+UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_input_get_sequence(
     const umkk_TransactionInput* transaction_input) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**

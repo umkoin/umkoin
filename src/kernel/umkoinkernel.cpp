@@ -533,6 +533,11 @@ const umkk_TransactionInput* umkk_transaction_get_input_at(const umkk_Transactio
     return umkk_TransactionInput::ref(&umkk_Transaction::get(transaction)->vin[input_index]);
 }
 
+uint32_t umkk_transaction_get_locktime(const umkk_Transaction* transaction)
+{
+    return umkk_Transaction::get(transaction)->nLockTime;
+}
+
 const umkk_Txid* umkk_transaction_get_txid(const umkk_Transaction* transaction)
 {
     return umkk_Txid::ref(&umkk_Transaction::get(transaction)->GetHash());
@@ -690,6 +695,11 @@ umkk_TransactionInput* umkk_transaction_input_copy(const umkk_TransactionInput* 
 const umkk_TransactionOutPoint* umkk_transaction_input_get_out_point(const umkk_TransactionInput* input)
 {
     return umkk_TransactionOutPoint::ref(&umkk_TransactionInput::get(input).prevout);
+}
+
+uint32_t umkk_transaction_input_get_sequence(const umkk_TransactionInput* input)
+{
+    return umkk_TransactionInput::get(input).nSequence;
 }
 
 void umkk_transaction_input_destroy(umkk_TransactionInput* input)
