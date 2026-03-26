@@ -181,6 +181,10 @@ Add these lines to your `/etc/tor/torrc` (or equivalent config file):
 
     HiddenServiceDir /var/lib/tor/umkoin-service/
     HiddenServicePort 6333 127.0.0.1:6334
+    # If `tor --list-modules` shows "pow: yes", then enable PoW protection.
+    # It is available in tor-0.4.8.1-alpha and newer when configured with
+    # `./configure --enable-gpl`.
+    HiddenServicePoWDefensesEnabled 1
 
 The directory can be different of course, but virtual port numbers should be equal to
 your umkoind's P2P listen port (6333 by default), and target addresses and ports

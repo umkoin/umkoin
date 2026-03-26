@@ -5,6 +5,8 @@
 #ifndef UMKOIN_UTIL_LOG_H
 #define UMKOIN_UTIL_LOG_H
 
+// This header works in tandem with `logging/categories.h`
+// to expose the complete logging interface.
 #include <logging/categories.h> // IWYU pragma: export
 #include <tinyformat.h>
 #include <util/check.h>

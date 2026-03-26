@@ -6,6 +6,7 @@
 #ifndef UMKOIN_UTIL_TIME_H
 #define UMKOIN_UTIL_TIME_H
 
+// The `util/time.h` header is designed to be a drop-in replacement for `chrono`.
 #include <chrono> // IWYU pragma: export
 #include <cstdint>
 #include <optional>
