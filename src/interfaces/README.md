@@ -6,7 +6,7 @@ The following interfaces are defined here:
 
 * [`ChainClient`](chain.h) — used by node to start & stop `Chain` clients. Added in [#14437](https://github.com/bitcoin/bitcoin/pull/14437).
 
-* [`Node`](node.h) — used by GUI to start & stop umkoin node. Added in [#10244](https://github.com/bitcoin/bitcoin/pull/10244).
+* [`Node`](node.h) — used by GUI to start & stop bitcoin node. Added in [#10244](https://github.com/bitcoin/bitcoin/pull/10244).
 
 * [`Wallet`](wallet.h) — used by GUI to access wallets. Added in [#10244](https://github.com/bitcoin/bitcoin/pull/10244).
 
@@ -15,5 +15,7 @@ The following interfaces are defined here:
 * [`Init`](init.h) — used by multiprocess code to access interfaces above on startup. Added in [#19160](https://github.com/bitcoin/bitcoin/pull/19160).
 
 * [`Ipc`](ipc.h) — used by multiprocess code to access `Init` interface across processes. Added in [#19160](https://github.com/bitcoin/bitcoin/pull/19160).
+
+* [`Rpc`](rpc.h) — used by `umkoin-cli` to be able to call RPC methods over a unix socket instead of TCP.
 
 The interfaces above define boundaries between major components of umkoin code (node, wallet, and gui), making it possible for them to run in [different processes](../../doc/multiprocess.md), and be tested, developed, and understood independently. These interfaces are not currently designed to be stable or to be used externally.

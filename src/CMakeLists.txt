@@ -56,6 +56,8 @@ add_subdirectory(crypto)
 add_subdirectory(util)
 if(ENABLE_IPC)
   add_subdirectory(ipc)
+else()
+  add_library(umkoin_ipc STATIC EXCLUDE_FROM_ALL ipc/stub.cpp)
 endif()
 
 add_library(umkoin_consensus STATIC EXCLUDE_FROM_ALL
@@ -347,13 +349,14 @@ target_link_libraries(umkoin_cli
 
 # Umkoin Core RPC client
 if(BUILD_CLI)
-  add_executable(umkoin-cli umkoin-cli.cpp)
+  add_executable(umkoin-cli umkoin-cli.cpp init/basic.cpp)
   add_windows_resources(umkoin-cli umkoin-cli-res.rc)
   add_windows_application_manifest(umkoin-cli)
   target_link_libraries(umkoin-cli
     core_interface
     umkoin_cli
     umkoin_common
+    umkoin_ipc
     umkoin_util
     libevent::core
     libevent::extra
