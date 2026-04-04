@@ -50,6 +50,10 @@
 #include <utility>
 #include <vector>
 
+namespace Consensus {
+struct Params;
+} // namespace Consensus
+
 using kernel::ChainstateRole;
 using util::ImmediateTaskRunner;
 
@@ -496,6 +500,7 @@ struct umkk_TransactionOutPoint: Handle<umkk_TransactionOutPoint, COutPoint> {};
 struct umkk_Txid: Handle<umkk_Txid, Txid> {};
 struct umkk_PrecomputedTransactionData : Handle<umkk_PrecomputedTransactionData, PrecomputedTransactionData> {};
 struct umkk_BlockHeader: Handle<umkk_BlockHeader, CBlockHeader> {};
+struct umkk_ConsensusParams: Handle<umkk_ConsensusParams, Consensus::Params> {};
 
 umkk_Transaction* umkk_transaction_create(const void* raw_transaction, size_t raw_transaction_len)
 {
@@ -823,6 +828,11 @@ umkk_ChainParameters* umkk_chain_parameters_copy(const umkk_ChainParameters* cha
     return umkk_ChainParameters::copy(chain_parameters);
 }
 
+const umkk_ConsensusParams* umkk_chain_parameters_get_consensus_params(const umkk_ChainParameters* chain_parameters)
+{
+    return umkk_ConsensusParams::ref(&umkk_ChainParameters::get(chain_parameters).GetConsensus());
+}
+
 void umkk_chain_parameters_destroy(umkk_ChainParameters* chain_parameters)
 {
     delete chain_parameters;
@@ -1117,6 +1127,19 @@ umkk_Block* umkk_block_create(const void* raw_block, size_t raw_block_length)
 umkk_Block* umkk_block_copy(const umkk_Block* block)
 {
     return umkk_Block::copy(block);
+}
+
+int umkk_block_check(const umkk_Block* block, const umkk_ConsensusParams* consensus_params, umkk_BlockCheckFlags flags, umkk_BlockValidationState* validation_state)
+{
+    auto& state = umkk_BlockValidationState::get(validation_state);
+    state = BlockValidationState{};
+
+    const bool check_pow    = (flags & umkk_BlockCheckFlags_POW) != 0;
+    const bool check_merkle = (flags & umkk_BlockCheckFlags_MERKLE) != 0;
+
+    const bool result = CheckBlock(*umkk_Block::get(block), state, umkk_ConsensusParams::get(consensus_params), /*fCheckPOW=*/check_pow, /*fCheckMerkleRoot=*/check_merkle);
+
+    return result ? 1 : 0;
 }
 
 size_t umkk_block_count_transactions(const umkk_Block* block)

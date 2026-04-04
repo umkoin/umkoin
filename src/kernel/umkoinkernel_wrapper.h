@@ -97,12 +97,23 @@ enum class ScriptVerificationFlags : umkk_ScriptVerificationFlags {
     ALL = umkk_ScriptVerificationFlags_ALL
 };
 
+enum class BlockCheckFlags : umkk_BlockCheckFlags {
+    BASE = umkk_BlockCheckFlags_BASE,
+    POW = umkk_BlockCheckFlags_POW,
+    MERKLE = umkk_BlockCheckFlags_MERKLE,
+    ALL = umkk_BlockCheckFlags_ALL
+};
+
 template <typename T>
 struct is_bitmask_enum : std::false_type {
 };
 
 template <>
 struct is_bitmask_enum<ScriptVerificationFlags> : std::true_type {
+};
+
+template <>
+struct is_bitmask_enum<BlockCheckFlags> : std::true_type {
 };
 
 template <typename T>
@@ -370,6 +381,7 @@ public:
 class PrecomputedTransactionData;
 class Transaction;
 class TransactionOutput;
+class BlockValidationState;
 
 template <typename Derived>
 class ScriptPubkeyApi
@@ -777,6 +789,12 @@ public:
         : Handle{header} {}
 };
 
+class ConsensusParamsView : public View<umkk_ConsensusParams>
+{
+public:
+    explicit ConsensusParamsView(const umkk_ConsensusParams* ptr) : View{ptr} {}
+};
+
 class Block : public Handle<umkk_Block, umkk_block_copy, umkk_block_destroy>
 {
 public:
@@ -796,6 +814,10 @@ public:
     {
         return TransactionView{umkk_block_get_transaction_at(get(), index)};
     }
+
+    bool Check(const ConsensusParamsView& consensus_params,
+        BlockCheckFlags flags,
+        BlockValidationState& state) const;
 
     MAKE_RANGE_METHOD(Transactions, Block, &Block::CountTransactions, &Block::GetTransaction, *this)
 
@@ -952,6 +974,13 @@ public:
     BlockValidationState(const BlockValidationStateView& view) : Handle{view} {}
 };
 
+inline bool Block::Check(const ConsensusParamsView& consensus_params,
+    BlockCheckFlags flags,
+    BlockValidationState& state) const
+{
+    return umkk_block_check(get(), consensus_params.get(), static_cast<umkk_BlockCheckFlags>(flags), state.get()) == 1;
+}
+
 class ValidationInterface
 {
 public:
@@ -971,6 +1000,11 @@ class ChainParams : public Handle<umkk_ChainParameters, umkk_chain_parameters_co
 public:
     ChainParams(ChainType chain_type)
         : Handle{umkk_chain_parameters_create(static_cast<umkk_ChainType>(chain_type))} {}
+
+    ConsensusParamsView GetConsensusParams() const
+    {
+        return ConsensusParamsView{umkk_chain_parameters_get_consensus_params(get())};
+    }
 };
 
 class ContextOptions : public UniqueHandle<umkk_ContextOptions, umkk_context_options_destroy>

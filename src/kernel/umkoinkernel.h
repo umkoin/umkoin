@@ -226,6 +226,11 @@ typedef struct umkk_Block umkk_Block;
 typedef struct umkk_BlockValidationState umkk_BlockValidationState;
 
 /**
+ * Opaque data structure for holding the Consensus Params.
+ */
+typedef struct umkk_ConsensusParams umkk_ConsensusParams;
+
+/**
  * Opaque data structure for holding the currently known best-chain associated
  * with a chainstate.
  */
@@ -865,6 +870,17 @@ UMKOINKERNEL_API umkk_ChainParameters* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chai
     const umkk_ChainParameters* chain_parameters) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
+ * @brief Get umkk_ConsensusParams from umkk_ChainParameters. The returned
+ * umkk_ConsensusParams pointer is valid only for the lifetime of the
+ * umkk_ChainParameters object and must not be destroyed by the caller.
+ *
+ * @param[in] chain_parameters  Non-null.
+ * @return                      The umkk_ConsensusParams.
+ */
+UMKOINKERNEL_API const umkk_ConsensusParams* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_parameters_get_consensus_params(
+    const umkk_ChainParameters* chain_parameters) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
  * Destroy the chain parameters.
  */
 UMKOINKERNEL_API void umkk_chain_parameters_destroy(umkk_ChainParameters* chain_parameters);
@@ -1246,6 +1262,40 @@ UMKOINKERNEL_API umkk_Block* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_create(
  */
 UMKOINKERNEL_API umkk_Block* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_copy(
     const umkk_Block* block) UMKOINKERNEL_ARG_NONNULL(1);
+
+/** Bitflags to control context-free block checks (optional). */
+typedef uint32_t umkk_BlockCheckFlags;
+#define umkk_BlockCheckFlags_BASE   ((umkk_BlockCheckFlags)0)                                                        //!< run the base context-free block checks only
+#define umkk_BlockCheckFlags_POW    ((umkk_BlockCheckFlags)(1U << 0))                                                //!< run CheckProofOfWork via CheckBlockHeader
+#define umkk_BlockCheckFlags_MERKLE ((umkk_BlockCheckFlags)(1U << 1))                                                //!< verify merkle root (and mutation detection)
+#define umkk_BlockCheckFlags_ALL    ((umkk_BlockCheckFlags)(umkk_BlockCheckFlags_POW | umkk_BlockCheckFlags_MERKLE)) //!< enable all optional context-free block checks
+
+/**
+ * @brief Perform context-free validation checks on a umkk_Block.
+ *
+ * Runs the base context-free block checks (size limits, coinbase structure,
+ * transaction checks, and sigop limits) using the supplied
+ * umkk_ConsensusParams. The proof-of-work and merkle-root checks are optional
+ * and can be toggled via @p flags. Note that this does not include any
+ * transaction script, timestamps, order, or other checks that may require more
+ * context.
+ *
+ * @param[in]     block             Non-null, umkk_Block to validate.
+ * @param[in]     consensus_params  Non-null, umkk_ConsensusParams for validation.
+ * @param[in]     flags             Bitmask of umkk_BlockCheckFlags controlling the
+ *                                  optional POW and merkle-root checks. Use
+ *                                  umkk_BlockCheckFlags_BASE to run only the base
+ *                                  checks.
+ * @param[in,out] validation_state  Non-null, previously created with
+ *                                  umkk_block_validation_state_create and updated
+ *                                  in-place with the validation result.
+ * @return                          1 if the umkk_Block passed the checks, 0 otherwise.
+ */
+UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_check(
+    const umkk_Block* block,
+    const umkk_ConsensusParams* consensus_params,
+    umkk_BlockCheckFlags flags,
+    umkk_BlockValidationState* validation_state) UMKOINKERNEL_ARG_NONNULL(1, 2, 4);
 
 /**
  * @brief Count the number of transactions contained in a block.
