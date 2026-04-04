@@ -1610,8 +1610,6 @@ UMKOINKERNEL_API void umkk_txid_destroy(umkk_Txid* txid);
 
 ///@}
 
-///@}
-
 /** @name Coin
  * Functions for working with coins.
  */
