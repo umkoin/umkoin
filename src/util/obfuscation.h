@@ -5,7 +5,7 @@
 #ifndef UMKOIN_UTIL_OBFUSCATION_H
 #define UMKOIN_UTIL_OBFUSCATION_H
 
-#include <cstdint>
+#include <crypto/hex_base.h>
 #include <span.h>
 #include <tinyformat.h>
 #include <util/strencodings.h>
@@ -13,6 +13,7 @@
 #include <array>
 #include <bit>
 #include <climits>
+#include <cstdint>
 #include <ios>
 #include <memory>
 

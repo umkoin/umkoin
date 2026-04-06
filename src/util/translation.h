@@ -6,9 +6,9 @@
 #define UMKOIN_UTIL_TRANSLATION_H
 
 #include <tinyformat.h>
+#include <util/check.h>
 #include <util/string.h>
 
-#include <cassert>
 #include <functional>
 #include <string>
 

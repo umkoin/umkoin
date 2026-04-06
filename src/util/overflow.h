@@ -5,7 +5,8 @@
 #ifndef UMKOIN_UTIL_OVERFLOW_H
 #define UMKOIN_UTIL_OVERFLOW_H
 
-#include <cassert>
+#include <util/check.h>
+
 #include <climits>
 #include <concepts>
 #include <limits>

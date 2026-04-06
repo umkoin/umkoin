@@ -36,10 +36,10 @@ Documentation for C++ subprocessing library.
 #ifndef UMKOIN_UTIL_SUBPROCESS_H
 #define UMKOIN_UTIL_SUBPROCESS_H
 
+#include <util/check.h>
 #include <util/syserror.h>
 
 #include <algorithm>
-#include <cassert>
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
