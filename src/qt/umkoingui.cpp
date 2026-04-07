@@ -796,9 +796,7 @@ void UmkoinGUI::addWallet(WalletModel* walletModel)
     connect(wallet_view, &WalletView::encryptionStatusChanged, this, &UmkoinGUI::updateWalletStatus);
     connect(wallet_view, &WalletView::incomingTransaction, this, &UmkoinGUI::incomingTransaction);
     connect(this, &UmkoinGUI::setPrivacy, wallet_view, &WalletView::setPrivacy);
-    const bool privacy = isPrivacyModeActivated();
-    wallet_view->setPrivacy(privacy);
-    enableHistoryAction(privacy);
+    wallet_view->setPrivacy(isPrivacyModeActivated());
     const QString display_name = walletModel->getDisplayName();
     m_wallet_selector->addItem(display_name, QVariant::fromValue(walletModel));
 }
@@ -857,7 +855,7 @@ void UmkoinGUI::setWalletActionsEnabled(bool enabled)
     overviewAction->setEnabled(enabled);
     sendCoinsAction->setEnabled(enabled);
     receiveCoinsAction->setEnabled(enabled);
-    historyAction->setEnabled(enabled);
+    historyAction->setEnabled(enabled && !isPrivacyModeActivated());
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
     changePassphraseAction->setEnabled(enabled);
