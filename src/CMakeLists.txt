@@ -146,7 +146,6 @@ target_link_libraries(umkoin_common
     umkoin_util
     univalue
     secp256k1
-    Boost::headers
     $<TARGET_NAME_IF_EXISTS:USDT::headers>
     $<$<PLATFORM_ID:Windows>:ws2_32>
 )
@@ -169,7 +168,6 @@ if(ENABLE_WALLET)
       umkoin_wallet
       umkoin_common
       umkoin_util
-      Boost::headers
     )
     install_binary_component(umkoin-wallet HAS_MANPAGE)
   endif()

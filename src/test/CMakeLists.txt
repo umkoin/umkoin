@@ -25,6 +25,7 @@ add_executable(test_umkoin
   blockmanager_tests.cpp
   bloom_tests.cpp
   bswap_tests.cpp
+  umksignals_tests.cpp
   caches_tests.cpp
   chain_tests.cpp
   chainstate_write_tests.cpp

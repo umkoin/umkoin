@@ -4,33 +4,31 @@
 
 #include <node/interface_ui.h>
 
+#include <umksignals.h>
 #include <util/string.h>
 #include <util/translation.h>
-
-#include <boost/signals2/optional_last_value.hpp>
-#include <boost/signals2/signal.hpp>
 
 using util::MakeUnorderedList;
 
 CClientUIInterface uiInterface;
 
 struct UISignals {
-    boost::signals2::signal<CClientUIInterface::ThreadSafeMessageBoxSig, boost::signals2::optional_last_value<bool>> ThreadSafeMessageBox;
-    boost::signals2::signal<CClientUIInterface::ThreadSafeQuestionSig, boost::signals2::optional_last_value<bool>> ThreadSafeQuestion;
-    boost::signals2::signal<CClientUIInterface::InitMessageSig> InitMessage;
-    boost::signals2::signal<CClientUIInterface::InitWalletSig> InitWallet;
-    boost::signals2::signal<CClientUIInterface::NotifyNumConnectionsChangedSig> NotifyNumConnectionsChanged;
-    boost::signals2::signal<CClientUIInterface::NotifyNetworkActiveChangedSig> NotifyNetworkActiveChanged;
-    boost::signals2::signal<CClientUIInterface::NotifyAlertChangedSig> NotifyAlertChanged;
-    boost::signals2::signal<CClientUIInterface::ShowProgressSig> ShowProgress;
-    boost::signals2::signal<CClientUIInterface::NotifyBlockTipSig> NotifyBlockTip;
-    boost::signals2::signal<CClientUIInterface::NotifyHeaderTipSig> NotifyHeaderTip;
-    boost::signals2::signal<CClientUIInterface::BannedListChangedSig> BannedListChanged;
+    umksignals::signal<CClientUIInterface::ThreadSafeMessageBoxSig, umksignals::optional_last_value<bool>> ThreadSafeMessageBox;
+    umksignals::signal<CClientUIInterface::ThreadSafeQuestionSig, umksignals::optional_last_value<bool>> ThreadSafeQuestion;
+    umksignals::signal<CClientUIInterface::InitMessageSig> InitMessage;
+    umksignals::signal<CClientUIInterface::InitWalletSig> InitWallet;
+    umksignals::signal<CClientUIInterface::NotifyNumConnectionsChangedSig> NotifyNumConnectionsChanged;
+    umksignals::signal<CClientUIInterface::NotifyNetworkActiveChangedSig> NotifyNetworkActiveChanged;
+    umksignals::signal<CClientUIInterface::NotifyAlertChangedSig> NotifyAlertChanged;
+    umksignals::signal<CClientUIInterface::ShowProgressSig> ShowProgress;
+    umksignals::signal<CClientUIInterface::NotifyBlockTipSig> NotifyBlockTip;
+    umksignals::signal<CClientUIInterface::NotifyHeaderTipSig> NotifyHeaderTip;
+    umksignals::signal<CClientUIInterface::BannedListChangedSig> BannedListChanged;
 };
 static UISignals g_ui_signals;
 
 #define ADD_SIGNALS_IMPL_WRAPPER(signal_name)                                                                 \
-    boost::signals2::connection CClientUIInterface::signal_name##_connect(std::function<signal_name##Sig> fn) \
+    umksignals::connection CClientUIInterface::signal_name##_connect(std::function<signal_name##Sig> fn) \
     {                                                                                                         \
         return g_ui_signals.signal_name.connect(fn);                                                          \
     }

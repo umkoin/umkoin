@@ -5,19 +5,17 @@
 
 #include <noui.h>
 
+#include <umksignals.h>
 #include <logging.h>
 #include <node/interface_ui.h>
 #include <util/translation.h>
 
 #include <string>
 
-#include <boost/signals2/connection.hpp>
-#include <boost/signals2/signal.hpp>
-
 /** Store connections so we can disconnect them when suppressing output */
-boost::signals2::connection noui_ThreadSafeMessageBoxConn;
-boost::signals2::connection noui_ThreadSafeQuestionConn;
-boost::signals2::connection noui_InitMessageConn;
+umksignals::connection noui_ThreadSafeMessageBoxConn;
+umksignals::connection noui_ThreadSafeQuestionConn;
+umksignals::connection noui_InitMessageConn;
 
 bool noui_ThreadSafeMessageBox(const bilingual_str& message, unsigned int style)
 {
