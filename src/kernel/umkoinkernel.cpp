@@ -1423,6 +1423,16 @@ uint32_t umkk_block_header_get_nonce(const umkk_BlockHeader* header)
     return umkk_BlockHeader::get(header).nNonce;
 }
 
+int umkk_block_header_to_bytes(const umkk_BlockHeader* header, unsigned char output[80])
+{
+    try {
+        SpanWriter{std::as_writable_bytes(std::span{output, 80})} << umkk_BlockHeader::get(header);
+        return 0;
+    } catch (...) {
+        return -1;
+    }
+}
+
 void umkk_block_header_destroy(umkk_BlockHeader* header)
 {
     delete header;

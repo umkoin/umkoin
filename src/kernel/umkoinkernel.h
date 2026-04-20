@@ -1837,6 +1837,17 @@ UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_
     const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
+ * @brief Serializes the umkk_BlockHeader to bytes.
+ * This is consensus serialization that is also used for the P2P network.
+ *
+ * @param[in] header    Non-null.
+ * @param[out] output   The serialized block header (80 bytes).
+ * @return              0 on success.
+ */
+UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_to_bytes(
+    const umkk_BlockHeader* header, unsigned char output[80]) UMKOINKERNEL_ARG_NONNULL(1, 2);
+
+/**
  * Destroy the umkk_BlockHeader.
  */
 UMKOINKERNEL_API void umkk_block_header_destroy(umkk_BlockHeader* header);
