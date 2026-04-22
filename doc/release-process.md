@@ -25,6 +25,7 @@ Release Process
   - set `CLIENT_VERSION_MINOR` to `0`
   - set `CLIENT_VERSION_BUILD` to `0`
   - set `CLIENT_VERSION_IS_RELEASE` to `true`
+* Check with the security team whether there is any security advisory to pre-announce.
 
 #### Before branch-off
 
@@ -86,7 +87,7 @@ Release Process
 
 To tag the version (or release candidate) in git, use the `make-tag.py` script from [contrib/devtools](/contrib/devtools/make-tag.py). From the root of the repository run:
 
-    ./contrib/devtools/make-tag.py v(new version, e.g. 25.0)
+    ./contrib/devtools/make-tag.py v(new version, e.g. 30.0)
 
 This will perform a few last-minute consistency checks in the build system files, and if they pass, create a signed tag.
 
@@ -250,6 +251,10 @@ cat "$VERSION"/*/all.SHA256SUMS.asc > SHA256SUMS.asc
     2. The `SHA256SUMS` file
 
     3. The `SHA256SUMS.asc` combined signature file you just created.
+
+- After uploading release candidate binaries, notify the umkoin-core-dev mailing list and
+  umkoin-dev group that a release candidate is available for testing. Include a link to the release
+  notes draft.
 
 - The server will automatically create an OpenTimestamps file and torrent of the directory.
 
