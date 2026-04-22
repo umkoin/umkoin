@@ -1333,7 +1333,7 @@ UMKOINKERNEL_API umkk_BlockValidationState* UMKOINKERNEL_WARN_UNUSED_RESULT umkk
  * Destroy the umkk_BlockValidationState.
  */
 UMKOINKERNEL_API void umkk_block_validation_state_destroy(
-    umkk_BlockValidationState* block_validation_state) UMKOINKERNEL_ARG_NONNULL(1);
+    umkk_BlockValidationState* block_validation_state);
 
 ///@}
 
