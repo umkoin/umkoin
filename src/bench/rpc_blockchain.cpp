@@ -31,10 +31,7 @@ struct TestBlockAndIndex {
 
     TestBlockAndIndex()
     {
-        DataStream stream{benchmark::data::block47789};
-        std::byte a{0};
-        stream.write({&a, 1}); // Prevent compaction
-
+        SpanReader stream{benchmark::data::block47789};
         stream >> TX_WITH_WITNESS(block);
 
         blockHash = block.GetHash();
