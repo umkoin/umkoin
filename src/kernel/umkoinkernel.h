@@ -112,6 +112,12 @@ extern "C" {
  * object.
  *
  * Array lengths follow the pointer argument they describe.
+ *
+ * @section types Type conventions
+ *
+ * Fixed-width integer types (e.g. int32_t, uint32_t) are used for data values
+ * such as heights. Plain int and unsigned int are used for boolean-like values
+ * and flags.
  */
 
 /**
@@ -1423,7 +1429,7 @@ UMKOINKERNEL_API int32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_get_height(
  */
 UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_get_by_height(
     const umkk_Chain* chain,
-    int block_height) UMKOINKERNEL_ARG_NONNULL(1);
+    int32_t block_height) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
  * @brief Return true if the passed in chain contains the block tree entry.
