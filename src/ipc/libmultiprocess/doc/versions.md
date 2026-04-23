@@ -7,20 +7,9 @@ Library versions are tracked with simple
 Versioning policy is described in the [version.h](../include/mp/version.h)
 include.
 
-<<<<<<< HEAD
-## v11
-- Current unstable version.
-
-## [v10.0](https://github.com/bitcoin-core/libmultiprocess/commits/v10.0)
-- Increases spawn test timeout to avoid spurious failures.
-- Uses `throwRecoverableException` instead of raw `throw` to improve runtime error messages in macOS builds.
-- Used in Bitcoin Core master branch, pulled in by [#34977](https://github.com/bitcoin/bitcoin/pull/34977). Also pulled into Bitcoin Core 31.x stable branch by [#35028](https://github.com/bitcoin/bitcoin/pull/35028).
-
-=======
 ## v10
 - Current unstable version.
 
->>>>>>> defcff76429e734c726bdcb0fcf32c0fa296daf8
 ## [v9.0](https://github.com/bitcoin-core/libmultiprocess/commits/v9.0)
 - Fixes race conditions where worker thread could be used after destruction, where getParams() could be called after request cancel, and where m_on_cancel could be called after request finishes.
 - Adds `CustomHasField` hook to map Cap'n Proto null values to C++ null values.
@@ -59,7 +48,7 @@ include.
 - Used in Bitcoin Core 29 releases, pulled in by [#31945](https://github.com/bitcoin/bitcoin/pull/31945).
 
 ## [v5.0-pre1](https://github.com/bitcoin-core/libmultiprocess/commits/v5.0-pre1)
-- Adds many improvements to Bitcoin Core mining interface: splitting up type headers, fixing shutdown bugs, adding subtree build support.
+- Adds many improvements to Umkoin Core mining interface: splitting up type headers, fixing shutdown bugs, adding subtree build support.
 - Broke up `proxy-types.h` into `type-*.h` files requiring clients to explicitly
   include overloads needed for C++ ↔️ Cap'n Proto type conversions.
 - Now requires C++ 20 support.

@@ -24,11 +24,7 @@
 //! pointing at the prior merge commit. The /doc/versions.md file should also be
 //! updated, noting any significant or incompatible changes made since the
 //! previous version.
-<<<<<<< HEAD
-#define MP_MAJOR_VERSION 11
-=======
 #define MP_MAJOR_VERSION 10
->>>>>>> defcff76429e734c726bdcb0fcf32c0fa296daf8
 
 //! Minor version number. Should be incremented in stable branches after
 //! backporting changes. The /doc/versions.md file should also be updated to
