@@ -78,15 +78,15 @@ build_instrumented_libcxx() {
   rm -rf /tmp/llvm-project
 }
 
-configure_bitcoin_core() {
+configure_umkoin_core() {
   local cmake_arg
   local cmake_args=()
 
-  if [[ -n "${BITCOIN_CORE_CMAKE_ARGS:-}" ]]; then
+  if [[ -n "${UMKOIN_CORE_CMAKE_ARGS:-}" ]]; then
     while IFS= read -r cmake_arg; do
       [[ -n "${cmake_arg}" ]] || continue
       cmake_args+=("${cmake_arg}")
-    done <<< "${BITCOIN_CORE_CMAKE_ARGS}"
+    done <<< "${UMKOIN_CORE_CMAKE_ARGS}"
   fi
 
   cmake -S . -B build \
@@ -103,7 +103,7 @@ configure_bitcoin_core() {
     "${cmake_args[@]}"
 }
 
-build_bitcoin_core() {
+build_umkoin_core() {
   cmake --build build --parallel "${BUILD_PARALLEL}"
 }
 
@@ -134,7 +134,7 @@ run_ipc_unit_tests() {
   local runs="$1"
 
   for _ in $(seq 1 "${runs}"); do
-    build/bin/test_bitcoin --run_test=ipc_tests,miner_tests --catch_system_error=no --log_level=nothing --report_level=no
+    build/bin/test_umkoin --run_test=ipc_tests,miner_tests --catch_system_error=no --log_level=nothing --report_level=no
   done
 }
 

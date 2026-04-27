@@ -6,7 +6,7 @@
 # with the version from this PR, then building and running IPC-related
 # unit & functional tests.
 
-name: Bitcoin Core CI
+name: Umkoin Core CI
 
 on:
   push:
@@ -17,12 +17,12 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BITCOIN_REPO: bitcoin/bitcoin
+  UMKOIN_REPO: umkoin/umkoin
   LLVM_VERSION: 22
   LIBCXX_DIR: /tmp/libcxx-build/
 
 jobs:
-  bitcoin-core:
+  umkoin-core:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 120
@@ -75,10 +75,10 @@ jobs:
       CCACHE_DIR: ${{ github.workspace }}/.ccache
 
     steps:
-      - name: Checkout Bitcoin Core
+      - name: Checkout Umkoin Core
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.BITCOIN_REPO }}
+          repository: ${{ env.UMKOIN_REPO }}
           fetch-depth: 1
 
       - name: Checkout libmultiprocess
@@ -87,11 +87,11 @@ jobs:
           path: _libmultiprocess
 
       - name: Replace libmultiprocess subtree
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh replace_subtree
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh replace_subtree
 
       - name: Add LLVM apt repository
         if: matrix.apt-llvm
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh add_llvm_apt_repository
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh add_llvm_apt_repository
 
       - name: Install APT packages
         if: matrix.packages
@@ -99,7 +99,7 @@ jobs:
 
       - name: Configure LLVM alternatives
         if: matrix.packages
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh install_llvm_alternatives
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh install_llvm_alternatives
 
       - name: Install Homebrew packages
         if: matrix.brew-packages
@@ -128,11 +128,11 @@ jobs:
 
       - name: CMake configure
         env:
-          BITCOIN_CORE_CMAKE_ARGS: ${{ matrix.cmake-args }}
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh configure_bitcoin_core
+          UMKOIN_CORE_CMAKE_ARGS: ${{ matrix.cmake-args }}
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh configure_umkoin_core
 
       - name: Build
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh build_bitcoin_core
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh build_umkoin_core
 
       - name: Show ccache stats
         if: matrix.packages || matrix.brew-packages
@@ -143,7 +143,7 @@ jobs:
           ASAN_OPTIONS: detect_leaks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1
           LSAN_OPTIONS: suppressions=${{ github.workspace }}/test/sanitizer_suppressions/lsan
           UBSAN_OPTIONS: suppressions=${{ github.workspace }}/test/sanitizer_suppressions/ubsan:print_stacktrace=1:halt_on_error=1:report_error_type=1
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh run_ipc_unit_tests "${{ matrix.unit_test_runs }}"
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh run_ipc_unit_tests "${{ matrix.unit_test_runs }}"
 
       - name: Run IPC functional tests
         env:
@@ -151,7 +151,7 @@ jobs:
           LSAN_OPTIONS: suppressions=${{ github.workspace }}/test/sanitizer_suppressions/lsan
           UBSAN_OPTIONS: suppressions=${{ github.workspace }}/test/sanitizer_suppressions/ubsan:print_stacktrace=1:halt_on_error=1:report_error_type=1
           CI_FAILFAST_TEST_LEAVE_DANGLING: 1
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh run_ipc_functional_tests "${{ matrix.functional_test_runs }}" "${{ matrix.functional_timeout_factor }}"
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh run_ipc_functional_tests "${{ matrix.functional_test_runs }}" "${{ matrix.functional_timeout_factor }}"
 
       - name: Save ccache
         uses: actions/cache/save@v4
@@ -160,7 +160,7 @@ jobs:
           path: ${{ env.CCACHE_DIR }}
           key: ccache-${{ matrix.name }}-${{ github.ref }}-${{ github.sha }}
 
-  bitcoin-core-tsan:
+  umkoin-core-tsan:
     name: ${{ matrix.name }}
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -191,10 +191,10 @@ jobs:
       TSAN_OPTIONS: suppressions=${{ github.workspace }}/test/sanitizer_suppressions/tsan:halt_on_error=1:second_deadlock_stack=1
 
     steps:
-      - name: Checkout Bitcoin Core
+      - name: Checkout Umkoin Core
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.BITCOIN_REPO }}
+          repository: ${{ env.UMKOIN_REPO }}
           fetch-depth: 1
 
       - name: Checkout libmultiprocess
@@ -203,10 +203,10 @@ jobs:
           path: _libmultiprocess
 
       - name: Add LLVM apt repository
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh add_llvm_apt_repository
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh add_llvm_apt_repository
 
       - name: Install packages
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh install_tsan_packages
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh install_tsan_packages
 
       - name: Determine parallelism
         run: _libmultiprocess/ci/scripts/ci_helpers.sh determine_parallelism "${{ matrix.nproc_multiplier }}"
@@ -220,7 +220,7 @@ jobs:
 
       - name: Build instrumented libc++
         if: steps.libcxx-cache.outputs.cache-hit != 'true'
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh build_instrumented_libcxx
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh build_instrumented_libcxx
 
       - name: Determine host
         id: host
@@ -237,7 +237,7 @@ jobs:
 
       - name: Build depends (stage 1, without IPC)
         if: steps.depends-cache.outputs.cache-hit != 'true'
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh build_depends_without_ipc
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh build_depends_without_ipc
 
       - name: Save depends cache
         uses: actions/cache/save@v4
@@ -249,10 +249,10 @@ jobs:
           key: depends-tsan-${{ hashFiles('depends/packages/*.mk') }}-${{ env.LLVM_VERSION }}
 
       - name: Replace libmultiprocess subtree
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh replace_subtree
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh replace_subtree
 
       - name: Build depends (stage 2, IPC packages including libmultiprocess)
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh build_depends_with_ipc
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh build_depends_with_ipc
 
       - name: Restore ccache
         id: ccache-restore
@@ -269,14 +269,14 @@ jobs:
 
       - name: CMake configure
         env:
-          BITCOIN_CORE_CMAKE_ARGS: |-
+          UMKOIN_CORE_CMAKE_ARGS: |-
             -DSANITIZERS=thread
             -DAPPEND_CPPFLAGS=-DARENA_DEBUG -DDEBUG_LOCKCONTENTION -D_LIBCPP_REMOVE_TRANSITIVE_INCLUDES
             -DCMAKE_TOOLCHAIN_FILE=depends/${{ steps.host.outputs.host }}/toolchain.cmake
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh configure_bitcoin_core
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh configure_umkoin_core
 
       - name: Build
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh build_bitcoin_core
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh build_umkoin_core
 
       - name: Show ccache stats
         run: _libmultiprocess/ci/scripts/ci_helpers.sh show_ccache_stats
@@ -284,13 +284,13 @@ jobs:
       - name: Run IPC unit tests
         env:
           LD_LIBRARY_PATH: depends/${{ steps.host.outputs.host }}/lib
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh run_ipc_unit_tests "${{ matrix.unit_test_runs }}"
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh run_ipc_unit_tests "${{ matrix.unit_test_runs }}"
 
       - name: Run IPC functional tests
         env:
           LD_LIBRARY_PATH: depends/${{ steps.host.outputs.host }}/lib
           CI_FAILFAST_TEST_LEAVE_DANGLING: 1
-        run: _libmultiprocess/ci/scripts/bitcoin_core_ci.sh run_ipc_functional_tests "${{ matrix.functional_test_runs }}" "${{ matrix.functional_timeout_factor }}"
+        run: _libmultiprocess/ci/scripts/umkoin_core_ci.sh run_ipc_functional_tests "${{ matrix.functional_test_runs }}" "${{ matrix.functional_timeout_factor }}"
 
       - name: Save ccache
         uses: actions/cache/save@v4
