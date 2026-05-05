@@ -364,14 +364,12 @@ public:
         }
         return {};
     }
-    std::optional<PSBTError> fillPSBT(std::optional<int> sighash_type,
-        bool sign,
-        bool bip32derivs,
+    std::optional<PSBTError> fillPSBT(const common::PSBTFillOptions& options,
         size_t* n_signed,
         PartiallySignedTransaction& psbtx,
         bool& complete) override
     {
-        return m_wallet->FillPSBT(psbtx, complete, sighash_type, sign, bip32derivs, n_signed);
+        return m_wallet->FillPSBT(psbtx, options, complete, n_signed);
     }
     WalletBalances getBalances() override
     {
@@ -380,6 +378,8 @@ public:
         result.balance = bal.m_mine_trusted;
         result.unconfirmed_balance = bal.m_mine_untrusted_pending;
         result.immature_balance = bal.m_mine_immature;
+        result.used_balance = bal.m_mine_used;
+        result.nonmempool_balance = bal.m_mine_nonmempool;
         return result;
     }
     bool tryGetBalances(WalletBalances& balances, uint256& block_hash) override

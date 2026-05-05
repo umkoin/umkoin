@@ -6,8 +6,10 @@
 #include <umkoin-build-config.h> // IWYU pragma: keep
 
 #include <util/fs_helpers.h>
-
+#include <random.h>
 #include <sync.h>
+#include <tinyformat.h>
+#include <util/byte_units.h> // IWYU pragma: keep
 #include <util/fs.h>
 #include <util/log.h>
 #include <util/syserror.h>
@@ -17,6 +19,7 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <system_error>
 #include <utility>
@@ -87,7 +90,7 @@ void ReleaseDirectoryLocks()
 
 bool CheckDiskSpace(const fs::path& dir, uint64_t additional_bytes)
 {
-    constexpr uint64_t min_disk_space = 52428800; // 50 MiB
+    constexpr uint64_t min_disk_space{50_MiB};
 
     uint64_t free_bytes_available = fs::space(dir).available;
     return free_bytes_available >= min_disk_space + additional_bytes;
@@ -303,6 +306,29 @@ std::optional<fs::perms> InterpretPermString(const std::string& s)
     } else {
         return std::nullopt;
     }
+}
+
+bool IsDirWritable(const fs::path& dir_path)
+{
+    // Attempt to create a tmp file in the directory
+    if (!fs::is_directory(dir_path)) throw std::runtime_error(strprintf("Path %s is not a directory", fs::PathToString(dir_path)));
+    FastRandomContext rng;
+    const auto tmp = dir_path / fs::PathFromString(strprintf(".tmp_%d", rng.rand64()));
+
+    const char* mode;
+#ifdef __MINGW64__
+    mode = "w"; // Temporary workaround for https://github.com/bitcoin/bitcoin/issues/30210
+#else
+    mode = "wx";
+#endif
+
+    if (const auto created{fsbridge::fopen(tmp, mode)}) {
+        std::fclose(created);
+        std::error_code ec;
+        fs::remove(tmp, ec); // clean up, ignore errors
+        return true;
+    }
+    return false;
 }
 
 #ifdef __APPLE__

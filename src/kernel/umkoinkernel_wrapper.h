@@ -79,6 +79,22 @@ enum class BlockValidationResult : umkk_BlockValidationResult {
     HEADER_LOW_WORK = umkk_BlockValidationResult_HEADER_LOW_WORK
 };
 
+enum class TxValidationResult : umkk_TxValidationResult {
+    UNSET               = umkk_TxValidationResult_UNSET,
+    CONSENSUS           = umkk_TxValidationResult_CONSENSUS,
+    INPUTS_NOT_STANDARD = umkk_TxValidationResult_INPUTS_NOT_STANDARD,
+    NOT_STANDARD        = umkk_TxValidationResult_NOT_STANDARD,
+    MISSING_INPUTS      = umkk_TxValidationResult_MISSING_INPUTS,
+    PREMATURE_SPEND     = umkk_TxValidationResult_PREMATURE_SPEND,
+    WITNESS_MUTATED     = umkk_TxValidationResult_WITNESS_MUTATED,
+    WITNESS_STRIPPED    = umkk_TxValidationResult_WITNESS_STRIPPED,
+    CONFLICT            = umkk_TxValidationResult_CONFLICT,
+    MEMPOOL_POLICY      = umkk_TxValidationResult_MEMPOOL_POLICY,
+    NO_MEMPOOL          = umkk_TxValidationResult_NO_MEMPOOL,
+    RECONSIDERABLE      = umkk_TxValidationResult_RECONSIDERABLE,
+    UNKNOWN             = umkk_TxValidationResult_UNKNOWN
+};
+
 enum class ScriptVerifyStatus : umkk_ScriptVerifyStatus {
     OK = umkk_ScriptVerifyStatus_OK,
     ERROR_INVALID_FLAGS_COMBINATION = umkk_ScriptVerifyStatus_ERROR_INVALID_FLAGS_COMBINATION,
@@ -341,8 +357,10 @@ public:
     Handle(Handle&& other) noexcept : m_ptr(other.m_ptr) { other.m_ptr = nullptr; }
     Handle& operator=(Handle&& other) noexcept
     {
-        DestroyFunc(m_ptr);
-        m_ptr = std::exchange(other.m_ptr, nullptr);
+        if (this != &other) {
+            DestroyFunc(m_ptr);
+            m_ptr = std::exchange(other.m_ptr, nullptr);
+        }
         return *this;
     }
 
@@ -924,6 +942,12 @@ public:
     {
         return BlockHeader{umkk_block_tree_entry_get_block_header(get())};
     }
+
+    BlockTreeEntry GetAncestor(int32_t height) const
+    {
+        return BlockTreeEntry{umkk_block_tree_entry_get_ancestor(get(), height)};
+    }
+
 };
 
 class KernelNotifications
@@ -989,6 +1013,28 @@ inline bool Block::Check(const ConsensusParamsView& consensus_params,
     BlockValidationState& state) const
 {
     return umkk_block_check(get(), consensus_params.get(), static_cast<umkk_BlockCheckFlags>(flags), state.get()) == 1;
+}
+
+class TxValidationState : public UniqueHandle<umkk_TxValidationState, umkk_tx_validation_state_destroy>
+{
+public:
+    using UniqueHandle::UniqueHandle; // inherit ctor
+    explicit TxValidationState() : UniqueHandle{umkk_tx_validation_state_create()} {}
+
+    ValidationMode GetValidationMode() const
+    {
+        return static_cast<ValidationMode>(umkk_tx_validation_state_get_validation_mode(get()));
+    }
+
+    TxValidationResult GetTxValidationResult() const
+    {
+        return static_cast<TxValidationResult>(umkk_tx_validation_state_get_tx_validation_result(get()));
+    }
+};
+
+inline bool CheckTransaction(const Transaction& tx, TxValidationState& state)
+{
+    return umkk_transaction_check(tx.get(), state.get()) == 1;
 }
 
 class ValidationInterface

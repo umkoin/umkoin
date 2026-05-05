@@ -8,6 +8,7 @@
 
 #include <chain.h>
 #include <coins.h>
+#include <consensus/tx_check.h>
 #include <consensus/validation.h>
 #include <dbwrapper.h>
 #include <kernel/caches.h>
@@ -146,6 +147,7 @@ struct Handle {
 struct umkk_BlockTreeEntry: Handle<umkk_BlockTreeEntry, CBlockIndex> {};
 struct umkk_Block : Handle<umkk_Block, std::shared_ptr<const CBlock>> {};
 struct umkk_BlockValidationState : Handle<umkk_BlockValidationState, BlockValidationState> {};
+struct umkk_TxValidationState : Handle<umkk_TxValidationState, TxValidationState> {};
 
 namespace {
 
@@ -905,6 +907,13 @@ const umkk_BlockTreeEntry* umkk_block_tree_entry_get_previous(const umkk_BlockTr
     return umkk_BlockTreeEntry::ref(umkk_BlockTreeEntry::get(entry).pprev);
 }
 
+const umkk_BlockTreeEntry* umkk_block_tree_entry_get_ancestor(const umkk_BlockTreeEntry* block_tree_entry, int32_t height)
+{
+    const auto* ancestor{umkk_BlockTreeEntry::get(block_tree_entry).GetAncestor(height)};
+    assert(ancestor);
+    return umkk_BlockTreeEntry::ref(ancestor);
+}
+
 umkk_BlockValidationState* umkk_block_validation_state_create()
 {
     return umkk_BlockValidationState::create();
@@ -1367,7 +1376,7 @@ const umkk_BlockTreeEntry* umkk_chain_get_by_height(const umkk_Chain* chain, int
 int umkk_chain_contains(const umkk_Chain* chain, const umkk_BlockTreeEntry* entry)
 {
     LOCK(::cs_main);
-    return umkk_Chain::get(chain).Contains(&umkk_BlockTreeEntry::get(entry)) ? 1 : 0;
+    return umkk_Chain::get(chain).Contains(umkk_BlockTreeEntry::get(entry)) ? 1 : 0;
 }
 
 umkk_BlockHeader* umkk_block_header_create(const void* raw_block_header, size_t raw_block_header_len)
@@ -1436,4 +1445,50 @@ int umkk_block_header_to_bytes(const umkk_BlockHeader* header, unsigned char out
 void umkk_block_header_destroy(umkk_BlockHeader* header)
 {
     delete header;
+}
+
+umkk_ValidationMode umkk_tx_validation_state_get_validation_mode(const umkk_TxValidationState* state_)
+{
+    const auto& state = umkk_TxValidationState::get(state_);
+    if (state.IsValid()) return umkk_ValidationMode_VALID;
+    if (state.IsInvalid()) return umkk_ValidationMode_INVALID;
+    return umkk_ValidationMode_INTERNAL_ERROR;
+}
+
+umkk_TxValidationState* umkk_tx_validation_state_create()
+{
+    return umkk_TxValidationState::create();
+}
+
+umkk_TxValidationResult umkk_tx_validation_state_get_tx_validation_result(const umkk_TxValidationState* state_)
+{
+    switch (umkk_TxValidationState::get(state_).GetResult()) {
+    case TxValidationResult::TX_RESULT_UNSET:        return umkk_TxValidationResult_UNSET;
+    case TxValidationResult::TX_CONSENSUS:           return umkk_TxValidationResult_CONSENSUS;
+    case TxValidationResult::TX_INPUTS_NOT_STANDARD: return umkk_TxValidationResult_INPUTS_NOT_STANDARD;
+    case TxValidationResult::TX_NOT_STANDARD:        return umkk_TxValidationResult_NOT_STANDARD;
+    case TxValidationResult::TX_MISSING_INPUTS:      return umkk_TxValidationResult_MISSING_INPUTS;
+    case TxValidationResult::TX_PREMATURE_SPEND:     return umkk_TxValidationResult_PREMATURE_SPEND;
+    case TxValidationResult::TX_WITNESS_MUTATED:     return umkk_TxValidationResult_WITNESS_MUTATED;
+    case TxValidationResult::TX_WITNESS_STRIPPED:    return umkk_TxValidationResult_WITNESS_STRIPPED;
+    case TxValidationResult::TX_CONFLICT:            return umkk_TxValidationResult_CONFLICT;
+    case TxValidationResult::TX_MEMPOOL_POLICY:      return umkk_TxValidationResult_MEMPOOL_POLICY;
+    case TxValidationResult::TX_NO_MEMPOOL:          return umkk_TxValidationResult_NO_MEMPOOL;
+    case TxValidationResult::TX_RECONSIDERABLE:      return umkk_TxValidationResult_RECONSIDERABLE;
+    case TxValidationResult::TX_UNKNOWN:             return umkk_TxValidationResult_UNKNOWN;
+    } // no default case, so the compiler can warn about missing cases
+    assert(false);
+}
+
+void umkk_tx_validation_state_destroy(umkk_TxValidationState* state)
+{
+    delete state;
+}
+
+int umkk_transaction_check(const umkk_Transaction* tx, umkk_TxValidationState* validation_state)
+{
+    auto& state = umkk_TxValidationState::get(validation_state);
+    state = TxValidationState{};
+    const bool ok = CheckTransaction(*umkk_Transaction::get(tx), state);
+    return ok ? 1 : 0;
 }

@@ -243,6 +243,14 @@ typedef struct umkk_ConsensusParams umkk_ConsensusParams;
 typedef struct umkk_Chain umkk_Chain;
 
 /**
+ * Opaque data structure for holding the state of a transaction during validation.
+ *
+ * Contains information indicating whether validation was successful, and if not
+ * which step during transaction validation failed.
+ */
+typedef struct umkk_TxValidationState umkk_TxValidationState;
+
+/**
  * Opaque data structure for holding a block's spent outputs.
  *
  * Contains all the previous outputs consumed by all transactions in a specific
@@ -389,6 +397,25 @@ typedef uint32_t umkk_BlockValidationResult;
 #define umkk_BlockValidationResult_HEADER_LOW_WORK ((umkk_BlockValidationResult)(8)) //!< the block header may be on a too-little-work chain
 
 /**
+ * Indicates the reason why a transaction failed validation. The subset of
+ * values reachable depends on which validation function was used.
+ */
+typedef uint32_t umkk_TxValidationResult;
+#define umkk_TxValidationResult_UNSET               ((umkk_TxValidationResult)(0))  //!< initial value. Tx has not yet been rejected
+#define umkk_TxValidationResult_CONSENSUS           ((umkk_TxValidationResult)(1))  //!< invalid by consensus rules
+#define umkk_TxValidationResult_INPUTS_NOT_STANDARD ((umkk_TxValidationResult)(2))  //!< inputs (covered by txid) failed policy rules
+#define umkk_TxValidationResult_NOT_STANDARD        ((umkk_TxValidationResult)(3))  //!< otherwise didn't meet local policy rules
+#define umkk_TxValidationResult_MISSING_INPUTS      ((umkk_TxValidationResult)(4))  //!< transaction was missing some of its inputs
+#define umkk_TxValidationResult_PREMATURE_SPEND     ((umkk_TxValidationResult)(5))  //!< transaction spends a coinbase too early, or violates locktime/sequence locks
+#define umkk_TxValidationResult_WITNESS_MUTATED     ((umkk_TxValidationResult)(6))  //!< witness may have been malleated or is prior to SegWit activation
+#define umkk_TxValidationResult_WITNESS_STRIPPED    ((umkk_TxValidationResult)(7))  //!< transaction is missing a witness
+#define umkk_TxValidationResult_CONFLICT            ((umkk_TxValidationResult)(8))  //!< tx already in mempool or conflicts with a tx in the chain
+#define umkk_TxValidationResult_MEMPOOL_POLICY      ((umkk_TxValidationResult)(9))  //!< violated mempool's fee/size/descendant/RBF/etc limits
+#define umkk_TxValidationResult_NO_MEMPOOL          ((umkk_TxValidationResult)(10)) //!< this node does not have a mempool so can't validate the transaction
+#define umkk_TxValidationResult_RECONSIDERABLE      ((umkk_TxValidationResult)(11)) //!< fails some policy, but might be acceptable if submitted in a (different) package
+#define umkk_TxValidationResult_UNKNOWN             ((umkk_TxValidationResult)(12)) //!< transaction was not validated because package failed
+
+/**
  * Holds the validation interface callbacks. The user data pointer may be used
  * to point to user-defined structures to make processing the validation
  * callbacks easier. Note that these callbacks block any further validation
@@ -505,6 +532,40 @@ typedef uint8_t umkk_ChainType;
 #define umkk_ChainType_SIGNET ((umkk_ChainType)(3))
 #define umkk_ChainType_REGTEST ((umkk_ChainType)(4))
 
+/** @name TxValidationState
+ *  Introspection for transaction validation state.
+ */
+///@{
+
+/**
+ * Create a new umkk_TxValidationState.
+ */
+UMKOINKERNEL_API umkk_TxValidationState* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_tx_validation_state_create();
+
+/**
+ * Returns the validation mode from an opaque umkk_TxValidationState pointer.
+ */
+UMKOINKERNEL_API umkk_ValidationMode umkk_tx_validation_state_get_validation_mode(
+    const umkk_TxValidationState* state) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * Returns the validation result from an opaque umkk_TxValidationState pointer.
+ *
+ * umkk_transaction_check currently produces only umkk_TxValidationResult_UNSET
+ * for valid transactions and umkk_TxValidationResult_CONSENSUS for invalid
+ * ones. Other values remain exposed for forward compatibility with higher-level
+ * validation entry points.
+ */
+UMKOINKERNEL_API umkk_TxValidationResult umkk_tx_validation_state_get_tx_validation_result(
+    const umkk_TxValidationState* state) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * Destroy the umkk_TxValidationState.
+ */
+UMKOINKERNEL_API void umkk_tx_validation_state_destroy(umkk_TxValidationState* state);
+
+///@}
+
 /** @name Transaction
  * Functions for working with transactions.
  */
@@ -605,6 +666,27 @@ UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_get_l
  */
 UMKOINKERNEL_API const umkk_Txid* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_get_txid(
     const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Run context-free consensus validation on a umkk_Transaction.
+ *
+ * Performs basic structural consensus checks (consensus/tx_check::CheckTransaction)
+ * without requiring blockchain state.
+ *
+ * @param[in]  tx               Non-null, the transaction to validate.
+ * @param[out] validation_state Non-null, previously created with
+ *                              umkk_tx_validation_state_create. Reset on
+ *                              entry (any prior contents are overwritten)
+ *                              and updated in-place with the validation
+ *                              result before this function returns.
+ * @return                      1 if valid, 0 if invalid.
+ * @note                        Only umkk_TxValidationResult_UNSET and
+ *                              umkk_TxValidationResult_CONSENSUS are
+ *                              reachable via this function.
+ */
+UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_check(
+    const umkk_Transaction* tx,
+    umkk_TxValidationState* validation_state) UMKOINKERNEL_ARG_NONNULL(1, 2);
 
 /**
  * Destroy the transaction.
@@ -1038,6 +1120,17 @@ UMKOINKERNEL_API const umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_bloc
  */
 UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_equals(
     const umkk_BlockTreeEntry* entry1, const umkk_BlockTreeEntry* entry2) UMKOINKERNEL_ARG_NONNULL(1, 2);
+
+/**
+ * @brief Return the ancestor of a umkk_BlockTreeEntry at the given height.
+ *
+ * @param[in] block_tree_entry Non-null.
+ * @param[in] height           The height of the requested ancestor.
+ * @return                     The ancestor at the given height.
+ */
+UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_get_ancestor(
+    const umkk_BlockTreeEntry* block_tree_entry,
+    int32_t height) UMKOINKERNEL_ARG_NONNULL(1);
 
 ///@}
 
