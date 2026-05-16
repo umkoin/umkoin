@@ -70,6 +70,10 @@ target_link_libraries(bench_umkoin
   Boost::headers
 )
 
+if(WITH_EMBEDDED_ASMAP)
+  target_sources(bench_umkoin PRIVATE asmap.cpp)
+endif()
+
 if(ENABLE_WALLET)
   target_sources(bench_umkoin
     PRIVATE
