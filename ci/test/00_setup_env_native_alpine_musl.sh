@@ -17,4 +17,5 @@ export UMKOIN_CONFIG="\
  -DREDUCE_EXPORTS=ON \
  -DCMAKE_BUILD_TYPE=Debug \
 "
+export TEST_RUNNER_EXTRA="--v2transport --usecli --extended"
 export UMKOIN_CMD="umkoin -m" # Used in functional tests
