@@ -106,14 +106,6 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].threshold = 130; // 90%
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].period = 144;
 
-        // Deployment of Taproot (BIPs 340-342)
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 2;
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = 1619222400; // April 24th, 2021
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1628640000; // August 11th, 2021
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 155843; // Appr. Nov 12th, 2022
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].threshold = 130; // 90%
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].period = 144;
-
         consensus.nMinimumChainWork = uint256{"000000000000000000000000000000000000000000000000fa4291d4fe51e2d1"};  // 153500
         consensus.defaultAssumeValid = uint256{"00000000000009a4af92d8d5ba9bf9fb902e66c97a4af4972ab6228e61959627"}; // 153500
 
@@ -526,14 +518,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].min_activation_height = 0; // No activation delay
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].threshold = 54; // 75%
-        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].period = 72;
-
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 2;
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].threshold = 54; // 75%
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].period = 72;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].period = 72; // Faster than normal for regtest (72 instead of 2016)
 
         consensus.nMinimumChainWork = uint256{};
         consensus.defaultAssumeValid = uint256{};
