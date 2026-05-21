@@ -675,10 +675,9 @@ UMKOINKERNEL_API const umkk_Txid* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transacti
  *
  * @param[in]  tx               Non-null, the transaction to validate.
  * @param[out] validation_state Non-null, previously created with
- *                              umkk_tx_validation_state_create. Reset on
- *                              entry (any prior contents are overwritten)
- *                              and updated in-place with the validation
- *                              result before this function returns.
+ *                              umkk_tx_validation_state_create.
+ *                              Overwritten in-place with the validation
+ *                              result.
  * @return                      1 if valid, 0 if invalid.
  * @note                        Only umkk_TxValidationResult_UNSET and
  *                              umkk_TxValidationResult_CONSENSUS are
@@ -1383,9 +1382,10 @@ typedef uint32_t umkk_BlockCheckFlags;
  *                                  optional POW and merkle-root checks. Use
  *                                  umkk_BlockCheckFlags_BASE to run only the base
  *                                  checks.
- * @param[in,out] validation_state  Non-null, previously created with
- *                                  umkk_block_validation_state_create and updated
- *                                  in-place with the validation result.
+ * @param[out]    validation_state  Non-null, previously created with
+ *                                  umkk_block_validation_state_create.
+ *                                  Overwritten in-place with the validation
+ *                                  result.
  * @return                          1 if the umkk_Block passed the checks, 0 otherwise.
  */
 UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_check(
