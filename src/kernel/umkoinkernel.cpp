@@ -1340,19 +1340,20 @@ int umkk_chainstate_manager_process_block(
     return result ? 0 : -1;
 }
 
-int umkk_chainstate_manager_process_block_header(
+umkk_BlockValidationState* umkk_chainstate_manager_process_block_header(
     umkk_ChainstateManager* chainstate_manager,
-    const umkk_BlockHeader* header,
-    umkk_BlockValidationState* state)
+    const umkk_BlockHeader* header)
 {
     try {
         auto& chainman = umkk_ChainstateManager::get(chainstate_manager).m_chainman;
-        auto result = chainman->ProcessNewBlockHeaders({&umkk_BlockHeader::get(header), 1}, /*min_pow_checked=*/true, umkk_BlockValidationState::get(state), /*ppindex=*/nullptr);
 
-        return result ? 0 : -1;
+        auto state = umkk_BlockValidationState::create();
+        bool result{chainman->ProcessNewBlockHeaders({&umkk_BlockHeader::get(header), 1}, /*min_pow_checked=*/true, umkk_BlockValidationState::get(state))};
+        assert(result == umkk_BlockValidationState::get(state).IsValid());
+        return state;
     } catch (const std::exception& e) {
         LogError("Failed to process block header: %s", e.what());
-        return -1;
+        return nullptr;
     }
 }
 

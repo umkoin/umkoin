@@ -1243,13 +1243,11 @@ UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk
  *
  * @param[in] chainstate_manager        Non-null.
  * @param[in] header                    Non-null umkk_BlockHeader to be validated.
- * @param[out] block_validation_state   The result of the umkk_BlockHeader validation.
- * @return                              0 if umkk_BlockHeader processing completed successfully, non-zero on error.
+ * @return                              The umkk_BlockValidationState containing validation result, or null on error.
  */
-UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_process_block_header(
+UMKOINKERNEL_API umkk_BlockValidationState* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_process_block_header(
     umkk_ChainstateManager* chainstate_manager,
-    const umkk_BlockHeader* header,
-    umkk_BlockValidationState* block_validation_state) UMKOINKERNEL_ARG_NONNULL(1, 2, 3);
+    const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1, 2);
 
 /**
  * @brief Triggers the start of a reindex if the wipe options were previously
