@@ -1178,6 +1178,8 @@ UMKOINKERNEL_API void umkk_chainstate_manager_options_set_worker_threads_num(
  * @param[in] wipe_block_tree_db         Set wipe block tree db. Should only be 1 if wipe_chainstate_db is 1 too.
  * @param[in] wipe_chainstate_db         Set wipe chainstate db.
  * @return                               0 if the set was successful, non-zero if the set failed.
+ * @note                                 When a wipe is set, the caller must invoke @ref umkk_chainstate_manager_import_blocks
+ *                                       on the resulting chainstate manager before using it for anything else.
  */
 UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_options_set_wipe_dbs(
     umkk_ChainstateManagerOptions* chainstate_manager_options,
@@ -1232,7 +1234,7 @@ UMKOINKERNEL_API umkk_ChainstateManager* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_ch
  * known cumulative proof of work.
  *
  * @param[in] chainstate_manager Non-null.
- * @return                       The umkk_BlockTreeEntry.
+ * @return                       The umkk_BlockTreeEntry, or null if no block headers have been loaded.
  */
 UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_get_best_entry(
     const umkk_ChainstateManager* chainstate_manager) UMKOINKERNEL_ARG_NONNULL(1);
