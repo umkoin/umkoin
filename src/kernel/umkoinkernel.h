@@ -29,7 +29,15 @@
     #endif
 #endif
 
-/* Warning attributes */
+/**
+ * UMKOINKERNEL_WARN_UNUSED_RESULT is a compiler attribute used to indicate
+ * that ignoring a function's return value is almost certainly a bug.
+ *
+ * It is used in cases such as a resource leak (e.g. an owning handle returned
+ * by a *_create or *_copy function), or when the returned value is itself an
+ * error/status code. It is not used merely because discarding the result is
+ * wasteful, e.g. on getters or predicates.
+ */
 #if defined(__GNUC__)
     #define UMKOINKERNEL_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
 #else
@@ -601,7 +609,7 @@ UMKOINKERNEL_API umkk_Transaction* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transact
  *                        passed back through the writer callback.
  * @return                0 on success.
  */
-UMKOINKERNEL_API int umkk_transaction_to_bytes(
+UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_to_bytes(
     const umkk_Transaction* transaction,
     umkk_WriteBytes writer,
     void* user_data) UMKOINKERNEL_ARG_NONNULL(1, 2);
@@ -612,7 +620,7 @@ UMKOINKERNEL_API int umkk_transaction_to_bytes(
  * @param[in] transaction Non-null.
  * @return                The number of outputs.
  */
-UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_count_outputs(
+UMKOINKERNEL_API size_t umkk_transaction_count_outputs(
     const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -624,7 +632,7 @@ UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_count_o
  * @param[in] output_index The index of the transaction output to be retrieved.
  * @return                 The transaction output
  */
-UMKOINKERNEL_API const umkk_TransactionOutput* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_get_output_at(
+UMKOINKERNEL_API const umkk_TransactionOutput* umkk_transaction_get_output_at(
     const umkk_Transaction* transaction, size_t output_index) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -636,7 +644,7 @@ UMKOINKERNEL_API const umkk_TransactionOutput* UMKOINKERNEL_WARN_UNUSED_RESULT u
  * @param[in] input_index The index of the transaction input to be retrieved.
  * @return                 The transaction input
  */
-UMKOINKERNEL_API const umkk_TransactionInput* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_get_input_at(
+UMKOINKERNEL_API const umkk_TransactionInput* umkk_transaction_get_input_at(
     const umkk_Transaction* transaction, size_t input_index) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -645,7 +653,7 @@ UMKOINKERNEL_API const umkk_TransactionInput* UMKOINKERNEL_WARN_UNUSED_RESULT um
  * @param[in] transaction Non-null.
  * @return                The number of inputs.
  */
-UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_count_inputs(
+UMKOINKERNEL_API size_t umkk_transaction_count_inputs(
     const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -654,7 +662,7 @@ UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_count_i
  * @param[in] transaction Non-null.
  * @return                The nLockTime value.
  */
-UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_get_locktime(
+UMKOINKERNEL_API uint32_t umkk_transaction_get_locktime(
     const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -664,7 +672,7 @@ UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_get_l
  * @param[in] transaction Non-null.
  * @return                The txid.
  */
-UMKOINKERNEL_API const umkk_Txid* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_get_txid(
+UMKOINKERNEL_API const umkk_Txid* umkk_transaction_get_txid(
     const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -683,7 +691,7 @@ UMKOINKERNEL_API const umkk_Txid* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transacti
  *                              umkk_TxValidationResult_CONSENSUS are
  *                              reachable via this function.
  */
-UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_check(
+UMKOINKERNEL_API int umkk_transaction_check(
     const umkk_Transaction* tx,
     umkk_TxValidationState* validation_state) UMKOINKERNEL_ARG_NONNULL(1, 2);
 
@@ -787,7 +795,7 @@ UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_script_pubkey_verify(
  *                          passed back through the writer callback.
  * @return                  0 on success.
  */
-UMKOINKERNEL_API int umkk_script_pubkey_to_bytes(
+UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_script_pubkey_to_bytes(
     const umkk_ScriptPubkey* script_pubkey,
     umkk_WriteBytes writer,
     void* user_data) UMKOINKERNEL_ARG_NONNULL(1, 2);
@@ -823,7 +831,7 @@ UMKOINKERNEL_API umkk_TransactionOutput* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_tr
  * @param[in] transaction_output Non-null.
  * @return                       The script pubkey.
  */
-UMKOINKERNEL_API const umkk_ScriptPubkey* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_output_get_script_pubkey(
+UMKOINKERNEL_API const umkk_ScriptPubkey* umkk_transaction_output_get_script_pubkey(
     const umkk_TransactionOutput* transaction_output) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -832,7 +840,7 @@ UMKOINKERNEL_API const umkk_ScriptPubkey* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_t
  * @param[in] transaction_output Non-null.
  * @return                       The amount.
  */
-UMKOINKERNEL_API int64_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_output_get_amount(
+UMKOINKERNEL_API int64_t umkk_transaction_output_get_amount(
     const umkk_TransactionOutput* transaction_output) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -964,7 +972,7 @@ UMKOINKERNEL_API umkk_ChainParameters* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chai
  * @param[in] chain_parameters  Non-null.
  * @return                      The umkk_ConsensusParams.
  */
-UMKOINKERNEL_API const umkk_ConsensusParams* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_parameters_get_consensus_params(
+UMKOINKERNEL_API const umkk_ConsensusParams* umkk_chain_parameters_get_consensus_params(
     const umkk_ChainParameters* chain_parameters) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1079,7 +1087,7 @@ UMKOINKERNEL_API void umkk_context_destroy(umkk_Context* context);
  * @param[in] block_tree_entry Non-null.
  * @return                     The previous block tree entry, or null on error or if the current block tree entry is the genesis block.
  */
-UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_get_previous(
+UMKOINKERNEL_API const umkk_BlockTreeEntry* umkk_block_tree_entry_get_previous(
     const umkk_BlockTreeEntry* block_tree_entry) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1097,7 +1105,7 @@ UMKOINKERNEL_API umkk_BlockHeader* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tr
  * @param[in] block_tree_entry Non-null.
  * @return                     The block height.
  */
-UMKOINKERNEL_API int32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_get_height(
+UMKOINKERNEL_API int32_t umkk_block_tree_entry_get_height(
     const umkk_BlockTreeEntry* block_tree_entry) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1106,7 +1114,7 @@ UMKOINKERNEL_API int32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_g
  * @param[in] block_tree_entry Non-null.
  * @return                     The block hash.
  */
-UMKOINKERNEL_API const umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_get_block_hash(
+UMKOINKERNEL_API const umkk_BlockHash* umkk_block_tree_entry_get_block_hash(
     const umkk_BlockTreeEntry* block_tree_entry) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1117,7 +1125,7 @@ UMKOINKERNEL_API const umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_bloc
  * @param[in] entry2 Non-null.
  * @return           1 if the block tree entries are equal, 0 otherwise.
  */
-UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_equals(
+UMKOINKERNEL_API int umkk_block_tree_entry_equals(
     const umkk_BlockTreeEntry* entry1, const umkk_BlockTreeEntry* entry2) UMKOINKERNEL_ARG_NONNULL(1, 2);
 
 /**
@@ -1127,7 +1135,7 @@ UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_equal
  * @param[in] height           The height of the requested ancestor.
  * @return                     The ancestor at the given height.
  */
-UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_tree_entry_get_ancestor(
+UMKOINKERNEL_API const umkk_BlockTreeEntry* umkk_block_tree_entry_get_ancestor(
     const umkk_BlockTreeEntry* block_tree_entry,
     int32_t height) UMKOINKERNEL_ARG_NONNULL(1);
 
@@ -1236,7 +1244,7 @@ UMKOINKERNEL_API umkk_ChainstateManager* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_ch
  * @param[in] chainstate_manager Non-null.
  * @return                       The umkk_BlockTreeEntry, or null if no block headers have been loaded.
  */
-UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_get_best_entry(
+UMKOINKERNEL_API const umkk_BlockTreeEntry* umkk_chainstate_manager_get_best_entry(
     const umkk_ChainstateManager* chainstate_manager) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1302,7 +1310,7 @@ UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_pro
  * @param[in] chainstate_manager Non-null.
  * @return                       The chain.
  */
-UMKOINKERNEL_API const umkk_Chain* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_get_active_chain(
+UMKOINKERNEL_API const umkk_Chain* umkk_chainstate_manager_get_active_chain(
     const umkk_ChainstateManager* chainstate_manager) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1313,7 +1321,7 @@ UMKOINKERNEL_API const umkk_Chain* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainsta
  * @return                       The block tree entry of the block with the passed in hash, or null if
  *                               the block hash is not found.
  */
-UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_get_block_tree_entry_by_hash(
+UMKOINKERNEL_API const umkk_BlockTreeEntry* umkk_chainstate_manager_get_block_tree_entry_by_hash(
     const umkk_ChainstateManager* chainstate_manager,
     const umkk_BlockHash* block_hash) UMKOINKERNEL_ARG_NONNULL(1, 2);
 
@@ -1390,7 +1398,7 @@ typedef uint32_t umkk_BlockCheckFlags;
  *                                  result.
  * @return                          1 if the umkk_Block passed the checks, 0 otherwise.
  */
-UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_check(
+UMKOINKERNEL_API int umkk_block_check(
     const umkk_Block* block,
     const umkk_ConsensusParams* consensus_params,
     umkk_BlockCheckFlags flags,
@@ -1402,7 +1410,7 @@ UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_check(
  * @param[in] block Non-null.
  * @return          The number of transactions in the block.
  */
-UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_count_transactions(
+UMKOINKERNEL_API size_t umkk_block_count_transactions(
     const umkk_Block* block) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1413,7 +1421,7 @@ UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_count_transac
  * @param[in] transaction_index The index of the transaction to be retrieved.
  * @return                      The transaction.
  */
-UMKOINKERNEL_API const umkk_Transaction* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_get_transaction_at(
+UMKOINKERNEL_API const umkk_Transaction* umkk_block_get_transaction_at(
     const umkk_Block* block, size_t transaction_index) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1446,7 +1454,7 @@ UMKOINKERNEL_API umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_get_
  *                      passed back through the writer callback.
  * @return              0 on success.
  */
-UMKOINKERNEL_API int umkk_block_to_bytes(
+UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_to_bytes(
     const umkk_Block* block,
     umkk_WriteBytes writer,
     void* user_data) UMKOINKERNEL_ARG_NONNULL(1, 2);
@@ -1508,7 +1516,7 @@ UMKOINKERNEL_API void umkk_block_validation_state_destroy(
  * @param[in] chain Non-null.
  * @return          The current height.
  */
-UMKOINKERNEL_API int32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_get_height(
+UMKOINKERNEL_API int32_t umkk_chain_get_height(
     const umkk_Chain* chain) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1520,7 +1528,7 @@ UMKOINKERNEL_API int32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_get_height(
  * @return                 The block tree entry at a certain height in the currently active chain, or null
  *                         if the height is out of bounds.
  */
-UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_get_by_height(
+UMKOINKERNEL_API const umkk_BlockTreeEntry* umkk_chain_get_by_height(
     const umkk_Chain* chain,
     int32_t block_height) UMKOINKERNEL_ARG_NONNULL(1);
 
@@ -1532,7 +1540,7 @@ UMKOINKERNEL_API const umkk_BlockTreeEntry* UMKOINKERNEL_WARN_UNUSED_RESULT umkk
  * @return                     1 if the block_tree_entry is in the chain, 0 otherwise.
  *
  */
-UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_contains(
+UMKOINKERNEL_API int umkk_chain_contains(
     const umkk_Chain* chain,
     const umkk_BlockTreeEntry* block_tree_entry) UMKOINKERNEL_ARG_NONNULL(1, 2);
 
@@ -1571,7 +1579,7 @@ UMKOINKERNEL_API umkk_BlockSpentOutputs* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_bl
  * @param[in] block_spent_outputs Non-null.
  * @return                        The number of transaction spent outputs data in the block spent outputs.
  */
-UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_spent_outputs_count(
+UMKOINKERNEL_API size_t umkk_block_spent_outputs_count(
     const umkk_BlockSpentOutputs* block_spent_outputs) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1583,7 +1591,7 @@ UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_spent_outputs
  * @param[in] transaction_spent_outputs_index The index of the transaction spent outputs within the block spent outputs.
  * @return                                    A transaction spent outputs pointer.
  */
-UMKOINKERNEL_API const umkk_TransactionSpentOutputs* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_spent_outputs_get_transaction_spent_outputs_at(
+UMKOINKERNEL_API const umkk_TransactionSpentOutputs* umkk_block_spent_outputs_get_transaction_spent_outputs_at(
     const umkk_BlockSpentOutputs* block_spent_outputs,
     size_t transaction_spent_outputs_index) UMKOINKERNEL_ARG_NONNULL(1);
 
@@ -1615,7 +1623,7 @@ UMKOINKERNEL_API umkk_TransactionSpentOutputs* UMKOINKERNEL_WARN_UNUSED_RESULT u
  * @param[in] transaction_spent_outputs Non-null
  * @return                              The number of spent transaction outputs for the transaction.
  */
-UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_spent_outputs_count(
+UMKOINKERNEL_API size_t umkk_transaction_spent_outputs_count(
     const umkk_TransactionSpentOutputs* transaction_spent_outputs) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1628,7 +1636,7 @@ UMKOINKERNEL_API size_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_spent_o
  *                                      transaction spent outputs.
  * @return                              A coin pointer.
  */
-UMKOINKERNEL_API const umkk_Coin* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_spent_outputs_get_coin_at(
+UMKOINKERNEL_API const umkk_Coin* umkk_transaction_spent_outputs_get_coin_at(
     const umkk_TransactionSpentOutputs* transaction_spent_outputs,
     size_t coin_index) UMKOINKERNEL_ARG_NONNULL(1);
 
@@ -1660,7 +1668,7 @@ UMKOINKERNEL_API umkk_TransactionInput* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_tra
  * @param[in] transaction_input Non-null.
  * @return                      The transaction out point.
  */
-UMKOINKERNEL_API const umkk_TransactionOutPoint* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_input_get_out_point(
+UMKOINKERNEL_API const umkk_TransactionOutPoint* umkk_transaction_input_get_out_point(
     const umkk_TransactionInput* transaction_input) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1669,7 +1677,7 @@ UMKOINKERNEL_API const umkk_TransactionOutPoint* UMKOINKERNEL_WARN_UNUSED_RESULT
  * @param[in] transaction_input Non-null.
  * @return                      The nSequence value.
  */
-UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_input_get_sequence(
+UMKOINKERNEL_API uint32_t umkk_transaction_input_get_sequence(
     const umkk_TransactionInput* transaction_input) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1699,7 +1707,7 @@ UMKOINKERNEL_API umkk_TransactionOutPoint* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_
  * @param[in] transaction_out_point Non-null.
  * @return                          The output index.
  */
-UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_out_point_get_index(
+UMKOINKERNEL_API uint32_t umkk_transaction_out_point_get_index(
     const umkk_TransactionOutPoint* transaction_out_point) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1709,7 +1717,7 @@ UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_out_p
  * @param[in] transaction_out_point Non-null.
  * @return                          The txid.
  */
-UMKOINKERNEL_API const umkk_Txid* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_out_point_get_txid(
+UMKOINKERNEL_API const umkk_Txid* umkk_transaction_out_point_get_txid(
     const umkk_TransactionOutPoint* transaction_out_point) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1740,7 +1748,7 @@ UMKOINKERNEL_API umkk_Txid* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_txid_copy(
  * @param[in] txid2 Non-null.
  * @return          0 if the txid is not equal.
  */
-UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_txid_equals(
+UMKOINKERNEL_API int umkk_txid_equals(
     const umkk_Txid* txid1, const umkk_Txid* txid2) UMKOINKERNEL_ARG_NONNULL(1, 2);
 
 /**
@@ -1780,7 +1788,7 @@ UMKOINKERNEL_API umkk_Coin* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_coin_copy(
  * @param[in] coin Non-null.
  * @return         The block height of the coin.
  */
-UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_coin_confirmation_height(
+UMKOINKERNEL_API uint32_t umkk_coin_confirmation_height(
     const umkk_Coin* coin) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1789,7 +1797,7 @@ UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_coin_confirmation
  * @param[in] coin Non-null.
  * @return         1 if the coin is a coinbase coin, 0 otherwise.
  */
-UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_coin_is_coinbase(
+UMKOINKERNEL_API int umkk_coin_is_coinbase(
     const umkk_Coin* coin) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1799,7 +1807,7 @@ UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_coin_is_coinbase(
  * @param[in] coin Non-null.
  * @return         A transaction output pointer.
  */
-UMKOINKERNEL_API const umkk_TransactionOutput* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_coin_get_output(
+UMKOINKERNEL_API const umkk_TransactionOutput* umkk_coin_get_output(
     const umkk_Coin* coin) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1827,7 +1835,7 @@ UMKOINKERNEL_API umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_hash
  * @param[in] hash2 Non-null.
  * @return          0 if the block hashes are not equal.
  */
-UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_hash_equals(
+UMKOINKERNEL_API int umkk_block_hash_equals(
     const umkk_BlockHash* hash1, const umkk_BlockHash* hash2) UMKOINKERNEL_ARG_NONNULL(1, 2);
 
 /**
@@ -1896,7 +1904,7 @@ UMKOINKERNEL_API umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_head
  * @param[in] header    Non-null umkk_BlockHeader
  * @return              Previous umkk_BlockHash
  */
-UMKOINKERNEL_API const umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_prev_hash(
+UMKOINKERNEL_API const umkk_BlockHash* umkk_block_header_get_prev_hash(
     const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1905,7 +1913,7 @@ UMKOINKERNEL_API const umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_bloc
  * @param[in] header    Non-null umkk_BlockHeader
  * @return              Block timestamp (Unix epoch seconds)
  */
-UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_timestamp(
+UMKOINKERNEL_API uint32_t umkk_block_header_get_timestamp(
     const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1914,7 +1922,7 @@ UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_
  * @param[in] header    Non-null umkk_BlockHeader
  * @return              Difficulty target (compact format)
  */
-UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_bits(
+UMKOINKERNEL_API uint32_t umkk_block_header_get_bits(
     const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1923,7 +1931,7 @@ UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_
  * @param[in] header    Non-null umkk_BlockHeader
  * @return              Block version
  */
-UMKOINKERNEL_API int32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_version(
+UMKOINKERNEL_API int32_t umkk_block_header_get_version(
     const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1932,7 +1940,7 @@ UMKOINKERNEL_API int32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_v
  * @param[in] header    Non-null umkk_BlockHeader
  * @return              Nonce
  */
-UMKOINKERNEL_API uint32_t UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_get_nonce(
+UMKOINKERNEL_API uint32_t umkk_block_header_get_nonce(
     const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
