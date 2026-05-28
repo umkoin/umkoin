@@ -363,8 +363,6 @@ if(BUILD_CLI)
     umkoin_common
     umkoin_ipc
     umkoin_util
-    libevent::core
-    libevent::extra
   )
   install_binary_component(umkoin-cli HAS_MANPAGE)
 endif()
