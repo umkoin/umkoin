@@ -33,7 +33,6 @@ class RPCWhitelistTest(UmkoinTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 1
-        self.supports_cli = False
 
     def run_test(self):
         # 0 => Username
