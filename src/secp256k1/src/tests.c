@@ -7637,7 +7637,7 @@ static void ecdsa_ctx_sha256(void) {
 The tests check for known attacks (range checks in (r,s), arithmetic errors, malleability).
 */
 static void test_ecdsa_wycheproof(void) {
-    #include "wycheproof/ecdsa_secp256k1_sha256_umkoin_test.h"
+    #include "wycheproof/ecdsa_secp256k1_sha256_bitcoin_test.h"
 
     int t;
     const secp256k1_hash_ctx *hash_ctx = secp256k1_get_hash_context(CTX);
