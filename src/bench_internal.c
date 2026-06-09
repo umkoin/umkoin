@@ -18,13 +18,13 @@
 #include "ecmult_impl.h"
 #include "bench.h"
 
-static void help(int default_iters) {
+static void help(const char *executable_path, int default_iters) {
     printf("Benchmarks various internal routines.\n");
     printf("\n");
     printf("The default number of iterations for each benchmark is %d. This can be\n", default_iters);
     printf("customized using the SECP256K1_BENCH_ITERS environment variable.\n");
     printf("\n");
-    printf("Usage: ./bench_internal [args]\n");
+    printf("Usage: %s [args]\n", executable_path);
     printf("By default, all benchmarks will be run.\n");
     printf("args:\n");
     printf("    help       : display this help and exit\n");
@@ -38,6 +38,7 @@ static void help(int default_iters) {
 }
 
 typedef struct {
+    const secp256k1_context* ctx;
     secp256k1_scalar scalar[2];
     secp256k1_fe fe[4];
     secp256k1_ge ge[2];
@@ -81,6 +82,9 @@ static void bench_setup(void* arg) {
             0xd7, 0x60, 0xe6, 0xab, 0x90, 0x92, 0xdf, 0xc5
         }
     };
+
+    /* Customize context if needed */
+    data->ctx = secp256k1_context_static;
 
     secp256k1_scalar_set_b32(&data->scalar[0], init[0], NULL);
     secp256k1_scalar_set_b32(&data->scalar[1], init[1], NULL);
@@ -187,6 +191,17 @@ static void bench_field_normalize(void* arg, int iters) {
 
     for (i = 0; i < iters; i++) {
         secp256k1_fe_normalize(&data->fe[0]);
+    }
+}
+
+static void bench_field_normalize_var(void* arg, int iters) {
+    int i;
+    bench_inv *data = (bench_inv*)arg;
+
+    /* Note that this benchmark measures the optimistic path. The worst-case path with the final
+       reduction is very unlikely to be needed, so this is representative of the common case. */
+    for (i = 0; i < iters; i++) {
+        secp256k1_fe_normalize_var(&data->fe[0]);
     }
 }
 
@@ -344,11 +359,12 @@ static void bench_sha256(void* arg, int iters) {
     int i;
     bench_inv *data = (bench_inv*)arg;
     secp256k1_sha256 sha;
+    const secp256k1_hash_ctx *hash_ctx = secp256k1_get_hash_context(data->ctx);
 
     for (i = 0; i < iters; i++) {
         secp256k1_sha256_initialize(&sha);
-        secp256k1_sha256_write(&sha, data->data, 32);
-        secp256k1_sha256_finalize(&sha, data->data);
+        secp256k1_sha256_write(hash_ctx, &sha, data->data, 32);
+        secp256k1_sha256_finalize(hash_ctx, &sha, data->data);
     }
 }
 
@@ -356,11 +372,12 @@ static void bench_hmac_sha256(void* arg, int iters) {
     int i;
     bench_inv *data = (bench_inv*)arg;
     secp256k1_hmac_sha256 hmac;
+    const secp256k1_hash_ctx *hash_ctx = secp256k1_get_hash_context(data->ctx);
 
     for (i = 0; i < iters; i++) {
-        secp256k1_hmac_sha256_initialize(&hmac, data->data, 32);
-        secp256k1_hmac_sha256_write(&hmac, data->data, 32);
-        secp256k1_hmac_sha256_finalize(&hmac, data->data);
+        secp256k1_hmac_sha256_initialize(hash_ctx, &hmac, data->data, 32);
+        secp256k1_hmac_sha256_write(hash_ctx, &hmac, data->data, 32);
+        secp256k1_hmac_sha256_finalize(hash_ctx, &hmac, data->data);
     }
 }
 
@@ -368,10 +385,11 @@ static void bench_rfc6979_hmac_sha256(void* arg, int iters) {
     int i;
     bench_inv *data = (bench_inv*)arg;
     secp256k1_rfc6979_hmac_sha256 rng;
+    const secp256k1_hash_ctx *hash_ctx = secp256k1_get_hash_context(data->ctx);
 
     for (i = 0; i < iters; i++) {
-        secp256k1_rfc6979_hmac_sha256_initialize(&rng, data->data, 64);
-        secp256k1_rfc6979_hmac_sha256_generate(&rng, data->data, 32);
+        secp256k1_rfc6979_hmac_sha256_initialize(hash_ctx, &rng, data->data, 64);
+        secp256k1_rfc6979_hmac_sha256_generate(hash_ctx, &rng, data->data, 32);
     }
 }
 
@@ -385,15 +403,19 @@ static void bench_context(void* arg, int iters) {
 
 int main(int argc, char **argv) {
     bench_inv data;
+    int d = argc == 1; /* default */
     int default_iters = 20000;
     int iters = get_iters(default_iters);
-    int d = argc == 1; /* default */
+    if (iters == 0) {
+        help(argv[0], default_iters);
+        return EXIT_FAILURE;
+    }
 
     if (argc > 1) {
         if (have_flag(argc, argv, "-h")
            || have_flag(argc, argv, "--help")
            || have_flag(argc, argv, "help")) {
-            help(default_iters);
+            help(argv[0], default_iters);
             return EXIT_SUCCESS;
         }
     }
@@ -410,6 +432,7 @@ int main(int argc, char **argv) {
 
     if (d || have_flag(argc, argv, "field") || have_flag(argc, argv, "half")) run_benchmark("field_half", bench_field_half, bench_setup, NULL, &data, 10, iters*100);
     if (d || have_flag(argc, argv, "field") || have_flag(argc, argv, "normalize")) run_benchmark("field_normalize", bench_field_normalize, bench_setup, NULL, &data, 10, iters*100);
+    if (d || have_flag(argc, argv, "field") || have_flag(argc, argv, "normalize")) run_benchmark("field_normalize_var", bench_field_normalize_var, bench_setup, NULL, &data, 10, iters*100);
     if (d || have_flag(argc, argv, "field") || have_flag(argc, argv, "normalize")) run_benchmark("field_normalize_weak", bench_field_normalize_weak, bench_setup, NULL, &data, 10, iters*100);
     if (d || have_flag(argc, argv, "field") || have_flag(argc, argv, "sqr")) run_benchmark("field_sqr", bench_field_sqr, bench_setup, NULL, &data, 10, iters*10);
     if (d || have_flag(argc, argv, "field") || have_flag(argc, argv, "mul")) run_benchmark("field_mul", bench_field_mul, bench_setup, NULL, &data, 10, iters*10);
