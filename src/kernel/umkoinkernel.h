@@ -1151,12 +1151,11 @@ UMKOINKERNEL_API const umkk_BlockTreeEntry* umkk_block_tree_entry_get_ancestor(
  *
  * @param[in] context          Non-null, the created options and through it the chainstate manager will
  *                             associate with this kernel context for the duration of their lifetimes.
- * @param[in] data_directory   Non-null, non-empty path string of the directory containing the
- *                             chainstate data. If the directory does not exist yet, it will be
- *                             created.
- * @param[in] blocks_directory Non-null, non-empty path string of the directory containing the block
- *                             data. If the directory does not exist yet, it will be created.
- * @return                     The allocated chainstate manager options, or null on error.
+ * @param[in] data_directory   Path string of the directory containing the chainstate data. If the directory
+ *                             does not exist yet, it will be created.
+ * @param[in] blocks_directory Path string of the directory containing the block data. If the directory
+ *                             does not exist yet, it will be created.
+ * @return                     The allocated chainstate manager options, or null on error (e.g. if a path is invalid).
  */
 UMKOINKERNEL_API umkk_ChainstateManagerOptions* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chainstate_manager_options_create(
     const umkk_Context* context,
@@ -1877,7 +1876,7 @@ UMKOINKERNEL_API void umkk_block_hash_destroy(umkk_BlockHash* block_hash);
  * @return                          umkk_BlockHeader, or null on error.
  */
 UMKOINKERNEL_API umkk_BlockHeader* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_header_create(
-    const void* raw_block_header, size_t raw_block_header_len);
+    const void* raw_block_header, size_t raw_block_header_len) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
  * @brief Copy a umkk_BlockHeader.
