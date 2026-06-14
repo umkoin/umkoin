@@ -813,10 +813,10 @@ umkk_ChainParameters* umkk_chain_parameters_create(const umkk_ChainType chain_ty
         return umkk_ChainParameters::ref(const_cast<CChainParams*>(CChainParams::TestNet4().release()));
     }
     case umkk_ChainType_SIGNET: {
-        return umkk_ChainParameters::ref(const_cast<CChainParams*>(CChainParams::SigNet({}).release()));
+        return umkk_ChainParameters::ref(const_cast<CChainParams*>(CChainParams::SigNet().release()));
     }
     case umkk_ChainType_REGTEST: {
-        return umkk_ChainParameters::ref(const_cast<CChainParams*>(CChainParams::RegTest({}).release()));
+        return umkk_ChainParameters::ref(const_cast<CChainParams*>(CChainParams::RegTest().release()));
     }
     }
     assert(false);
