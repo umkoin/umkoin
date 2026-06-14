@@ -458,7 +458,8 @@ class TestUmkoinCli(UmkoinTestFramework):
             # This tests behavior when ENABLE_IPC is off. When it is on,
             # behavior is checked by the interface_ipc_cli.py test.
             self.log.info("Test umkoin-cli -ipcconnect triggers error if not built with IPC support")
-            args = [self.binary_paths.umkoincli, "-ipcconnect=unix", "-getinfo"]
+            # node.cli.options includes -rpcconnect which can't be combined with -ipcconnect, so pass just -datadir directly to keep umkoin-cli on the test's umkoin.conf
+            args = self.nodes[0].binaries.valgrind_cmd + [self.nodes[0].binaries.paths.umkoincli, f"-datadir={self.nodes[0].datadir_path}", "-ipcconnect=unix", "-getinfo"]
             result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
             assert_equal(result.stdout, "error: umkoin-cli was not built with IPC support\n")
             assert_equal(result.stderr, None)
