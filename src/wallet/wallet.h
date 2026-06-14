@@ -7,7 +7,6 @@
 #define UMKOIN_WALLET_WALLET_H
 
 #include <addresstype.h>
-#include <umksignals.h>
 #include <consensus/amount.h>
 #include <interfaces/chain.h>
 #include <interfaces/handler.h>
@@ -23,6 +22,7 @@
 #include <sync.h>
 #include <tinyformat.h>
 #include <uint256.h>
+#include <util/umksignals.h>
 #include <util/fs.h>
 #include <util/hasher.h>
 #include <util/log.h>

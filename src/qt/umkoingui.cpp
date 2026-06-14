@@ -1589,7 +1589,7 @@ void UmkoinGUI::showModalOverlay()
         modalOverlay->toggleVisibility();
 }
 
-static bool ThreadSafeMessageBox(UmkoinGUI* gui, const bilingual_str& message, unsigned int style)
+[[nodiscard]] static bool ThreadSafeMessageBox(UmkoinGUI* gui, const bilingual_str& message, unsigned int style)
 {
     bool modal = (style & CClientUIInterface::MODAL);
     // The SECURE flag has no effect in the Qt GUI.
@@ -1621,7 +1621,7 @@ void UmkoinGUI::subscribeToCoreSignals()
 {
     // Connect signals to client
     m_handler_message_box = m_node.handleMessageBox([this](const bilingual_str& message, unsigned int style) {
-        return ThreadSafeMessageBox(this, message, style);
+        (void)ThreadSafeMessageBox(this, message, style);
     });
     m_handler_question = m_node.handleQuestion([this](const bilingual_str& message, const std::string& /*non_interactive_message*/, unsigned int style) {
         return ThreadSafeMessageBox(this, message, style);

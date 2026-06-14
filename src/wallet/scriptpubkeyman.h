@@ -6,7 +6,6 @@
 #define UMKOIN_WALLET_SCRIPTPUBKEYMAN_H
 
 #include <addresstype.h>
-#include <umksignals.h>
 #include <common/messages.h>
 #include <common/signmessage.h>
 #include <common/types.h>
@@ -16,6 +15,7 @@
 #include <script/descriptor.h>
 #include <script/script.h>
 #include <script/signingprovider.h>
+#include <util/umksignals.h>
 #include <util/hasher.h>
 #include <util/log.h>
 #include <util/result.h>
