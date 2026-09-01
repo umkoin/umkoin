@@ -37,11 +37,6 @@
 #include "int128_impl.h"
 #endif
 
-#if defined(__GNUC__)
-# pragma GCC diagnostic push
-# pragma GCC diagnostic warning "-Wunused-function"
-#endif
-
 #define CONDITIONAL_TEST(cnt, nam) if (COUNT < (cnt)) { printf("Skipping %s (iteration count too low)\n", nam); } else
 
 static secp256k1_context *CTX = NULL;
@@ -246,6 +241,7 @@ static void run_proper_context_tests(int use_prealloc) {
     void *my_ctx_prealloc = NULL;
     unsigned char seed[32] = {0x17};
 
+    secp256k1_gej pubj;
     secp256k1_ge pub;
     secp256k1_scalar msg, key, nonce;
     secp256k1_scalar sigr, sigs;
@@ -333,7 +329,8 @@ static void run_proper_context_tests(int use_prealloc) {
     /*** attempt to use them ***/
     testutil_random_scalar_order_test(&msg);
     testutil_random_scalar_order_test(&key);
-    secp256k1_ecmult_gen_ge(&my_ctx->ecmult_gen_ctx, &pub, &key);
+    secp256k1_ecmult_gen_gej(&my_ctx->ecmult_gen_ctx, &pubj, &key);
+    secp256k1_ge_set_gej(&pub, &pubj);
 
     /* obtain a working nonce */
     do {
@@ -513,7 +510,7 @@ static void run_sha256_multi_block_compression_tests(void) {
     }
 
     {   /* 2) Writing one 80-byte block vs two 40-byte blocks */
-        const unsigned char data[80] = "Genesis: UMK est. 2006. Umkoin est. 2017. ";
+        const unsigned char data[80] = "Genesis: The Times 03/Jan/2009 Chancellor on brink of second bailout for banks ";
         unsigned char data40[40];
 
         secp256k1_sha256_initialize(&sha256_one);
@@ -2847,8 +2844,8 @@ static void run_scalar_tests(void) {
               0xbd, 0x3c, 0xa3, 0x98, 0x7e, 0x7f, 0x36, 0x38,
               0x92, 0x39, 0x1f, 0x0f, 0x81, 0x1a, 0x06, 0x51,
               0x1f, 0x8d, 0x6a, 0xff, 0x47, 0x16, 0x06, 0x9c}},
-            {{0x33, 0x95, 0xa2, 0x6f, 0x27, 0x67, 0x9c, 0x9c,
-              0x64, 0x45, 0xcb, 0xd1, 0x3c, 0xee, 0x5e, 0x67,
+            {{0x33, 0x95, 0xa2, 0x6f, 0x27, 0x5f, 0x9c, 0x9c,
+              0x64, 0x45, 0xcb, 0xd1, 0x3c, 0xee, 0x5e, 0x5f,
               0x48, 0xa6, 0xaf, 0xe3, 0x79, 0xcf, 0xb1, 0xe2,
               0xbf, 0x55, 0x0e, 0xa2, 0x3b, 0x62, 0xf0, 0xe4},
              {0x14, 0xe8, 0x06, 0xe3, 0xbe, 0x7e, 0x67, 0x01,
@@ -3555,7 +3552,7 @@ static void run_inverse_tests(void)
          SECP256K1_FE_CONST(0xb024fdc7, 0x5547451e, 0x426c585f, 0xbd481425, 0x73df6b75, 0xeef6d9d0, 0x389d87d4, 0xfbb440ba)},
         /* Input known to need 566 divsteps starting with delta=1/2. */
         {SECP256K1_FE_CONST(0xb595d81b, 0x2e3c1e2f, 0x482dbc65, 0xe4865af7, 0x9a0a50aa, 0x29f9e618, 0x6f87d7a5, 0x8d1063ae),
-         SECP256K1_FE_CONST(0xc963337c, 0x5d5c74e1, 0x49918330, 0x0b53afb5, 0xa0428a0b, 0xce6eef86, 0x059bd8ef, 0xe5b908de)},
+         SECP256K1_FE_CONST(0xc983337c, 0x5d5c74e1, 0x49918330, 0x0b53afb5, 0xa0428a0b, 0xce6eef86, 0x059bd8ef, 0xe5b908de)},
         /* Set of 10 inputs accessing all 128 entries in the modinv32 divsteps_var table */
         {SECP256K1_FE_CONST(0x00000000, 0x00000000, 0xe0ff1f80, 0x1f000000, 0x00000000, 0x00000000, 0xfeff0100, 0x00000000),
          SECP256K1_FE_CONST(0x9faf9316, 0x77e5049d, 0x0b5e7a1b, 0xef70b893, 0x18c9e30c, 0x045e7fd7, 0x29eddf8c, 0xd62e9e3d)},
@@ -3665,7 +3662,7 @@ static void run_inverse_tests(void)
         {SECP256K1_SCALAR_CONST(0x1950d757, 0xb37a5809, 0x435059bb, 0x0bb8997e, 0x07e1e3c8, 0x5e5d7d2c, 0x6a0ed8e3, 0xdbde180e),
          SECP256K1_SCALAR_CONST(0xbf72af9b, 0x750309e2, 0x8dda230b, 0xfe432b93, 0x7e25e475, 0x4388251e, 0x633d894b, 0x3bcb6f8c)},
         {SECP256K1_SCALAR_CONST(0x9bccf4e7, 0xc5a515e3, 0x50637aa9, 0xbb65a13f, 0x391749a1, 0x62de7d4e, 0xf6d7eabb, 0x3cd10ce0),
-         SECP256K1_SCALAR_CONST(0xaf2d5623, 0xb6385a33, 0xcd0365be, 0x5e92a70d, 0x7f09179c, 0x3baaf30f, 0x8f9cc83b, 0x20172f67)},
+         SECP256K1_SCALAR_CONST(0xaf2d5623, 0xb6385a33, 0xcd0365be, 0x5e92a70d, 0x7f09179c, 0x3baaf30f, 0x8f9cc83b, 0x20092f67)},
         {SECP256K1_SCALAR_CONST(0x73a57111, 0xb242952a, 0x5c5dee59, 0xf3be2ace, 0xa30a7659, 0xa46e5f47, 0xd21267b1, 0x39e642c9),
          SECP256K1_SCALAR_CONST(0xa711df07, 0xcbcf13ef, 0xd61cc6be, 0xbcd058ce, 0xb02cf157, 0x272d4a18, 0x86d0feb3, 0xcd5fa004)},
         {SECP256K1_SCALAR_CONST(0x04884963, 0xce0580b1, 0xba547030, 0x3c691db3, 0x9cd2c84f, 0x24c7cebd, 0x97ebfdba, 0x3e785ec2),
@@ -3689,7 +3686,7 @@ static void run_inverse_tests(void)
         {SECP256K1_SCALAR_CONST(0x11cdaeda, 0x969c464b, 0xef1f4ab0, 0x5b01d22e, 0x656fd098, 0x882bea84, 0x65cdbe7a, 0x0c19ff03),
          SECP256K1_SCALAR_CONST(0x1968d0fa, 0xac46f103, 0xb55f1f72, 0xb3820bed, 0xec6b359a, 0x4b1ae0ad, 0x7e38e1fb, 0x295ccdfb)},
         {SECP256K1_SCALAR_CONST(0x2c351aa1, 0x26e91589, 0x194f8a1e, 0x06561f66, 0x0cb97b7f, 0x10914454, 0x134d1c03, 0x157266b4),
-         SECP256K1_SCALAR_CONST(0xbe49ada6, 0x92bd8711, 0x41b176c4, 0xa478ba95, 0x14863434, 0x9d1cd6f3, 0xcc4b847d, 0x22af80f5)},
+         SECP256K1_SCALAR_CONST(0xbe49ada6, 0x92bd8711, 0x41b176c4, 0xa478ba95, 0x14883434, 0x9d1cd6f3, 0xcc4b847d, 0x22af80f5)},
         {SECP256K1_SCALAR_CONST(0x6ba07c6e, 0x13a60edb, 0x6247f5c3, 0x84b5fa56, 0x76fe3ec5, 0x80426395, 0xf65ec2ae, 0x623ba730),
          SECP256K1_SCALAR_CONST(0x25ac23f7, 0x418cd747, 0x98376f9d, 0x4a11c7bf, 0x24c8ebfe, 0x4c8a8655, 0x345f4f52, 0x1c515595)},
         {SECP256K1_SCALAR_CONST(0x9397a712, 0x8abb6951, 0x2d4a3d54, 0x703b1c2a, 0x0661dca8, 0xd75c9b31, 0xaed4d24b, 0xd2ab2948),
@@ -4307,16 +4304,19 @@ static void test_ec_combine(void) {
     const secp256k1_pubkey* d[6];
     secp256k1_pubkey sd;
     secp256k1_pubkey sd2;
+    secp256k1_gej Qj;
     secp256k1_ge Q;
     int i;
     for (i = 1; i <= 6; i++) {
         secp256k1_scalar s;
         testutil_random_scalar_order_test(&s);
         secp256k1_scalar_add(&sum, &sum, &s);
-        secp256k1_ecmult_gen_ge(&CTX->ecmult_gen_ctx, &Q, &s);
+        secp256k1_ecmult_gen_gej(&CTX->ecmult_gen_ctx, &Qj, &s);
+        secp256k1_ge_set_gej(&Q, &Qj);
         secp256k1_pubkey_save(&data[i - 1], &Q);
         d[i - 1] = &data[i - 1];
-        secp256k1_ecmult_gen_ge(&CTX->ecmult_gen_ctx, &Q, &sum);
+        secp256k1_ecmult_gen_gej(&CTX->ecmult_gen_ctx, &Qj, &sum);
+        secp256k1_ge_set_gej(&Q, &Qj);
         secp256k1_pubkey_save(&sd, &Q);
         CHECK(secp256k1_ec_pubkey_combine(CTX, &sd2, d, i) == 1);
         CHECK(secp256k1_memcmp_var(&sd, &sd2, sizeof(sd)) == 0);
@@ -5786,25 +5786,6 @@ static void run_ecmult_constants(void) {
     }
 }
 
-static void run_ecmult_gen_ge(void) {
-    /* Test that secp256k1_ecmult_gen_ge result matches secp256k1_ecmult_gen_gej with
-     * manual Jacobian-to-affine conversion (secp256k1_ge_set_gej) over random scalars */
-    int i;
-
-    for (i = 0; i < COUNT; i++) {
-        secp256k1_scalar scalar;
-        secp256k1_gej result_gej;
-        secp256k1_ge result_ge, expected_ge;
-
-        testutil_random_scalar_order_test(&scalar);
-        secp256k1_ecmult_gen_gej(&CTX->ecmult_gen_ctx, &result_gej, &scalar);
-        secp256k1_ge_set_gej(&expected_ge, &result_gej);
-        secp256k1_ecmult_gen_ge(&CTX->ecmult_gen_ctx, &result_ge, &scalar);
-
-        CHECK(secp256k1_ge_eq_var(&result_ge, &expected_ge));
-    }
-}
-
 static void test_ecmult_gen_blind(void) {
     /* Test ecmult_gen() blinding and confirm that the blinding changes, the affine points match, and the z's don't match. */
     secp256k1_scalar key;
@@ -6534,6 +6515,7 @@ static void random_sign(secp256k1_scalar *sigr, secp256k1_scalar *sigs, const se
 }
 
 static void test_ecdsa_sign_verify(void) {
+    secp256k1_gej pubj;
     secp256k1_ge pub;
     secp256k1_scalar one;
     secp256k1_scalar msg, key;
@@ -6542,7 +6524,8 @@ static void test_ecdsa_sign_verify(void) {
     int recid;
     testutil_random_scalar_order_test(&msg);
     testutil_random_scalar_order_test(&key);
-    secp256k1_ecmult_gen_ge(&CTX->ecmult_gen_ctx, &pub, &key);
+    secp256k1_ecmult_gen_gej(&CTX->ecmult_gen_ctx, &pubj, &key);
+    secp256k1_ge_set_gej(&pub, &pubj);
     getrec = testrand_bits(1);
     /* The specific way in which this conditional is written sidesteps a potential bug in clang.
        See the commit messages of the commit that introduced this comment for details. */
@@ -7301,6 +7284,7 @@ static void run_ecdsa_edge_cases(void) {
 
     /* Test the case where ECDSA recomputes a point that is infinity. */
     {
+        secp256k1_gej keyj;
         secp256k1_ge key;
         secp256k1_scalar msg;
         secp256k1_scalar sr, ss;
@@ -7308,7 +7292,8 @@ static void run_ecdsa_edge_cases(void) {
         secp256k1_scalar_negate(&ss, &ss);
         secp256k1_scalar_inverse(&ss, &ss);
         secp256k1_scalar_set_int(&sr, 1);
-        secp256k1_ecmult_gen_ge(&CTX->ecmult_gen_ctx, &key, &sr);
+        secp256k1_ecmult_gen_gej(&CTX->ecmult_gen_ctx, &keyj, &sr);
+        secp256k1_ge_set_gej(&key, &keyj);
         msg = ss;
         CHECK(secp256k1_ecdsa_sig_verify(&sr, &ss, &key, &msg) == 0);
     }
@@ -7652,7 +7637,7 @@ static void ecdsa_ctx_sha256(void) {
 The tests check for known attacks (range checks in (r,s), arithmetic errors, malleability).
 */
 static void test_ecdsa_wycheproof(void) {
-    #include "wycheproof/ecdsa_secp256k1_sha256_umkoin_test.h"
+    #include "wycheproof/ecdsa_secp256k1_sha256_bitcoin_test.h"
 
     int t;
     const secp256k1_hash_ctx *hash_ctx = secp256k1_get_hash_context(CTX);
@@ -7984,7 +7969,6 @@ static const struct tf_test_entry tests_ecmult[] = {
     CASE(ecmult_near_split_bound),
     CASE(ecmult_chain),
     CASE(ecmult_constants),
-    CASE(ecmult_gen_ge),
     CASE(ecmult_gen_blind),
     CASE(ecmult_const_tests),
     CASE(ecmult_multi_tests),
@@ -8096,7 +8080,3 @@ int main(int argc, char **argv) {
     if (tf_init(&tf, argc, argv) != 0) return EXIT_FAILURE;
     return tf_run(&tf);
 }
-
-#if defined(__GNUC__)
-# pragma GCC diagnostic pop
-#endif

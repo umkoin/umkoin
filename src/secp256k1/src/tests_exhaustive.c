@@ -31,6 +31,11 @@
 #include "testutil.h"
 #include "util.h"
 
+#if defined(__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic warning "-Wunused-function"
+#endif
+
 static int count = 2;
 
 static uint32_t num_cores = 1;
@@ -421,12 +426,10 @@ int main(int argc, char** argv) {
             /* Verify against ecmult_gen */
             {
                 secp256k1_scalar scalar_i;
-                secp256k1_gej generatedj;
                 secp256k1_ge generated;
 
                 secp256k1_scalar_set_int(&scalar_i, i);
-                secp256k1_ecmult_gen_gej(&ctx->ecmult_gen_ctx, &generatedj, &scalar_i);
-                secp256k1_ge_set_gej(&generated, &generatedj);
+                secp256k1_ecmult_gen_ge(&ctx->ecmult_gen_ctx, &generated, &scalar_i);
 
                 CHECK(!secp256k1_ge_is_infinity(&group[i]));
                 CHECK(secp256k1_ge_eq_var(&group[i], &generated));
@@ -469,3 +472,7 @@ int main(int argc, char** argv) {
     printf("no problems found\n");
     return EXIT_SUCCESS;
 }
+
+#if defined(__GNUC__)
+# pragma GCC diagnostic pop
+#endif
