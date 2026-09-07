@@ -145,6 +145,10 @@
 using common::InvalidPortErrMsg;
 using common::ResolveErrMsg;
 
+using http_umkoin::InitHTTPServer;
+using http_umkoin::InterruptHTTPServer;
+using http_umkoin::StartHTTPServer;
+using http_umkoin::StopHTTPServer;
 using node::ApplyArgsManOptions;
 using node::BlockManager;
 using node::CalculateCacheSizes;
@@ -770,7 +774,7 @@ static void StartupNotify(const ArgsManager& args)
 static bool AppInitServers(NodeContext& node)
 {
     const ArgsManager& args = *Assert(node.args);
-    if (!InitHTTPServer(*Assert(node.shutdown_signal))) {
+    if (!InitHTTPServer()) {
         return false;
     }
     StartRPC();
