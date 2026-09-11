@@ -19,6 +19,10 @@ Getting Started
 
 New contributors are very welcome and needed.
 
+If you use AI tools while contributing, please read and follow the [AI
+policy](/doc/AI_POLICY.md). Contributors are responsible for understanding and
+explaining their own work in their own words.
+
 In-depth reviewing and testing are the bottleneck of the project, and are the
 most effective way anyone can start to contribute. It will teach you much more
 about the code and process than opening pull requests, and may help you uncover
@@ -36,19 +40,19 @@ Communication Channels
 
 Most communication about Bitcoin Core development happens on IRC, in the
 `#umkoin-core-dev` channel on Libera Chat. The easiest way to participate on IRC is
-with the web client, [web.libera.chat](https://web.libera.chat/#bitcoin-core-dev). Chat
+with the web client, [web.libera.chat](https://web.libera.chat/#umkoin-core-dev). Chat
 history logs can be found
-on [https://www.erisian.com.au/umkoin-core-dev/](https://www.erisian.com.au/bitcoin-core-dev/)
-and [https://gnusha.org/umkoin-core-dev/](https://gnusha.org/bitcoin-core-dev/).
+on [https://www.erisian.com.au/umkoin-core-dev/](https://www.erisian.com.au/umkoin-core-dev/)
+and [https://gnusha.org/umkoin-core-dev/](https://gnusha.org/umkoin-core-dev/).
 
 Discussion about codebase improvements happens in GitHub issues and pull
 requests.
 
 The developer
-[mailing list](https://groups.google.com/g/bitcoindev)
+[mailing list](https://groups.google.com/g/umkoindev)
 should be used to discuss complicated or controversial consensus or P2P protocol changes before working on
 a patch set.
-Archives can be found on [https://gnusha.org/pi/bitcoindev/](https://gnusha.org/pi/bitcoindev/).
+Archives can be found on [https://gnusha.org/pi/umkoindev/](https://gnusha.org/pi/umkoindev/).
 
 
 Contributor Workflow
@@ -425,7 +429,7 @@ Have a look at [an example backport PR](
 https://github.com/bitcoin/bitcoin/pull/16189).
 
 Also see the [backport.py script](
-https://github.com/bitcoin-core/bitcoin-maintainer-tools#backport).
+https://github.com/umkoin-core/umkoin-maintainer-tools#backport).
 
 Copyright
 ---------
