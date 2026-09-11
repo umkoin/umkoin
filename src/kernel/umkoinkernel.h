@@ -959,6 +959,18 @@ UMKOINKERNEL_API umkk_ChainParameters* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chai
     umkk_ChainType chain_type);
 
 /**
+ * @brief Create a signet chain parameters struct with a user-provided
+ * challenge.
+ *
+ * @param[in] challenge     The signet challenge value. Blocks must satisfy it in
+ *                          order to be valid.
+ * @param[in] challenge_len The length of the signet challenge.
+ * @return                  An allocated chain parameters opaque struct.
+ */
+UMKOINKERNEL_API umkk_ChainParameters* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_parameters_create_signet(
+    const void* challenge, size_t challenge_len);
+
+/**
  * Copy the chain parameters.
  */
 UMKOINKERNEL_API umkk_ChainParameters* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_chain_parameters_copy(

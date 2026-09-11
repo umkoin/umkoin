@@ -45,6 +45,7 @@
 #include <functional>
 #include <list>
 #include <memory>
+#include <optional>
 #include <span>
 #include <stdexcept>
 #include <string>
@@ -820,6 +821,16 @@ umkk_ChainParameters* umkk_chain_parameters_create(const umkk_ChainType chain_ty
     }
     }
     assert(false);
+}
+
+umkk_ChainParameters* umkk_chain_parameters_create_signet(const void* challenge, size_t challenge_len)
+{
+    assert(challenge != nullptr || challenge_len == 0);
+    const uint8_t* p = static_cast<const uint8_t*>(challenge);
+    CChainParams::SigNetOptions options{
+        .challenge = std::vector<uint8_t>{p, p + challenge_len},
+    };
+    return umkk_ChainParameters::ref(const_cast<CChainParams*>(CChainParams::SigNet(options).release()));
 }
 
 umkk_ChainParameters* umkk_chain_parameters_copy(const umkk_ChainParameters* chain_parameters)
