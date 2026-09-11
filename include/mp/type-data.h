@@ -9,6 +9,7 @@
 
 #include <concepts>
 #include <span>
+#include <ranges>
 
 namespace mp {
 template <typename T, typename U>
@@ -31,9 +32,8 @@ template <typename LocalType, typename Value, typename Output>
 void CustomBuildField(TypeList<LocalType>, Priority<2>, InvokeContext& invoke_context, Value&& value, Output&& output)
 requires (std::is_same_v<decltype(output.get()), ::capnp::Data::Builder> && IsByteSpan<LocalType>)
 {
-    auto data = std::span{value};
-    auto result = output.init(data.size());
-    memcpy(result.begin(), data.data(), data.size());
+    auto result = output.init(value.size());
+    std::ranges::copy(value, result.begin());
 }
 
 template <typename LocalType, typename Input, typename ReadDest>
