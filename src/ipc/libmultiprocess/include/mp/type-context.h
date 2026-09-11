@@ -12,11 +12,11 @@
 
 namespace mp {
 template <typename Output>
+    requires FieldTypeIs<Output, Context::Builder>
 void CustomBuildField(TypeList<>,
     Priority<1>,
     ClientInvokeContext& invoke_context,
-    Output&& output,
-    typename std::enable_if<std::is_same<decltype(output.get()), Context::Builder>::value>::type* enable = nullptr)
+    Output&& output)
 {
     auto& connection = invoke_context.connection;
     auto& thread_context = invoke_context.thread_context;
@@ -93,7 +93,7 @@ auto PassField(Priority<1>, TypeList<>, ServerContext& server_context, const Fn&
         // call. In this case, the callbackThread value should point
         // to the same thread already in the map, so there is no
         // need to update the map.
-        auto& thread_context = g_thread_context;
+        auto& thread_context = CurrentThread();
         auto& request_threads = thread_context.request_threads;
         ConnThread request_thread;
         bool inserted{false};
@@ -131,6 +131,18 @@ auto PassField(Priority<1>, TypeList<>, ServerContext& server_context, const Fn&
             std::tie(request_thread, inserted) = SetThread(
                 GuardedRef{thread_context.waiter->m_mutex, request_threads}, server.m_context.connection,
                 [&] { return Accessor::get(call_context.getParams()).getCallbackThread(); });
+            // Initialize the request's results struct here on the event loop
+            // thread, so later getResults() calls on the execution thread
+            // return the response capnp caches on first use instead of
+            // reading Cap'n Proto connection state, which is unsafe off the
+            // event loop thread because RpcConnectionState::disconnect()
+            // overwrites it there without synchronization on an abrupt remote
+            // disconnect (bitcoin-core/libmultiprocess#348). After this call,
+            // the only call_context state accessed by the execution thread is
+            // the params reader and the results struct allocated here; any
+            // future change accessing other call_context state needs to move
+            // that access to the event loop thread the same way.
+            call_context.getResults();
         });
 
         // If an entry was inserted into the request_threads map,
@@ -200,63 +212,95 @@ auto PassField(Priority<1>, TypeList<>, ServerContext& server_context, const Fn&
     // asynchronously with getLocalServer().
     const auto& params = server_context.call_context.getParams();
     Context::Reader context_arg = Accessor::get(params);
-    auto thread_client = context_arg.getThread();
-    auto result = server.m_context.connection->m_threads.getLocalServer(thread_client)
-        .then([&loop, invoke = kj::mv(invoke), req](const kj::Maybe<Thread::Server&>& perhaps) mutable {
-            // Assuming the thread object is found, pass it a pointer to the
-            // `invoke` lambda above which will invoke the function on that
-            // thread.
-            KJ_IF_MAYBE (thread_server, perhaps) {
-                auto& thread = static_cast<ProxyServer<Thread>&>(*thread_server);
-                MP_LOG(loop, Log::Debug)
-                    << "IPC server post request  #" << req << " {" << thread.m_thread_context.thread_name << "}";
-                return thread.template post<typename ServerContext::CallContext>(std::move(invoke));
-            } else {
-                MP_LOG(loop, Log::Error)
-                    << "IPC server error request #" << req << ", missing thread to execute request";
-                throw std::runtime_error("invalid thread handle");
-            }
-        }, [&loop, req](::kj::Exception&& e) -> kj::Promise<typename ServerContext::CallContext> {
-            // If you see the error "(remote):0: failed: remote exception:
-            // Called null capability" here, it probably means your Init class
-            // is missing a declaration like:
-            //
-            //   construct @0 (threadMap: Proxy.ThreadMap) -> (threadMap :Proxy.ThreadMap);
-            //
-            // which passes a ThreadMap reference from the client to the server,
-            // allowing the server to create threads to run IPC calls on the
-            // client, and also returns a ThreadMap reference from the server to
-            // the client, allowing the client to create threads on the server.
-            // (Typically the latter ThreadMap is used more often because there
-            // are more client-to-server calls.)
-            //
-            // If the other side of the connection did not previously get a
-            // ThreadMap reference from this side of the connection, when the
-            // other side calls `m_thread_map.makeThreadRequest()` in
-            // `BuildField` above, `m_thread_map` will be null, but that call
-            // will not fail immediately due to Cap'n Proto's request pipelining
-            // and delayed execution. Instead that call will return an invalid
-            // Thread reference, and when that reference is passed to this side
-            // of the connection as `thread_client` above, the
-            // `getLocalServer(thread_client)` call there will be the first
-            // thing to overtly fail, leading to an error here.
-            //
-            // Potentially there are also other things that could cause errors
-            // here, but this is the most likely cause.
-            //
-            // The log statement here is not strictly necessary since the same
-            // exception will also be logged in serverInvoke, but this logging
-            // may provide extra context that could be helpful for debugging.
-            MP_LOG(loop, Log::Info)
-                << "IPC server error request #" << req << " CapabilityServerSet<Thread>::getLocalServer call failed, did you forget to provide a ThreadMap to the client prior to this IPC call?";
-            return kj::mv(e);
-        });
-    // Use connection m_canceler object to cancel the result promise if the
-    // connection is destroyed. (By default Cap'n Proto does not cancel requests
-    // on disconnect, since it's possible clients might want to make requests
-    // and immediately disconnect without waiting for results, but not want the
-    // requests to be canceled.)
-    return server.m_context.connection->m_canceler.wrap(kj::mv(result));
+    if (!context_arg.hasThread()) {
+        // No client thread specified — dispatch through the server thread
+        // pool, picking the slot with the smallest in-flight depth.
+        auto* connection = server.m_context.connection;
+        auto& pool = connection->m_thread_pool;
+        if (pool.empty()) {
+            MP_LOG(loop, Log::Error)
+                << "IPC server error request #" << req << ", no thread specified and no pool configured";
+            throw std::runtime_error("no thread specified and no pool configured");
+        }
+        auto* slot = &pool[0];
+        for (size_t i = 1; i < pool.size(); ++i) {
+            if (pool[i].depth < slot->depth) slot = &pool[i];
+        }
+        ++slot->depth;
+        auto result = connection->m_threads.getLocalServer(slot->client)
+            .then([&loop, invoke = kj::mv(invoke), req](const kj::Maybe<Thread::Server&>& perhaps) mutable -> kj::Promise<typename ServerContext::CallContext> {
+                KJ_IF_MAYBE (thread_server, perhaps) {
+                    auto& thread = static_cast<ProxyServer<Thread>&>(*thread_server);
+                    MP_LOG(loop, Log::Debug)
+                        << "IPC server post request  #" << req << " {" << thread.m_thread_context.thread_name << "}";
+                    return thread.template post<typename ServerContext::CallContext>(std::move(invoke));
+                } else {
+                    MP_LOG(loop, Log::Error)
+                        << "IPC server error request #" << req << ", pool thread not found";
+                    throw std::runtime_error("pool thread not found");
+                }
+            })
+            .attach(kj::defer([slot] { --slot->depth; }));
+        return connection->m_canceler.wrap(kj::mv(result));
+    } else {
+        auto thread_client = context_arg.getThread();
+        auto result = server.m_context.connection->m_threads.getLocalServer(thread_client)
+            .then([&loop, invoke = kj::mv(invoke), req](const kj::Maybe<Thread::Server&>& perhaps) mutable {
+                // Assuming the thread object is found, pass it a pointer to the
+                // `invoke` lambda above which will invoke the function on that
+                // thread.
+                KJ_IF_MAYBE (thread_server, perhaps) {
+                    auto& thread = static_cast<ProxyServer<Thread>&>(*thread_server);
+                    MP_LOG(loop, Log::Debug)
+                        << "IPC server post request  #" << req << " {" << thread.m_thread_context.thread_name << "}";
+                    return thread.template post<typename ServerContext::CallContext>(std::move(invoke));
+                } else {
+                    MP_LOG(loop, Log::Error)
+                        << "IPC server error request #" << req << ", missing thread to execute request";
+                    throw std::runtime_error("invalid thread handle");
+                }
+            }, [&loop, req](::kj::Exception&& e) -> kj::Promise<typename ServerContext::CallContext> {
+                // If you see the error "(remote):0: failed: remote exception:
+                // Called null capability" here, it probably means your Init class
+                // is missing a declaration like:
+                //
+                //   construct @0 (threadMap: Proxy.ThreadMap) -> (threadMap :Proxy.ThreadMap);
+                //
+                // which passes a ThreadMap reference from the client to the server,
+                // allowing the server to create threads to run IPC calls on the
+                // client, and also returns a ThreadMap reference from the server to
+                // the client, allowing the client to create threads on the server.
+                // (Typically the latter ThreadMap is used more often because there
+                // are more client-to-server calls.)
+                //
+                // If the other side of the connection did not previously get a
+                // ThreadMap reference from this side of the connection, when the
+                // other side calls `m_thread_map.makeThreadRequest()` in
+                // `BuildField` above, `m_thread_map` will be null, but that call
+                // will not fail immediately due to Cap'n Proto's request pipelining
+                // and delayed execution. Instead that call will return an invalid
+                // Thread reference, and when that reference is passed to this side
+                // of the connection as `thread_client` above, the
+                // `getLocalServer(thread_client)` call there will be the first
+                // thing to overtly fail, leading to an error here.
+                //
+                // Potentially there are also other things that could cause errors
+                // here, but this is the most likely cause.
+                //
+                // The log statement here is not strictly necessary since the same
+                // exception will also be logged in serverInvoke, but this logging
+                // may provide extra context that could be helpful for debugging.
+                MP_LOG(loop, Log::Info)
+                    << "IPC server error request #" << req << " CapabilityServerSet<Thread>::getLocalServer call failed, did you forget to provide a ThreadMap to the client prior to this IPC call?";
+                return kj::mv(e);
+            });
+        // Use connection m_canceler object to cancel the result promise if the
+        // connection is destroyed. (By default Cap'n Proto does not cancel requests
+        // on disconnect, since it's possible clients might want to make requests
+        // and immediately disconnect without waiting for results, but not want the
+        // requests to be canceled.)
+        return server.m_context.connection->m_canceler.wrap(kj::mv(result));
+    }
 }
 } // namespace mp
 

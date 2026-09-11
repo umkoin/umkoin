@@ -26,7 +26,9 @@ if(BUILD_TESTING AND TARGET CapnProto::kj-test)
     ${MP_PROXY_HDRS}
     mp/test/foo-types.h
     mp/test/foo.h
+    mp/test/listen_tests.cpp
     mp/test/spawn_tests.cpp
+    mp/test/connect_tests.cpp
     mp/test/test.cpp
   )
   include(${PROJECT_SOURCE_DIR}/cmake/TargetCapnpSources.cmake)
