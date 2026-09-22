@@ -388,6 +388,7 @@ if(BUILD_UTIL)
     core_interface
     umkoin_common
     umkoin_util
+    univalue
   )
   install_binary_component(umkoin-util HAS_MANPAGE)
 endif()

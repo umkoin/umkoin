@@ -1,0 +1,22 @@
+{
+  "chain": "testnet4",
+  "test_chain": true,
+  "genesis": "3379ec5e1609f3f13e9b84926264f068ac7ad1b6825ceebce22d2b6d00000000",
+  "subsidy_halving_interval": 210000,
+  "pow": {
+    "limit": "00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "target_spacing": 600,
+    "difficulty_retarget_interval": 144,
+    "mindiff_blocks": "bip94"
+  },
+  "net": {
+    "default_port": 46333,
+    "magic": "1c163f28",
+    "dns_seeds": [
+      "dnsseed.umkoin.org."
+    ]
+  },
+  "addresses": {
+    "bech32_hrp": "tb"
+  }
+}

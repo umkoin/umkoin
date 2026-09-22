@@ -1,0 +1,22 @@
+{
+  "chain": "main",
+  "test_chain": false,
+  "genesis": "9a460680ef13e4b4a0b2a5999806685f650c3ec972fbf6d40d9e0b4700000000",
+  "subsidy_halving_interval": 210000,
+  "pow": {
+    "limit": "00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "target_spacing": 600,
+    "difficulty_retarget_interval": 144,
+    "mindiff_blocks": "no"
+  },
+  "net": {
+    "default_port": 6333,
+    "magic": "f9beb4d9",
+    "dns_seeds": [
+      "dnsseed.umkoin.org."
+    ]
+  },
+  "addresses": {
+    "bech32_hrp": "bc"
+  }
+}
