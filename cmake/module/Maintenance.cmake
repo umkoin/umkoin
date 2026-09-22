@@ -19,32 +19,21 @@ function(setup_split_debug_script)
 endfunction()
 
 function(add_windows_deploy_target)
+  configure_file(${PROJECT_SOURCE_DIR}/cmake/script/GenerateWindowsInstaller.cmake.in ${PROJECT_BINARY_DIR}/GenerateWindowsInstaller.cmake USE_SOURCE_PERMISSIONS @ONLY)
   if(MINGW AND TARGET umkoin AND TARGET umkoin-qt AND TARGET umkoind AND TARGET umkoin-cli AND TARGET umkoin-tx AND TARGET umkoin-wallet AND TARGET umkoin-util AND TARGET test_umkoin)
-    find_program(MAKENSIS_EXECUTABLE makensis)
-    if(NOT MAKENSIS_EXECUTABLE)
-      add_custom_target(deploy
-        COMMAND ${CMAKE_COMMAND} -E echo "Error: NSIS not found"
-      )
-      return()
-    endif()
-
-    # TODO: Consider replacing this code with the CPack NSIS Generator.
-    #       See https://cmake.org/cmake/help/latest/cpack_gen/nsis.html
-    include(GenerateSetupNsi)
-    generate_setup_nsi()
     add_custom_command(
       OUTPUT ${PROJECT_BINARY_DIR}/umkoin-win64-setup.exe
-      COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/release
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoin>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-qt> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoin-qt>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoind> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoind>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-cli> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoin-cli>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-tx> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoin-tx>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-wallet> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoin-wallet>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-util> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:umkoin-util>
-      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:test_umkoin> -o ${PROJECT_BINARY_DIR}/release/$<TARGET_FILE_NAME:test_umkoin>
-      COMMAND ${MAKENSIS_EXECUTABLE} -V2 ${PROJECT_BINARY_DIR}/umkoin-win64-setup.nsi
-      VERBATIM
+      WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+      COMMAND ${CMAKE_COMMAND} -E make_directory release
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin> -o release/$<TARGET_FILE_NAME:umkoin>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-qt> -o release/$<TARGET_FILE_NAME:umkoin-qt>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoind> -o release/$<TARGET_FILE_NAME:umkoind>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-cli> -o release/$<TARGET_FILE_NAME:umkoin-cli>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-tx> -o release/$<TARGET_FILE_NAME:umkoin-tx>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-wallet> -o release/$<TARGET_FILE_NAME:umkoin-wallet>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:umkoin-util> -o release/$<TARGET_FILE_NAME:umkoin-util>
+      COMMAND ${CMAKE_STRIP} $<TARGET_FILE:test_umkoin> -o release/$<TARGET_FILE_NAME:test_umkoin>
+      COMMAND ${CMAKE_COMMAND} -D BIN_DIR=release -D LIBEXEC_DIR=release -P GenerateWindowsInstaller.cmake
     )
     add_custom_target(deploy DEPENDS ${PROJECT_BINARY_DIR}/umkoin-win64-setup.exe)
   endif()
