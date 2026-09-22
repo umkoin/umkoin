@@ -500,6 +500,7 @@ struct umkk_TransactionSpentOutputs : Handle<umkk_TransactionSpentOutputs, CTxUn
 struct umkk_Coin : Handle<umkk_Coin, Coin> {};
 struct umkk_BlockHash : Handle<umkk_BlockHash, uint256> {};
 struct umkk_TransactionInput : Handle<umkk_TransactionInput, CTxIn> {};
+struct umkk_WitnessStack : Handle<umkk_WitnessStack, CScriptWitness> {};
 struct umkk_TransactionOutPoint: Handle<umkk_TransactionOutPoint, COutPoint> {};
 struct umkk_Txid: Handle<umkk_Txid, Txid> {};
 struct umkk_PrecomputedTransactionData : Handle<umkk_PrecomputedTransactionData, PrecomputedTransactionData> {};
@@ -707,9 +708,42 @@ uint32_t umkk_transaction_input_get_sequence(const umkk_TransactionInput* input)
     return umkk_TransactionInput::get(input).nSequence;
 }
 
+const umkk_WitnessStack* umkk_transaction_input_get_witness_stack(const umkk_TransactionInput* input)
+{
+    return umkk_WitnessStack::ref(&umkk_TransactionInput::get(input).scriptWitness);
+}
+
+int umkk_transaction_input_get_script_sig(const umkk_TransactionInput* input, umkk_WriteBytes writer, void* user_data)
+{
+    const auto& script_sig{umkk_TransactionInput::get(input).scriptSig};
+    return writer(script_sig.data(), script_sig.size(), user_data);
+}
+
 void umkk_transaction_input_destroy(umkk_TransactionInput* input)
 {
     delete input;
+}
+
+size_t umkk_witness_stack_count_items(const umkk_WitnessStack* witness_stack)
+{
+    return umkk_WitnessStack::get(witness_stack).stack.size();
+}
+
+int umkk_witness_stack_get_item_at(const umkk_WitnessStack* witness_stack, size_t index, umkk_WriteBytes writer, void* user_data)
+{
+    const auto& stack{umkk_WitnessStack::get(witness_stack).stack};
+    assert(index < stack.size());
+    return writer(stack[index].data(), stack[index].size(), user_data);
+}
+
+umkk_WitnessStack* umkk_witness_stack_copy(const umkk_WitnessStack* witness_stack)
+{
+    return umkk_WitnessStack::copy(witness_stack);
+}
+
+void umkk_witness_stack_destroy(umkk_WitnessStack* witness_stack)
+{
+    delete witness_stack;
 }
 
 umkk_TransactionOutPoint* umkk_transaction_out_point_copy(const umkk_TransactionOutPoint* out_point)

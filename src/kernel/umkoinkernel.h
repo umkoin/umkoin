@@ -298,9 +298,16 @@ typedef struct umkk_BlockHash umkk_BlockHash;
 /**
  * Opaque data structure for holding a transaction input.
  *
- * Holds information on the @ref umkk_TransactionOutPoint held within.
+ * Holds information on the @ref umkk_TransactionOutPoint, @ref umkk_WitnessStack and script_sig held within.
  */
 typedef struct umkk_TransactionInput umkk_TransactionInput;
+
+/**
+ * Opaque data structure for holding a witness stack.
+ *
+ * Holds a sequence of witness stack items.
+ */
+typedef struct umkk_WitnessStack umkk_WitnessStack;
 
 /**
  * Opaque data structure for holding a transaction out point.
@@ -1692,9 +1699,80 @@ UMKOINKERNEL_API uint32_t umkk_transaction_input_get_sequence(
     const umkk_TransactionInput* transaction_input) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
+ * @brief Get the witness stack of a transaction input. The returned witness
+ * stack is not owned and depends on the lifetime of the transaction input.
+ *
+ * @param[in] transaction_input Non-null.
+ * @return                      The witness stack.
+ */
+UMKOINKERNEL_API const umkk_WitnessStack* umkk_transaction_input_get_witness_stack(
+    const umkk_TransactionInput* transaction_input) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Serialize the script sig of a transaction input through the passed
+ * in callback.
+ *
+ * @param[in] transaction_input Non-null.
+ * @param[in] writer            Non-null, function pointer for writing bytes.
+ * @param[in] user_data         Nullable, passed back through the writer callback.
+ * @return                      The return value of the writer.
+ */
+UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_transaction_input_get_script_sig(
+    const umkk_TransactionInput* transaction_input,
+    umkk_WriteBytes writer,
+    void* user_data) UMKOINKERNEL_ARG_NONNULL(1, 2);
+
+/**
  * Destroy the transaction input.
  */
 UMKOINKERNEL_API void umkk_transaction_input_destroy(umkk_TransactionInput* transaction_input);
+
+///@}
+
+/** @name Witness Stack
+ * Functions for working with witness stacks.
+ */
+///@{
+
+/**
+ * @brief Return the number of items in a witness stack.
+ *
+ * @param[in] witness_stack Non-null.
+ * @return                  The number of witness stack items.
+ */
+UMKOINKERNEL_API size_t umkk_witness_stack_count_items(
+    const umkk_WitnessStack* witness_stack) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Serialize a witness stack item at a given index through the passed in
+ * callback.
+ *
+ * @param[in] witness_stack Non-null.
+ * @param[in] index         Index of the item in the witness stack.
+ * @param[in] writer        Non-null, function pointer for writing bytes.
+ * @param[in] user_data     Nullable, passed back through the writer callback.
+ * @return                  The return value of the writer.
+ * @pre                    index < umkk_witness_stack_count_items(witness_stack)
+ */
+UMKOINKERNEL_API int UMKOINKERNEL_WARN_UNUSED_RESULT umkk_witness_stack_get_item_at(
+    const umkk_WitnessStack* witness_stack,
+    size_t index,
+    umkk_WriteBytes writer,
+    void* user_data) UMKOINKERNEL_ARG_NONNULL(1, 3);
+
+/**
+ * @brief Copy a witness stack.
+ *
+ * @param[in] witness_stack Non-null.
+ * @return                  The copied witness stack.
+ */
+UMKOINKERNEL_API umkk_WitnessStack* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_witness_stack_copy(
+    const umkk_WitnessStack* witness_stack) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * Destroy the witness stack.
+ */
+UMKOINKERNEL_API void umkk_witness_stack_destroy(umkk_WitnessStack* witness_stack);
 
 ///@}
 
