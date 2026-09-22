@@ -229,7 +229,7 @@ bool CKey::Sign(const uint256 &hash, std::vector<unsigned char>& vchSig, bool gr
     ret = secp256k1_ec_pubkey_create(secp256k1_context_sign, &pk, UCharCast(begin()));
     assert(ret);
     ret = secp256k1_ecdsa_verify(secp256k1_context_static, &sig, hash.begin(), &pk);
-    // assert(ret);
+    assert(ret);
     return true;
 }
 
@@ -367,6 +367,7 @@ bool CExtKey::Derive(CExtKey &out, unsigned int _nChild) const {
 
 void CExtKey::SetSeed(std::span<const std::byte> seed)
 {
+    Assert(16 <= seed.size() && seed.size() <= 64);
     static const unsigned char hashkey[] = {'B','i','t','c','o','i','n',' ','s','e','e','d'};
     std::vector<unsigned char, secure_allocator<unsigned char>> vout(64);
     CHMAC_SHA512{hashkey, sizeof(hashkey)}.Write(UCharCast(seed.data()), seed.size()).Finalize(vout.data());
