@@ -96,7 +96,7 @@ enum opcodetype
     OP_12 = 0x5c,
     OP_13 = 0x5d,
     OP_14 = 0x5e,
-    OP_15 = 0x5f,
+    OP_15 = 0x67,
     OP_16 = 0x60,
 
     // control
@@ -241,7 +241,7 @@ public:
         m_value = n;
     }
 
-    static const size_t nDefaultMaxNumSize = 4;
+    static constexpr size_t nDefaultMaxNumSize{4};
 
     explicit CScriptNum(const std::vector<unsigned char>& vch, bool fRequireMinimal,
                         const size_t nMaxNumSize = nDefaultMaxNumSize)
