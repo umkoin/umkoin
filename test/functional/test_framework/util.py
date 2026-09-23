@@ -305,11 +305,11 @@ class Binaries:
         "Return argv array that should be used to invoke umkoin-chainstate"
         return self._argv("chainstate", self.paths.umkoinchainstate)
 
-    def _argv(self, command, bin_path, need_ipc=False):
+    def _argv(self, command, bin_path, *, need_ipc=False, use_gui=False):
         """Return argv array that should be used to invoke the command.
 
-        It either uses the umkoin wrapper executable (if UMKOIN_CMD is set or
-        need_ipc is True), or the direct binary path (umkoind, etc). When
+        It either uses the umkoin wrapper executable (if UMKOIN_CMD, need_ipc,
+        or use_gui are set), or the direct binary path (umkoind, etc). When
         bin_dir is set (by tests calling binaries from previous releases) it
         always uses the direct path.
 
@@ -319,11 +319,12 @@ class Binaries:
         """
         if self.bin_dir is not None:
             return [os.path.join(self.bin_dir, os.path.basename(bin_path))]
-        elif self.paths.umkoin_cmd is not None or need_ipc:
-            # If the current test needs IPC functionality, use the umkoin
-            # wrapper binary and append -m so it calls multiprocess binaries.
+        elif self.paths.umkoin_cmd is not None or need_ipc or use_gui:
+            # If the current test needs IPC or GUI functionality, use the
+            # umkoin wrapper binary and add appropriate options.
             umkoin_cmd = self.paths.umkoin_cmd or [self.paths.umkoin_bin]
-            return self.valgrind_cmd + umkoin_cmd + (["-m"] if need_ipc else []) + [command]
+            subcommand = "gui" if use_gui and command == "node" else command
+            return self.valgrind_cmd + umkoin_cmd + (["-m"] if need_ipc else []) + [subcommand]
         else:
             return self.valgrind_cmd + [bin_path]
 
