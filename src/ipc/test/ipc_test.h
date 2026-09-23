@@ -24,8 +24,4 @@ public:
     CScript passScript(CScript s) { return s; }
 };
 
-void IpcPipeTest();
-void IpcSocketPairTest();
-void IpcSocketTest(const fs::path& datadir);
-
 #endif // UMKOIN_IPC_TEST_IPC_TEST_H
