@@ -21,11 +21,9 @@ class GuiTest(UmkoinTestFramework):
         self.skip_if_no_gui()
         # On Windows, umkoin.exe exits immediately when launching umkoin-gui.exe,
         # causing the test framework's process monitor to see a premature node exit.
-        # On macOS, umkoin-qt's Cocoa code assumes NSApp is initialized, but the
-        # minimal Qt platform plugin skips that, causing crashes.
-        # Both issues are likely fixable.
-        if platform.system() in ("Windows", "Darwin"):
-            raise SkipTest("umkoin-gui test not supported on Windows or macOS")
+        # This issue is likely fixable.
+        if platform.system() == "Windows":
+            raise SkipTest("umkoin-gui test not supported on Windows")
 
     def setup_nodes(self):
         self.extra_init = [{"use_gui": True}]
