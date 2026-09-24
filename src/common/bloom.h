@@ -6,8 +6,9 @@
 #define UMKOIN_COMMON_BLOOM_H
 
 #include <serialize.h>
-#include <span.h>
 
+#include <cstdint>
+#include <span>
 #include <vector>
 
 class COutPoint;

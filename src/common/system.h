@@ -7,10 +7,10 @@
 #define UMKOIN_COMMON_SYSTEM_H
 
 #include <umkoin-build-config.h> // IWYU pragma: keep
+
 #include <util/time.h>
 
-#include <chrono>
-#include <cstdint>
+#include <cstddef>
 #include <optional>
 #include <string>
 
