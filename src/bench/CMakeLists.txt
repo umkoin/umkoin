@@ -52,6 +52,7 @@ add_executable(bench_umkoin
   strencodings.cpp
   txgraph.cpp
   txorphanage.cpp
+  uint256_blob.cpp
   util_time.cpp
   verify_script.cpp
 )
