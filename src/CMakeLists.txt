@@ -164,10 +164,10 @@ if(ENABLE_WALLET)
   if(BUILD_WALLET_TOOL)
     add_executable(umkoin-wallet
       umkoin-wallet.cpp
+      umkoin-wallet-res.rc
       init/umkoin-wallet.cpp
       wallet/wallettool.cpp
     )
-    add_windows_resources(umkoin-wallet umkoin-wallet-res.rc)
     add_windows_application_manifest(umkoin-wallet)
     target_link_libraries(umkoin-wallet
       core_interface
@@ -302,8 +302,10 @@ endif()
 
 # Umkoin wrapper executable that can call other executables.
 if(BUILD_UMKOIN_BIN)
-  add_executable(umkoin umkoin.cpp)
-  add_windows_resources(umkoin umkoin-res.rc)
+  add_executable(umkoin
+    umkoin.cpp
+    umkoin-res.rc
+  )
   add_windows_application_manifest(umkoin)
   target_link_libraries(umkoin core_interface umkoin_common umkoin_util)
   install_binary_component(umkoin HAS_MANPAGE)
@@ -313,9 +315,9 @@ endif()
 if(BUILD_DAEMON)
   add_executable(umkoind
     umkoind.cpp
+    umkoind-res.rc
     init/umkoind.cpp
   )
-  add_windows_resources(umkoind umkoind-res.rc)
   add_windows_application_manifest(umkoind)
   target_link_libraries(umkoind
     core_interface
@@ -352,8 +354,11 @@ target_link_libraries(umkoin_cli
 
 # Umkoin Core RPC client
 if(BUILD_CLI)
-  add_executable(umkoin-cli umkoin-cli.cpp init/basic.cpp)
-  add_windows_resources(umkoin-cli umkoin-cli-res.rc)
+  add_executable(umkoin-cli
+    umkoin-cli.cpp
+    umkoin-cli-res.rc
+    init/basic.cpp
+  )
   add_windows_application_manifest(umkoin-cli)
   target_link_libraries(umkoin-cli
     core_interface
@@ -367,8 +372,10 @@ endif()
 
 
 if(BUILD_TX)
-  add_executable(umkoin-tx umkoin-tx.cpp)
-  add_windows_resources(umkoin-tx umkoin-tx-res.rc)
+  add_executable(umkoin-tx
+    umkoin-tx.cpp
+    umkoin-tx-res.rc
+  )
   add_windows_application_manifest(umkoin-tx)
   target_link_libraries(umkoin-tx
     core_interface
@@ -381,8 +388,10 @@ endif()
 
 
 if(BUILD_UTIL)
-  add_executable(umkoin-util umkoin-util.cpp)
-  add_windows_resources(umkoin-util umkoin-util-res.rc)
+  add_executable(umkoin-util
+    umkoin-util.cpp
+    umkoin-util-res.rc
+  )
   add_windows_application_manifest(umkoin-util)
   target_link_libraries(umkoin-util
     core_interface

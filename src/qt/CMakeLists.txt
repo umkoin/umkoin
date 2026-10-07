@@ -255,12 +255,12 @@ endif()
 
 add_subdirectory(locale)
 
-add_executable(umkoin-qt
+add_executable(umkoin-qt WIN32
   main.cpp
+  res/umkoin-qt-res.rc
   ../init/umkoin-qt.cpp
 )
 
-add_windows_resources(umkoin-qt res/umkoin-qt-res.rc)
 add_windows_application_manifest(umkoin-qt)
 
 target_link_libraries(umkoin-qt
@@ -271,12 +271,9 @@ target_link_libraries(umkoin-qt
 
 import_plugins(umkoin-qt)
 install_binary_component(umkoin-qt HAS_MANPAGE)
-if(WIN32)
-  set_target_properties(umkoin-qt PROPERTIES WIN32_EXECUTABLE TRUE)
-endif()
 
 if(ENABLE_IPC)
-  add_executable(umkoin-gui
+  add_executable(umkoin-gui WIN32
     main.cpp
     ../init/umkoin-gui.cpp
   )
@@ -288,9 +285,6 @@ if(ENABLE_IPC)
   )
   import_plugins(umkoin-gui)
   install_binary_component(umkoin-gui INTERNAL)
-  if(WIN32)
-    set_target_properties(umkoin-gui PROPERTIES WIN32_EXECUTABLE TRUE)
-  endif()
 endif()
 
 if(BUILD_GUI_TESTS)
