@@ -1124,55 +1124,55 @@ class UmkoinTestFramework(metaclass=UmkoinTestMetaClass):
 
     def is_bench_compiled(self):
         """Checks whether bench_umkoin was compiled."""
-        return self.config["components"].getboolean("BUILD_BENCH")
+        return self.config.getboolean("components", "BUILD_BENCH")
 
     def is_cli_compiled(self):
         """Checks whether umkoin-cli was compiled."""
-        return self.config["components"].getboolean("ENABLE_CLI")
+        return self.config.getboolean("components", "ENABLE_CLI")
 
     def is_external_signer_compiled(self):
         """Checks whether external signer support was compiled."""
-        return self.config["components"].getboolean("ENABLE_EXTERNAL_SIGNER")
+        return self.config.getboolean("components", "ENABLE_EXTERNAL_SIGNER")
 
     def is_wallet_compiled(self):
         """Checks whether the wallet module was compiled."""
-        return self.config["components"].getboolean("ENABLE_WALLET")
+        return self.config.getboolean("components", "ENABLE_WALLET")
 
     def is_wallet_tool_compiled(self):
         """Checks whether umkoin-wallet was compiled."""
-        return self.config["components"].getboolean("ENABLE_WALLET_TOOL")
+        return self.config.getboolean("components", "ENABLE_WALLET_TOOL")
 
     def is_umkoin_tx_compiled(self):
         """Checks whether umkoin-tx was compiled."""
-        return self.config["components"].getboolean("BUILD_UMKOIN_TX")
+        return self.config.getboolean("components", "BUILD_UMKOIN_TX")
 
     def is_umkoin_util_compiled(self):
         """Checks whether umkoin-util was compiled."""
-        return self.config["components"].getboolean("ENABLE_UMKOIN_UTIL")
+        return self.config.getboolean("components", "ENABLE_UMKOIN_UTIL")
 
     def is_umkoin_chainstate_compiled(self):
         """Checks whether umkoin-chainstate was compiled."""
-        return self.config["components"].getboolean("ENABLE_UMKOIN_CHAINSTATE")
+        return self.config.getboolean("components", "ENABLE_UMKOIN_CHAINSTATE")
 
     def is_zmq_compiled(self):
         """Checks whether the zmq module was compiled."""
-        return self.config["components"].getboolean("ENABLE_ZMQ")
+        return self.config.getboolean("components", "ENABLE_ZMQ")
 
     def is_embedded_asmap_compiled(self):
         """Checks whether ASMap data was embedded during compilation."""
-        return self.config["components"].getboolean("ENABLE_EMBEDDED_ASMAP")
+        return self.config.getboolean("components", "ENABLE_EMBEDDED_ASMAP")
 
     def is_usdt_compiled(self):
         """Checks whether the USDT tracepoints were compiled."""
-        return self.config["components"].getboolean("ENABLE_USDT_TRACEPOINTS")
+        return self.config.getboolean("components", "ENABLE_USDT_TRACEPOINTS")
 
     def is_ipc_compiled(self):
         """Checks whether ipc was compiled."""
-        return self.config["components"].getboolean("ENABLE_IPC")
+        return self.config.getboolean("components", "ENABLE_IPC")
 
     def is_gui_compiled(self):
         """Checks whether the GUI was compiled."""
-        return self.config["components"].getboolean("BUILD_GUI", fallback=False)
+        return self.config.getboolean("components", "BUILD_GUI")
 
     def has_blockfile(self, node, filenum: str):
         return (node.blocks_path/ f"blk{filenum}.dat").is_file()
