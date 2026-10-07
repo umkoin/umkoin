@@ -42,14 +42,14 @@ namespace {
 // Set by EnvPosixTestHelper::SetReadOnlyMMapLimit() and MaxOpenFiles().
 int g_open_read_only_file_limit = -1;
 
-// Up to 4096 mmap regions for 64-bit binaries; none for 32-bit.
-constexpr const int kDefaultMmapLimit = (sizeof(void*) >= 8) ? 4096 : 0;
+// Up to 1000 mmap regions for 64-bit binaries; none for 32-bit.
+constexpr const int kDefaultMmapLimit = (sizeof(void*) >= 8) ? 1000 : 0;
 
 // Can be set using EnvPosixTestHelper::SetReadOnlyMMapLimit().
 int g_mmap_limit = kDefaultMmapLimit;
 
 // Common flags defined for all posix open operations
-#if defined(HAVE_O_CLOEXEC)
+#if HAVE_O_CLOEXEC
 constexpr const int kOpenBaseFlags = O_CLOEXEC;
 #else
 constexpr const int kOpenBaseFlags = 0;
@@ -218,7 +218,7 @@ class PosixMmapReadableFile final : public RandomAccessFile {
   // over the ownership of the region.
   //
   // |mmap_limiter| must outlive this instance. The caller must have already
-  // aquired the right to use one mmap region, which will be released when this
+  // acquired the right to use one mmap region, which will be released when this
   // instance is destroyed.
   PosixMmapReadableFile(std::string filename, char* mmap_base, size_t length,
                         Limiter* mmap_limiter)
@@ -730,9 +730,9 @@ class PosixEnv : public Env {
   }
 
  private:
-  void BackgroundThreadMain();
+  [[noreturn]] void BackgroundThreadMain();
 
-  static void BackgroundThreadEntryPoint(PosixEnv* env) {
+  [[noreturn]] static void BackgroundThreadEntryPoint(PosixEnv* env) {
     env->BackgroundThreadMain();
   }
 
@@ -741,7 +741,7 @@ class PosixEnv : public Env {
   // Instances are constructed on the thread calling Schedule() and used on the
   // background thread.
   //
-  // This structure is thread-safe beacuse it is immutable.
+  // This structure is thread-safe because it is immutable.
   struct BackgroundWorkItem {
     explicit BackgroundWorkItem(void (*function)(void* arg), void* arg)
         : function(function), arg(arg) {}
@@ -854,9 +854,13 @@ class SingletonEnv {
 #endif  // !defined(NDEBUG)
     static_assert(sizeof(env_storage_) >= sizeof(EnvType),
                   "env_storage_ will not fit the Env");
-    static_assert(alignof(decltype(env_storage_)) >= alignof(EnvType),
+    static_assert(std::is_standard_layout_v<SingletonEnv<EnvType>>);
+    static_assert(
+        offsetof(SingletonEnv<EnvType>, env_storage_) % alignof(EnvType) == 0,
+        "env_storage_ does not meet the Env's alignment needs");
+    static_assert(alignof(SingletonEnv<EnvType>) % alignof(EnvType) == 0,
                   "env_storage_ does not meet the Env's alignment needs");
-    new (&env_storage_) EnvType();
+    new (env_storage_) EnvType();
   }
   ~SingletonEnv() = default;
 
@@ -872,8 +876,7 @@ class SingletonEnv {
   }
 
  private:
-  typename std::aligned_storage<sizeof(EnvType), alignof(EnvType)>::type
-      env_storage_;
+  alignas(EnvType) char env_storage_[sizeof(EnvType)];
 #if !defined(NDEBUG)
   static std::atomic<bool> env_initialized_;
 #endif  // !defined(NDEBUG)

@@ -81,10 +81,7 @@ class ScopedHandle {
 
   ScopedHandle& operator=(const ScopedHandle&) = delete;
 
-  ScopedHandle& operator=(ScopedHandle&& rhs) noexcept {
-    if (this != &rhs) handle_ = rhs.Release();
-    return *this;
-  }
+  ScopedHandle& operator=(ScopedHandle&& rhs) = delete;
 
   bool Close() {
     if (!is_valid()) {
@@ -194,7 +191,7 @@ class WindowsRandomAccessFile : public RandomAccessFile {
   Status Read(uint64_t offset, size_t n, Slice* result,
               char* scratch) const override {
     DWORD bytes_read = 0;
-    OVERLAPPED overlapped = {0};
+    OVERLAPPED overlapped = {};
 
     overlapped.OffsetHigh = static_cast<DWORD>(offset >> 32);
     overlapped.Offset = static_cast<DWORD>(offset);
@@ -678,9 +675,9 @@ class WindowsEnv : public Env {
   }
 
  private:
-  void BackgroundThreadMain();
+  [[noreturn]] void BackgroundThreadMain();
 
-  static void BackgroundThreadEntryPoint(WindowsEnv* env) {
+  [[noreturn]] static void BackgroundThreadEntryPoint(WindowsEnv* env) {
     env->BackgroundThreadMain();
   }
 
@@ -689,7 +686,7 @@ class WindowsEnv : public Env {
   // Instances are constructed on the thread calling Schedule() and used on the
   // background thread.
   //
-  // This structure is thread-safe beacuse it is immutable.
+  // This structure is thread-safe because it is immutable.
   struct BackgroundWorkItem {
     explicit BackgroundWorkItem(void (*function)(void* arg), void* arg)
         : function(function), arg(arg) {}
@@ -802,9 +799,13 @@ class SingletonEnv {
 #endif  // !defined(NDEBUG)
     static_assert(sizeof(env_storage_) >= sizeof(EnvType),
                   "env_storage_ will not fit the Env");
-    static_assert(alignof(decltype(env_storage_)) >= alignof(EnvType),
+    static_assert(std::is_standard_layout_v<SingletonEnv<EnvType>>);
+    static_assert(
+        offsetof(SingletonEnv<EnvType>, env_storage_) % alignof(EnvType) == 0,
+        "env_storage_ does not meet the Env's alignment needs");
+    static_assert(alignof(SingletonEnv<EnvType>) % alignof(EnvType) == 0,
                   "env_storage_ does not meet the Env's alignment needs");
-    new (&env_storage_) EnvType();
+    new (env_storage_) EnvType();
   }
   ~SingletonEnv() = default;
 
@@ -820,8 +821,7 @@ class SingletonEnv {
   }
 
  private:
-  typename std::aligned_storage<sizeof(EnvType), alignof(EnvType)>::type
-      env_storage_;
+  alignas(EnvType) char env_storage_[sizeof(EnvType)];
 #if !defined(NDEBUG)
   static std::atomic<bool> env_initialized_;
 #endif  // !defined(NDEBUG)
