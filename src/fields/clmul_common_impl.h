@@ -12,6 +12,7 @@
 
 #include "../int_utils.h"
 #include "../lintrans.h"
+#include "../util.h"
 
 namespace {
 
@@ -28,7 +29,7 @@ namespace {
 #  define NO_SANITIZE_MEMORY
 #endif
 
-template<typename I, int BITS, I MOD> NO_SANITIZE_MEMORY I MulWithClMulReduce(I a, I b)
+template<typename I, int BITS, I MOD> NO_SANITIZE_MEMORY MAYBE_UNUSED I MulWithClMulReduce(I a, I b)
 {
     static constexpr I MASK = Mask<BITS, I>();
 
@@ -36,7 +37,7 @@ template<typename I, int BITS, I MOD> NO_SANITIZE_MEMORY I MulWithClMulReduce(I 
     __m128i product = _mm_clmulepi64_si128(_mm_cvtsi64_si128((uint64_t)a), _mm_cvtsi64_si128((uint64_t)b), 0x00);
     if (BITS <= 32) {
         __m128i high1 = _mm_srli_epi64(product, BITS);
-        __m128i red1 = _mm_clmulepi64_si128(high1, MOD128, 0x00); 
+        __m128i red1 = _mm_clmulepi64_si128(high1, MOD128, 0x00);
         __m128i high2 = _mm_srli_epi64(red1, BITS);
         __m128i red2 = _mm_clmulepi64_si128(high2, MOD128, 0x00);
         return _mm_cvtsi128_si64(_mm_xor_si128(_mm_xor_si128(product, red1), red2)) & MASK;
@@ -65,7 +66,7 @@ template<typename I, int BITS, I MOD> NO_SANITIZE_MEMORY I MulWithClMulReduce(I 
     }
 }
 
-template<typename I, int BITS, int POS> NO_SANITIZE_MEMORY I MulTrinomial(I a, I b)
+template<typename I, int BITS, int POS> NO_SANITIZE_MEMORY MAYBE_UNUSED I MulTrinomial(I a, I b)
 {
     static constexpr I MASK = Mask<BITS, I>();
 
