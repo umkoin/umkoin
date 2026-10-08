@@ -24,6 +24,7 @@ add_executable(test_umkoin
   blockfilter_index_tests.cpp
   blockfilter_tests.cpp
   blockmanager_tests.cpp
+  blockpolicyestimator_tests.cpp
   bloom_tests.cpp
   bswap_tests.cpp
   umksignals_tests.cpp
@@ -44,6 +45,7 @@ add_executable(test_umkoin
   denialofservice_tests.cpp
   descriptor_tests.cpp
   disconnected_transactions.cpp
+  fees_util_tests.cpp
   feefrac_tests.cpp
   feerounder_tests.cpp
   flatfile_tests.cpp
@@ -58,6 +60,7 @@ add_executable(test_umkoin
   key_tests.cpp
   logging_tests.cpp
   mempool_tests.cpp
+  mempool_fee_estimator_tests.cpp
   merkle_tests.cpp
   merkleblock_tests.cpp
   miner_tests.cpp
@@ -76,7 +79,6 @@ add_executable(test_umkoin
   pcp_tests.cpp
   peerman_tests.cpp
   pmt_tests.cpp
-  policyestimator_tests.cpp
   pool_tests.cpp
   pow_tests.cpp
   prevector_tests.cpp
