@@ -21,7 +21,7 @@ UMKOIND_OPTS="${UMKOIND_OPTS:-${UMKOIN_OPTS}}"
 name="Umkoin Core Daemon"
 description="Umkoin cryptocurrency P2P network daemon"
 
-command="/usr/bin/umkoind"
+command="${UMKOIND_BIN}"
 command_args="-pid=\"${UMKOIND_PIDFILE}\" \
 		-conf=\"${UMKOIND_CONFIGFILE}\" \
 		-datadir=\"${UMKOIND_DATADIR}\" \
@@ -30,6 +30,7 @@ command_args="-pid=\"${UMKOIND_PIDFILE}\" \
 
 required_files="${UMKOIND_CONFIGFILE}"
 start_stop_daemon_args="-u ${UMKOIND_USER} \
+			-g ${UMKOIND_GROUP} \
 			-N ${UMKOIND_NICE} -w 2000"
 pidfile="${UMKOIND_PIDFILE}"
 
