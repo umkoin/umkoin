@@ -37,7 +37,6 @@
 
 #include <univalue.h>
 
-using http_umkoin::HTTPRequest;
 using node::GetTransaction;
 using node::NodeContext;
 using util::SplitString;

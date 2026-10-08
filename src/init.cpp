@@ -148,10 +148,6 @@
 using common::InvalidPortErrMsg;
 using common::ResolveErrMsg;
 
-using http_umkoin::InitHTTPServer;
-using http_umkoin::InterruptHTTPServer;
-using http_umkoin::StartHTTPServer;
-using http_umkoin::StopHTTPServer;
 using node::ApplyArgsManOptions;
 using node::BlockManager;
 using node::CalculateCacheSizes;
