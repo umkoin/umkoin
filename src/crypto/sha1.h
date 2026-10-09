@@ -5,8 +5,8 @@
 #ifndef UMKOIN_CRYPTO_SHA1_H
 #define UMKOIN_CRYPTO_SHA1_H
 
+#include <cstddef>
 #include <cstdint>
-#include <cstdlib>
 
 /** A hasher class for SHA1. */
 class CSHA1

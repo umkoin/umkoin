@@ -5,8 +5,8 @@
 #ifndef UMKOIN_CRYPTO_SHA512_H
 #define UMKOIN_CRYPTO_SHA512_H
 
+#include <cstddef>
 #include <cstdint>
-#include <cstdlib>
 
 /** A hasher class for SHA-512. */
 class CSHA512
