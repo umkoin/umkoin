@@ -555,7 +555,8 @@ static RPCResult OpenRPCDocResult()
                         {RPCResult::Type::OBJ, "result", "Method result.",
                             {
                                 {RPCResult::Type::STR, "name", "Result name."},
-                                {RPCResult::Type::ANY, "schema", "JSON Schema for the result."},
+                                {RPCResult::Type::ANY, "schema", "JSON Schema for the result. Numeric schemas may include "
+                                    "\"x-umkoin-unit\" property: \"amount\" which denotes a Umkoin amount in UMK."},
                             }},
                         {RPCResult::Type::STR, "x-umkoin-category", "RPC category."},
                     }}}},
