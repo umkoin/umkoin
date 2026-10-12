@@ -6,6 +6,8 @@
 #ifndef UMKOIN_RPC_PROTOCOL_H
 #define UMKOIN_RPC_PROTOCOL_H
 
+#include <string_view>
+
 //! HTTP status codes
 enum HTTPStatusCode : int
 {
