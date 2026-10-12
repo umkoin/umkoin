@@ -156,7 +156,7 @@ As an alternative to fetching commits directly, when looking at pull requests by
         url = git@github.com:umkoin/umkoin.git
 ```
 
-This will add an `upstream-pull` remote to your git repository, which can be fetched using `git fetch --all` or `git fetch upstream-pull`. It will download and store on disk quite a lot of data (all PRs, including merged and closed ones). Afterwards, you can use `upstream-pull/NUMBER/head` in arguments to `git show`, `git checkout` and anywhere a commit id would be acceptable to see the changes from pull request NUMBER.
+This will add an `upstream-pull` remote to your git repository, which can be fetched using `git fetch --all` or `git fetch upstream-pull`. It will download and store on disk quite a lot of data (all PRs, including merged and closed ones). Afterwards, you can use `upstream-pull/NUMBER` in arguments to `git show`, `git checkout` and anywhere a commit id would be acceptable to see the changes from pull request NUMBER.
 
 ### Fetch and update PRs individually
 
@@ -174,7 +174,7 @@ git fetch upstream pull/<number>/head:pr-<number> && git switch pr-<number>
 
 > [!NOTE]
 > The remote named "upstream" here must be the one that the pull request was opened against.
-> e.g. github.com/umkoin/umkoin.git
+> e.g. github.com/bitcoin/bitcoin.git or for the GUI github.com/bitcoin-core/gui
 
 Make these easier to use by adding aliases to your git config:
 
