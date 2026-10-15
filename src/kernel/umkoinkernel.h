@@ -146,13 +146,10 @@ typedef struct umkk_TransactionOutput umkk_TransactionOutput;
 /**
  * Opaque data structure for holding a logging connection.
  *
- * The logging connection can be used to manually stop logging.
- *
- * Messages that were logged before a connection is created are buffered in a
- * 1MB buffer. Logging can alternatively be permanently disabled by calling
- * @ref umkk_logging_disable. Functions changing the logging settings are
- * global and change the settings for all existing umkk_LoggingConnection
- * instances.
+ * Log entries are delivered to the connection's callback for as long as the
+ * connection exists. Entries logged before a connection is created are not
+ * delivered. Functions changing the logging settings are global and change
+ * the settings for all existing umkk_LoggingConnection instances.
  */
 typedef struct umkk_LoggingConnection umkk_LoggingConnection;
 
@@ -334,6 +331,13 @@ typedef struct umkk_PrecomputedTransactionData umkk_PrecomputedTransactionData;
 typedef struct umkk_Txid umkk_Txid;
 
 /**
+ * Opaque data structure for holding a umkk_Wtxid.
+ *
+ * This is a type-safe identifier for a transaction that commits to witness data.
+ */
+typedef struct umkk_Wtxid umkk_Wtxid;
+
+/**
  * Opaque data structure for holding a umkk_BlockHeader.
  */
 typedef struct umkk_BlockHeader umkk_BlockHeader;
@@ -349,13 +353,89 @@ typedef uint8_t umkk_Warning;
 #define umkk_Warning_UNKNOWN_NEW_RULES_ACTIVATED ((umkk_Warning)(0))
 #define umkk_Warning_LARGE_WORK_INVALID_CHAIN ((umkk_Warning)(1))
 
+/**
+ * A collection of logging categories that may be encountered by kernel code.
+ */
+typedef uint8_t umkk_LogCategory;
+#define umkk_LogCategory_NONE ((umkk_LogCategory)(0)) //!< Not tied to a specific category, e.g. most INFO, WARNING and ERROR entries.
+#define umkk_LogCategory_BENCH ((umkk_LogCategory)(1))
+#define umkk_LogCategory_BLOCKSTORAGE ((umkk_LogCategory)(2))
+#define umkk_LogCategory_COINDB ((umkk_LogCategory)(3))
+#define umkk_LogCategory_LEVELDB ((umkk_LogCategory)(4))
+#define umkk_LogCategory_MEMPOOL ((umkk_LogCategory)(5))
+#define umkk_LogCategory_PRUNE ((umkk_LogCategory)(6))
+#define umkk_LogCategory_RAND ((umkk_LogCategory)(7))
+#define umkk_LogCategory_REINDEX ((umkk_LogCategory)(8))
+#define umkk_LogCategory_VALIDATION ((umkk_LogCategory)(9))
+#define umkk_LogCategory_KERNEL ((umkk_LogCategory)(10))
+#define umkk_LogCategory_TXPACKAGES ((umkk_LogCategory)(11))
+#define umkk_LogCategory_LOCK ((umkk_LogCategory)(12))
+
+/**
+ * The severity of a log statement.
+ */
+typedef uint8_t umkk_LogLevel;
+#define umkk_LogLevel_TRACE ((umkk_LogLevel)(0))
+#define umkk_LogLevel_DEBUG ((umkk_LogLevel)(1))
+#define umkk_LogLevel_INFO ((umkk_LogLevel)(2))
+#define umkk_LogLevel_WARNING ((umkk_LogLevel)(3))
+#define umkk_LogLevel_ERROR ((umkk_LogLevel)(4))
+
+/**
+ * A log entry passed to the logging callback.
+ *
+ * String fields are not guaranteed to be null-terminated. Always use the
+ * accompanying *_len field to determine their length.
+ */
+typedef struct {
+    //! Log message text. Not escaped, so it may contain newlines and other
+    //! control characters.
+    const char* message;
+    //! Length of message.
+    size_t message_len;
+    //! Name of the thread that produced the log message.
+    const char* thread_name;
+    //! Length of thread_name.
+    size_t thread_name_len;
+    //! Wall-clock time when the entry was logged, in nanoseconds since the
+    //! Unix epoch.
+    int64_t timestamp_ns;
+    //! Mock time in effect when the entry was logged, in seconds since the Unix
+    //! epoch, or 0 if no mock time is set (see umkk_set_mock_time).
+    int64_t mocktime_s;
+    //! Name of the source file that produced the log statement.
+    const char* file_name;
+    //! Length of file_name.
+    size_t file_name_len;
+    //! Name of the function that produced the log message.
+    const char* function_name;
+    //! Length of function_name.
+    size_t function_name_len;
+    //! Line number of the source code that produced the log statement.
+    uint32_t line;
+    //! Log severity level.
+    umkk_LogLevel level;
+    //! Log category.
+    umkk_LogCategory category;
+} umkk_LogEntry;
+
 /** Callback function types */
 
 /**
- * Function signature for the global logging callback. All umkoin kernel
- * internal logs will pass through this callback.
+ * Function signature for a logging callback. Receives kernel log entries at or
+ * above the minimum level (see @ref umkk_logging_set_min_level) while its
+ * umkk_LoggingConnection exists.
+ *
+ * The callback may be invoked from any thread. Invocations are serialized: no
+ * two invocations run at the same time, and destroying a umkk_LoggingConnection
+ * waits for an in-flight invocation of its callback to return. The callback
+ * must not call any kernel API function (this may deadlock), and should return
+ * quickly since it blocks every kernel thread that logs.
+ *
+ * @param[in] user_data User-defined opaque structure.
+ * @param[in] entry     Log entry. Valid only for the duration of the callback.
  */
-typedef void (*umkk_LogCallback)(void* user_data, const char* message, size_t message_len);
+typedef void (*umkk_LogCallback)(void* user_data, const umkk_LogEntry* entry);
 
 /**
  * Function signature for freeing user data.
@@ -384,7 +464,11 @@ typedef void (*umkk_ValidationInterfaceBlockDisconnected)(void* user_data, umkk_
 /**
  * Function signature for serializing data.
  *
- * Returns 0 to indicate success.
+ * @param[in] bytes    The data to write. Can be null if size is 0.
+ * @param[in] size     The number of bytes in the data.
+ * @param[in] userdata Holds the user-defined opaque structure that was given
+ *                     with the writer.
+ * @return             0 on success.
  */
 typedef int (*umkk_WriteBytes)(const void* bytes, size_t size, void* userdata);
 
@@ -474,43 +558,6 @@ typedef struct {
     umkk_NotifyFlushError flush_error;      //!< An error encountered when flushing data to disk.
     umkk_NotifyFatalError fatal_error;      //!< An unrecoverable system error encountered by the library.
 } umkk_NotificationInterfaceCallbacks;
-
-/**
- * A collection of logging categories that may be encountered by kernel code.
- */
-typedef uint8_t umkk_LogCategory;
-#define umkk_LogCategory_ALL ((umkk_LogCategory)(0))
-#define umkk_LogCategory_BENCH ((umkk_LogCategory)(1))
-#define umkk_LogCategory_BLOCKSTORAGE ((umkk_LogCategory)(2))
-#define umkk_LogCategory_COINDB ((umkk_LogCategory)(3))
-#define umkk_LogCategory_LEVELDB ((umkk_LogCategory)(4))
-#define umkk_LogCategory_MEMPOOL ((umkk_LogCategory)(5))
-#define umkk_LogCategory_PRUNE ((umkk_LogCategory)(6))
-#define umkk_LogCategory_RAND ((umkk_LogCategory)(7))
-#define umkk_LogCategory_REINDEX ((umkk_LogCategory)(8))
-#define umkk_LogCategory_VALIDATION ((umkk_LogCategory)(9))
-#define umkk_LogCategory_KERNEL ((umkk_LogCategory)(10))
-
-/**
- * The level at which logs should be produced.
- */
-typedef uint8_t umkk_LogLevel;
-#define umkk_LogLevel_TRACE ((umkk_LogLevel)(0))
-#define umkk_LogLevel_DEBUG ((umkk_LogLevel)(1))
-#define umkk_LogLevel_INFO ((umkk_LogLevel)(2))
-
-/**
- * Options controlling the format of log messages.
- *
- * Set fields as non-zero to indicate true.
- */
-typedef struct {
-    int log_timestamps;               //!< Prepend a timestamp to log messages.
-    int log_time_micros;              //!< Log timestamps in microsecond precision.
-    int log_threadnames;              //!< Prepend the name of the thread to log messages.
-    int log_sourcelocations;          //!< Prepend the source location to log messages.
-    int always_print_category_levels; //!< Prepend the log category and level to log messages.
-} umkk_LoggingOptions;
 
 /**
  * A collection of status codes that may be issued by the script verify function.
@@ -664,6 +711,15 @@ UMKOINKERNEL_API size_t umkk_transaction_count_inputs(
     const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
+ * @brief Get a transaction's version.
+ *
+ * @param[in] transaction Non-null.
+ * @return                The version.
+ */
+UMKOINKERNEL_API uint32_t umkk_transaction_get_version(
+    const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
  * @brief Get a transaction's nLockTime value.
  *
  * @param[in] transaction Non-null.
@@ -680,6 +736,25 @@ UMKOINKERNEL_API uint32_t umkk_transaction_get_locktime(
  * @return                The txid.
  */
 UMKOINKERNEL_API const umkk_Txid* umkk_transaction_get_txid(
+    const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Check whether a transaction has witness data.
+ *
+ * @param[in] transaction Non-null.
+ * @return                1 if the transaction has witness data, 0 if not.
+ */
+UMKOINKERNEL_API int umkk_transaction_has_witness(
+    const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get the wtxid of a transaction. The returned wtxid is not owned and
+ * depends on the lifetime of the transaction.
+ *
+ * @param[in] transaction Non-null.
+ * @return                The wtxid.
+ */
+UMKOINKERNEL_API const umkk_Wtxid* umkk_transaction_get_wtxid(
     const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -872,71 +947,29 @@ UMKOINKERNEL_API void umkk_transaction_output_destroy(umkk_TransactionOutput* tr
 ///@{
 
 /**
- * @brief This disables the global internal logger. No log messages will be
- * buffered internally anymore once this is called and the buffer is cleared.
- * This function should only be called once and is not thread or re-entry safe.
- * Log messages will be buffered until this function is called, or a logging
- * connection is created. This must not be called while a logging connection
- * already exists.
- */
-UMKOINKERNEL_API void umkk_logging_disable();
-
-/**
- * @brief Set some options for the global internal logger. This changes global
- * settings and will override settings for all existing @ref
+ * @brief Set the minimum log level. Messages below this level are not delivered
+ * to logging callbacks. Defaults to Info.
+ *
+ * This changes a global setting and will affect all existing @ref
  * umkk_LoggingConnection instances.
  *
- * @param[in] options Sets formatting options of the log messages.
+ * @param[in] level Minimum log level.
  */
-UMKOINKERNEL_API void umkk_logging_set_options(umkk_LoggingOptions options);
+UMKOINKERNEL_API void umkk_logging_set_min_level(umkk_LogLevel level);
 
 /**
- * @brief Set the log level of the global internal logger. This does not
- * enable the selected categories. Use @ref umkk_logging_enable_category to
- * start logging from a specific, or all categories. This changes a global
- * setting and will override settings for all existing
- * @ref umkk_LoggingConnection instances.
+ * @brief Start logging messages through the provided callback.
  *
- * @param[in] category If umkk_LogCategory_ALL is chosen, sets both the global fallback log level
- *                     used by all categories that don't have a specific level set, and also
- *                     sets the log level for messages logged with the umkk_LogCategory_ALL category itself.
- *                     For any other category, sets a category-specific log level that overrides
- *                     the global fallback for that category only.
-
- * @param[in] level    Log level at which the log category is set.
- */
-UMKOINKERNEL_API void umkk_logging_set_level_category(umkk_LogCategory category, umkk_LogLevel level);
-
-/**
- * @brief Enable a specific log category for the global internal logger. This
- * changes a global setting and will override settings for all existing @ref
- * umkk_LoggingConnection instances.
- *
- * @param[in] category If umkk_LogCategory_ALL is chosen, all categories will be enabled.
- */
-UMKOINKERNEL_API void umkk_logging_enable_category(umkk_LogCategory category);
-
-/**
- * @brief Disable a specific log category for the global internal logger. This
- * changes a global setting and will override settings for all existing @ref
- * umkk_LoggingConnection instances.
- *
- * @param[in] category If umkk_LogCategory_ALL is chosen, all categories will be disabled.
- */
-UMKOINKERNEL_API void umkk_logging_disable_category(umkk_LogCategory category);
-
-/**
- * @brief Start logging messages through the provided callback. Log messages
- * produced before this function is first called are buffered and on calling this
- * function are logged immediately.
- *
- * @param[in] log_callback               Non-null, function through which messages will be logged.
+ * @param[in] log_callback               Non-null, function through which log entries will be delivered.
  * @param[in] user_data                  Nullable, holds a user-defined opaque structure. Is passed back
  *                                       to the user through the callback. If the user_data_destroy_callback
  *                                       is also defined it is assumed that ownership of the user_data is passed
  *                                       to the created logging connection.
- * @param[in] user_data_destroy_callback Nullable, function for freeing the user data.
- * @return                               A new kernel logging connection, or null on error.
+ * @param[in] user_data_destroy_callback Nullable, function for freeing the user data. Not called
+ *                                       if user_data is null.
+ * @return                               A new kernel logging connection, or null on error. On error,
+ *                                       user_data_destroy_callback is invoked if both it and user_data
+ *                                       are non-null.
  */
 UMKOINKERNEL_API umkk_LoggingConnection* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_logging_connection_create(
     umkk_LogCallback log_callback,
@@ -1872,6 +1905,46 @@ UMKOINKERNEL_API void umkk_txid_destroy(umkk_Txid* txid);
 
 ///@}
 
+/** @name Wtxid
+ * Functions for working with wtxids.
+ */
+///@{
+
+/**
+ * @brief Copy a wtxid.
+ *
+ * @param[in] wtxid Non-null.
+ * @return          The copied wtxid.
+ */
+UMKOINKERNEL_API umkk_Wtxid* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_wtxid_copy(
+    const umkk_Wtxid* wtxid) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Check if two wtxids are equal.
+ *
+ * @param[in] wtxid1 Non-null.
+ * @param[in] wtxid2 Non-null.
+ * @return           0 if the wtxid is not equal.
+ */
+UMKOINKERNEL_API int umkk_wtxid_equals(
+    const umkk_Wtxid* wtxid1, const umkk_Wtxid* wtxid2) UMKOINKERNEL_ARG_NONNULL(1, 2);
+
+/**
+ * @brief Serializes the wtxid to bytes.
+ *
+ * @param[in] wtxid    Non-null.
+ * @param[out] output  The serialized wtxid.
+ */
+UMKOINKERNEL_API void umkk_wtxid_to_bytes(
+    const umkk_Wtxid* wtxid, unsigned char output[32]) UMKOINKERNEL_ARG_NONNULL(1, 2);
+
+/**
+ * Destroy the wtxid.
+ */
+UMKOINKERNEL_API void umkk_wtxid_destroy(umkk_Wtxid* wtxid);
+
+///@}
+
 /** @name Coin
  * Functions for working with coins.
  */
@@ -2011,6 +2084,15 @@ UMKOINKERNEL_API umkk_BlockHash* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_block_head
  */
 UMKOINKERNEL_API const umkk_BlockHash* umkk_block_header_get_prev_hash(
     const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get the Merkle root from umkk_BlockHeader.
+ *
+ * @param[in] header Non-null umkk_BlockHeader.
+ * @param[out] output The 32-byte Merkle root.
+ */
+UMKOINKERNEL_API void umkk_block_header_get_merkle_root(
+    const umkk_BlockHeader* header, unsigned char output[32]) UMKOINKERNEL_ARG_NONNULL(1, 2);
 
 /**
  * @brief Get the timestamp from umkk_BlockHeader.

@@ -11,12 +11,14 @@
 #include <chainparams.h>
 #include <clientversion.h>
 #include <core_io.h>
+#include <crypto/hex_base.h>
 #include <net.h>
 #include <net_permissions.h>
 #include <net_processing.h>
 #include <net_types.h>
 #include <netaddress.h>
 #include <netbase.h>
+#include <netgroup.h>
 #include <node/connection_types.h>
 #include <node/context.h>
 #include <node/protocol_version.h>
@@ -31,6 +33,7 @@
 #include <sync.h>
 #include <tinyformat.h>
 #include <txmempool.h>
+#include <uint256.h>
 #include <univalue.h>
 #include <util/chaintype.h>
 #include <util/check.h>
@@ -40,7 +43,6 @@
 #include <validation.h>
 #ifdef ENABLE_EMBEDDED_ASMAP
 #include <common/args.h>
-#include <hash.h>
 #include <node/data/ip_asn.dat.h>
 #include <streams.h>
 #include <util/asmap.h>
@@ -50,10 +52,10 @@
 #include <atomic>
 #include <compare>
 #include <cstdint>
-#include <functional>
 #include <map>
 #include <memory>
 #include <optional>
+#include <span>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -173,6 +175,7 @@ static RPCMethod getpeerinfo()
                     {RPCResult::Type::NUM_TIME, "lastrecv", "The " + UNIX_EPOCH_TIME + " of the last receive"},
                     {RPCResult::Type::NUM_TIME, "last_transaction", "The " + UNIX_EPOCH_TIME + " of the last valid transaction received from this peer"},
                     {RPCResult::Type::NUM_TIME, "last_block", "The " + UNIX_EPOCH_TIME + " of the last block received from this peer"},
+                    {RPCResult::Type::NUM_TIME, "last_block_announcement", "The " + UNIX_EPOCH_TIME + " this peer was first to announce a block"},
                     {RPCResult::Type::NUM, "bytessent", "The total bytes sent"},
                     {RPCResult::Type::NUM, "bytesrecv", "The total bytes received"},
                     {RPCResult::Type::NUM_TIME, "conntime", "The " + UNIX_EPOCH_TIME + " of the connection"},
@@ -270,6 +273,7 @@ static RPCMethod getpeerinfo()
         obj.pushKV("lastrecv", TicksSinceEpoch<std::chrono::seconds>(stats.m_last_recv));
         obj.pushKV("last_transaction", count_seconds(stats.m_last_tx_time));
         obj.pushKV("last_block", count_seconds(stats.m_last_block_time));
+        obj.pushKV("last_block_announcement", TicksSinceEpoch<std::chrono::seconds>(statestats.m_last_block_announcement));
         obj.pushKV("bytessent", stats.nSendBytes);
         obj.pushKV("bytesrecv", stats.nRecvBytes);
         obj.pushKV("conntime", TicksSinceEpoch<std::chrono::seconds>(stats.m_connected));
@@ -342,8 +346,9 @@ static RPCMethod addnode()
         "addnode",
         "Attempts to add or remove a node from the addnode list.\n"
                 "Or try a connection to a node once.\n"
-                "Nodes added using addnode (or -connect) are protected from DoS disconnection and are not required to be\n"
-                "full nodes/support SegWit as other outbound peers are (though such peers will not be synced from).\n" +
+                "Nodes added using addnode (or -connect) are protected from DoS disconnection and IBD block stalling\n"
+                "disconnection, and are not required to be full nodes or support SegWit as other outbound peers are (though\n"
+                "such peers will not be synced from).\n" +
                 strprintf("Addnode connections are limited to %u at a time", MAX_ADDNODE_CONNECTIONS) +
                 " and are counted separately from the -maxconnections limit.\n",
                 {
@@ -418,7 +423,7 @@ static RPCMethod addconnection()
         "Open an outbound connection to a specified node. This RPC is for testing only.\n",
         {
             {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The IP address and port to attempt connecting to."},
-            {"connection_type", RPCArg::Type::STR, RPCArg::Optional::NO, "Type of connection to open (\"outbound-full-relay\", \"block-relay-only\", \"addr-fetch\" or \"feeler\")."},
+            {"connection_type", RPCArg::Type::STR, RPCArg::Optional::NO, "Type of connection to open (\"outbound-full-relay\", \"block-relay-only\", \"addr-fetch\", \"feeler\" or \"manual\")."},
             {"v2transport", RPCArg::Type::BOOL, RPCArg::Optional::NO, "Attempt to connect using BIP324 v2 transport protocol"},
         },
         RPCResult{
@@ -448,6 +453,8 @@ static RPCMethod addconnection()
         conn_type = ConnectionType::ADDR_FETCH;
     } else if (conn_type_in == "feeler") {
         conn_type = ConnectionType::FEELER;
+    } else if (conn_type_in == "manual") {
+        conn_type = ConnectionType::MANUAL;
     } else {
         throw JSONRPCError(RPC_INVALID_PARAMETER, self.ToString());
     }
@@ -709,6 +716,7 @@ static RPCMethod getnetworkinfo()
                                 {RPCResult::Type::BOOL, "proxy_randomize_credentials", "Whether randomized credentials are used"},
                             }},
                         }},
+                        {RPCResult::Type::STR_HEX, "asmap_version", /*optional=*/true, "the SHA256 hash of the asmap data used for IP bucketing (only displayed if the -asmap config option is set)"},
                         {RPCResult::Type::STR_AMOUNT, "relayfee", "minimum relay fee rate for transactions in " + CURRENCY_UNIT + "/kvB"},
                         {RPCResult::Type::STR_AMOUNT, "incrementalfee", "minimum fee rate increment for mempool limiting or replacement in " + CURRENCY_UNIT + "/kvB"},
                         {RPCResult::Type::ARR, "localaddresses", "list of local addresses",
@@ -766,6 +774,10 @@ static RPCMethod getnetworkinfo()
     obj.pushKV("connections_in", connman.GetNodeCount(ConnectionDirection::In));
     obj.pushKV("connections_out", connman.GetNodeCount(ConnectionDirection::Out));
     obj.pushKV("networks",      GetNetworksInfo());
+    const NetGroupManager& netgroupman{*CHECK_NONFATAL(node.netgroupman)};
+    if (netgroupman.UsingASMap()) {
+        obj.pushKV("asmap_version", HexStr(netgroupman.GetAsmapVersion()));
+    }
     const CTxMemPool& mempool = EnsureAnyMemPool(request.context);
     // Those fields can be deprecated, to be replaced by the getmempoolinfo fields
     obj.pushKV("relayfee", ValueFromAmount(mempool.m_opts.min_relay_feerate.GetFeePerK()));
@@ -1135,14 +1147,15 @@ static RPCMethod getaddrmaninfo()
     return RPCMethod{
         "getaddrmaninfo",
         "Provides information about the node's address manager by returning the number of "
-        "addresses in the `new` and `tried` tables and their sum for all networks.\n",
+        "unique addresses in the `new` and `tried` tables and their sum for all networks.\n",
         {},
         RPCResult{
             RPCResult::Type::OBJ_DYN, "", "json object with network type as keys", {
                 {RPCResult::Type::OBJ, "network", "the network (" + Join(GetNetworkNames(), ", ") + ", all_networks)", {
-                {RPCResult::Type::NUM, "new", "number of addresses in the new table, which represent potential peers the node has discovered but hasn't yet successfully connected to."},
+                {RPCResult::Type::NUM, "new", "number of unique addresses in the new table, which represent potential peers the node has discovered but hasn't yet successfully connected to. "
+                                       "An address can be stored in multiple new table buckets but is counted only once."},
                 {RPCResult::Type::NUM, "tried", "number of addresses in the tried table, which represent peers the node has successfully connected to in the past."},
-                {RPCResult::Type::NUM, "total", "total number of addresses in both new/tried tables"},
+                {RPCResult::Type::NUM, "total", "total number of unique addresses in both new/tried tables"},
             }},
         }},
         RPCExamples{HelpExampleCli("getaddrmaninfo", "") + HelpExampleRpc("getaddrmaninfo", "")},
@@ -1209,13 +1222,10 @@ static RPCMethod exportasmap()
                 throw JSONRPCError(RPC_MISC_ERROR, strprintf("Failed to close asmap file: %s", fs::PathToString(export_path)));
             }
 
-            HashWriter hasher;
-            hasher.write(node::data::ip_asn);
-
             UniValue result(UniValue::VOBJ);
             result.pushKV("path", export_path.utf8string());
             result.pushKV("bytes_written", node::data::ip_asn.size());
-            result.pushKV("file_hash", HexStr(hasher.GetSHA256()));
+            result.pushKV("file_hash", HexStr(AsmapVersion(node::data::ip_asn)));
             return result;
 #endif
         },

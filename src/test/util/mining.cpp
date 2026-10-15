@@ -9,9 +9,11 @@
 #include <chainparams.h>
 #include <consensus/merkle.h>
 #include <consensus/validation.h>
-#include <interfaces/mining.h>
 #include <key_io.h>
+#include <node/block_template_manager.h>
+#include <node/block_validation_state_catcher.h>
 #include <node/context.h>
+#include <node/miner.h>
 #include <pow.h>
 #include <primitives/block.h>
 #include <primitives/transaction.h>
@@ -80,16 +82,16 @@ bool BuildChain(const NodeContext& node, const CBlockIndex* pindex,
     size_t length,
     std::vector<std::shared_ptr<CBlock>>& chain)
 {
-    auto mining{interfaces::MakeMining(node)};
+    auto& block_template_manager{*Assert(node.block_template_manager)};
     const Consensus::Params& consensus{Assert(node.chainman)->GetConsensus()};
 
     chain.resize(length);
     for (auto& chain_block : chain) {
-        auto block_template{mining->createNewBlock({
+        auto block_template{block_template_manager.CreateNewTemplate({
             .use_mempool = false,
             .coinbase_output_script = coinbase_script_pub_key,
-        }, /*cooldown=*/false)};
-        CBlock block{Assert(block_template)->getBlock()};
+        })};
+        CBlock block{Assert(block_template)->block};
 
         // The template is built on the active tip, so repoint it at pindex and
         // redo the fields that depend on the predecessor.
@@ -124,22 +126,6 @@ COutPoint MineBlock(const NodeContext& node, const node::BlockCreateOptions& ass
     return valid;
 }
 
-struct BlockValidationStateCatcher : public CValidationInterface {
-    const uint256 m_hash;
-    std::optional<BlockValidationState> m_state;
-
-    BlockValidationStateCatcher(const uint256& hash)
-        : m_hash{hash},
-          m_state{} {}
-
-protected:
-    void BlockChecked(const std::shared_ptr<const CBlock>& block, const BlockValidationState& state) override
-    {
-        if (block->GetHash() != m_hash) return;
-        m_state = state;
-    }
-};
-
 COutPoint MineBlock(const NodeContext& node, std::shared_ptr<CBlock>& block)
 {
     while (!CheckProofOfWork(block->GetHash(), block->nBits, Params().GetConsensus())) {
@@ -155,7 +141,7 @@ COutPoint ProcessBlock(const NodeContext& node, const std::shared_ptr<CBlock>& b
     auto& chainman{*Assert(node.chainman)};
     const auto old_height = WITH_LOCK(chainman.GetMutex(), return chainman.ActiveHeight());
     bool new_block;
-    BlockValidationStateCatcher bvsc{block->GetHash()};
+    node::BlockValidationStateCatcher bvsc{block->GetHash()};
     node.validation_signals->RegisterValidationInterface(&bvsc);
     const bool processed{chainman.ProcessNewBlock(block, true, true, &new_block)};
     const bool duplicate{!new_block && processed};
@@ -172,9 +158,9 @@ COutPoint ProcessBlock(const NodeContext& node, const std::shared_ptr<CBlock>& b
 std::shared_ptr<CBlock> PrepareBlock(const NodeContext& node,
                                      const node::BlockCreateOptions& assembler_options)
 {
-    auto mining = interfaces::MakeMining(node);
-    auto block_template = mining->createNewBlock(assembler_options, /*cooldown=*/false);
-    auto block = std::make_shared<CBlock>(Assert(block_template)->getBlock());
+    auto& block_template_manager = *Assert(node.block_template_manager);
+    auto block_template = block_template_manager.CreateNewTemplate(assembler_options);
+    auto block = std::make_shared<CBlock>(Assert(block_template)->block);
 
     LOCK(cs_main);
     block->nTime = Assert(node.chainman)->ActiveChain().Tip()->GetMedianTimePast() + 1;

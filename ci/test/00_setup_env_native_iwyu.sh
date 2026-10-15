@@ -7,7 +7,6 @@
 export LC_ALL=C.UTF-8
 
 export CI_IMAGE_NAME_TAG="mirror.gcr.io/ubuntu:26.04"  # To build codegen, CMake must be 3.31 or newer.
-export CONTAINER_NAME=ci_native_iwyu
 export IWYU_LLVM_V="23"
 export APT_LLVM_V="${IWYU_LLVM_V}"
 export PACKAGES="clang-${IWYU_LLVM_V} clang-format-${IWYU_LLVM_V} libclang-${IWYU_LLVM_V}-dev llvm-${IWYU_LLVM_V}-dev jq libboost-dev libzmq3-dev systemtap-sdt-dev qt6-base-dev qt6-tools-dev qt6-l10n-tools libqrencode-dev libsqlite3-dev libcapnp-dev capnproto"
@@ -17,12 +16,12 @@ export RUN_FUNCTIONAL_TESTS=false
 export RUN_FUZZ_TESTS=false
 export RUN_CHECK_DEPS=false
 export RUN_IWYU=true
-# Adding non-codegen targets to the build goal is a workaround
+# Adding non-codegen build targets is a workaround
 # for https://gitlab.kitware.com/cmake/cmake/-/work_items/27862
 # and https://github.com/umkoin-core/libmultiprocess/issues/284.
-export GOAL="codegen mp_headers mptest_headers umkoin_ipc_headers umkoin_ipc_test_headers umkoin_ipc_fuzz_headers"
-export UMKOIN_CONFIG="\
+export BUILD_TARGETS="codegen umkoin_node_raw_data_headers mp_headers mptest_headers umkoin_ipc_headers umkoin_ipc_test_headers umkoin_ipc_fuzz_headers"
+printf -v UMKOIN_CONFIG "%q " \
  --preset dev-mode -DBUILD_GUI=OFF \
  -DCMAKE_C_COMPILER=clang-${IWYU_LLVM_V} \
- -DCMAKE_CXX_COMPILER=clang++-${IWYU_LLVM_V} \
-"
+ -DCMAKE_CXX_COMPILER=clang++-${IWYU_LLVM_V}
+export UMKOIN_CONFIG

@@ -6,6 +6,7 @@
 
 #include <kernel/umkoinkernel.h>
 
+#include <attributes.h>
 #include <chain.h>
 #include <coins.h>
 #include <consensus/tx_check.h>
@@ -17,7 +18,6 @@
 #include <kernel/context.h>
 #include <kernel/notifications_interface.h>
 #include <kernel/warning.h>
-#include <logging.h>
 #include <node/blockstorage.h>
 #include <node/chainstate.h>
 #include <primitives/block.h>
@@ -32,18 +32,22 @@
 #include <undo.h>
 #include <util/check.h>
 #include <util/fs.h>
+#include <util/log.h>
 #include <util/result.h>
 #include <util/signalinterrupt.h>
+#include <util/stdmutex.h>
+#include <util/string.h>
 #include <util/task_runner.h>
 #include <util/time.h>
 #include <util/translation.h>
 #include <validation.h>
 #include <validationinterface.h>
 
+#include <atomic>
 #include <cstddef>
 #include <cstring>
 #include <exception>
-#include <functional>
+#include <iterator>
 #include <limits>
 #include <list>
 #include <memory>
@@ -51,6 +55,7 @@
 #include <span>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -155,57 +160,23 @@ struct umkk_TxValidationState : Handle<umkk_TxValidationState, TxValidationState
 
 namespace {
 
-BCLog::Level get_bclog_level(umkk_LogLevel level)
+constexpr util::log::Level to_util(umkk_LogLevel level)
 {
     switch (level) {
-    case umkk_LogLevel_INFO: {
-        return BCLog::Level::Info;
+    case umkk_LogLevel_TRACE: {
+        return util::log::Level::Trace;
     }
     case umkk_LogLevel_DEBUG: {
-        return BCLog::Level::Debug;
+        return util::log::Level::Debug;
     }
-    case umkk_LogLevel_TRACE: {
-        return BCLog::Level::Trace;
+    case umkk_LogLevel_INFO: {
+        return util::log::Level::Info;
     }
+    case umkk_LogLevel_WARNING: {
+        return util::log::Level::Warning;
     }
-    assert(false);
-}
-
-BCLog::LogFlags get_bclog_flag(umkk_LogCategory category)
-{
-    switch (category) {
-    case umkk_LogCategory_BENCH: {
-        return BCLog::LogFlags::BENCH;
-    }
-    case umkk_LogCategory_BLOCKSTORAGE: {
-        return BCLog::LogFlags::BLOCKSTORAGE;
-    }
-    case umkk_LogCategory_COINDB: {
-        return BCLog::LogFlags::COINDB;
-    }
-    case umkk_LogCategory_LEVELDB: {
-        return BCLog::LogFlags::LEVELDB;
-    }
-    case umkk_LogCategory_MEMPOOL: {
-        return BCLog::LogFlags::MEMPOOL;
-    }
-    case umkk_LogCategory_PRUNE: {
-        return BCLog::LogFlags::PRUNE;
-    }
-    case umkk_LogCategory_RAND: {
-        return BCLog::LogFlags::RAND;
-    }
-    case umkk_LogCategory_REINDEX: {
-        return BCLog::LogFlags::REINDEX;
-    }
-    case umkk_LogCategory_VALIDATION: {
-        return BCLog::LogFlags::VALIDATION;
-    }
-    case umkk_LogCategory_KERNEL: {
-        return BCLog::LogFlags::KERNEL;
-    }
-    case umkk_LogCategory_ALL: {
-        return BCLog::LogFlags::ALL;
+    case umkk_LogLevel_ERROR: {
+        return util::log::Level::Error;
     }
     }
     assert(false);
@@ -235,53 +206,81 @@ umkk_Warning cast_umkk_warning(kernel::Warning warning)
     assert(false);
 }
 
-struct LoggingConnection {
-    std::unique_ptr<std::list<std::function<void(const std::string&)>>::iterator> m_connection;
-    void* m_user_data;
-    std::function<void(void* user_data)> m_deleter;
-
-    LoggingConnection(umkk_LogCallback callback, void* user_data, umkk_DestroyCallback user_data_destroy_callback)
-    {
-        LOCK(cs_main);
-
-        auto connection{LogInstance().PushBackCallback([callback, user_data](const std::string& str) { callback(user_data, str.c_str(), str.length()); })};
-
-        // Only start logging if we just added the connection.
-        if (LogInstance().NumConnections() == 1 && !LogInstance().StartLogging()) {
-            LogError("Logger start failed.");
-            LogInstance().DeleteCallback(connection);
-            if (user_data && user_data_destroy_callback) {
-                user_data_destroy_callback(user_data);
-            }
-            throw std::runtime_error("Failed to start logging");
-        }
-
-        m_connection = std::make_unique<std::list<std::function<void(const std::string&)>>::iterator>(connection);
-        m_user_data = user_data;
-        m_deleter = user_data_destroy_callback;
-
-        LogDebug(BCLog::KERNEL, "Logger connected.");
+constexpr umkk_LogLevel to_umkk(util::log::Level level)
+{
+    switch (level) {
+    case util::log::Level::Trace: {
+        return umkk_LogLevel_TRACE;
     }
-
-    ~LoggingConnection()
-    {
-        LOCK(cs_main);
-        LogDebug(BCLog::KERNEL, "Logger disconnecting.");
-
-        // Switch back to buffering by calling DisconnectTestLogger if the
-        // connection that we are about to remove is the last one.
-        if (LogInstance().NumConnections() == 1) {
-            LogInstance().DisconnectTestLogger();
-        } else {
-            LogInstance().DeleteCallback(*m_connection);
-        }
-
-        m_connection.reset();
-        if (m_user_data && m_deleter) {
-            m_deleter(m_user_data);
-        }
+    case util::log::Level::Debug: {
+        return umkk_LogLevel_DEBUG;
     }
-};
+    case util::log::Level::Info: {
+        return umkk_LogLevel_INFO;
+    }
+    case util::log::Level::Warning: {
+        return umkk_LogLevel_WARNING;
+    }
+    case util::log::Level::Error: {
+        return umkk_LogLevel_ERROR;
+    }
+    } // no default case, so the compiler can warn about missing cases
+    assert(false);
+}
+
+constexpr umkk_LogCategory to_umkk(BCLog::LogFlags flag)
+{
+    switch (flag) {
+    case BCLog::LogFlags::ALL: {
+        return umkk_LogCategory_NONE;
+    }
+    case BCLog::LogFlags::BENCH: {
+        return umkk_LogCategory_BENCH;
+    }
+    case BCLog::LogFlags::BLOCKSTORAGE: {
+        return umkk_LogCategory_BLOCKSTORAGE;
+    }
+    case BCLog::LogFlags::COINDB: {
+        return umkk_LogCategory_COINDB;
+    }
+    case BCLog::LogFlags::LEVELDB: {
+        return umkk_LogCategory_LEVELDB;
+    }
+#ifdef DEBUG_LOCKCONTENTION
+    case BCLog::LogFlags::LOCK: {
+        return umkk_LogCategory_LOCK;
+    }
+#endif
+    case BCLog::LogFlags::MEMPOOL: {
+        return umkk_LogCategory_MEMPOOL;
+    }
+    case BCLog::LogFlags::PRUNE: {
+        return umkk_LogCategory_PRUNE;
+    }
+    case BCLog::LogFlags::RAND: {
+        return umkk_LogCategory_RAND;
+    }
+    case BCLog::LogFlags::REINDEX: {
+        return umkk_LogCategory_REINDEX;
+    }
+    case BCLog::LogFlags::TXPACKAGES: {
+        return umkk_LogCategory_TXPACKAGES;
+    }
+    case BCLog::LogFlags::VALIDATION: {
+        return umkk_LogCategory_VALIDATION;
+    }
+    case BCLog::LogFlags::KERNEL: {
+        return umkk_LogCategory_KERNEL;
+    }
+    default: {
+        // Every category the kernel library can emit must be mapped above. This cannot be enforced
+        // at compile time, so abort in debug builds to catch it early, and deliver the entry as
+        // uncategorized otherwise.
+        Assume(false);
+        return umkk_LogCategory_NONE;
+    }
+    }
+}
 
 class KernelNotifications final : public kernel::Notifications
 {
@@ -486,12 +485,149 @@ struct ChainMan {
         : m_chainman(std::move(chainman)), m_context(std::move(context)) {}
 };
 
+struct UserDataDeleter {
+    umkk_DestroyCallback destroy;
+    void operator()(void* user_data) const
+    {
+        if (destroy) destroy(user_data);
+    }
+};
+//! Owns a caller-provided user_data pointer and frees it with its destroy callback.
+using UserData = std::unique_ptr<void, UserDataDeleter>;
+
+//! Holds state for kernel logging subscribers: the registered callbacks and the minimum level.
+//! Shared by all umkk_LoggingConnection instances.
+class KernelLogger
+{
+    //! A registered umkk_LogCallback. Owns user_data.
+    struct Callback {
+        umkk_LogCallback fn;
+        UserData user_data;
+
+        void operator()(const umkk_LogEntry* entry) const { fn(user_data.get(), entry); }
+    };
+
+    mutable StdMutex m_mutex;
+    //! All registered callbacks that are executed through Log.
+    std::list<Callback> m_callbacks GUARDED_BY(m_mutex);
+    //! Size of m_callbacks. Can be stale when read without m_mutex.
+    std::atomic<size_t> m_callback_count{0};
+    //! Entries below this level are not delivered.
+    std::atomic<util::log::Level> m_min_level{util::log::Level::Info};
+
+    //! Unregisters and destroys the callback. Waits for an in-flight Log to finish, then destroys
+    //! the callback (and its user_data) outside m_mutex.
+    void UnregisterCallback(std::list<Callback>::iterator it) EXCLUSIVE_LOCKS_REQUIRED(!m_mutex);
+
+public:
+    //! Owns a registered logging callback. Unregisters it on destruction. A moved-from handle
+    //! owns nothing and does not unregister.
+    class CallbackHandle
+    {
+        KernelLogger* m_logger;
+        std::list<Callback>::iterator m_it;
+
+    public:
+        CallbackHandle(KernelLogger& logger LIFETIMEBOUND, std::list<Callback>::iterator it)
+            : m_logger{&logger}, m_it{it} {}
+        CallbackHandle(CallbackHandle&& other) noexcept
+            : m_logger{std::exchange(other.m_logger, nullptr)}, m_it{other.m_it} {}
+        CallbackHandle& operator=(CallbackHandle&&) = delete;
+        ~CallbackHandle()
+        {
+            if (m_logger) m_logger->UnregisterCallback(m_it);
+        }
+    };
+
+    //! Registers a logging callback. Takes ownership of user_data, also when registration fails.
+    [[nodiscard]] CallbackHandle RegisterCallback(umkk_LogCallback fn, UserData user_data) EXCLUSIVE_LOCKS_REQUIRED(!m_mutex);
+    //! Set the minimum log level.
+    void SetMinLevel(umkk_LogLevel level)
+    {
+        m_min_level.store(to_util(level), std::memory_order_relaxed);
+    }
+
+    //! True if level is not below minimum level and at least one callback is registered.
+    bool ShouldLog(util::log::Level level) const
+    {
+        return level >= m_min_level.load(std::memory_order_relaxed) &&
+               m_callback_count.load(std::memory_order_relaxed) > 0;
+    }
+    //! Deliver the entry to every registered callback while holding m_mutex, regardless of its
+    //! level. Exceptions from callbacks are swallowed.
+    void Log(const util::log::Entry& entry) const EXCLUSIVE_LOCKS_REQUIRED(!m_mutex);
+    //! Log() the entry if ShouldLog() passes for its level.
+    void MaybeLog(const util::log::Entry& entry) const EXCLUSIVE_LOCKS_REQUIRED(!m_mutex)
+    {
+        if (ShouldLog(entry.level)) {
+            Log(entry);
+        }
+    }
+};
+
+KernelLogger::CallbackHandle KernelLogger::RegisterCallback(umkk_LogCallback fn, UserData user_data)
+{
+    // Construct before locking so that a failed push_back destroys user_data outside m_mutex.
+    Callback cb{fn, std::move(user_data)};
+    STDLOCK(m_mutex);
+    m_callbacks.push_back(std::move(cb));
+    m_callback_count.fetch_add(1, std::memory_order_relaxed);
+    return {*this, std::prev(m_callbacks.end())};
+}
+
+void KernelLogger::UnregisterCallback(std::list<Callback>::iterator it)
+{
+    // Avoid running the callback destructor while holding m_mutex.
+    std::list<Callback> dying;
+    {
+        STDLOCK(m_mutex);
+        dying.splice(dying.begin(), m_callbacks, it);
+        m_callback_count.fetch_sub(1, std::memory_order_relaxed);
+    }
+}
+
+void KernelLogger::Log(const util::log::Entry& entry) const
+{
+    // Some log statements are manually suffixed with a newline.
+    std::string_view message{util::RemoveSuffixView(entry.message, "\n")};
+    std::string_view thread_name{entry.thread_name};
+    const auto timestamp_ns{TicksSinceEpoch<std::chrono::nanoseconds>(entry.timestamp)};
+    std::string_view file_name{entry.source_loc.file_name()};
+    std::string_view function_name{entry.source_loc.function_name_short()};
+
+    umkk_LogEntry umkk_entry{
+        .message = message.data(),
+        .message_len = message.size(),
+        .thread_name = thread_name.data(),
+        .thread_name_len = thread_name.size(),
+        .timestamp_ns = timestamp_ns,
+        .mocktime_s = entry.mocktime.count(),
+        .file_name = file_name.data(),
+        .file_name_len = file_name.size(),
+        .function_name = function_name.data(),
+        .function_name_len = function_name.size(),
+        .line = entry.source_loc.line(),
+        .level = to_umkk(entry.level),
+        .category = to_umkk(static_cast<BCLog::LogFlags>(entry.category)),
+    };
+
+    STDLOCK(m_mutex);
+    for (const auto& callback : m_callbacks) {
+        try {
+            callback(&umkk_entry);
+        } catch (...) {
+            // Can't log the error here because we're already inside the logging path (would
+            // deadlock on m_mutex).
+        }
+    }
+}
+
 } // namespace
 
 struct umkk_Transaction : Handle<umkk_Transaction, std::shared_ptr<const CTransaction>> {};
 struct umkk_TransactionOutput : Handle<umkk_TransactionOutput, CTxOut> {};
 struct umkk_ScriptPubkey : Handle<umkk_ScriptPubkey, CScript> {};
-struct umkk_LoggingConnection : Handle<umkk_LoggingConnection, LoggingConnection> {};
+struct umkk_LoggingConnection : Handle<umkk_LoggingConnection, KernelLogger::CallbackHandle> {};
 struct umkk_ContextOptions : Handle<umkk_ContextOptions, ContextOptions> {};
 struct umkk_Context : Handle<umkk_Context, std::shared_ptr<const Context>> {};
 struct umkk_ChainParameters : Handle<umkk_ChainParameters, CChainParams> {};
@@ -506,6 +642,7 @@ struct umkk_TransactionInput : Handle<umkk_TransactionInput, CTxIn> {};
 struct umkk_WitnessStack : Handle<umkk_WitnessStack, CScriptWitness> {};
 struct umkk_TransactionOutPoint: Handle<umkk_TransactionOutPoint, COutPoint> {};
 struct umkk_Txid: Handle<umkk_Txid, Txid> {};
+struct umkk_Wtxid: Handle<umkk_Wtxid, Wtxid> {};
 struct umkk_PrecomputedTransactionData : Handle<umkk_PrecomputedTransactionData, PrecomputedTransactionData> {};
 struct umkk_BlockHeader: Handle<umkk_BlockHeader, CBlockHeader> {};
 struct umkk_ConsensusParams: Handle<umkk_ConsensusParams, Consensus::Params> {};
@@ -544,6 +681,11 @@ const umkk_TransactionInput* umkk_transaction_get_input_at(const umkk_Transactio
     return umkk_TransactionInput::ref(&umkk_Transaction::get(transaction)->vin[input_index]);
 }
 
+uint32_t umkk_transaction_get_version(const umkk_Transaction* transaction)
+{
+    return umkk_Transaction::get(transaction)->version;
+}
+
 uint32_t umkk_transaction_get_locktime(const umkk_Transaction* transaction)
 {
     return umkk_Transaction::get(transaction)->nLockTime;
@@ -552,6 +694,16 @@ uint32_t umkk_transaction_get_locktime(const umkk_Transaction* transaction)
 const umkk_Txid* umkk_transaction_get_txid(const umkk_Transaction* transaction)
 {
     return umkk_Txid::ref(&umkk_Transaction::get(transaction)->GetHash());
+}
+
+int umkk_transaction_has_witness(const umkk_Transaction* transaction)
+{
+    return umkk_Transaction::get(transaction)->HasWitness() ? 1 : 0;
+}
+
+const umkk_Wtxid* umkk_transaction_get_wtxid(const umkk_Transaction* transaction)
+{
+    return umkk_Wtxid::ref(&umkk_Transaction::get(transaction)->GetWitnessHash());
 }
 
 umkk_Transaction* umkk_transaction_copy(const umkk_Transaction* transaction)
@@ -789,52 +941,81 @@ void umkk_txid_destroy(umkk_Txid* txid)
     delete txid;
 }
 
-void umkk_logging_set_options(const umkk_LoggingOptions options)
+umkk_Wtxid* umkk_wtxid_copy(const umkk_Wtxid* wtxid)
 {
-    LOCK(cs_main);
-    LogInstance().m_log_timestamps = options.log_timestamps;
-    LogInstance().m_log_time_micros = options.log_time_micros;
-    LogInstance().m_log_threadnames = options.log_threadnames;
-    LogInstance().m_log_sourcelocations = options.log_sourcelocations;
-    LogInstance().m_always_print_category_level = options.always_print_category_levels;
+    return umkk_Wtxid::copy(wtxid);
 }
 
-void umkk_logging_set_level_category(umkk_LogCategory category, umkk_LogLevel level)
+void umkk_wtxid_to_bytes(const umkk_Wtxid* wtxid, unsigned char output[32])
 {
-    LOCK(cs_main);
-    if (category == umkk_LogCategory_ALL) {
-        LogInstance().SetLogLevel(get_bclog_level(level));
-    }
-
-    LogInstance().AddCategoryLogLevel(get_bclog_flag(category), get_bclog_level(level));
+    std::memcpy(output, umkk_Wtxid::get(wtxid).begin(), 32);
 }
 
-void umkk_logging_enable_category(umkk_LogCategory category)
+int umkk_wtxid_equals(const umkk_Wtxid* wtxid1, const umkk_Wtxid* wtxid2)
 {
-    LogInstance().EnableCategory(get_bclog_flag(category));
+    return umkk_Wtxid::get(wtxid1) == umkk_Wtxid::get(wtxid2);
 }
 
-void umkk_logging_disable_category(umkk_LogCategory category)
+void umkk_wtxid_destroy(umkk_Wtxid* wtxid)
 {
-    LogInstance().DisableCategory(get_bclog_flag(category));
+    delete wtxid;
 }
 
-void umkk_logging_disable()
+namespace {
+//! The process-wide kernel logger. Intentionally leaked to avoid static destruction order issues,
+//! matching the node's LogInstance().
+KernelLogger& GetKernelLogger()
 {
-    LogInstance().DisableLogging();
+    static KernelLogger* logger{new KernelLogger};
+    return *logger;
+}
+} // namespace
+
+namespace util::log {
+// Kernel filters on level only. The category is delivered as part of the entry, so consumers can
+// filter on it in their callback.
+bool ShouldDebugLog(Category /*category*/)
+{
+    return GetKernelLogger().ShouldLog(Level::Debug);
+}
+
+bool ShouldTraceLog(Category /*category*/)
+{
+    return GetKernelLogger().ShouldLog(Level::Trace);
+}
+
+void Log(Entry entry)
+{
+    // Conditional logging, because the util::log framework doesn't allow us to check if the
+    // minimum level exceeds Info.
+    GetKernelLogger().MaybeLog(entry);
+}
+} // namespace util::log
+
+
+void umkk_logging_set_min_level(umkk_LogLevel level)
+{
+    GetKernelLogger().SetMinLevel(level);
 }
 
 umkk_LoggingConnection* umkk_logging_connection_create(umkk_LogCallback callback, void* user_data, umkk_DestroyCallback user_data_destroy_callback)
 {
+    assert(callback);
     try {
-        return umkk_LoggingConnection::create(callback, user_data, user_data_destroy_callback);
-    } catch (const std::exception&) {
+        // Take ownership before anything can throw, so that user_data is always freed on error.
+        UserData data{user_data, {user_data_destroy_callback}};
+        auto handle{GetKernelLogger().RegisterCallback(callback, std::move(data))};
+        LogDebug(BCLog::KERNEL, "Logger connected.");
+        return umkk_LoggingConnection::create(std::move(handle));
+    } catch (...) {
         return nullptr;
     }
 }
 
 void umkk_logging_connection_destroy(umkk_LoggingConnection* connection)
 {
+    if (!connection) return;
+    LogDebug(BCLog::KERNEL, "Logger disconnecting.");
     delete connection;
 }
 
@@ -1468,6 +1649,11 @@ umkk_BlockHash* umkk_block_header_get_hash(const umkk_BlockHeader* header)
 const umkk_BlockHash* umkk_block_header_get_prev_hash(const umkk_BlockHeader* header)
 {
     return umkk_BlockHash::ref(&umkk_BlockHeader::get(header).hashPrevBlock);
+}
+
+void umkk_block_header_get_merkle_root(const umkk_BlockHeader* header, unsigned char output[32])
+{
+    std::memcpy(output, umkk_BlockHeader::get(header).hashMerkleRoot.begin(), 32);
 }
 
 uint32_t umkk_block_header_get_timestamp(const umkk_BlockHeader* header)

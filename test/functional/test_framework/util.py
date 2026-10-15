@@ -18,6 +18,7 @@ import platform
 import random
 import re
 import shlex
+import threading
 import time
 import types
 
@@ -440,6 +441,10 @@ def wait_until_helper_internal(predicate, *, timeout=60, lock=None, timeout_fact
             with lock:
                 if predicate():
                     return
+                if isinstance(lock, threading.Condition):
+                    # Wake up early when the lock owner signals a state change
+                    lock.wait(check_interval)
+                    continue
         else:
             if predicate():
                 return
@@ -518,8 +523,11 @@ def initialize_datadir(dirname, n, chain, disable_autoconnect=True):
 
 
 def write_config(config_path, *, n, chain, extra_config="", disable_autoconnect=True):
-    # Translate chain subdirectory name to config name
-    if chain == 'testnet3':
+    # Translate chain name to config name
+    if chain == 'main':
+        chain_name_conf_arg = None
+        chain_name_conf_section = None
+    elif chain == 'testnet3':
         chain_name_conf_arg = 'testnet'
         chain_name_conf_section = 'test'
     else:

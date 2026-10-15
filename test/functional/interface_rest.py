@@ -51,7 +51,8 @@ def filter_output_indices_by_value(vouts, value):
         if vout['value'] == value:
             yield vout['n']
 
-class RESTTest (UmkoinTestFramework):
+
+class RESTTest(UmkoinTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.extra_args = [["-rest", "-blockfilterindex=1", "-txindex"], []]
@@ -77,7 +78,7 @@ class RESTTest (UmkoinTestFramework):
             else:
                 rest_uri += f'?{urllib.parse.urlencode(query_params)}'
 
-        conn = http.client.HTTPConnection(self.url.hostname, self.url.port)
+        conn = http.client.HTTPConnection(self.url.hostname, self.url.port, timeout=self.rpc_timeout)
         self.log.debug(f'{http_method} {rest_uri} {body}')
         if http_method == 'GET':
             conn.request('GET', rest_uri)
@@ -451,14 +452,12 @@ class RESTTest (UmkoinTestFramework):
 
             for i, tx in enumerate(block["tx"]):
                 prevouts = [txin["prevout"] for txin in tx["vin"] if "coinbase" not in txin]
-                # compare with `getblock` JSON output (coinbase tx has no prevouts)
+                # compare binary REST format with `getblock` JSON output (coinbase tx has no prevouts)
                 actual = [(txout.scriptPubKey.hex(), Decimal(txout.nValue) / COIN) for txout in spent[i]]
                 expected = [(p["scriptPubKey"]["hex"], p["value"]) for p in prevouts]
                 assert_equal(expected, actual)
-                # also compare JSON format
-                actual = [(prevout["scriptPubKey"], prevout["value"]) for prevout in spent_json[i]]
-                expected = [(p["scriptPubKey"], p["value"]) for p in prevouts]
-                assert_equal(expected, actual)
+                # also compare the JSON REST format to the getblock verbosity 3 RPC output
+                assert_equal(spent_json[i], prevouts)
 
         self.log.info("Test the /blockpart URI")
 
