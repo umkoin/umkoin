@@ -334,6 +334,13 @@ typedef struct umkk_PrecomputedTransactionData umkk_PrecomputedTransactionData;
 typedef struct umkk_Txid umkk_Txid;
 
 /**
+ * Opaque data structure for holding a umkk_Wtxid.
+ *
+ * This is a type-safe identifier for a transaction that commits to witness data.
+ */
+typedef struct umkk_Wtxid umkk_Wtxid;
+
+/**
  * Opaque data structure for holding a umkk_BlockHeader.
  */
 typedef struct umkk_BlockHeader umkk_BlockHeader;
@@ -680,6 +687,25 @@ UMKOINKERNEL_API uint32_t umkk_transaction_get_locktime(
  * @return                The txid.
  */
 UMKOINKERNEL_API const umkk_Txid* umkk_transaction_get_txid(
+    const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Check whether a transaction has witness data.
+ *
+ * @param[in] transaction Non-null.
+ * @return                1 if the transaction has witness data, 0 if not.
+ */
+UMKOINKERNEL_API int umkk_transaction_has_witness(
+    const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Get the wtxid of a transaction. The returned wtxid is not owned and
+ * depends on the lifetime of the transaction.
+ *
+ * @param[in] transaction Non-null.
+ * @return                The wtxid.
+ */
+UMKOINKERNEL_API const umkk_Wtxid* umkk_transaction_get_wtxid(
     const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
@@ -1869,6 +1895,46 @@ UMKOINKERNEL_API void umkk_txid_to_bytes(
  * Destroy the txid.
  */
 UMKOINKERNEL_API void umkk_txid_destroy(umkk_Txid* txid);
+
+///@}
+
+/** @name Wtxid
+ * Functions for working with wtxids.
+ */
+///@{
+
+/**
+ * @brief Copy a wtxid.
+ *
+ * @param[in] wtxid Non-null.
+ * @return          The copied wtxid.
+ */
+UMKOINKERNEL_API umkk_Wtxid* UMKOINKERNEL_WARN_UNUSED_RESULT umkk_wtxid_copy(
+    const umkk_Wtxid* wtxid) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
+ * @brief Check if two wtxids are equal.
+ *
+ * @param[in] wtxid1 Non-null.
+ * @param[in] wtxid2 Non-null.
+ * @return           0 if the wtxid is not equal.
+ */
+UMKOINKERNEL_API int umkk_wtxid_equals(
+    const umkk_Wtxid* wtxid1, const umkk_Wtxid* wtxid2) UMKOINKERNEL_ARG_NONNULL(1, 2);
+
+/**
+ * @brief Serializes the wtxid to bytes.
+ *
+ * @param[in] wtxid    Non-null.
+ * @param[out] output  The serialized wtxid.
+ */
+UMKOINKERNEL_API void umkk_wtxid_to_bytes(
+    const umkk_Wtxid* wtxid, unsigned char output[32]) UMKOINKERNEL_ARG_NONNULL(1, 2);
+
+/**
+ * Destroy the wtxid.
+ */
+UMKOINKERNEL_API void umkk_wtxid_destroy(umkk_Wtxid* wtxid);
 
 ///@}
 

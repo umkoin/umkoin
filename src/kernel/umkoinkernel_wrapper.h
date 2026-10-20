@@ -528,6 +528,50 @@ public:
 };
 
 template <typename Derived>
+class WtxidApi
+{
+private:
+    auto impl() const
+    {
+        return static_cast<const Derived*>(this)->get();
+    }
+
+    friend Derived;
+    WtxidApi() = default;
+
+public:
+    bool operator==(const WtxidApi& other) const
+    {
+        return umkk_wtxid_equals(impl(), other.impl()) != 0;
+    }
+
+    bool operator!=(const WtxidApi& other) const
+    {
+        return umkk_wtxid_equals(impl(), other.impl()) == 0;
+    }
+
+    std::array<std::byte, 32> ToBytes() const
+    {
+        std::array<std::byte, 32> hash;
+        umkk_wtxid_to_bytes(impl(), reinterpret_cast<unsigned char*>(hash.data()));
+        return hash;
+    }
+};
+
+class WtxidView : public View<umkk_Wtxid>, public WtxidApi<WtxidView>
+{
+public:
+    explicit WtxidView(const umkk_Wtxid* ptr) : View{ptr} {}
+};
+
+class Wtxid : public Handle<umkk_Wtxid, umkk_wtxid_copy, umkk_wtxid_destroy>, public WtxidApi<Wtxid>
+{
+public:
+    Wtxid(const WtxidView& view)
+        : Handle(view) {}
+};
+
+template <typename Derived>
 class OutPointApi
 {
 private:
@@ -689,9 +733,19 @@ public:
         return umkk_transaction_get_locktime(impl());
     }
 
+    bool HasWitness() const
+    {
+        return umkk_transaction_has_witness(impl()) != 0;
+    }
+
     TxidView Txid() const
     {
         return TxidView{umkk_transaction_get_txid(impl())};
+    }
+
+    WtxidView Wtxid() const
+    {
+        return WtxidView{umkk_transaction_get_wtxid(impl())};
     }
 
     MAKE_RANGE_METHOD(Outputs, Derived, &TransactionApi<Derived>::CountOutputs, &TransactionApi<Derived>::GetOutput, *static_cast<const Derived*>(this))

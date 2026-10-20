@@ -506,6 +506,7 @@ struct umkk_TransactionInput : Handle<umkk_TransactionInput, CTxIn> {};
 struct umkk_WitnessStack : Handle<umkk_WitnessStack, CScriptWitness> {};
 struct umkk_TransactionOutPoint: Handle<umkk_TransactionOutPoint, COutPoint> {};
 struct umkk_Txid: Handle<umkk_Txid, Txid> {};
+struct umkk_Wtxid: Handle<umkk_Wtxid, Wtxid> {};
 struct umkk_PrecomputedTransactionData : Handle<umkk_PrecomputedTransactionData, PrecomputedTransactionData> {};
 struct umkk_BlockHeader: Handle<umkk_BlockHeader, CBlockHeader> {};
 struct umkk_ConsensusParams: Handle<umkk_ConsensusParams, Consensus::Params> {};
@@ -552,6 +553,16 @@ uint32_t umkk_transaction_get_locktime(const umkk_Transaction* transaction)
 const umkk_Txid* umkk_transaction_get_txid(const umkk_Transaction* transaction)
 {
     return umkk_Txid::ref(&umkk_Transaction::get(transaction)->GetHash());
+}
+
+int umkk_transaction_has_witness(const umkk_Transaction* transaction)
+{
+    return umkk_Transaction::get(transaction)->HasWitness() ? 1 : 0;
+}
+
+const umkk_Wtxid* umkk_transaction_get_wtxid(const umkk_Transaction* transaction)
+{
+    return umkk_Wtxid::ref(&umkk_Transaction::get(transaction)->GetWitnessHash());
 }
 
 umkk_Transaction* umkk_transaction_copy(const umkk_Transaction* transaction)
@@ -787,6 +798,26 @@ int umkk_txid_equals(const umkk_Txid* txid1, const umkk_Txid* txid2)
 void umkk_txid_destroy(umkk_Txid* txid)
 {
     delete txid;
+}
+
+umkk_Wtxid* umkk_wtxid_copy(const umkk_Wtxid* wtxid)
+{
+    return umkk_Wtxid::copy(wtxid);
+}
+
+void umkk_wtxid_to_bytes(const umkk_Wtxid* wtxid, unsigned char output[32])
+{
+    std::memcpy(output, umkk_Wtxid::get(wtxid).begin(), 32);
+}
+
+int umkk_wtxid_equals(const umkk_Wtxid* wtxid1, const umkk_Wtxid* wtxid2)
+{
+    return umkk_Wtxid::get(wtxid1) == umkk_Wtxid::get(wtxid2);
+}
+
+void umkk_wtxid_destroy(umkk_Wtxid* wtxid)
+{
+    delete wtxid;
 }
 
 void umkk_logging_set_options(const umkk_LoggingOptions options)
