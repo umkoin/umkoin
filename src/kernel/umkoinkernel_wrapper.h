@@ -24,7 +24,7 @@
 namespace umkk {
 
 enum class LogCategory : umkk_LogCategory {
-    ALL = umkk_LogCategory_ALL,
+    NONE = umkk_LogCategory_NONE,
     BENCH = umkk_LogCategory_BENCH,
     BLOCKSTORAGE = umkk_LogCategory_BLOCKSTORAGE,
     COINDB = umkk_LogCategory_COINDB,
@@ -34,14 +34,50 @@ enum class LogCategory : umkk_LogCategory {
     RAND = umkk_LogCategory_RAND,
     REINDEX = umkk_LogCategory_REINDEX,
     VALIDATION = umkk_LogCategory_VALIDATION,
-    KERNEL = umkk_LogCategory_KERNEL
+    KERNEL = umkk_LogCategory_KERNEL,
+    TXPACKAGES = umkk_LogCategory_TXPACKAGES,
+    LOCK = umkk_LogCategory_LOCK,
 };
 
 enum class LogLevel : umkk_LogLevel {
     TRACE_LEVEL = umkk_LogLevel_TRACE,
     DEBUG_LEVEL = umkk_LogLevel_DEBUG,
-    INFO_LEVEL = umkk_LogLevel_INFO
+    INFO_LEVEL = umkk_LogLevel_INFO,
+    WARNING_LEVEL = umkk_LogLevel_WARNING,
+    ERROR_LEVEL = umkk_LogLevel_ERROR,
 };
+
+constexpr std::string_view Name(LogLevel level) noexcept
+{
+    switch (level) {
+    case LogLevel::TRACE_LEVEL: return "trace";
+    case LogLevel::DEBUG_LEVEL: return "debug";
+    case LogLevel::INFO_LEVEL: return "info";
+    case LogLevel::WARNING_LEVEL: return "warning";
+    case LogLevel::ERROR_LEVEL: return "error";
+    } // no default case, so the compiler can warn about missing cases
+    return "unknown";
+}
+
+constexpr std::string_view Name(LogCategory category) noexcept
+{
+    switch (category) {
+    case LogCategory::NONE: return "none";
+    case LogCategory::BENCH: return "bench";
+    case LogCategory::BLOCKSTORAGE: return "blockstorage";
+    case LogCategory::COINDB: return "coindb";
+    case LogCategory::LEVELDB: return "leveldb";
+    case LogCategory::MEMPOOL: return "mempool";
+    case LogCategory::PRUNE: return "prune";
+    case LogCategory::RAND: return "rand";
+    case LogCategory::REINDEX: return "reindex";
+    case LogCategory::TXPACKAGES: return "txpackages";
+    case LogCategory::VALIDATION: return "validation";
+    case LogCategory::KERNEL: return "kernel";
+    case LogCategory::LOCK: return "lock";
+    } // no default case, so the compiler can warn about missing cases
+    return "unknown";
+}
 
 enum class ChainType : umkk_ChainType {
     MAINNET = umkk_ChainType_MAINNET,
@@ -984,34 +1020,43 @@ public:
     }
 };
 
-inline void logging_disable()
+inline void logging_set_min_level(LogLevel level)
 {
-    umkk_logging_disable();
+    umkk_logging_set_min_level(static_cast<umkk_LogLevel>(level));
 }
 
-inline void logging_set_options(const umkk_LoggingOptions& logging_options)
+//! Non-owning view over a umkk_LogEntry. The referenced entry is only valid for the duration of the
+//! logging callback, so a LogEntry (and any string_view obtained from it) must not be stored or
+//! used after the callback returns.
+class LogEntry
 {
-    umkk_logging_set_options(logging_options);
-}
+private:
+    const umkk_LogEntry* m_entry;
 
-inline void logging_set_level_category(LogCategory category, LogLevel level)
-{
-    umkk_logging_set_level_category(static_cast<umkk_LogCategory>(category), static_cast<umkk_LogLevel>(level));
-}
+public:
+    explicit LogEntry(const umkk_LogEntry& entry) : m_entry{&entry} {}
 
-inline void logging_enable_category(LogCategory category)
-{
-    umkk_logging_enable_category(static_cast<umkk_LogCategory>(category));
-}
-
-inline void logging_disable_category(LogCategory category)
-{
-    umkk_logging_disable_category(static_cast<umkk_LogCategory>(category));
-}
+    std::string_view Message() const { return {m_entry->message, m_entry->message_len}; }
+    std::string_view ThreadName() const { return {m_entry->thread_name, m_entry->thread_name_len}; }
+    std::chrono::sys_time<std::chrono::nanoseconds> Timestamp() const
+    {
+        return std::chrono::sys_time<std::chrono::nanoseconds>{std::chrono::nanoseconds{m_entry->timestamp_ns}};
+    }
+    std::optional<std::chrono::sys_seconds> MockTime() const
+    {
+        if (m_entry->mocktime_s == 0) return std::nullopt;
+        return std::chrono::sys_seconds{std::chrono::seconds{m_entry->mocktime_s}};
+    }
+    std::string_view FileName() const { return {m_entry->file_name, m_entry->file_name_len}; }
+    std::string_view FunctionName() const { return {m_entry->function_name, m_entry->function_name_len}; }
+    uint32_t Line() const { return m_entry->line; }
+    LogLevel Level() const { return static_cast<LogLevel>(m_entry->level); }
+    LogCategory Category() const { return static_cast<LogCategory>(m_entry->category); }
+};
 
 template <typename T>
-concept Log = requires(T a, std::string_view message) {
-    { a.LogMessage(message) } -> std::same_as<void>;
+concept Log = requires(T a, const LogEntry& entry) {
+    { a.LogMessage(entry) } -> std::same_as<void>;
 };
 
 template <Log T>
@@ -1020,7 +1065,7 @@ class Logger : UniqueHandle<umkk_LoggingConnection, umkk_logging_connection_dest
 public:
     Logger(std::unique_ptr<T> log)
         : UniqueHandle{umkk_logging_connection_create(
-              +[](void* user_data, const char* message, size_t message_len) { static_cast<T*>(user_data)->LogMessage({message, message_len}); },
+              +[](void* user_data, const umkk_LogEntry* entry) { static_cast<T*>(user_data)->LogMessage(LogEntry{*entry}); },
               log.release(),
               +[](void* user_data) { delete static_cast<T*>(user_data); })}
     {
