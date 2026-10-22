@@ -11,11 +11,11 @@ export PACKAGES="python3-zmq"
 export CONTAINER_NAME=ci_s390x
 export CI_IMAGE_NAME_TAG="mirror.gcr.io/ubuntu:26.04"
 export CI_IMAGE_PLATFORM="linux/s390x"
-# bind tests excluded for now, see https://github.com/bitcoin/bitcoin/issues/17765#issuecomment-602068547
+# bind tests excluded for now, see https://github.com/umkoin/umkoin/issues/17765#issuecomment-602068547
 export TEST_RUNNER_EXTRA="--exclude rpc_bind --exclude feature_bind_extra"
 export RUN_FUNCTIONAL_TESTS=true
 export GOAL="install"
-export UMKOIN_CONFIG="\
+printf -v UMKOIN_CONFIG "%q " \
   --preset=dev-mode \
-  -DREDUCE_EXPORTS=ON \
-"
+  -DREDUCE_EXPORTS=ON
+export UMKOIN_CONFIG
