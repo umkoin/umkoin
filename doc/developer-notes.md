@@ -201,7 +201,7 @@ git diff | ( cd ./src/ && clang-tidy-diff -p2 -path ../build -j $(nproc) )
 
 ## Coding Style (Doxygen-compatible comments)
 
-Umkoin Core uses [Doxygen](https://www.doxygen.nl/) to generate its official documentation.
+Bitcoin Core uses [Doxygen](https://www.doxygen.nl/) to generate its official documentation.
 
 Use Doxygen-compatible comment blocks for functions, methods, and fields.
 
@@ -720,7 +720,7 @@ and its `cs_KeyStore` lock for example).
 
 ## Threads
 
-- [Main thread (`umkoind`)](https://doxygen.bitcoincore.org/bitcoind_8cpp.html#main)
+- [Main thread (`bitcoind`)](https://doxygen.bitcoincore.org/bitcoind_8cpp.html#main)
   : Started from `main()` in `umkoind.cpp`. Responsible for starting up and
   shutting down the application.
 
@@ -802,6 +802,11 @@ logging messages. They should be used as follows:
   severe problems that the node admin should address, but are not
   severe enough to warrant shutting down the node (e.g., system time
   appears to be wrong, unknown soft fork appears to have activated).
+
+- `LogWarnThenDebug(BCLog::CATEGORY, fmt, params...)` should be used
+  for errors that indicate a systematic problem that should be addressed
+  (and thus warrant a warning) but are likely to occur frequently if they
+  occur at all, so later occurrences are demoted to debug level.
 
 - `LogTrace(BCLog::CATEGORY, fmt, params...)` should be used in place of
   `LogDebug` for log messages that would be unusable on a production
