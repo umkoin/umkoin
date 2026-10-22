@@ -10,8 +10,8 @@
 #include <consensus/merkle.h>
 #include <consensus/params.h>
 #include <crypto/hex_base.h>
-#include <hash.h>
 #include <kernel/messagestartchars.h>
+#include <kernel/signet.h>
 #include <primitives/block.h>
 #include <primitives/transaction.h>
 #include <script/interpreter.h>
@@ -463,11 +463,7 @@ public:
 
         ApplyDeploymentOptions(options.dep_opts);
 
-        // message start is defined as the first 4 bytes of the sha256d of the block script
-        HashWriter h{};
-        h << consensus.signet_challenge;
-        uint256 hash = h.GetHash();
-        std::copy_n(hash.begin(), 4, pchMessageStart.begin());
+        pchMessageStart = kernel::GetSignetMessageStart(consensus.signet_challenge);
 
         nDefaultPort = 36333;
         nPruneAfterHeight = 1000;
