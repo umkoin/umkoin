@@ -1,7 +1,7 @@
 {
   "chain": "regtest",
   "test_chain": true,
-  "genesis": "06226e46111a0b59caaf126043eb5bbf28c34f3a5e332a1fc7b2b73cf188910f",
+  "genesis": "0x60b48405c3efa2bd7aa6a8bc206e3369e58d15f60cba7a915769e9669758cb6d",
   "subsidy_halving_interval": 150,
   "pow": {
     "limit": "7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"

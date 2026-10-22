@@ -1,7 +1,7 @@
 {
   "chain": "test",
   "test_chain": true,
-  "genesis": "2994b00a8b6bd4ca791db4a11e0ac892b8b59f6825a81b0df106332400000000",
+  "genesis": "000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943",
   "subsidy_halving_interval": 210000,
   "pow": {
     "limit": "00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
@@ -13,7 +13,7 @@
     "default_port": 16333,
     "magic": "0b110907",
     "dns_seeds": [
-      "dnsseed.umkoin.org"
+      "dnsseed.umkoin.org."
     ]
   },
   "addresses": {
