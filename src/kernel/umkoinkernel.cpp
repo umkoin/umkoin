@@ -545,6 +545,11 @@ const umkk_TransactionInput* umkk_transaction_get_input_at(const umkk_Transactio
     return umkk_TransactionInput::ref(&umkk_Transaction::get(transaction)->vin[input_index]);
 }
 
+uint32_t umkk_transaction_get_version(const umkk_Transaction* transaction)
+{
+    return umkk_Transaction::get(transaction)->version;
+}
+
 uint32_t umkk_transaction_get_locktime(const umkk_Transaction* transaction)
 {
     return umkk_Transaction::get(transaction)->nLockTime;

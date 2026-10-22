@@ -728,6 +728,11 @@ public:
         return TransactionInputView{umkk_transaction_get_input_at(impl(), index)};
     }
 
+    uint32_t GetVersion() const
+    {
+        return umkk_transaction_get_version(impl());
+    }
+
     uint32_t GetLocktime() const
     {
         return umkk_transaction_get_locktime(impl());

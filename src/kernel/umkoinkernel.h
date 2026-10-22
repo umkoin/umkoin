@@ -671,6 +671,15 @@ UMKOINKERNEL_API size_t umkk_transaction_count_inputs(
     const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
+ * @brief Get a transaction's version.
+ *
+ * @param[in] transaction Non-null.
+ * @return                The version.
+ */
+UMKOINKERNEL_API uint32_t umkk_transaction_get_version(
+    const umkk_Transaction* transaction) UMKOINKERNEL_ARG_NONNULL(1);
+
+/**
  * @brief Get a transaction's nLockTime value.
  *
  * @param[in] transaction Non-null.
