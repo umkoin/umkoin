@@ -1501,6 +1501,11 @@ const umkk_BlockHash* umkk_block_header_get_prev_hash(const umkk_BlockHeader* he
     return umkk_BlockHash::ref(&umkk_BlockHeader::get(header).hashPrevBlock);
 }
 
+void umkk_block_header_get_merkle_root(const umkk_BlockHeader* header, unsigned char output[32])
+{
+    std::memcpy(output, umkk_BlockHeader::get(header).hashMerkleRoot.begin(), 32);
+}
+
 uint32_t umkk_block_header_get_timestamp(const umkk_BlockHeader* header)
 {
     return umkk_BlockHeader::get(header).nTime;

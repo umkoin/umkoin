@@ -2079,6 +2079,15 @@ UMKOINKERNEL_API const umkk_BlockHash* umkk_block_header_get_prev_hash(
     const umkk_BlockHeader* header) UMKOINKERNEL_ARG_NONNULL(1);
 
 /**
+ * @brief Get the Merkle root from umkk_BlockHeader.
+ *
+ * @param[in] header Non-null umkk_BlockHeader.
+ * @param[out] output The 32-byte Merkle root.
+ */
+UMKOINKERNEL_API void umkk_block_header_get_merkle_root(
+    const umkk_BlockHeader* header, unsigned char output[32]) UMKOINKERNEL_ARG_NONNULL(1, 2);
+
+/**
  * @brief Get the timestamp from umkk_BlockHeader.
  *
  * @param[in] header    Non-null umkk_BlockHeader
