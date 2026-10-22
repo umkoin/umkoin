@@ -131,23 +131,10 @@ uint32_t ExtendSse42(uint32_t crc, const uint8_t* data, size_t size) {
     l = _mm_crc32_u8(l, *p++); \
   } while (0)
 
-#define STEP4(crc)                             \
-  do {                                         \
-    crc = _mm_crc32_u32(crc, ReadUint32LE(p)); \
-    p += 4;                                    \
-  } while (0)
-
 #define STEP8(crc, data)                          \
   do {                                            \
     crc = _mm_crc32_u64(crc, ReadUint64LE(data)); \
     data += 8;                                    \
-  } while (0)
-
-#define STEP8BY3(crc0, crc1, crc2, p0, p1, p2) \
-  do {                                         \
-    STEP8(crc0, p0);                           \
-    STEP8(crc1, p1);                           \
-    STEP8(crc2, p2);                           \
   } while (0)
 
 #define STEP8X3(crc0, crc1, crc2, bs)                     \
@@ -176,7 +163,7 @@ uint32_t ExtendSse42(uint32_t crc, const uint8_t* data, size_t size) {
     }
   }
 
-  // Proccess the data in predetermined block sizes with tables for quickly
+  // Process the data in predetermined block sizes with tables for quickly
   // combining the checksum. Experimentally it's better to use larger block
   // sizes where possible so use a hierarchy of decreasing block sizes.
   uint64_t l64 = l;
@@ -245,9 +232,7 @@ uint32_t ExtendSse42(uint32_t crc, const uint8_t* data, size_t size) {
   }
 #undef SKIP_BLOCK
 #undef STEP8X3
-#undef STEP8BY3
 #undef STEP8
-#undef STEP4
 #undef STEP1
 
   return l ^ kCRC32Xor;
