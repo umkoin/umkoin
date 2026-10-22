@@ -6,7 +6,6 @@
 
 export LC_ALL=C.UTF-8
 
-export CONTAINER_NAME=ci_native_riscv_bare
 
 export GOAL="umkoin_consensus umkoin_crypto secp256k1"
 export CI_IMAGE_NAME_TAG="mirror.gcr.io/ubuntu:26.04"
