@@ -70,12 +70,8 @@ pkg_add zeromq
 ```
 
 #### Test Suite Dependencies
-There is an included test suite that is useful for testing code changes when developing.
-To run the test suite (recommended), you will need to have Python 3 installed:
 
-```bash
-pkg_add python py3-zmq  # Select the newest version of the python package if necessary.
-```
+See [`test/README.md`](/test/README.md#dependencies-and-prerequisites).
 
 ## Building Umkoin Core
 
@@ -110,7 +106,7 @@ data(kbytes)         1572864
 ```
 
 This is, unfortunately, in some cases not enough to compile some `.cpp` files in the project,
-(see issue [#6658](https://github.com/bitcoin/bitcoin/issues/6658)).
+(see issue [#6658](https://github.com/umkoin/umkoin/issues/6658)).
 If your user is in the `staff` group the limit can be raised with:
 ```bash
 ulimit -d 3000000
