@@ -1,14 +1,16 @@
 // Copyright 2014 BitPay Inc.
+// Copyright (c) 2015-present The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://opensource.org/licenses/mit-license.php.
 
 #include <univalue.h>
-#include "univalue_utffilter.h"
+#include <univalue_utffilter.h>
 
-#include <cstdio>
 #include <cstdint>
 #include <cstring>
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 /*
@@ -259,7 +261,18 @@ enum expect_bits : unsigned {
 #define setExpect(bit) (expectMask |= EXP_##bit)
 #define clearExpect(bit) (expectMask &= ~EXP_##bit)
 
-bool UniValue::read(const char *raw, size_t size)
+bool UniValue::read(std::string_view json)
+{
+    UniValue parsed;
+    if (!parsed.read_impl(json)) {
+        setNull();
+        return false;
+    }
+    *this = std::move(parsed);
+    return true;
+}
+
+bool UniValue::read_impl(std::string_view str_in)
 {
     clear();
 
@@ -270,7 +283,8 @@ bool UniValue::read(const char *raw, size_t size)
     unsigned int consumed;
     enum jtokentype tok = JTOK_NONE;
     enum jtokentype last_tok = JTOK_NONE;
-    const char* end = raw + size;
+    const char* raw{str_in.data()};
+    const char* end{raw + str_in.size()};
     do {
         last_tok = tok;
 
@@ -460,4 +474,3 @@ bool UniValue::read(const char *raw, size_t size)
 
     return true;
 }
-
