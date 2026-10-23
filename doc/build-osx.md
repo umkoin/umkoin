@@ -16,7 +16,7 @@ macOS comes with a built-in Terminal located in:
 ### 1. Xcode Command Line Tools
 
 The Xcode Command Line Tools are a collection of build tools for macOS.
-Version 16.2 (or higher) of these tools must be
+Version 26.3 (or higher) of these tools must be
 [installed](https://developer.apple.com/documentation/xcode/installing-the-command-line-tools)
 in order to build Umkoin Core from source.
 
@@ -90,7 +90,7 @@ brew install qt@6
 ```
 
 Note: Building with Qt binaries downloaded from the Qt website is not officially supported.
-See the notes in [#7714](https://github.com/bitcoin/bitcoin/issues/7714).
+See the notes in [#7714](https://github.com/umkoin/umkoin/issues/7714).
 
 ###### libqrencode
 
