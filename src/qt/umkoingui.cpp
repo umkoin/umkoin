@@ -863,13 +863,6 @@ void UmkoinGUI::setCurrentWalletBySelectorIndex(int index)
     if (wallet_model) setCurrentWallet(wallet_model);
 }
 
-void UmkoinGUI::removeAllWallets()
-{
-    if(!walletFrame)
-        return;
-    setWalletActionsEnabled(false);
-    walletFrame->removeAllWallets();
-}
 #endif // ENABLE_WALLET
 
 void UmkoinGUI::setWalletActionsEnabled(bool enabled)

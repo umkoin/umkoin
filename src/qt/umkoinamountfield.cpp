@@ -85,11 +85,6 @@ public:
         m_min_amount = value;
     }
 
-    void SetMaxValue(const CAmount& value)
-    {
-        m_max_amount = value;
-    }
-
     void stepBy(int steps) override
     {
         bool valid = false;
@@ -309,16 +304,6 @@ void UmkoinAmountField::SetAllowEmpty(bool allow)
 void UmkoinAmountField::SetMinValue(const CAmount& value)
 {
     amount->SetMinValue(value);
-}
-
-void UmkoinAmountField::SetMaxValue(const CAmount& value)
-{
-    amount->SetMaxValue(value);
-}
-
-void UmkoinAmountField::setReadOnly(bool fReadOnly)
-{
-    amount->setReadOnly(fReadOnly);
 }
 
 void UmkoinAmountField::unitChanged(int idx)

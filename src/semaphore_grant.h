@@ -88,6 +88,4 @@ public:
     }
 };
 
-using BinarySemaphoreGrant = CountingSemaphoreGrant<1>;
-
 #endif // UMKOIN_SEMAPHORE_GRANT_H
