@@ -607,7 +607,7 @@ set(Python3_FIND_FRAMEWORK LAST CACHE STRING "")
 # improves compatibility with Python version managers that use shims.
 set(Python3_FIND_UNVERSIONED_NAMES FIRST CACHE STRING "")
 mark_as_advanced(Python3_FIND_FRAMEWORK Python3_FIND_UNVERSIONED_NAMES)
-find_package(Python3 3.10 COMPONENTS Interpreter)
+find_package(Python3 3.14 COMPONENTS Interpreter)
 if(NOT TARGET Python3::Interpreter)
   list(APPEND configure_warnings
     "Minimum required Python not found."
